@@ -1,0 +1,418 @@
+
+===== PDF PAGE 1 =====
+                                                                                                  SAFE USE INSTRUCTION
+                                                                                     This instruction sheet was created pursuant to the requirements of:
+                                                                                    Regulation (EC) No. 1907/2006 and Regulation (EC) No. 1272/2008
+                                                                                                                             Revision date: 10/02/2025
+                                                                                                                                  Revision Number: 5
+
+
+SECTION 0: General information
+These products are articles in accordance with Article 3.3 of Regulation (EC) No. 1907/2006 (REACH). These articles do not contain substances
+intended to be released under normal or reasonably foreseeable conditions of use. Therefore, the substances contained in these articles are not
+subject to registration according to Article 7.1. A Safety Data Sheet does not have to be provided for this product because Article 31 is not applicable
+to articles but only to hazardous substances and mixtures.
+ENERSENS commits itself to communicate to its customers appropriate information to ensure safe handling and use. There is no mandatory format
+defined in the REACH Regulation.
+
+SECTION 1: Identification of the substance/mixture and of the company/undertaking
+1.1. Product identifier
+Product Name                                        : SKOGAR® HT 2.0 – SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5 –
+                                                    SKOGAR® HT 6.0
+Other information                                   : ENERSENS SKOGAR® HT 2.0 – SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT
+                                                    3.5 – SKOGAR® HT 6.0 products are considered as articles
+
+1.2. Relevant identified uses of the substance or mixture and uses advised against
+Recommended use                                     : Thermal insulation
+Uses advised against                                : None known
+
+1.3. Details of the supplier of the instruction sheet
+ENERSENS
+46 rue Joseph Jacquard
+38110 Rochetoirin
+France
+Tel: +33 (0)9 73 32 20 40
+For further information, please contact:
+E-mail address                                      : contact@enersens.fr
+
+1.4. Emergency telephone number
+Emergency Telephone                                  : ORFILA (INRS) +33 (0)1 45 42 59 59                    CARECHEM +44 (0)3700 492 795
+International CHEMTREC: +1 703-741-5970 or +1-703-527-3887
+
+SECTION 2: Hazards identification
+2.1. Classification of the substance or mixture
+Classification according to Regulation (EC) No 1272/2008 [CLP]
+This mixture is classified as non-hazardous according to Regulation (EC) No. 1272/2008 [CLP].
+
+2.2. Label elements
+The product is not subject to labelling according to EC directives or relevant national legislation.
+Signal word                                         : None
+Hazard statements                                   : None
+Precautionary Statements - EU (§28,                 : None
+1272/2008)
+
+2.3. Other hazards
+Adverse physicochemical, human health and           : No other effects known.
+environmental effects
+Other hazards not contributing to the               : No other effects known.
+Classification
+May cause mechanical irritation. Dust may be irritating to respiratory tract.
+
+
+
+
+EN (English)                                             Page 1/6
+
+
+===== PDF PAGE 2 =====
+SKOGAR® HT 2.0 - SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5– SKOGAR® HT 6.0
+                                                                                                                   Revision date: 10/02/2025
+
+SECTION 3: Composition/information on ingredients
+ 3.1. Substances
+
+                                                                                           Classification
+                                                                                           according to                                       M-
+                                                                REACH                                            Specific
+                                  Product                                         EC        Regulation                             M-       Factor
+          Name                                Weight-%        registration                                    concentration
+                                 identifier                                       No          (EC) No.                           Factor     (long-
+                                                                number                                         limit (SCL)
+                                                                                             1272/2008                                      term)
+                                                                                               [CLP]
+
+   Needle-felt made of
+         oxidized
+  polyacrylonitrile (PAN)    Not applicable    35 - 65              -               -       Not classified           -              -             -
+          fibers
+    Amorphous silica,        (CAS number)
+   [(trimethylsilyl)oxy]-                      65 - 35              -               -       Not classified           -              -             -
+                              102262-30-6
+         modified
+
+The hyphen (-) means "Not applicable".
+
+SECTION 4: First aid measures
+ 4.1. Description of first aid measures
+First-aid measures general                        : Evacuate the person to an uncontaminated area. Immediately remove any contaminated
+                                                    clothing. Place the victim in the lateral position of safety.
+
+First-aid measures after inhalation               : Move the person to fresh air and hold in a comfortable position for breathing. If breathing
+                                                    symptoms occur: Call a poison control center or doctor.
+
+First-aid measures after skin contact             : After skin contact, remove contaminated clothing immediately and wash immediately with
+                                                    plenty of soap and water. Seek medical attention if symptoms develop.
+
+First-aid measures after eye contact              : In case of eye contact, immediately flush eyes with plenty of water for at least 15 minutes. Get
+                                                    medical attention if symptoms occur.
+
+First-aid measures after ingestion                : Do NOT induce vomiting. Rinse mouth thoroughly with water. Never give anything by mouth to
+                                                    an unconscious person.
+
+ 4.2. Most important symptoms and effects, both acute and delayed
+No additional information available.
+
+ 4.3. Indication of any immediate medical attention and special treatment needed
+Seek medical attention if symptoms occur.
+
+SECTION 5: Firefighting measures
+ 5.1. Extinguishing media
+Suitable Extinguishing Media                      : Use extinguishing measures that are appropriate to local circumstances and the surrounding
+                                                    environment. Carbon dioxide (CO2). Foam. Dry chemical agent. Water.
+Unsuitable extinguishing media                    : None
+ 5.2. Special hazards arising from the product
+Fire hazard                                       : Under fire conditions, hazardous fumes will be present.
+Hazardous decomposition products in case of fire : Carbon oxides, carbon dioxide (CO2), organic decomposition products.
+ 5.3. Advice for fire-fighters
+Proper firefighting procedures should be followed to prevent inhalation of smoke and gases generated by a fire.
+
+SECTION 6: Accidental release measures
+ 6.1. Personal precautions, protective equipment and emergency procedures
+General measures                                  : Prevent or limit the formation and dispersion of dust. Provide adequate ventilation. Use required
+                                                    personal protective equipment. See section 8.
+
+6.1.1. For non-emergency personnel
+Emergency procedures                              : If a major spill occurs, all personnel should be immediately evacuated and the area ventilated.
+
+
+
+
+EN (English)                                          Page 2/6
+
+
+===== PDF PAGE 3 =====
+SKOGAR® HT 2.0 - SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5– SKOGAR® HT 6.0
+                                                                                                                    Revision date: 10/02/2025
+
+6.1.2. For emergency responders
+Protective equipment                              : Wear suitable protective clothing, gloves and eye or face protection. Where excessive dust may
+                                                    result, wear approved mask.
+
+
+
+ 6.2. Environmental precautions
+Dispose of at an authorized waste collection center.
+Avoid release to the environment. See Section 12 for more information on ecological effects.
+
+ 6.3. Methods and material for containment and cleaning up
+Methods for containment                           : Contain spilled product on land, if possible. Prevent further leakage or spillage if safe to do so.
+
+Methods for cleaning up                           : Clean up promptly by vacuum. Use of a vacuum with high efficiency particulate air (HEPA)
+                                                    filtration is recommended. Do not create a dust cloud by using a brush or compressed air. Dry
+                                                    sweeping is not recommended.
+
+SECTION 7: Handling and storage
+7.1. Precautions for safe handling
+Protective measures                               : Avoid contact with skin and eyes. Avoid generation of dust. Do not breathe dust.
+                                                    Provide appropriate local exhaust ventilation at machinery and at places where dust can be
+                                                    generated. Do not create a dust cloud by using a brush or compressed air.
+                                                  Because aerogel dust is hydrophobic, water is not an effective dust control agent.
+Measures to prevent the production of suspended : Local extraction is required at the point of dust emission.
+particles and dust
+
+General hygiene considerations                    : Handle in accordance with good industrial hygiene and safety practice.
+
+ 7.2. Conditions for safe storage, including any incompatibilities
+Technical measures                                : Provide adequate ventilation to minimize dust concentrations.
+Storage conditions                                : Keep in closed packaging until use. Store in a dry place.
+
+SECTION 8: Exposure controls/personal protection
+ 8.1. Control parameters
+Exposure Limits                                   : No exposure limit is established for SKOGAR® HT 2.0 – SKOGAR® HT 2.5 – SKOGAR®
+                                                  HT 3.0. Exposure limits for components or similar components are stated below. The table
+                                                  below is a summary. Please see the specific legislation for complete information.
+
+ Amorphous silica, [(trimethylsilyl)oxy]-modified (CAS number: 102262-30-6)
+
+                                     TRGS 900 Occupational exposure limit value (mg/m³)
+ Germany
+                                     4 mg/m³ (By analogy with a similar product CAS number: 7631-86-9) (inhalable aerosol)
+
+                                     WEL TWA (mg/m³)
+ United Kingdom
+                                     6 mg/m³ (By analogy with a similar product CAS number: 7631-86-9) (inhalable aerosol)
+ Dust, or particulates not otherwise specified
+
+ France                              TWA: 4 mg/m3 inhalable; 0.9 mg/m3 alveolar fraction
+
+
+ Belgium                             TWA: 10 mg/m3 inhalable; 3 mg/m3 alveolar fraction
+
+                                     TWA: 10 mg/m3 inhalable particles, recommended
+ ACGIH TLV
+                                     TWA: 3 mg/m3 respirable particles, recommended
+
+ 8.2. Exposure controls
+Hand protection                                  : Chemical resistant gloves (according to European standard NF EN 374 or equivalent).
+Eye and face protection                          : Wear tight fitting safety glasses or facial screen. Emergency eye wash fountains should be
+                                                   available in the immediate vicinity of any potential exposure.
+Skin and body protection                         : Wear suitable protective clothing. Emergency safety showers should be available in the
+                                                   immediate vicinity of any potential exposure (European standard EN 15154).
+Respiratory protection                           : Ensure good ventilation of the work area to avoid dust formation.
+                                                   Where excessive dust may result, use approved respiratory protection equipment. Dust/aerosol
+                                                   mask with filter type P3.
+
+
+
+EN (English)                                          Page 3/6
+
+
+===== PDF PAGE 4 =====
+SKOGAR® HT 2.0 - SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5– SKOGAR® HT 6.0
+                                                                                                                   Revision date: 10/02/2025
+
+
+
+
+SECTION 9: Physical and chemical properties
+ 9.1. Information on basic physical and chemical properties
+Physical state                                               : Solid
+Appearance                                                   : Panels, Sheets, Rolls, punched parts
+Colour                                                       : Black
+Thickness                                                    : 1 to 7 mm
+Odour                                                        : Odourless
+Odour threshold                                              : Not applicable
+pH                                                           : Not applicable
+Relative evaporation rate (butylacetate=1)                   : Not applicable
+Melting point                                                : No data available
+Freezing point                                               : No data available
+Boiling point                                                : Not applicable
+Flash point                                                  : Not applicable
+Auto-ignition temperature                                    : Not applicable
+Decomposition temperature                                    : > 300 °C (TGA)
+Flammability (solid, gas)                                    : No data available
+Vapour pressure                                              : Not applicable
+Relative vapour density at 20 °C                             : Not applicable
+Relative density                                             : No data available
+Density                                                      : 100 - 220 kg/m3
+Solubility                                                   : Insoluble in water, insoluble in organic solvents
+Log Pow                                                      : No data available
+Viscosity                                                    : Not applicable
+Explosive properties                                         : No data available
+Oxidising properties                                         : No data available
+Explosive limits                                             : No data available
+
+ SECTION 10: Stability and reactivity
+ 10.1. Reactivity
+No additional information available.
+ 10.2. Chemical stability
+Stable under normal conditions of use. Stable under recommended storage conditions.
+This material will not create nor support conditions that would result in a dust explosion or fire. Take precautionary measures against static
+discharges. Avoid generation of dust. All metal parts of the processing equipment must be earthed/grounded. Ensure all equipment is electrically
+earthed/grounded before beginning transfer operations.
+ 10.3. Possibility of hazardous reactions
+None under normal processing.
+
+10.4. Conditions to avoid
+Keep off any ignition sources (e.g., heat, sparks, flam, impact, friction, electricity...).
+If exposed to flame, organic components in the material may burn, releasing toxic fumes and vapors. Vapors resulting from decomposition of the
+product should be removed by adequate ventilation.
+
+10.5. Incompatible materials
+None known based on information supplied.
+
+10.6. Hazardous decomposition products
+Carbon oxides, carbon dioxide (CO2), organic decomposition products.
+
+SECTION 11: Toxicological information
+ 11.1. Information on toxicological effects
+
+
+
+EN (English)                                               Page 4/6
+
+
+===== PDF PAGE 5 =====
+SKOGAR® HT 2.0 - SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5– SKOGAR® HT 6.0
+                                                                                                                       Revision date: 10/02/2025
+
+Acute toxicity                                    : Not classified
+ Amorphous silica, [(trimethylsilyl)oxy] modified (CAS number: 102262-30-6)
+  LD50 oral rat                                     > 2000 mg/kg (OECD 423)
+Skin corrosion/irritation                         : Not classified. May cause skin irritation.
+
+Serious eye damage/irritation                     : Not classified. Dust from this product may cause eye irritation.
+
+Respiratory or skin sensitisation                 : Not classified
+
+Germ cell mutagenicity                            : Not classified
+
+Carcinogenicity                                   : Not classified
+
+Reproductive toxicity                             : Not classified
+
+STOT-single exposure                              : Not classified
+
+STOT-repeated exposure                            : Not classified
+
+Aspiration hazard                                 : Not classified
+
+Other information                                 : During the cutting, machining or other processing of these products, dust may be generated.
+                                                    According to our present knowledge, these dusts do not present a health risk if their concentration
+                                                    does not exceed the recommended exposure limits for dust in general (inhalable and respirable
+                                                    fraction).
+
+SECTION 12: Ecological information
+ 12.1. Toxicity
+Ecology – general                                 : No data are available on the product itself.
+
+ 12.2. Persistence and degradability
+No additional information available.
+
+ 12.3. Bioaccumulative potential
+Partition coefficient n-octanol/water (log Kow)   : No data available
+Bioconcentration factor (BCF)                     : No data available
+
+ 12.4. Mobility in soil
+No additional information available.
+
+ 12.5. Results of PBT and vPvB assessment
+No additional information available.
+
+12.6. Endocrine disrupting properties
+The substance/mixture does not contain components considered to have endocrine disrupting properties according to REACH Article 57(f) or
+Commission Delegated regulation (EU) 2017/2100 or Commission Regulation (EU) 2018/605 at levels of 0.1% or higher.
+
+12.7. Other adverse effects
+No additional information available.
+
+SECTION 13: Disposal considerations
+13.1. Waste treatment methods
+Waste treatment methods                           : Dispose of in accordance with local, national and international regulations. Dispose of waste in
+                                                    accordance with environmental regulations.
+
+SECTION 14: Transport information
+In accordance with ADR / RID / IMDG / IATA / ADN
+
+14.1. UN number
+Not regulated for transport
+
+14.2. UN proper shipping name
+Not applicable
+
+ 14.3. Transport hazard class(es)
+
+
+
+
+EN (English)                                          Page 5/6
+
+
+===== PDF PAGE 6 =====
+SKOGAR® HT 2.0 - SKOGAR® HT 2.5 – SKOGAR® HT 3.0 – SKOGAR® HT 3.5– SKOGAR® HT 6.0
+                                                                                                                    Revision date: 10/02/2025
+
+ADR
+Transport hazard class(es) (ADR)                   : Not applicable
+
+ 14.4. Packing group
+Packing group                                      : Not applicable
+
+ 14.5. Environmental hazards
+Dangerous for the environment                      : No
+
+ 14.6. Special precautions for user
+- Overland transport
+Transport regulations (ADR)                        : Not subject
+- Transport by sea
+Transport regulations (IMDG)
+                                                   : Not subject
+- Air transport
+Transport regulations (IATA)                       : Not subject
+
+ 14.7. Transport in bulk according to Annex II of MARPOL 73/78 and the IBC Code
+Not applicable
+
+SECTION 15: Regulatory information
+15.1. Safety, health and environmental regulations/legislation specific for the substance or mixture
+
+These products are articles in accordance with Article 3.3 of Regulation (EC) No. 1907/2006 (REACH). These articles do not contain substances
+intended to be released under normal or reasonably foreseeable conditions of use. Therefore, the substances contained in these articles are not
+subject to registration according to Article 7.1. A Safety Data Sheet does not have to be provided for this product because Article 31 is not applicable
+to articles but only to hazardous substances and mixtures.
+ENERSENS commits itself to communicate to its customers appropriate information to ensure safe handling and use. There is no mandatory format
+defined in the REACH Regulation.
+15.1.1. National regulations
+No additional information available
+
+15.2. Chemical safety assessment
+No additional information available
+
+SECTION 16: Other information
+Key or legend to abbreviations and acronyms used in the instruction sheet
+Legend SECTION 8: Exposure controls/personal protection
+TWA: TWA (time-weighted average)
+
+Prepared by: ENERSENS – Quality, Health, Safety and Environment Department
+Revision date: 12/06/2024
+Reason for revision: Creation of the instruction sheet for the product SKOGAR® HT 2.5, Product Name Update, Revisions to Section 9 and
+Section 8.
+
+Disclaimer:
+The information set forth is based on information that ENERSENS believes to be accurate. No express or implied warranty is given. The information
+is provided for information purposes only. ENERSENS does not assume any legal responsibility for its use or reliance on it.
+
+
+
+
+EN (English)                                           Page 6/6

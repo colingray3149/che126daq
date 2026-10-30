@@ -1,0 +1,7 @@
+Executed calculate.py
+R_nom = 48 ohm
+Full-face mica R = 0.349956255 K/W
+Partial electronics difference bound = +/-8 C
+Sources: S1: https://www.mcmaster.com/4877K305/; S2: https://www.mcmaster.com/85165K26/; S8: https://cdn-shop.adafruit.com/datasheets/MAX31855.pdf; S10: https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node118.html; NIST: https://www.nist.gov/pml/owm/si-units-length
+Outputs: /home/colin/Projects/che126daq/models/mica-check
+No absolute temperature/time forecast or safe setting inferred.

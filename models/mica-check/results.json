@@ -1,0 +1,56 @@
+{
+  "generated_utc": "2026-10-30T17:37:25.526642+00:00",
+  "inputs_sha256": "07355c4f110e46f47ad8c0361de0b62774408c2ab2b45b7539baa9cd1cb88826",
+  "script_sha256": "40815986a647b12ee4d8cbb280a2714dd546209b4642c1fbb01c8871e66c5f50",
+  "sources": {
+    "S1": {
+      "description": "McMaster 4877K305 heater PDF pp. 1-2",
+      "url": "https://www.mcmaster.com/4877K305/"
+    },
+    "S2": {
+      "description": "McMaster 85165K26 mica PDF p. 1",
+      "url": "https://www.mcmaster.com/85165K26/"
+    },
+    "S8": {
+      "description": "MAX31855 datasheet pp. 3-4, Thermal Characteristics and Note 4",
+      "url": "https://cdn-shop.adafruit.com/datasheets/MAX31855.pdf"
+    },
+    "S10": {
+      "description": "User's sample dimensions in experiment-log.md; exact inch from NIST; plane-wall relation from MIT",
+      "url": "https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node118.html"
+    },
+    "NIST": {
+      "description": "Exact inch definition",
+      "url": "https://www.nist.gov/pml/owm/si-units-length"
+    }
+  },
+  "nominal_heater_resistance_ohm": 48.0,
+  "mica_thickness_m": 0.0008128,
+  "mica_full_area_m2": 0.0077419199999999985,
+  "full_area_R_K_W": 0.3499562554680666,
+  "full_area_R_thickness_tolerance_only_K_W": [
+    0.31496062992125995,
+    0.38495188101487327
+  ],
+  "electronics_terms_per_channel_C": 4.0,
+  "electronics_terms_difference_C": 8.0,
+  "area_scenarios": [
+    {
+      "label": "Full 2 × 6 in face",
+      "area_m2": 0.0077419199999999985,
+      "R_K_W": 0.3499562554680666
+    },
+    {
+      "label": "Diameter × element envelope",
+      "area_m2": 0.00080645,
+      "R_K_W": 3.3595800524934387
+    },
+    {
+      "label": "Diameter × heated length",
+      "area_m2": 0.00050403125,
+      "R_K_W": 5.375328083989501
+    }
+  ],
+  "assumptions": "These are analyst-selected illustration points, NOT measured coupling, safe voltage settings, suggested power levels, or confidence bounds. Heater resistance is held at its rating-derived nominal value. Projection rectangles are geometry examples, not measured contact areas or physical bounds. The 1D model neglects spreading, contact resistance, storage, radiation, convection, wire/clamp/block conduction and any sand.",
+  "no_absolute_temperature_or_time_prediction": "Unknown true contact/spreading area, cross-sample heat fraction, contact drops, heat capacities and boundary losses prevent a defensible apparatus temperature/time forecast."
+}

@@ -112,3 +112,42 @@ Stop with `systemctl --user stop che126daq-hub`. No boot/login autostart or
 logout-linger configuration was installed. Both channels remain faults;
 probe identity/attachment, amplifier wiring and valid temperatures remain
 unverified. No heater was energized or controlled by this work.
+
+## 2026-10-30 — User setup rundown and mica-check calculations
+
+- Recorded the user's current apparatus and decision status in
+  `docs/experiment-log.md`: variac assumption, cinderblock/semi-wet sand,
+  cut 2 × 6 inch specimens, top clamps/bottom clip, candidate layer orders,
+  unavailable aerogel, current wire-held two-probe mica-only check, and later
+  packed comparative trials. No heating result or adopted safety recommendation
+  was invented from the description.
+- Added `docs/quick-checks.md`: reference/co-location, channel/fault checks,
+  untouched versus reseated repeats, probe/channel swaps, spatial sensitivity,
+  air → dry-packed → air comparison, and later aluminum/layer comparisons.
+  Each suggestion states its observable and its interpretation limit.
+- Retrieved and archived manufacturer aerogel PDS/SDS, sand PDS/SDS, Samsung
+  cell SDS and readable product-page captures in `references/current-check/`, with
+  source URLs/retrieval times/SHA-256. Indexed existing heater/mica/basalt/chip
+  PDFs and new references in `docs/current-check-sources.md`.
+- Checked the actual heater's rated versus heated dimensions, catalog
+  conductivity reference conditions, aerogel short-time-flame qualification,
+  and possible Adafruit #3245 electrically connected probe-tip limitation.
+- Implemented and executed `models/mica-check/calculate.py` using cited
+  `inputs.json`. It generated electrical-power CSV, geometry/sensitivity CSVs,
+  Markdown/JSON results, run log and three rendered figures. It does not
+  forecast a safe variac setting or an absolute apparatus temperature/time
+  without missing contact, heat-flow, storage and boundary-condition inputs.
+- Inspected all rendered plots. An overlapping area-plot footnote was moved
+  into the subtitle before final regeneration. Scientific computations used
+  the already-provisioned Nix Python environment with numpy/matplotlib;
+  the report includes a portable NixOS reproduction command.
+- Parent independently inspected the hub's real UI screenshot, localhost API
+  and saved `runs/005/data.csv`/`notes.md` after the builder completed.
+  Acquisition was active; both channel values were still fault/NaN. No second
+  serial reader, firmware upload or heater command was used. The raw saved
+  commissioning data are not a successful temperature-validation experiment.
+- Pre-publication scanning flagged website-issued tokens in raw vendor HTML.
+  Replaced those pages with readable text captures without scripts/styles/HTML
+  attributes rather than publishing irrelevant tokens. Original source PDFs
+  remain byte-preserved; both downloaded HTML and published text hashes are
+  recorded in the source index. Raw HTML was kept outside the repository.

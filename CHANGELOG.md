@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-30 — Current fixture account and first-check calculations
+
+- Recorded the user's actual mica-only check, candidate clamped stacks, material availability, semi-wet sand, and planned air-versus-packed comparisons without treating proposals as completed results.
+- Archived additional manufacturer PDS/SDS references, including aerogel temperature qualifications and grounded-tip probe compatibility.
+- Added executed, cited electrical/plane-wall sensitivity calculations, figures, explicit input assumptions and partial electronics-error accounting; no unsupported temperature/time forecast or safe variac setting.
+- Added prioritized reference, channel, repeatability, reseating, support-condition and spatial checks, with photo requests and clear interpretation limits.
+
 ## 2026-10-30 — Durable interactive DAQ hub
 
 - Added a local Python command hub, left terminal/right responsive Plotly graph,

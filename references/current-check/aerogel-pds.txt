@@ -1,0 +1,61 @@
+
+===== PDF PAGE 1 =====
+                                                                                                                                                                   ®
+                                                                                                   Ultra-thin super-insulating aerogel sheet
+
+
+
+
+Indicative Product Properties
+                                                                                               SKOGAR® ST                                               SKOGAR® HT
+                                                                                                                                                Silica Aerogel & Oxidized
+      TYPE OF MATERIALS                                                              Silica Aerogel & Glass Fibers
+                                                                                                                                              polyacrylonitrile (PAN) fibers
+      PROPERTIES                                                 UNITS                                VALUES                                                   VALUES
+      Thickness available (at 0.5 kPa)                             mm                   0.5 | 1.0 | 2.0 | 2.5 | 3.5                              2.0 | 2.5 | 3.0 | 3.5 | 6.0
+      Acc ISO 5084
+
+      Thickness tolerance                                          mm                                 +/- 0.2                                                   +/- 0.3
+      Thermal Properties
+      Thermal conductivity (at 20°C)                           W/(m.K)                           0.012 - 0.015                                             0.012 - 0.018
+      Acc EN 12667
+      Heat capacity: Cp (at 20°C)                                J/Kg/K                               ≈ 1000                                                     ≈ 950
+      Acc ISO 11357
+      Coef. of Thermal Expansion                                    K-1                               37.10-6                                                 -1.4.10-5
+      -150/300°C Acc ISO 11359
+
+      Short-time flame exposure                                     °C                             Up to 1100                                               Up to 1300
+      Flammability                                                                            V-0 classification                                        V-0 classification
+      UL 94-V                                                        -
+      FAR 25.853
+                                                                                       Except Skogar® ST 0.5: ISO 3795                      FAR.253 App F: Conform (SKOGAR® HT2 &HT3)
+
+      Mechanical Properties
+      Compression Stiffness -                                        %
+      Deformation (at 0.2 MPa)                                                                            35                                                       30
+      Acc ASTM D575
+      Compression Set (%, Max)                                       %                                  ≤ 25                                                      ≤ 35
+      @ 50% Deformation 50% Acc ISO 1856
+
+      Stiffness                                                      -                                  Rigid                                                  Flexible
+      Electrical Properties
+      Dielectric strength                                       kV/mm                                   > 2.5                                                    > 2.5
+      ASTM D149
+      Physical Properties
+      Density                                                    kg/m3                              130 - 160                                                 140 - 180
+
+      Surface chemistry                                              -                           Hydrophobic                                               Hydrophobic
+All physical and mechanical values are average results from standard production, tested under internal procedures. Typical values are provided for reference only and may vary depending on
+testing methods. If a specific value is critical for your specifications, please contact Enersens's technical department
+
+
+
+                                                                                   ENERSENS                                                                                  Web site: enersens.eu
+                                                               46 rue Joseph Jacquard - 38110 Rochetoirin, France                                                        Info: contact@enersens.fr
+                                                                            Tel +33 (0)9 73 32 20 40                                                     ©2025/03 Enersens. All rights Reserved.
+
+
+===== PDF PAGE 2 =====
+                    ENERSENS                                         Web site: enersens.eu
+46 rue Joseph Jacquard - 38110 Rochetoirin, France               Info: contact@enersens.fr
+             Tel +33 (0)9 73 32 20 40                ©2025/03 Enersens. All rights Reserved.

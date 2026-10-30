@@ -1,0 +1,666 @@
+
+===== PDF PAGE 1 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                     Revision no.: 01
+MODEL INR18650-25R
+
+
+
+                                           Safety Data Sheet
+
+1. Product and Company Identification
+
+Important Note: As a solid, manufactured article, exposure to hazardous ingredients is not expected with
+normal use. This battery is an article pursuant to 29 CFR 1910.1200 and, as such, is not subject to the
+OSHA Hazard Communication Standard requirement. The information contained in this Safety Data Sheet
+contains valuable information critical to the safe handling and proper use of the product. This SDS should
+be retained and available for employees and other users of this product.
+
+Commercial product name
+INR18650-25R
+
+Use of the substance/preparation
+Lithium-ion batteries
+
+Synonyms
+Lithium-ion Cell, Lithium-ion Pack, Lithium-ion Battery, Li-Ion Cell, Li-Ion Pack, Li-Ion Battery
+
+Manufacturer
+SAMSUNG SDI Co., Ltd.
+
+Address
+HQ: 150-20, Gongse-ro, Giheung-gu, Yongin-si, Gyeonggi-do, Korea
+
+Company/undertaking identification
+Emergency Contact(Chemtrec)
+1-800-424-9300: US and Canada / 1-703-527-3887: International
+
+Further Information
+Battery-System: Lithium-ion (Li-ion)
+Nominal Voltage: 3.60 V
+Rated Capacity: 2.50 Ah
+Wh rating: 9.20 Wh
+Anode (negative electrode): based on intercalation graphite
+Cathode (positive electrode): based on lithiated metal oxide (Cobalt, Nickel or Manganese)
+
+
+Remark:
+The information and recommendations set forth are made in good faith and believed to be accurate as of
+the date of preparation. SAMSUNG SDI Co., Ltd. makes no warranty, expressed or implied, with respect
+to this information and disclaims all liabilities from reliance on it.
+
+
+
+
+                                                                                                    Page 1 of 11
+
+
+===== PDF PAGE 2 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                         Revision no.: 01
+MODEL INR18650-25R
+
+
+2. Hazards Identification
+
+Classification of the substance or mixture.
+   Preparation Hazards and Classification: The product is a Lithium ion cell or battery and is therefore classified
+   as an article and is not hazardous when used according to the recommendations of the manufacturer. The hazard
+   is associated with the contents of the cell or battery. Under recommended use conditions, the electrode materials
+   and liquid electrolyte are non-reactive provided that the cell or battery integrity remains and the seals remain intact.
+   The potential for exposure should not exist unless the cell or battery leaks, is exposed to high temperatures or is
+   mechanically, electrically or physically abused/damaged. If the cell or battery is compromised and starts to leak,
+   based upon the battery ingredients, the contents are classified as Hazardous.
+
+   Hazard Summary
+   Physical hazards: Not classified for physical hazards.
+   Health hazards: Not classified for health hazards.
+   Environmental hazards: Not classified for hazards to the environment.
+   Specific hazards: Exposure to contents of an open or damaged cell or battery: contact with this material will
+   cause burns to the skin, eyes and mucous membranes. May cause sensitization by skin contact.
+   Main Symptoms: Symptoms include itching, burning, redness and tearing.
+
+   Hazardous Materials Information Label (HMIS)
+   Health: 0
+   Flammability: 1
+   Physical Hazard: 0
+
+   NFPA Hazard Ratings
+   Health: 0
+   Flammability: 1
+   Reactivity: 0
+   Unique Hazard:
+
+Labelling
+   If the cell or battery is compromised and starts to leak, based upon the battery ingredients, the contents are
+   classified as Hazardous
+
+    Symbol:
+
+
+
+
+   Signal word: Danger
+
+GHS precautionary statements
+
+                      P102: Keep out of reach of children.
+                      P103: Read label prior to use.
+ Precautionary
+                      P202: Do not handle until all safety precautions have been read and understood.
+ Statement(s)
+                      P210: Keep away from heat/sparks/open flames/hot surfaces – No smoking.
+ Prevention
+                      P234: Keep only in original container.
+                      P254: Wash hands thoroughly after handling.
+
+
+
+
+                                                                                                            Page 2 of 11
+
+
+===== PDF PAGE 3 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                            Revision no.: 01
+MODEL INR18650-25R
+
+
+
+                       P260: Do not breathe vapor or spray.
+                       P280: Wear protective gloves/protective clothing/eye protection/face protection.
+                       P301/330/331: IF SWALLOWED: Rinse mouth. DO NOT induce vomiting.
+                       P303/361/353: IF ON SKIN (or hair): Remove/Take off immediately all contaminated clothing.
+   Response            Rinse skin with water/shower.
+ (If cell/battery      P304/340: If INHALED: Remove victim to fresh air and keep at rest in a position comfortable for breathing.
+ leaks)                P305/351/338: IF IN EYES: Rinse cautiously with water for several minutes.
+                       Remove contact lenses, if present and easy to do. Continue rinsing.
+                       P310: Immediately call a POISON CENTER or doctor/physician.
+                       P363: Wash contaminated clothing before reuse.
+                       P370: In case of fire: Use carbon dioxide, dry chemical or water extinguisher.
+
+
+ Storage               P402: Store in a dry place.
+ (Store as indicated   P405: Store locked up.
+ in Section 7)         P410: Protect from sunlight.
+
+                       P406: Store any spilled/leaking electrolyte material in a corrosive resistant container with a resistant inner liner.
+ Disposal
+                       P501: Dispose of batteries in accordance with applicable hazardous waste regulations.
+
+
+
+
+Other Hazards.
+   Appearance, Color and Odor: Solid object with no odor.
+
+    Primary Routes(s) of Exposure: These chemicals are contained in a sealed enclosure. Risk of exposure occurs
+    only if the cell or pack is mechanically, thermally, electrically or physically abused to the point of compromising the
+    enclosure.
+    If this occurs, exposure to the electrolyte solution contained within can occur by inhalation, ingestion, eye contact
+    and skin contact.
+
+    Potential Health Effect(s):
+        Acute (short term): see Section 8 for exposure controls.
+        In the event that this cell or pack has been ruptured, the electrolyte solution contained within the cell would
+        be corrosive and can cause burns to skin and eyes.
+        Inhalation: Inhalation of materials from a sealed cell is not an expected route of exposure. Vapors or mists
+        from a ruptured cell may cause respiratory irritation.
+        Ingestion: Swallowing of materials from a sealed cell is not an expected route of exposure. Swallowing the
+        contents of an open cell can cause serious chemical burns to mouth, esophagus, and gastrointestinal tract.
+        Skin: Contact between the cell and skin will not cause any harm. Skin contact with the contents of an open
+        cell can cause severe irritation or burns to the skin.
+        Eye: Contact between the cell and the eye will not cause any harm. Eye contact with the contents of an open
+        cell can cause severe irritation or burns to the eye.
+        CHRONIC (long term): see Section 11 for additional toxicological data.
+
+
+    Interactions with other chemicals: Immersion in high conductivity liquids may cause corrosion and breaching of
+    the cell or battery enclosure. The electrolyte solution inside of the cells may react with alkaline (basic) materials
+    and present a flammability hazard.
+
+    Potential Environmental Effects: Not Available.
+
+
+
+
+                                                                                                                         Page 3 of 11
+
+
+===== PDF PAGE 4 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                        Revision no.: 01
+MODEL INR18650-25R
+
+
+3. Composition/information on ingredients
+
+Hazardous components
+
+                        Chemical Name                                CAS No.              *Mass range in cell (g/g %)
+   Electrolyte          Contains Electrolyte salt and solvents.                           5-20
+   Electrolyte salt     Lithium hexafluorophosphate                  21324-40-3           0.05-5
+                        Includes one or more of the following;
+   Electrolyte          Ethelyne Carbonate                           96-49-1
+                        Propylene Carbonate                          108-32-7             5-20
+   solvent
+                        Diethyl Carbonate                            105-58-8
+                        Ethyl propionate                             105-37-3
+   PVDF                 Polyvinylidenfluoride                        24937-79-9           <1
+
+   Copper               Cu                                           7440-50-8            3-15
+
+   Aluminium            Al                                           7429-90-5            2-10
+
+   Cathode              Lithium cobalt oxide                         12190-79-3           20-50
+
+   Anode                Graphite                                     7782-42-5            10-30
+   Steel, Nickel, and
+                                                                       Various            Balance
+   inert components
+
+Because of the cell structure the dangerous ingredients will not be available if used properly.
+During charge process a lithium graphite intercalation phase is formed.
+
+
+
+4. First Aid Measures
+Description of first aid measures
+The hazardous components of this cell or battery are contained within a sealed unit. The following measures are only
+applicable if exposure has occurred to components when a cell or battery leaks, is exposed to high temperatures or is
+mechanically, electrically or physically abused/damaged. The hazardous contents are caustic alkaline electrolytes
+contained in cells with lithium metal oxide cathodes, graphite and carbon anodes and Polyvinylidenfluoride binders.
+   Ingestion: Have victim rinse mouth thoroughly with water. DO NOT INDUCE VOMITING. Quickly transport victim
+   to an emergency care facility.
+   EYE: If eye contact with contents of an open cell occurs, immediately flush the contaminated eye(s) with water.
+   Quickly transport victim to an emergency care facility.
+   Skin Contact: Immediately flush with water. If irritation or pain persists, seek medical attention.
+   Inhalation: Remove the patient from exposure into fresh air, seek medical attention.
+
+
+PROTECTION FOR FIRST
+AIDERS: Do not enter corrosive vapor contaminated areas without a respirator or Self Contained Breathing
+Apparatus. Wear adequate personal protective equipment as indicated in Section 8.
+FIRST AID FACILITIES: Eye wash bottle, fountain, safety showers or at least a source of running water are required
+in the area where the product is used.
+
+Most important symptoms & effects, acute & delayed, caused by exposure:
+  ACUTE: The contents of the battery are rated as corrosive. Ingestion of the electrolyte could lead to severe
+  gastrointestinal tract irritation with nausea, vomiting and potentially burns. Inhalation of vapors may lead to severe
+  irritation of the mouth and upper respiratory tract with a burning sensation, pain, burns and inflammation in the
+  nose and throat; there may also be coughing or difficulty breathing. Eye contact may lead to severe eye irritation
+
+                                                                                                          Page 4 of 11
+
+
+===== PDF PAGE 5 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                       Revision no.: 01
+MODEL INR18650-25R
+
+
+   or in worst case scenario irreversible damage and possible eye burns. Skin contact may lead to irritation and
+   possible skin burns.
+   CHRONIC: Skin contact may aggravate/exacerbate existing skin conditions, such as dermatitis. Chronic inhalation
+   may lead to the same symptoms as listed for acute inhalation above.
+
+Indication of any immediate medical attention and special treatment needed
+ADVICE TO DOCTOR: Treat symptomatically if the person comes into contact with the corrosive electrolyte liquid
+contents of a damaged battery.
+
+
+5. Fire Fighting Measures
+
+Suitable extinguishing media
+Cold water and dry powder in large amount are applicable.
+Use metal fire extinction powder or dry sand if only few cells are involved.
+
+Special hazards arising from the chemical
+May form hydrofluoric acid if electrolyte comes into contact with water.
+In case of fire, the formation of the following flue gases cannot be excluded:
+Hydrogen fluoride (HF), Carbon monoxide and carbon dioxide.
+
+Protective equipment and precautions for firefighters
+Wear self-contained breathing apparatus and protective suit.
+
+Additional information
+If possible, remove cell(s) from fire fighting area. If heated above 125°C, cell(s) can explode/vent. Cell is
+not flammable but internal organic material will burn if the cell is incinerated.
+
+
+6. Accidental Release Measures
+
+Personal precautions, protective equipment and emergency procedures:
+   As an immediate precautionary measure, isolate spill or leak area for at least 25 meters (75 feet) in all directions.
+   Keep unauthorized personnel away. Stay upwind. Keep out of low areas. Ventilate closed areas before entering.
+   Wear adequate personal protective equipment as indicated in Section 8.
+
+Environmental precautions
+   Absorb spilled material with non-reactive absorbent such as vermiculite, clay or earth. Prevent from migration into
+   soil, sewers and natural waterways – inform local authorities if this occurs.
+
+Methods and material for containment and cleaning up
+   Evacuate spill area immediately and remove sources of ignition. Do NOT touch spilled material. Cleanup
+   personnel must be trained in the safe handling of this product. Spills may be absorbed on non-reactive absorbents
+   such as vermiculite. Place cells or batteries into individual plastic bags and then place into appropriate containers
+   and close tightly for disposal. Ensure that cleanup procedures do not expose spilled material to any moisture.
+   Immediately transport closed containers outside. Lined steel drums are suitable for storage of damaged cells or
+   batteries until proper disposal can be arranged.
+
+
+
+
+7. Handling and Storage
+
+Precaution for Handling
+Avoid short circuiting the cell. Avoid mechanical damage of the cell. Do not open or disassemble.
+
+                                                                                                           Page 5 of 11
+
+
+===== PDF PAGE 6 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                       Revision no.: 01
+MODEL INR18650-25R
+
+
+Advice on protection against fire and explosion
+Keep away from open flames, hot surfaces and sources of ignition.
+
+Condition for storage
+Storage at room temperature (approx. 20°C) at approx. 20~60% of the nominal capacity
+(OCV approx. 3.6 - 3.9 V/cell).
+Keep in closed original container.
+
+
+8. Exposure controls/personal protection Exposure limit values Exposure limits
+
+Exposure Control Measures
+   Exposure Limit Values: Airborne exposures to hazardous substances are not expected when the cells or
+   batteries are used for their intended purposes. Exposure standards are not applicable to the sealed articles.
+   Biological Monitoring: Not applicable.
+   Control Banding: Not applicable.
+   Recommended monitoring procedures: Follow standard monitoring procedures.
+   Derived no-effect level (DNEL): Not applicable.
+   Derived minimal effect level (DMEL): Not applicable.
+   Predicted no-effect concentrations (PNECs): Not applicable.
+
+Engineering Controls
+   Engineering Controls: Special ventilation is not required when using these products in normal use
+   scenarios.Ventilation is required if there is leakage from the cell or battery.
+   Individual Protection Measures
+       Eye and Face protection: Eye protection is not required when handling cells or batteries during normal
+       use.Wear safety glasses/goggles if handling a leaking or ruptured cell or battery.
+       Skin (Hand) protection: Hand protection is not required when handling the cell or battery during normal
+       use.PVC gloves are recommended when dealing with a leaking or ruptured cell or battery.
+       Skin (clothing) protection: Skin protection is not required when handling the cell or battery during normal use.
+       Wear long sleeved clothing to avoid skin contact if handling a leaking or ruptured cell or battery. Soiled clothing
+       should be washed with detergent prior to re-use.
+       Respiratory protection: During routine operation, a respirator is not required. However, if dealing with an
+       electrolyte leakage and irritating vapors are generated, an approved half face inorganic vapor and
+       gas/acid/particulate respirator is required.
+       Thermal Protection: Not applicable.
+       Other Protective Equipment: Have a safety shower or eye wash station readily available
+.
+Hygiene Measures: Do not eat, drink or smoke in work areas. Avoid storing food, drink or tobacco near the product.
+Practice and maintain good housekeeping.
+
+Environmental exposure controls: Avoid release to the environment.
+
+
+9. Physical and Chemical Properties
+
+Appearance
+physical state,:   Solid
+Color:             Various
+Odor:              Odorless
+
+Important health, safety and environmental information
+Test method
+pHValue:                                                                           n.a.
+Flash point:                                                                       n.a
+Lower explosion limits:                                                            n.a.
+
+                                                                                                           Page 6 of 11
+
+
+===== PDF PAGE 7 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                        Revision no.: 01
+MODEL INR18650-25R
+
+
+Vapour pressure:                                                                     n.a.
+Density:                                                                             n.a.
+Water solubility:                                                                    Insoluble
+Ignition temperature:                                                                n.a.
+
+10. Stability and Reactivity
+
+Stability
+Stable
+
+Conditions to avoid
+Keep away from open flames, hot surfaces and sources of ignition. Do not puncture,
+crush or incinerate.
+
+Materials to avoid
+No materials to be especially mentioned.
+
+Hazardous decomposition products
+In case of open cells, there is the possibility of hydrofluoric acid and carbon monoxide release.
+
+Possibility of Hazardous Reactions
+Will not occur
+
+Additional information
+No decomposition if stored and applied as directed.
+
+11. Toxicological Information
+
+Information on toxicological effects:
+The hazardous components of the cell or battery are contained within a sealed unit. Under recommended use
+conditions, the electrode materials and liquid electrolyte are non-reactive provided that the cell or battery integrity
+remains and the seals remain intact. The potential for exposure should not exist unless the battery leaks, is exposed
+to high temperature or is mechanically, electrically or physically abused/damaged. The following toxicology data is
+in respect to if a person comes into contact with the electrolyte.
+
+
+Acute Toxicity:
+Swallowed: The electrolyte contained within the cell or battery is a corrosive liquid. Ingestion of this electrolyte
+would be harmful. Swallowing may result in nausea, vomiting, diarrhea, abdominal pain and chemical burns to the
+gastrointestinal tract. During normal usage ingestion should not be a means of exposure.
+Eye: The electrolyte contained within the cell or battery is a corrosive liquid and it is expected that it would cause
+irreversible damage to the eyes. Contact may cause corneal burns. Effects may be slow to heal after eye contact.
+Correct handling procedures incorporating appropriate eye protection should minimize the risk of eye irritation.
+Skin: The electrolyte contained within the cell or battery is a corrosive liquid and it is expected that it would cause skin
+burns or severe irritation to the skin if not washed off immediately. Correct handling procedures should minimize the
+risk of skin irritation. People with pre-existing skin conditions, such as dermatitis, should take extreme care so as not
+to exacerbate the condition.
+Inhaled: Inhalation of vapors from a leaking cell or battery is expected to cause severe irritation of the mouth and
+upper respiratory tract with a burning sensation, pain, burns and inflammation in the nose and throat; there may also
+be coughing or difficulty breathing.
+
+Skin Corrosion/Irritation: The electrolyte contained within the cell or battery is classified as a corrosive liquid and is
+expected to exhibit Dermal Corrosivity/Irritation.
+
+Serious Eye Damage/Irritation: The electrolyte contained within the cell or battery is classified as a corrosive liquid
+and is expected to exhibit serious Damage/Corrosivity.
+
+
+                                                                                                             Page 7 of 11
+
+
+===== PDF PAGE 8 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                        Revision no.: 01
+MODEL INR18650-25R
+
+
+Respiratory or Skin Sensitization: The electrolyte contained within the cell or battery is not expected to be a skin
+sensitizer according to OECD test 406, based on the available data and the known hazards of the components. The
+electrolyte contained within the battery is not expected to be a respiratory tract sensitizer, based on the available data
+and the known hazards of the components.
+
+Germ Cell Mutagenicity: The electrolyte contained within the cell or battery is not expected to be mutagenic
+according to test such as OECD tests 471, 475, 476, 478 and 479, based on the available data and the known
+hazards of the components.
+
+Carcinogenicity: Th electrolyte contained within the cell or battery is not expected to be a carcinogen. The cathode
+contains Cobalt and Nickel components. These components are classified as IARC 2B – possibly carcinogenic to
+humans, however they do not pose a threat when contained in the cell or battery sealed unit.
+
+Reproductive Toxicity: The electrolyte contained within the cell or battery is not expected to be a reproductive
+hazard according to test such as OECD tests 414 and 421, based on the available data and the known hazards of the
+components.
+
+Specific Target Organ Toxicity (STOT) – Single Exposure: The electrolyte contained within the cell or battery is
+corrosive and is expect to cause respiratory irritation by inhalation. Inhalation of vapors may lead to severe irritation of
+the mouth and upper respiratory tract with a burning sensation, pain, burns and inflammation in the nose and throat;
+there may also be coughing or difficulty breathing.
+
+Specific Target Organ Toxicity (STOT) – Repeated Exposure: The cells or batteries are not expected to cause
+organ damage from prolonged or repeated exposure according to tests such as OECD tests 410 and 412, based on
+the available data and the known hazards of the components.
+
+Aspiration Hazard: The cells or batteries are not classified as an aspiration hazard, based on the available data and
+the known hazards of the components. However, due to the corrosive nature of the product if swallowed, do NOT
+induce vomiting. If vomiting has occurred after ingestion the person should be observed to ensure that aspiration into
+the lungs has not occurred and assessed for chemical burns to the gastrointestinal and respiratory tracts.
+
+
+
+12. Ecological Information
+Further information
+Ecological injuries are not known or expected under normal use. Do not flush into surface water or sanitary sewer
+system.
+
+
+13. Disposal Considerations
+Advice on disposal
+For recycling consult manufacturer.
+
+Contaminated packaging
+Disposal in accordance with local regulations.
+
+
+14. Transport Information
+With regard to transport, the following regulations are cited and considered:
+
+     -    UN No. 3480
+     -    UN proper shipping name: Lithium Ion Batteries.
+     -    Transportation hazard class 9
+     -    Air PI 965 SectionⅠB: Dangerous Goods
+     -    Sea, Land, Air PI965 Section Ⅱ : Non dangerous Goods
+
+
+                                                                                                              Page 8 of 11
+
+
+===== PDF PAGE 9 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                        Revision no.: 01
+MODEL INR18650-25R
+
+
+     -   The International Civil Aviation Organization (ICAO) Technical Instructions, Packing Instruction 965, Section
+         ⅠB or Ⅱ
+     -   The International Air Transport Association (IATA) Dangerous Goods Regulations, Packing Instruction 965,
+         Section ⅠB or Ⅱ
+     -   The International Maritime Dangerous Goods (IMDG) Code [Special provision 188, 230, 384]
+     -   US Hazardous Materials Regulations 49 CFR(Code of Federal Regulations)
+         Sections 173.185 Lithium batteries and cells,
+     -   The UN Recommendations on the Transport of Dangerous Goods, Manual of Tests and Criteria 38.3 Lithium
+         batteries, Revision 3, Amendment 1 or any subsequent revision and amendment applicable at the date of
+         the type
+
+If those lithium-ion batteries are packed with or contained in an equipment, then it is the responsibility of the shipper to
+ensure that the consignment are packed in compliance to the latest edition of the IATA Dangerous Goods Regulations
+section Ⅱ of either Packing Instruction 966 or 967 in order for that consignment to be declared as NOT
+RESTRICTED (non-hazardous/non-Dangerous). If those lithium-ion batteries are packed with or contained in an
+equipment, UN No. is UN3481
+
+Our products are properly classified, described, packaged, marked, and labeled, and are in proper condition for
+transportation according to all the applicable international and national governmental regulations, not limited to the
+above mentioned. We further certify that the enclosed products have been tested and fulfilled the requirements and
+conditions in accordance with UN Recommendations (T1 – T8) on the Transport of Dangerous Goods Model
+Regulations and the Manual of Testes and Criteria.
+
+ Test results of the UN Recommendation on the Transport of Dangerous Goods
+Manual of Test and Criteria (38.3 Lithium batteries)         Test Results                       Remark
+No            Test item
+T1            Altitude Simulation                            Pass
+T2            Thermal Test                                   Pass
+T3            Vibration                                      Pass
+T4            Shock                                          Pass
+T5            External Short Circuit                         Pass
+T6            Impact/Crush                                   Pass
+T7            Overcharge                                     Pass                               For pack and
+                                                                                                single cell
+                                                                                                battery only
+T8             Forced Discharge                                         Pass
+
+15. Regulatory Information
+
+Canadian Federal Regulations:
+  These products have been classified in accordance with the hazard criteria of the Controlled Products Regulations
+  and the SDS contains all the information required by the Controlled Products Regulations.
+  WHMIS Classification: Not Controlled, manufactured article.
+  New Substance Notification Regulations: Lithium hexafluorophosphate is listed on the Non-Domestic
+  Substance List (NDSL). All other ingredients in the product are listed, as required, on Canada’s Domestic
+  Substances List (DSL).
+  National Pollutant Release Inventory (NPRI) Substances: These products do not contain any NPRI chemicals.
+
+United States Federal and State Regulations:
+   TSCA Status: All ingredients in these products are listed on the TSCA inventory.
+   OSHA: These products do not meet criteria as per Part 1910.1200, manufactured article.
+   SARA EPA Title III: None.
+   Sec. 302/304: None.
+   Sec. 311/312: None.
+   Sec. 313: None.
+   CERCLA RQ: None.
+
+
+                                                                                                             Page 9 of 11
+
+
+===== PDF PAGE 10 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                       Revision no.: 01
+MODEL INR18650-25R
+
+
+Australia and New Zealand
+  SUSMP: Not applicable
+  AICS: All ingredients are on the AICS list.
+  HSNO Approval number: Not applicable
+  HSNO Group Title: Not applicable
+  NOHSC:10008 Risk Phrases: R34 - Causes Burns.
+  NOHSC:1008 Safety Phrases:
+  S1 – Keep locked up.
+  S2 – Keep out of reach of children.
+  S23 – Do not breathe vapor.
+  S24/25 – Avoid contact with skin and eyes.
+  S26 – In case of contact with eyes, rinse immediately with plenty of water and seek medical advice.
+  S27/28 – After contact with skin, take off immediately all contaminated clothing and wash immediately with plenty
+  of water.
+  S36/37/39 – Wear suitable protective clothing, gloves and eye/face protection.
+  S56 – Dispose of this material and its container at hazardous waste or special waste collection point.
+  S62 – If swallowed, DO NOT induce vomiting: seek medical advice immediately and show this container or label.
+  S64 – If swallowed, rinse mouth with water (Only if the person is conscious).
+
+EC Classification for the Substance/Preparation:
+   These products are not classified as hazardous according to Regulation (EC) No. 1272/2008.
+   Keep out of the reach of children.
+
+EU Restrictions on use:
+   Regulation (EC) No. 1907/2006, REACH Annex XVII Substances subject to restriction on marketing and use as
+   amended: Aluminium (CAS 7429-90-5)
+
+Other EU Regulations
+   This Safety Data Sheet complies with the requirements of Regulation (EC) No. 1907/2006.
+
+Japanese Regulations
+   Japanese Industrial Standards (JIS) JIS Z 7253:2012
+   Waste disposal and public cleaning law
+   Law for Promotion of Effective Utilization of Resources
+
+Taiwanese Regulations
+   Regulation of Labelling and Hazard Communication of Dangerous and Harmful Materials: Labeling requirements
+   and other relevant provision of chemicals, this product is not classified as dangerous goods.
+   Toxic Chemicals Substance Control Law: Not Listed.
+   CNS 1030016 Safety of primary and secondary lithium cells and batteries during transport.
+
+Chinese Regulations
+   General Rule for Classification and Hazard Communication of Chemicals (GB 13690-2009): Specifies the
+   classification, labeling and hazard communication of chemicals in compliance with the GHS standard for chemical
+   production sites and labeling of consumer goods.
+   General Rule for Preparation of Precautionary Labels for Chemicals (GB 15258-2009): Specifies the relevant
+   application methods of precautionary labels for chemicals.
+   Safety Data Sheet for Chemical Products Content and Order of Sections (GB/T 16483-2008)
+
+
+
+16. Other Information
+Further Information
+Data of sections 4 to 8, as well as 10 to 12, do not necessarily refer to the use and the regular handling of the product
+(in this sense consult package leaflet and expert information), but to release of major amounts in case of accidents
+and irregularities. The information describes exclusively the safety requirements for the product (s) and is based on
+the present level of our knowledge. This data does not constitute a uarantee for the characteristics of the product(s)
+                                                                                                          Page 10 of 11
+
+
+===== PDF PAGE 11 =====
+SAMSUNG SDI Co., Ltd.
+Date: January 1st, 2018                      Revision no.: 01
+MODEL INR18650-25R
+
+
+as defined by the legal warranty regulations. "(n.a. = not applicable; n.d. = not determined)"
+The data for the hazardous ingredients were taken respectively from the last version of the sub-contractor’s safety
+data sheet.
+
+
+
+
+                                                                                                        Page 11 of 11

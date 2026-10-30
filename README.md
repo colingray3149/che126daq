@@ -6,6 +6,9 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 
 - [Quick wiring diagram](WIRING-QUICK.md) — plain text, also opened in Kate.
 - [Wiring and safe connection order](docs/wiring.md) — current saved pin map and hardware caveats.
+- [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
+- [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
+- [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
 - [Setup source index](docs/setup-source-index.md) — where the useful setup material is, and which drafts conflict.
 - [Activity log](docs/activity-log.md) — what was actually done and observed.
 - [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.

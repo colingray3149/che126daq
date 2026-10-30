@@ -1,0 +1,36 @@
+{
+  "source_index": "../../docs/current-check-sources.md",
+  "sources": {
+    "S1": {"description": "McMaster 4877K305 heater PDF pp. 1-2", "url": "https://www.mcmaster.com/4877K305/"},
+    "S2": {"description": "McMaster 85165K26 mica PDF p. 1", "url": "https://www.mcmaster.com/85165K26/"},
+    "S8": {"description": "MAX31855 datasheet pp. 3-4, Thermal Characteristics and Note 4", "url": "https://cdn-shop.adafruit.com/datasheets/MAX31855.pdf"},
+    "S10": {"description": "User's sample dimensions in experiment-log.md; exact inch from NIST; plane-wall relation from MIT", "url": "https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node118.html"},
+    "NIST": {"description": "Exact inch definition", "url": "https://www.nist.gov/pml/owm/si-units-length"}
+  },
+  "specified": {
+    "inch_m": {"value": 0.0254, "source": "NIST", "note": "Exact definition"},
+    "heater_voltage_v": {"value": 120.0, "source": "S1"},
+    "heater_power_w": {"value": 300.0, "source": "S1"},
+    "heater_diameter_in": {"value": 0.5, "source": "S1"},
+    "heater_envelope_length_in": {"value": 2.5, "source": "S1"},
+    "heater_heated_length_in": {"value": 1.5625, "source": "S1"},
+    "mica_thickness_in": {"value": 0.032, "source": "S2"},
+    "mica_thickness_tolerance_in": {"value": 0.0032, "source": "S2"},
+    "mica_k_w_mk": {"value": 0.3, "source": "S2", "note": "Catalog value; adjacent conductivity-at-temperature listing refers to 500 F. No k(T) model inferred."},
+    "converter_gain_offset_limit_c": {"value": 2.0, "source": "S8", "note": "MAX31855K TC -200 to +700 C, board ambient -20 to +85 C; excludes CJC/nonlinearity"},
+    "converter_cjc_limit_c": {"value": 2.0, "source": "S8", "note": "Board ambient -20 to +85 C; separate listed term"},
+    "converter_resolution_c": {"value": 0.25, "source": "S8"}
+  },
+  "user_reported": {
+    "sample_width_in": {"value": 2.0, "source": "S10"},
+    "sample_height_in": {"value": 6.0, "source": "S10"}
+  },
+  "scenarios": {
+    "voltage_table_v": [10, 20, 30, 40, 50, 60, 90, 120],
+    "heat_fraction_table": [0.1, 0.3, 1.0],
+    "net_heat_table_w": [1, 5, 10],
+    "example_voltage_v": 30,
+    "plot_net_heat_max_w": 10,
+    "note": "These are analyst-selected illustration points, NOT measured coupling, safe voltage settings, suggested power levels, or confidence bounds. Heater resistance is held at its rating-derived nominal value. Projection rectangles are geometry examples, not measured contact areas or physical bounds. The 1D model neglects spreading, contact resistance, storage, radiation, convection, wire/clamp/block conduction and any sand."
+  }
+}

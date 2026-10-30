@@ -1,0 +1,73 @@
+[
+  {
+    "file": "aerogel-pds.pdf",
+    "url": "https://www.buyaerogel.com/wp-content/uploads/2025/03/PDS_Skogar_EN_25032.pdf",
+    "bytes": 542958,
+    "sha256": "f79f3ef3c6771898b1bcca91b6d0e7dc184f6e7660c5e587f68b7dae99aa7ee1",
+    "retrieved": "2026-10-30T10:28:25.243470-07:00"
+  },
+  {
+    "file": "aerogel-sds.pdf",
+    "url": "https://www.buyaerogel.com/wp-content/uploads/2025/03/ENERSENS_SKOGAR-HT-2.0_2.5_3.0_3.5_6.0_SUI_EU_EN_v5.pdf",
+    "bytes": 274031,
+    "sha256": "11af5606cc22de4f02ab6acf1ceb4fba911a07afb4eabc684eeba3333cdfd279",
+    "retrieved": "2026-10-30T10:28:25.706114-07:00"
+  },
+  {
+    "file": "sand-pds.pdf",
+    "url": "https://www.quikrete.com/PDFs/DATA_SHEET-QUIKRETE%20Sand%20%26%20Gravel%20Products.pdf",
+    "bytes": 274468,
+    "sha256": "729a6f648585d76e2a6af056d340c4edc97a2c79decf7c804fad0fd20f6cb727",
+    "retrieved": "2026-10-30T10:28:25.820046-07:00"
+  },
+  {
+    "file": "sand-sds.pdf",
+    "url": "https://www.quikrete.com/PDFs/SDS-B1-Packaged-Aggregate.pdf",
+    "bytes": 593999,
+    "sha256": "8a08236eba10b9b493761d1fa90c4134755154bd12674acef3f9ef49fd604d57",
+    "retrieved": "2026-10-30T10:28:26.001642-07:00"
+  },
+  {
+    "file": "battery-sds.pdf",
+    "url": "https://cdn.shopify.com/s/files/1/0481/9678/0183/files/Samsung-25R-18650-SDS.pdf?v=1792487743",
+    "bytes": 367399,
+    "sha256": "325c740c2b1fa424b1f9e83de5267ca2c75f313e1a3cefea43b72d8108830231",
+    "retrieved": "2026-10-30T10:28:25.347658-07:00"
+  },
+  {
+    "file": "probe.txt",
+    "url": "https://www.adafruit.com/product/3245",
+    "bytes": 6025,
+    "sha256": "1f3d7a32ccce364d4ca6e31049c770bf600635352f3fbf16669b877a8dbe33c2",
+    "retrieved": "2026-10-30T10:28:25.278099-07:00",
+    "downloaded_html_sha256": "90f5aa6380f3d61035f2d1a0459f1fd438843cb7dbd8b864f5e5ec6612afd00e",
+    "format": "derived readable text; executable scripts/styles and all HTML attributes omitted; raw HTML not published"
+  },
+  {
+    "file": "sand.txt",
+    "url": "https://www.quikrete.com/productlines/sandallpurpose.asp",
+    "bytes": 2163,
+    "sha256": "e2c17b12e3fae8be7f2215c09113e22207f25cf9d4baf08e4bf736feecd5065c",
+    "retrieved": "2026-10-30T10:28:25.589554-07:00",
+    "downloaded_html_sha256": "60a87b3ed0fe93dc78b1cee762e0e7fac0a3b863ce446eedbdbfb7311bde01c0",
+    "format": "derived readable text; executable scripts/styles and all HTML attributes omitted; raw HTML not published"
+  },
+  {
+    "file": "aerogel.txt",
+    "url": "https://www.buyaerogel.com/product/skogar-ht/",
+    "bytes": 10594,
+    "sha256": "201198cff20cbf920f312a7a17a799f204648996225864434ef00b0f00fcc9bc",
+    "retrieved": "2026-10-30T10:28:27.372786-07:00",
+    "downloaded_html_sha256": "0a5345ac09d8d637324827ee95e0ac7157d1fe343de9779ca21c651d04b95299",
+    "format": "derived readable text; executable scripts/styles and all HTML attributes omitted; raw HTML not published"
+  },
+  {
+    "file": "battery.txt",
+    "url": "https://www.18650batterystore.com/products/samsung-25r-18650",
+    "bytes": 50595,
+    "sha256": "389b6e0e060d5fb542338f85751625097ade93174f6929a2d39cdbc72dd945cd",
+    "retrieved": "2026-10-30T10:28:25.799432-07:00",
+    "downloaded_html_sha256": "36ec49816ca7f317471ac0c695f60553353c790869f37201004646d1a4d83f47",
+    "format": "derived readable text; executable scripts/styles and all HTML attributes omitted; raw HTML not published"
+  }
+]

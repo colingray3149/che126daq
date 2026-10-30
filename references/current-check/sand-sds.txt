@@ -1,0 +1,406 @@
+
+===== PDF PAGE 1 =====
+B1: Packaged Aggregates
+SAFETY DATA SHEET
+(Complies with OSHA 29 CFR 1910.1200)
+
+                                SECTION I: PRODUCT IDENTIFICATION
+
+The QUIKRETE® Companies                                  Emergency Telephone Number
+5 Concourse Parkway, Suite 1900                           INFOTRAC (800) 535-5053
+Atlanta, GA 30328                                        Information Telephone Number
+                                                         (800) 282-5828
+
+SDS B1
+Revision: Feb-23
+
+QUIKRETE® Product Name                            Item #(s)
+All- Purpose Sand                                1152
+All Purpose Gravel                               1151
+Plaster Sand                                     1113-54
+Tube Sand                                        1159
+Patio Paver Jointing Sand                        1150-59
+Patio Paver Sand                                 1150
+Mason Sand                                       1952
+Traction Sand                                    1158 / 2023
+Base Rock                                        1151-55
+Washed Pea Gravel                                1151-74
+Washed Plaster Sand                              1152-58
+Erosion Control                                  1153-53
+All Star Tube Sand                               1159-75
+All-Star Mason Sand
+DOT Concrete Stand – Bulk                        SR92008
+¾” Gravel
+River Cobble
+Locomotive Sand
+Paver Locking Sand
+Industrial Handysand
+Lava Rock / Scoria                               54341
+
+Product Use: Siliceous aggregates for use in construction
+
+See most current revision of this document at www.QUIKRETE.com.
+
+
+SDS B1                               QUIKRETE Companies, LLC                            2/10/2023
+
+                                               Page 1 of 9
+
+
+===== PDF PAGE 2 =====
+                               SECTION II - HAZARD IDENTIFICATION
+
+Hazard-determining components of labeling: Silica
+2.1 Classification of the substance or mixture
+Carcinogen – Category 1A
+Specific Target Organ Toxicity Single Exposure – Category 3
+Specific Target Organ Toxicity Repeat Exposure – Category 1
+Eye Irritant – Category 2B
+
+2.2a Signal word DANGER!
+
+
+2.2b Hazard Statements
+May cause cancer through chronic inhalation
+May cause respiratory irritation
+Causes damage to lungs through prolonged or repeated inhalation
+Causes eye irritation if particles or dust get in eye
+
+Industrial hygiene experts have studied long-term daily use of silica sands in sand-blasting and other
+occupations generating extreme volumes of dust. They have determined that long term, daily
+exposure to high concentrations of blasting sand dust causes damage to the lungs, may cause
+silicosis, and may cause cancer. Do not use for sand blasting. There are extensive OSHA
+precautions required for sand blasting.
+
+2.2c Pictograms
+
+
+
+
+2.2d Precautionary statements
+Do not handle until all safety precautions have been read and understood.
+Wear protective gloves, eye protection, and protective clothing.
+Do not eat, drink or smoke when using this product.
+Wash thoroughly after handling.
+Use only in a well-ventilated area.
+Do not breathe dust.
+
+If inhaled: Remove person to fresh air and keep comfortable for breathing.
+If in eyes: Rinse cautiously with water for several minutes. Remove contact lenses, if present and
+                 easy to do. Continue rinsing.
+SDS B1                             QUIKRETE Companies, LLC                               2/10/2023
+
+                                             Page 2 of 9
+
+
+===== PDF PAGE 3 =====
+Immediately seek medical advice or attention if symptoms are significant or persist.
+
+Dispose of contents/containers in accordance with all regulations.
+
+2.3 Additional Information
+
+2.3a HNOC – Hazards not otherwise classified: Not applicable
+
+2.3b Unknown Acute Toxicity: None
+
+
+                 SECTION III - HAZARDOUS INGREDIENTS/IDENTITY INFORMATION
+Hazardous Components                            CAS No.              % by Weight
+Sand, Silica, Quartz                            14808-60-7           100
+
+                                SECTION IV – FIRST AID MEASURES
+4.1 Description of the first-aid measures
+General information:
+After inhalation: Remove person to fresh air and keep comfortable for breathing.
+After skin contact: Rinse skin with water.
+After eye contact: Rinse cautiously with water for several minutes. Remove contact lenses, if
+present and easy to do. Continue rinsing.
+After swallowing: If conscious, have the victim drink plenty of water and call a physician
+immediately. Never give anything by mouth to an unconscious person.
+
+4.2 Most important symptoms/effects, acute and delayed
+Inhalation: May cause respiratory tract irritation. Causes damage to organs through prolonged or
+repeated inhalation. This product contains crystalline silica. Prolonged or repeated inhalation of
+respirable silica from this product can cause silicosis.
+Skin contact: Causes mechanical skin irritation.
+Eye Contact: Causes eye irritation if particles or dust get in eye.
+Ingestion: Ingestion of large quantities may cause discomfort and/or distress, nausea or vomiting.
+
+4.3 Indication of immediate medical attention and special treatment needed:
+Immediately seek medical advice or attention if symptoms are significant or persist.
+
+                              SECTION V - FIRE FIGHTING MEASURES
+
+5.1 Flammability of the Product: Non-flammable and non-combustible
+5.2 Suitable extinguishing agents: Treat for surrounding material
+SDS B1                              QUIKRETE Companies, LLC                            2/10/2023
+
+                                              Page 3 of 9
+
+
+===== PDF PAGE 4 =====
+5.3 Special hazards arising from the substance or mixture: None
+5.3a Products of Combustion: None
+5.3b Explosion Hazards in Presence of Various Substances: Non-explosive in presence of
+shocks
+
+                        SECTION VI – ACCIDENTAL RELEASE MEASURES
+
+6.1 Personal precautions, protective equipment and emergency procedures: Wear personal
+protective equipment (See section VIII). Keep unprotected persons away.
+
+6.2 Methods and material for containment and cleaning up:
+Do not allow to enter sewers/ surface or ground water. Dispose of unwanted materials and
+containers properly in accordance with all regulations.
+
+               SECTION VII - PRECAUTIONS FOR SAFE HANDLING AND STORAGE
+
+7.1 Handling
+Precautions for safe handling: Do not use for sand blasting. There are extensive OSHA
+precautions required for sand blasting. Ensure good ventilation/exhaustion at the workplace. DO
+NOT BREATHE DUST. In dusty environments, the use of an OSHA, MSHA or NIOSH approved
+respirator and tight fitting goggles is recommended. Wear appropriate PPE (See section 8).Do not
+mix with other chemical products, except as indicated by the manufacturer. Do not get in eyes, on
+skin or clothing. Good housekeeping is important to prevent accumulation of dust.
+
+7.2 Storage
+Requirements to be met by storerooms and receptacles: No special requirements.
+Information about storage in one common storage facility: Not required.
+Further information about storage conditions: Keep out of the reach of children.
+
+           SECTION VIII – EXPOSURE CONTROL MEASURES / PERSONAL PROTECTION
+8.1 Components with limit values that require monitoring at the workplace:
+Hazardous Components CAS No.                PEL (OSHA)               TLV (ACGIH)
+                                            mg/M3                    mg/M3
+Silica Sand, crystalline 14808-60-7         0.05                     0.025 (resp)
+
+8.2 Exposure Controls
+Use ventilation adequate to keep exposures below recommended exposure limits.
+
+8.3 General protective and hygienic measures
+Keep away from foodstuffs, beverages and feed. Immediately remove all soiled and contaminated
+clothing. Wash hands before breaks and at the end of work. Avoid contact with the eyes and skin.
+SDS B1                            QUIKRETE Companies, LLC                           2/10/2023
+
+                                           Page 4 of 9
+
+
+===== PDF PAGE 5 =====
+8.3a Personal protective equipment
+Protection of hands:
+Wear gloves of adequate length to offer appropriate skin protection from incidental contact. General
+duty work gloves have been found to offer adequate protection for most intended uses.
+
+Eye protection:
+Wear approved eye protection properly fitted dust- proof chemical safety glasses.
+
+Respiratory protection:
+A NIOSH-approved dust mask or filtering face piece is recommended in poorly ventilated areas or
+when permissible exposure limits may be exceeded. Respirators should be selected by and used
+under the direction of a trained health and safety professional, following requirements found in
+OSHA’s respirator standard (29 CFR 1910.134) and ANSI’s standard for respiratory protection
+(Z88.2).
+                      SECTION IX - PHYSICAL/CHEMICAL CHARACTERISTICS
+
+General Information
+Appearance                    Form: Granular Solid
+                              Color: Varies
+                              Odor: None
+pH-value at 20°C (68 °F):     Not applicable
+Boiling point/Boiling range: Not applicable
+Flash point:                  Not applicable
+Auto igniting:                Product is not self-igniting
+Vapor pressure at 21°C (70°F) Not applicable
+Density at 25°C (77 °F):      2.5-2.8
+
+Solubility in / Miscibility with
+Water:                           Insoluble
+VOC content:                     0 g/L VOC
+
+                             SECTION X – STABILITY AND REACTIVITY
+
+10.1 Reactivity
+No dangerous reaction known under conditions of normal use.
+10.2 Chemical stability
+Stable under normal storage conditions. Keep in dry storage.
+10.3 Possibility of hazardous reaction
+No dangerous reaction known under conditions of normal use.
+10.4 Thermal decomposition / conditions to be avoided
+SDS B1                             QUIKRETE Companies, LLC                             2/10/2023
+
+                                             Page 5 of 9
+
+
+===== PDF PAGE 6 =====
+No decomposition if used according to specifications.
+10.5 Incompatible materials
+Contact of silica with powerful oxidizing agents such as fluorine, chlorine trifluoride, manganese
+trioxide, or oxygen difluoride may cause fires
+10.6 Hazardous Decomposition or By-products
+Silica will dissolve in Hydrofluoric Acid and produce a corrosive gas – silicon tetrafluoride.
+
+                           SECTION XI – TOXICOLOGICAL INFORMATION
+
+11.1 Exposure Routes: Inhalation, skin contact, eye contact, or ingestion.
+
+11.2 Symptoms related to physical/chemical/toxicological characteristics:
+      Inhalation: May cause respiratory tract irritation. Causes damage to organs through
+      prolonged or repeated exposure. This product contains crystalline silica. Prolonged or
+      repeated inhalation of respirable silica from this product can cause silicosis.
+      Skin contact: May cause mechanical skin irritation.
+      Eye Contact: Causes eye irritation if particles or dust gets in eye.
+      Ingestion: Ingestion of large quantities may cause discomfort and/or distress.
+
+11.3 Delayed, immediate and chronic effects of short-term and long-term exposure
+Short Term
+      Skin Corrosion/Irritation: Not applicable
+      Serious Eye Damage/Irritation: Causes eye irritation if particles or dust gets in eye
+      Respiratory Sensitization: Not applicable
+      Skin Sensitization: Not applicable
+      Specific Target Organ Toxicity-Single Exposure: (Category 3) May cause respiratory irritation
+      Aspiration Hazard: Not applicable
+Long Term
+      Carcinogenicity: May cause cancer through chronic inhalation.
+      Germ Cell Mutagenicity: Not applicable
+      Reproductive Toxicity: Not applicable
+      Specific Target Organ Toxicity- Repeated Exposure: (Category 1) Causes damage to lungs
+      through prolonged/repeated exposure
+      Synergistic/Antagonistic Effects: Not applicable
+
+                             SECTION XII – ECOLOGICAL INFORMATION
+12.1 Ecotoxicity
+No further relevant information available.
+
+
+12.2 Persistence and degradability
+SDS B1                              QUIKRETE Companies, LLC                            2/10/2023
+
+                                             Page 6 of 9
+
+
+===== PDF PAGE 7 =====
+No further relevant information available.
+
+12.3 Bioaccumulative potential:
+No further relevant information available.
+12.4 Mobility in soil
+No further relevant information available.
+
+12.5 Other Adverse Effects
+No further relevant information available.
+
+                            SECTION XIII – DISPOSAL CONSIDERATIONS
+
+13.1 Waste Disposal Method
+The packaging and material may be land filled; however, material should be covered to minimize
+generation of airborne dust. This product is not classified as a hazardous waste under the authority
+of the RCRA (40CFR 261) or CERCLA (40CFR 117&302). Disposal must be made in accordance
+with local, state and federal regulations.
+
+13.2 Other disposal considerations
+Uncleaned packaging
+Recommendation: Disposal must be made in accordance with local, state and federal regulations.
+Recommended cleansing agent: Water, if necessary with cleansing agents.
+
+                             SECTION XIV – TRANSPORT INFORMATION
+                                             DOT (U.S.)            TDG (Canada)
+UN-Number                                    Not Regulated         Not Regulated
+UN proper shipping name                      Not Regulated         Not Regulated
+Transport Hazard Class(es)                   Not Regulated         Not Regulated
+Packing Group (if applicable)                Not Regulated         Not Regulated
+
+14.1 Environmental hazards:
+Not applicable
+
+14.2 Transport in bulk according to Annex II of Marpol 73/78 and the IBC Code
+Not applicable
+
+14.3 Special precautions for user
+Do not handle until all safety precautions have been read and understood.
+
+
+
+
+SDS B1                              QUIKRETE Companies, LLC                            2/10/2023
+
+                                              Page 7 of 9
+
+
+===== PDF PAGE 8 =====
+                       SECTION XV – OTHER REGULATORY INFORMATION
+
+15.1 Safety, Health and Environmental Regulations/Legislations specific for the chemical
+
+      Canada
+      WHMIS Classification: Considered to be a D2A and D2B hazardous material under the
+      Hazardous Products Act as defined by the Controlled Products Regulations and subject to the
+      requirements of Health Canada’s Workplace Hazardous Material Information (WHMIS). This
+      document complies with the WHMIS requirements of the Hazardous Products Act (HPA) and
+      the CPR.
+
+15.2 US Federal Information
+
+      SARA 302/311/312/313 Components
+      No chemicals in this material are subject to the reporting requirements of SARA Title III,
+      Section 302, 311, 312 or 313.
+      RCRA: Crystalline silica (quartz) is not classified as a hazardous waste under the Resource
+      Conservation and Recovery Act, or its regulations, 40 CFR §261 et seq.
+      CERCLA: Crystalline silica (quartz) is not classified as a hazardous substance under
+      regulations of the Comprehensive Environmental Response Compensation and Liability Act
+      (CERCLA), 40 CFR §302.
+      Emergency Planning and Community Right to Know Act (SARA Title III): Crystalline
+      silica (quartz) is not an extremely hazardous substance under Section 302 and is not a toxic
+      chemical subject to the requirements of Section 313.
+      FDA: Silica is included in the list of substances that may be included in coatings used in food
+      contact surfaces, 21 CFR §175.300(b)(3)(xxvi).
+      NTP: Respirable crystalline silica, primarily quartz dusts occurring in industrial and
+      occupational settings, is classified as Known to be a Human Carcinogen.
+      OSHA Carcinogen: Crystalline silica (quartz) is not listed.
+
+15.3 State Right to Know Laws
+      California Prop. 65 Components
+
+            WARNING: This product can expose you to chemicals including crystalline silica which
+      is known to the State of California to cause cancer. For more information go
+      to www.P65Warnings.ca.gov.
+
+      California Inhalation Reference Exposure Level (REL): California established a chronic
+      REL of 3 µg for silica (crystalline, respirable). A chronic REL is an airborne level of a
+      substance at or below which no adverse health effects are anticipated in individuals
+      indefinitely exposed to the substance at that level.
+SDS B1                             QUIKRETE Companies, LLC                               2/10/2023
+
+                                             Page 8 of 9
+
+
+===== PDF PAGE 9 =====
+      Massachusetts Toxic Use Reduction Act: Silica, crystalline (respirable size, <10 microns)
+      is “toxic” for purposes of the Massachusetts Toxic Use Reduction Act.
+
+
+15.4 Global Inventories
+      DSL All components of this product are on the Canadian DSL list.
+      TSCA No.: Crystalline silica (quartz) appears on the EPA TSCA inventory under the CAS No.
+      14808-60-7. All constituents are listed in the TSCA inventory.
+
+
+
+                              SECTION XVI – OTHER INFORMATION
+Last Updated: February 10, 2023
+
+NOTE: The information and recommendations contained herein are based upon data believed to be
+correct. However, no guarantee or warranty of any kind, express or implied, is made with respect to
+the information contained herein. We accept no responsibility and disclaim all liability for any
+harmful effects which may be caused by exposure to silica contained in our products.
+
+Prepared by                    The QUIKRETE Companies, LLC
+
+                               End of SDS
+
+
+
+
+SDS B1                            QUIKRETE Companies, LLC                             2/10/2023
+
+                                            Page 9 of 9
