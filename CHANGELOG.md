@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-30 — Heater timing and minimal control-identification plan
+
+- Executed a cited 100 V nominal-power calculation and explicit heat-capacity/loss sensitivities for the requested 500°C target; retained the actual apparatus time as unknown rather than inventing thermal parameters.
+- Saved code, inputs, CSV/JSON/Markdown outputs, execution log and an inspected hypothetical-response plot.
+- Documented step/coast, near-band identification and independent hold validation, plus a two-run variant and manual-variac versus automatic-actuator limitations.
+
 ## 2026-10-30 — Current fixture account and first-check calculations
 
 - Recorded the user's actual mica-only check, candidate clamped stacks, material availability, semi-wet sand, and planned air-versus-packed comparisons without treating proposals as completed results.

@@ -9,6 +9,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
+- [100 V timing calculation](models/heater-timing/results.md) and [minimal control-identification plan](docs/heater-control-plan.md) — explicit sensitivities and a two-to-three-run workflow, not a fabricated warm-up time.
 - [Setup source index](docs/setup-source-index.md) — where the useful setup material is, and which drafts conflict.
 - [Activity log](docs/activity-log.md) — what was actually done and observed.
 - [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.

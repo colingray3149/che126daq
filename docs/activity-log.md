@@ -151,3 +151,27 @@ unverified. No heater was energized or controlled by this work.
   attributes rather than publishing irrelevant tokens. Original source PDFs
   remain byte-preserved; both downloaded HTML and published text hashes are
   recorded in the source index. Raw HTML was kept outside the repository.
+
+## 2026-10-30 — 100 V / 500°C question and control-identification plan
+
+- User requested time to 500°C at 100 V and the quickest useful two-to-three
+  runs for estimating a later constant-temperature control recipe.
+- Executed `models/heater-timing/calculate.py` with cited heater rating and
+  energy-balance/first-order references. Recorded nominal power/current,
+  no-loss capacity dependence, linear-loss reachability and explicitly
+  hypothetical capacity/loss scenarios. The script leaves actual apparatus
+  time unknown: no measured thermal capacity, loss model or valid heated
+  identification trace has been supplied.
+- Saved input/code hashes, result JSON/Markdown, sensitivity CSV, trace CSV,
+  execution log and an inspected rendered figure. Scenario parameters are
+  labeled arbitrary, not measured or likely bounds.
+- Wrote `docs/heater-control-plan.md`: a step/coast run, near-operating-band
+  up/down steps and an independent planned 30-minute hold; or combine the two
+  identification sections and use the second run for validation. No such
+  physical runs have been performed by the assistant.
+- Distinguished a manual boost/hold recipe from later feedforward plus PI
+  with a real controllable actuator. No numeric gains, boost duration,
+  hold voltage, safe voltage ceiling or software variac interface invented.
+- Retained the probe upper-limit/grounding, current installation and fault
+  prerequisites; did not energize a heater, alter firmware, open another
+  serial reader or change the running DAQ service.

@@ -1,0 +1,28 @@
+{
+  "sources": {
+    "heater": {"url": "https://www.mcmaster.com/4877K305/", "local": "../../references/datasheets/Insertion Heater with Braided Wire Lead Covering, for 1_2_ Hole, 120V AC, 2-1_2_ Long Heating Element, 300W _ McMaster-Carr.pdf", "pages": "1-2", "rated_voltage_V": 120, "rated_power_W": 300},
+    "energy_balance": {"url": "https://apmonitor.com/pdc/index.php/Main/PhysicsBasedModels", "description": "Accumulation equals input minus output; thermal storage m cp dT/dt"},
+    "first_order": {"url": "https://apmonitor.com/pdc/index.php/Main/FirstOrderSystems", "description": "First-order step response and empirical gain/time constant/dead time"},
+    "pi": {"url": "https://apmonitor.com/pdc/index.php/Main/ProportionalIntegralControl", "description": "IMC PI tuning and anti-reset windup"},
+    "probe": {"url": "https://www.adafruit.com/product/3245", "description": "Possible probe identity only; listed 500 C upper temperature, electrically connected steel tip"}
+  },
+  "requested_voltage_V": 100,
+  "requested_target_C": 500,
+  "illustration": {
+    "initial_and_ambient_C": 25,
+    "effective_capacity_J_K": [10, 30, 100],
+    "effective_linear_loss_W_K": [0, 0.1, 0.3, 0.4, 0.5],
+    "plot_horizon_s": 600,
+    "plot_capacity_J_K": 30,
+    "note": "All initial temperature, capacities, loss conductances and plotting choices are arbitrary analyst-selected sensitivities. They are NOT measured, fitted, sourced heater properties, confidence bounds, probable warm-up times, or operating recommendations. Assume one lumped temperature, constant capacity, rating-derived constant resistance, constant ambient, linear total heat loss and no sensor lag. Actual radiation, support conduction, mounting, sand moisture and heater internals can violate these assumptions."
+  },
+  "unknown_for_real_prediction": [
+    "Actual starting temperature and ambient",
+    "Heater/fixture effective thermal capacity and its temperature dependence",
+    "Actual electrical power/resistance versus temperature",
+    "Temperature-dependent heat losses and heat partition",
+    "Thermocouple position/contact/lag and valid readings",
+    "Exact variac, safety protection and safe mounting",
+    "Temperature-rated and electrically compatible probe identity"
+  ]
+}

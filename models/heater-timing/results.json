@@ -1,0 +1,170 @@
+{
+  "executed_utc": "2026-10-30T17:48:17.496565+00:00",
+  "script_sha256": "33a3260301adc3c33c542c0bc7652f94ffed13ae211762f4a67c5e6a326a5098",
+  "inputs_sha256": "e4261b5fe3257e812fbfb6f02d7471ae26aa06d784e819e1e75688cb6c8ad374",
+  "nominal_R_ohm": 48.0,
+  "nominal_P_W": 208.33333333333334,
+  "nominal_I_A": 2.0833333333333335,
+  "assumed_initial_C": 25,
+  "requested_target_C": 500,
+  "adiabatic_seconds_per_J_per_K_capacity": 2.28,
+  "linear_G_for_asymptotic_target_W_K": 0.4385964912280702,
+  "real_apparatus_time_s": null,
+  "reason_no_real_prediction": [
+    "Actual starting temperature and ambient",
+    "Heater/fixture effective thermal capacity and its temperature dependence",
+    "Actual electrical power/resistance versus temperature",
+    "Temperature-dependent heat losses and heat partition",
+    "Thermocouple position/contact/lag and valid readings",
+    "Exact variac, safety protection and safe mounting",
+    "Temperature-rated and electrically compatible probe identity"
+  ],
+  "scenario_note": "All initial temperature, capacities, loss conductances and plotting choices are arbitrary analyst-selected sensitivities. They are NOT measured, fitted, sourced heater properties, confidence bounds, probable warm-up times, or operating recommendations. Assume one lumped temperature, constant capacity, rating-derived constant resistance, constant ambient, linear total heat loss and no sensor lag. Actual radiation, support conduction, mounting, sand moisture and heater internals can violate these assumptions.",
+  "sources": {
+    "heater": {
+      "url": "https://www.mcmaster.com/4877K305/",
+      "local": "../../references/datasheets/Insertion Heater with Braided Wire Lead Covering, for 1_2_ Hole, 120V AC, 2-1_2_ Long Heating Element, 300W _ McMaster-Carr.pdf",
+      "pages": "1-2",
+      "rated_voltage_V": 120,
+      "rated_power_W": 300
+    },
+    "energy_balance": {
+      "url": "https://apmonitor.com/pdc/index.php/Main/PhysicsBasedModels",
+      "description": "Accumulation equals input minus output; thermal storage m cp dT/dt"
+    },
+    "first_order": {
+      "url": "https://apmonitor.com/pdc/index.php/Main/FirstOrderSystems",
+      "description": "First-order step response and empirical gain/time constant/dead time"
+    },
+    "pi": {
+      "url": "https://apmonitor.com/pdc/index.php/Main/ProportionalIntegralControl",
+      "description": "IMC PI tuning and anti-reset windup"
+    },
+    "probe": {
+      "url": "https://www.adafruit.com/product/3245",
+      "description": "Possible probe identity only; listed 500 C upper temperature, electrically connected steel tip"
+    }
+  },
+  "scenarios": [
+    {
+      "assumed_capacity_J_K": 10,
+      "assumed_linear_loss_W_K": 0,
+      "assumed_loss_at_target_W": 0,
+      "model_equilibrium_C": null,
+      "model_time_to_target_s": 22.8,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 10,
+      "assumed_linear_loss_W_K": 0.1,
+      "assumed_loss_at_target_W": 47.5,
+      "model_equilibrium_C": 2108.3333333333335,
+      "model_time_to_target_s": 25.877072895736084,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 10,
+      "assumed_linear_loss_W_K": 0.3,
+      "assumed_loss_at_target_W": 142.5,
+      "model_equilibrium_C": 719.4444444444445,
+      "model_time_to_target_s": 38.40043551317416,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 10,
+      "assumed_linear_loss_W_K": 0.4,
+      "assumed_loss_at_target_W": 190.0,
+      "model_equilibrium_C": 545.8333333333334,
+      "model_time_to_target_s": 60.760461612598235,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 10,
+      "assumed_linear_loss_W_K": 0.5,
+      "assumed_loss_at_target_W": 237.5,
+      "model_equilibrium_C": 441.6666666666667,
+      "model_time_to_target_s": null,
+      "reaches_in_finite_time": false
+    },
+    {
+      "assumed_capacity_J_K": 30,
+      "assumed_linear_loss_W_K": 0,
+      "assumed_loss_at_target_W": 0,
+      "model_equilibrium_C": null,
+      "model_time_to_target_s": 68.39999999999999,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 30,
+      "assumed_linear_loss_W_K": 0.1,
+      "assumed_loss_at_target_W": 47.5,
+      "model_equilibrium_C": 2108.3333333333335,
+      "model_time_to_target_s": 77.63121868720826,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 30,
+      "assumed_linear_loss_W_K": 0.3,
+      "assumed_loss_at_target_W": 142.5,
+      "model_equilibrium_C": 719.4444444444445,
+      "model_time_to_target_s": 115.20130653952248,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 30,
+      "assumed_linear_loss_W_K": 0.4,
+      "assumed_loss_at_target_W": 190.0,
+      "model_equilibrium_C": 545.8333333333334,
+      "model_time_to_target_s": 182.28138483779472,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 30,
+      "assumed_linear_loss_W_K": 0.5,
+      "assumed_loss_at_target_W": 237.5,
+      "model_equilibrium_C": 441.6666666666667,
+      "model_time_to_target_s": null,
+      "reaches_in_finite_time": false
+    },
+    {
+      "assumed_capacity_J_K": 100,
+      "assumed_linear_loss_W_K": 0,
+      "assumed_loss_at_target_W": 0,
+      "model_equilibrium_C": null,
+      "model_time_to_target_s": 228.0,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 100,
+      "assumed_linear_loss_W_K": 0.1,
+      "assumed_loss_at_target_W": 47.5,
+      "model_equilibrium_C": 2108.3333333333335,
+      "model_time_to_target_s": 258.77072895736086,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 100,
+      "assumed_linear_loss_W_K": 0.3,
+      "assumed_loss_at_target_W": 142.5,
+      "model_equilibrium_C": 719.4444444444445,
+      "model_time_to_target_s": 384.00435513174165,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 100,
+      "assumed_linear_loss_W_K": 0.4,
+      "assumed_loss_at_target_W": 190.0,
+      "model_equilibrium_C": 545.8333333333334,
+      "model_time_to_target_s": 607.6046161259824,
+      "reaches_in_finite_time": true
+    },
+    {
+      "assumed_capacity_J_K": 100,
+      "assumed_linear_loss_W_K": 0.5,
+      "assumed_loss_at_target_W": 237.5,
+      "model_equilibrium_C": 441.6666666666667,
+      "model_time_to_target_s": null,
+      "reaches_in_finite_time": false
+    }
+  ]
+}

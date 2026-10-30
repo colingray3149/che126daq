@@ -1,0 +1,9 @@
+Executed at 2026-10-30T17:48:17.496565+00:00
+Nominal R=48 ohm; V=100 V; P=208.333333333 W; I=2.083333333 A
+Assumed T0=25 C; target=500 C; no-loss t/C=2.280000000 s/(J/K); critical linear G=0.438596491 W/K
+Actual apparatus time: NOT IDENTIFIABLE FROM AVAILABLE DATA
+Source heater: https://www.mcmaster.com/4877K305/
+Source energy_balance: https://apmonitor.com/pdc/index.php/Main/PhysicsBasedModels
+Source first_order: https://apmonitor.com/pdc/index.php/Main/FirstOrderSystems
+Source pi: https://apmonitor.com/pdc/index.php/Main/ProportionalIntegralControl
+Source probe: https://www.adafruit.com/product/3245
