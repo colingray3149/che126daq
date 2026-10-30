@@ -1,0 +1,14 @@
+$ arduino-cli version
+arduino-cli  Version: 1.5.1 Commit: unknown Date: 
+
+$ arduino-cli core list
+ID          Installed Latest Name
+arduino:avr 1.8.8     1.8.8  Arduino AVR Boards
+
+
+$ arduino-cli lib list
+Name                      Installed Available    Location Description
+Adafruit BusIO            1.17.4    -            user     -
+Adafruit MAX31855 library 1.4.2     -            user     -
+LiquidCrystal             1.0.7     -            user     -
+

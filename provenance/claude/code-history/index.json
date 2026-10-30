@@ -1,0 +1,56 @@
+[
+  {
+    "destination": "provenance/claude/code-history/01-thermocouple_logger.ino",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_01Hus3iS6WLUiqUeLp9fWqNk",
+    "timestamp": "2026-10-26T16:25:47.805Z",
+    "original_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+    "sha256": "bc659c0e45cde2209699a5f6bd92974244cc319592508b4c2917af219a2ebc4b",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  },
+  {
+    "destination": "provenance/claude/code-history/02-plot.py",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_011ADrqwyfGuoWwup1t2Vv9v",
+    "timestamp": "2026-10-26T16:27:58.976Z",
+    "original_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+    "sha256": "a388cd2b4891eac5bf0051a67bfb225363692ee2b6d8a4cbfd1e50779e7d67cb",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  },
+  {
+    "destination": "provenance/claude/code-history/03-thermocouple_logger.ino",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_01U1rSA7E35tYDZbPWf1Axhq",
+    "timestamp": "2026-10-26T16:31:23.255Z",
+    "original_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+    "sha256": "f0b08d4c7467a1a9d3352abd247ced4374229e13282cba65740c3ea355b96d03",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  },
+  {
+    "destination": "provenance/claude/code-history/04-plot.py",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_018bHzJsuuQyCZZn3uh44JmC",
+    "timestamp": "2026-10-26T16:31:26.254Z",
+    "original_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+    "sha256": "2d6dfb480c78b97d82d9121274badc3b8e41cb23ca8fe9ef05d17b1aa40f6c9e",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  },
+  {
+    "destination": "provenance/claude/code-history/05-plot.py",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_01EN5eVFaMddDXy3mwEVZvEu",
+    "timestamp": "2026-10-26T16:31:27.039Z",
+    "original_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+    "sha256": "93a175c119d97ab28607f92626a225178ccc9c282e7460ffcbf61275162c2a85",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  },
+  {
+    "destination": "provenance/claude/code-history/06-plot.py",
+    "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "source_tool_id": "toolu_01EN5eVFaMddDXy3mwEVZvEu",
+    "timestamp": null,
+    "original_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+    "sha256": "300dcb2eb7cb717cf837daaaebd91fb2f81c0b5acdfdd678045218942b7acbc2",
+    "kind": "historical-reconstruction-Write-Edit-only"
+  }
+]

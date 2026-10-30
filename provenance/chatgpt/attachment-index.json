@@ -1,0 +1,54 @@
+{
+  "source_url": "https://chatgpt.com/share/6ae4c9fc-e620-83e8-af32-5ab02745aa19",
+  "note": "All generated sandbox-linked files recovered from user-downloaded ZIP or the ZIP itself. Public page lists sandbox links, not direct public download URLs. The two uploaded source PDFs also exist in references/datasheets; filenames and byte sizes match page metadata. No separate full account ChatGPT export ZIP found in Downloads.",
+  "files": [
+    {
+      "link": "sandbox:/mnt/data/02_thermocouple_vs_time.png",
+      "local_path": "models/thermal-stack/02_thermocouple_vs_time.png",
+      "available_locally": true,
+      "sha256": "115ceb7cc6bd0313082ee577f698bac3625dd98946d1d4246a320d0756ad1c16"
+    },
+    {
+      "link": "sandbox:/mnt/data/03_time_to_targets.png",
+      "local_path": "models/thermal-stack/03_time_to_targets.png",
+      "available_locally": true,
+      "sha256": "198f0d45d7c0645d6e3069d549ff391b0eff8d1c5aabc71e1cc317658871eeaa"
+    },
+    {
+      "link": "sandbox:/mnt/data/04_aluminum_spreading_illustration.png",
+      "local_path": "models/thermal-stack/04_aluminum_spreading_illustration.png",
+      "available_locally": true,
+      "sha256": "74c6d074c7a21428d9f32665c7ce414129ac8ee045c1c6f6d8da0bceea124463"
+    },
+    {
+      "link": "sandbox:/mnt/data/05_interface_contact_sensitivity.png",
+      "local_path": "models/thermal-stack/05_interface_contact_sensitivity.png",
+      "available_locally": true,
+      "sha256": "e50cf790e7b87af87fca238c327d540bb617429ac22e0828e4068fdfdc6330dc"
+    },
+    {
+      "link": "sandbox:/mnt/data/measurements_template.csv",
+      "local_path": "models/thermal-stack/measurements_template.csv",
+      "available_locally": true,
+      "sha256": "173171709a4133d7e5aca21a3e3ab3517ff6d372b2cff0acea5fc34be69431cb"
+    },
+    {
+      "link": "sandbox:/mnt/data/mica_basalt_aluminum_thermal_model.zip",
+      "local_path": "references/exports/mica_basalt_aluminum_thermal_model.zip",
+      "available_locally": true,
+      "sha256": "81cb4551cc052d84249326d24f47f60a21e1c2e09ba677097a2692d8d95e62bb"
+    },
+    {
+      "link": "sandbox:/mnt/data/thermal_predictions.csv",
+      "local_path": "models/thermal-stack/thermal_predictions.csv",
+      "available_locally": true,
+      "sha256": "0d4fc2799d2ce909fea116d93761f3d816b3b6e6f823a943ae01fe2989798594"
+    },
+    {
+      "link": "sandbox:/mnt/data/thermal_stack_model.py",
+      "local_path": "models/thermal-stack/thermal_stack_model.py",
+      "available_locally": true,
+      "sha256": "92987a6eb630ddf7a5c7a7c0494f11d7264b287ce36a996b8e314780993560a4"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "detected_ports": [
+    {
+      "matching_boards": [
+        {
+          "name": "Arduino Mega ADK",
+          "fqbn": "arduino:avr:megaADK"
+        }
+      ],
+      "port": {
+        "address": "/dev/ttyACM0",
+        "label": "/dev/ttyACM0",
+        "protocol": "serial",
+        "protocol_label": "Serial Port (USB)",
+        "properties": {
+          "configuration": "",
+          "manufacturer": "Arduino (www.arduino.cc)",
+          "pid": "0x0044",
+          "product": "Arduino Mega ADK",
+          "serialNumber": "64935343733351C0B251",
+          "vid": "0x2341"
+        },
+        "hardware_id": "64935343733351C0B251"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+Port /dev/ttyACM0; 115200 baud; approximately 5 seconds; no firmware uploaded. User reports no thermocouples connected. Opening/configuring serial may reset an Arduino. Raw bytes decoded below:
+
+�,time_s,t1_C,t2_C
+0.50,0.00,0.00
+0.50,0.00,0.00
+1.00,0.00,0.00
+1.50,0.00,0.00
+2.00,0.00,0.00
+2.50,0.00,0.00
+3.00,0.00,0.00
+3.50,0.00,0.00
+4.00,0.00,0.00

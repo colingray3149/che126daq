@@ -1,0 +1,14 @@
+SOURCE DIMENSIONS AND 1D RESISTANCES
+  full area = 0.00774192 m², heated area assumed = 0.00387096 m²
+  Mica              : t = 0.812800 mm; k = 0.3 W/mK; R = 0.349956255 K/W; C_full = 29.262 J/K
+  Basalt            : t = 1.190625 mm; k = 0.351916 W/mK; R = 0.437005844 K/W; C_full = 0.217 J/K
+  Aluminum 3003-H14 : t = 0.225000 mm; k = 159 W/mK; R = 0.000182783 K/W; C_full = 4.247 J/K
+  bare R = 0.786962100 K/W; Al R = 0.787144883 K/W
+  increase = 0.023226%; k_eff bare = 0.3288294, with Al = 0.3656745 W/mK
+
+TRANSIENT FORECAST (ASSUMPTIONS, NOT MEASURED)
+  bare    : first reach 100 C = 5.86 min
+  aluminum: target not reached within 30 min
+  Spreading model at 20W: center T w/o Al = 128.1 C; w Al = 89.2 C
+
+Files saved to: /mnt/data

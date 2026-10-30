@@ -1,0 +1,94 @@
+    PREVENTING
+    MOISTURE-INDUCED
+    FAILURES
+    IN ELECTRIC HEATERS
+1
+    DE14         WWW.TEMPCO.COM   | 800.323.6859
+Moisture is the most common—and the most preventable—cause of Ground Fault Interrupter (GFI) trips,
+failed high potential (hi-pot) tests, and premature heater failures (electrical short). The root of the issue is
+the insulation system most industrial electric heaters rely on: compacted magnesium oxide (MgO). MgO is
+hygroscopic; when it absorbs water, insulation resistance collapses and the heater can smoke at start-up,
+trip GFIs, or fail dielectric tests. Understanding the physics, electrical testing, and conditioning methods will
+restore performance and extend heater life.
+
+MOISTURE ABSORPTION
+Under dry conditions, MgO provides excellent thermal conductivity and very high insulation resistance
+(often >100 MΩ/ft). When it absorbs moisture, the MgO hydrates (MgO + H2O → Mg(OH)2), creating leakage
+paths from element to sheath and slashing resistance by orders of magnitude. Practically, you’ll see smoke
+or outgassing on first energization (that’s moisture and binders leaving the assembly), GFI/ground-fault trips,
+and failures to pass hi-pot. These symptoms are especially common after storage, overseas shipment, or idle
+periods in humid plants.
+
+    Where the moisture comes from
+      1. Storage and climate: Humidity greater than 60%, temperatures near the dew point, and long idle periods allow
+      MgO to wick moisture through microscopic seal imperfections. Large bundles and high-voltage designs (480 V) are more
+      susceptible.
+      2.   Thermal cycling: Cooling creates slight negative pressure inside the heater, pumping ambient moisture inward.
+      3. Logistics: Long shipments (especially overseas) and humid shop floors frequently precede GFI trips, smoke on first
+      power-up, and hi-pot failures.
+
+ELECTRICAL TESTING REQUIRED
+Megohm testing (preferred): Use a 500 or 1000 VDC megohmmeter from element to sheath at room
+temperature. As a rule of thumb, new heaters should measure ≥10 MΩ; anything below ~1 MΩ warrants
+immediate conditioning. Trend resistance over time; rising values during a low-power warmup confirm
+drying.
+
+Dielectric (hi-pot) testing: Align your in-house test with UL/CSA guidance. Typical one-second AC test
+voltages for strip-style heaters are:
+
+    • ≤250 V rated: 1250 VAC
+    • 251 V rated: 2 × rated voltage + 1000 V, with a maximum allowable (compensated) leakage of 4 mA per 100 in².
+
+
+Excess moisture is a frequent root cause of hi-pot failures — even with otherwise sound construction.
+
+CONDITIONING (BAKE-OUT) PROCEDURES
+The objective is to reverse moisture and bake off absorbed water without damaging seals or terminations.
+Effective programs combine temperature, time, and controlled power.
+
+    Field oven bake-out (uninstalled or removable heaters):
+    • 121–204 °C (250–400 °F) for overnight is a proven, low-risk starting point.
+    • Heavier masses and wetter heaters need more time; plan 6–40 hours depending on size and starting resistance.
+    • Verify by re-megging to spec (≥5–10 MΩ depending on design/voltage) and rechecking stability after 24–48 h.
+
+2                                                                                     WWW.TEMPCO.COM        | 800.323.6859
+    In-place electrical bake-out (installed heaters):
+    • Start at reduced voltage/power (≈25–50% rated) and gradually ramp while monitoring current and insulation resistance.
+    • Many SCR power controllers include a low-voltage “heater bake-out” / soft-start feature that automatically ramps until
+      the heater dries, then switches to normal control. This approach minimizes nuisance trips and blown fuses during first
+      energization.
+
+    Temperature profile optimization:
+    • A conservative, component-friendly ramp: 80 °C (initial outgassing) → 150 °C (primary dehydration) → ≈200 °C
+      (completion).
+    • Chemically, Mg(OH)2 begins decomposing ~330 °C and completes back to MgO near 430 °C; practical field
+      conditioning stays lower to protect seals and terminations, so expect longer dwell times.
+
+PREVENTATIVE MEASURES
+    • Specify and store for dryness: For heaters stored longer than 30 days or exposed to high humidity, mandate pre-
+      installation conditioning. Store in climate-controlled areas, keep original moisture-barrier packaging intact, and add
+      desiccant for extended holds.
+    • Periodic inspection: For critical lines, schedule quarterly megger checks and trend results to trigger conditioning before
+      trips or failures.
+    • Align test procedures: Match your incoming and field hi-pot protocols to UL/CSA expectations to avoid over-stressing
+      wet but otherwise healthy heaters—and to get a consistent read on true failures.
+    • Always ground the sheath: A solid equipment ground gives leakage a safe path, protecting personnel and sensitive
+      electronics if a fault occurs. Heaters can be built with ground leads/terminals—use them.
+
+QUICK ENGINEER’S CHECKLIST
+      1. On receipt: Keep packaging sealed; store ≤55% RH. If storage >30 days, tag for conditioning before install.
+      2. Before power-up: Megger at 500–1000 VDC, element → sheath. If <1 MΩ, condition; target ≥10 MΩ for new builds.
+      3. If installed/wet: Use controller bake-out (low-voltage ramp) or energize at reduced power; watch IR trend upward.
+      4. If removable/wet: Oven bake 121–204 °C; re-meg and re-check after 24–48 h.
+      5. Verify: Align hi-pot levels with UL/CSA; confirm leakage criteria; ensure ground continuity.
+
+
+By adopting these practices—accurate diagnostics, controlled conditioning, and moisture-aware storage/
+testing—you’ll eliminate the most common avoidable failure mode in industrial heaters and keep your lines
+running.
+
+
+
+
+3                                                                                        WWW.TEMPCO.COM         | 800.323.6859
+

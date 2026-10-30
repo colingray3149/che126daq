@@ -1,0 +1,1597 @@
+
+===== PDF PAGE 1 =====
+Needs for Lithium-ion Battery Runaway Containment
+Application: all-electric, battery-powered passenger aircraft (commonly categorized as electric
+Vertical Take-Off and Landing [eVTOL], urban air mobility [UAM], or regional electric aircraft)
+   1.​ Minimal Volumetric & Gravimetric Weight Penalty: Every kilogram added reduces
+        payload capacity or increases fuel burn. High volumetric energy density is vital for
+        space-constrained avionics bays or EFB battery cases.
+   2.​ Modularity: Modern aircraft maintenance relies on Line Replaceable Units (LRUs). If a
+        single cell degrades or experiences a localized fault, airlines refuse to scrap an entire
+        $50,000+ battery pack. They require the ability to swap out sub-modules at the gate or in
+        regional maintenance hangars.
+   3.​ RTCA DO-160G: Battery Safety at extreme conditions (Environmental Conditions
+        and Test Procedures for Airborne Equipment)
+            a.​ Thermal Cycling (DO-160G Section 4 & 5): Validates that inter-cell thermal
+                barriers do not crack, delaminate, or lose structural integrity when rapidly cycled
+                between extreme cold (-55 C at altitude) and peak operating heat (+85^ C).
+            b.​ Multi-Axis Vibration & Structural Fatigue (DO-160G Section 8): Tests
+                equipment against continuous low-frequency and high-frequency airframe
+                vibrations (e.g., engine rumble, turbulent flight load) over hundreds of hours. This
+                ensures that thin aerogel blankets or mica plates do not pulverize into dust or shift
+                out of position over time.
+            c.​ Operational Shock & Crash Safety (DO-160G Section 7): Ensures the
+                structural housing and inter-cell barriers maintain containment during high-G
+                events (e.g., hard landings, sudden deceleration, or turbulence).
+   4.​ The Flammability Requirement (FAR Part 25): Every structural material, thermal
+        barrier (e.g., aerogel pads, mica sheets, silicone foam), housing, and potting compound
+        used inside an avionics bay or battery enclosure must pass strict vertical burn tests (e.g.,
+        60-second or 12-second direct flame exposure) to ensure they are self-extinguishing and
+        do not release toxic fumes or flame drips.
+   5.​ Low-cost: minimize added $/kWh and aircraft system cost.
+            a.​ Economic constraint: Battery-powered flight must achieve cost parity with
+                conventional aircraft, accounting for battery production and replacement,
+                electricity costs, and jet-fuel costs.
+   6.​ For insurers: there is likely some threshold of guarantee, like an actual percentage, that
+        insurers require the battery to not explode in order for them to be willing to insure it. Or,
+        the insurance would just be insanely expensive.
+
+The king has arrived.
+
+
+===== PDF PAGE 2 =====
+Requirements for Lithium-ion Battery Runaway Containment
+Application: all-electric, battery-powered passenger aircraft (commonly categorized as electric
+Vertical Take-Off and Landing [eVTOL], urban air mobility [UAM], or regional electric aircraft)
+
+   1.​ Minimal Gravimetric and Volumetric Penalty
+           a.​ High gravimetric energy density (primary constraint): The battery pack must
+               provide sufficient usable energy per unit mass to meet the aircraft's range and
+               payload requirements. For a 19-seat, all-electric commuter aircraft, a
+               representative target is approximately 650 Wh/kg at the pack level. This is
+               substantially above current commercial battery-pack capabilities.
+           b.​ High volumetric energy density (secondary constraint): The battery must store
+               sufficient energy per unit volume to fit within the aircraft's available space
+               without compromising passenger capacity, payload, or aerodynamics. A
+               representative 19-seat commuter-aircraft design target is approximately 330 Wh/L
+               at the pack level.
+Primary source: https://doi.org/10.1038/s41586-021-04139-1
+Source for b: https://doi.org/10.1073/pnas.2111164118
+   2.​ Crashworthiness and Post-Crash Survivability:
+           a.​ External emergency cutoff for the battery.
+           b.​ A lot of the safety requirements came from helicopter safety requirements, so an
+               example is Each energy storage system, or the most critical energy storage
+               system, should be subject to a drop-test using the following methodology:
+                  i.​ (a) the drop height should be at least 15.2 m (50 ft);
+                 ii.​ (f) after the drop test there should be no risk of post-crash fire or other
+                        harmful release within a time frame compatible with the rescue of
+                        seriously injured occupants.
+                            1.​ (1) For liquid or gaseous fuels: no leakage of flammable fluids or
+                                gases.
+                            2.​ (2) For batteries:
+                                    a.​ (i) structural damage should not lead to a fire, leakage of
+                                        harmful fluids, fumes or gases; or
+                                        (ii) any fire or leakage of harmful fluids, fumes or gases
+                                should be contained for at least 15 minutes in non-occupied areas
+                                and outside the evacuation path.
+
+   3.​ Low cost
+         ●​ Long-term target: Battery-pack cost of approximately $100/kWh or less, with
+             pack-level specific energy of approximately 800 Wh/kg and sufficiently low
+             electricity prices to achieve operating-cost parity on the target flight mission.
+
+
+===== PDF PAGE 3 =====
+Primary source: Schäfer et al., “Technological, economic and environmental prospects of
+all-electric aircraft,” Nature Energy 4, 160–166 (2019), DOI: 10.1038/s41560-018-0294-x
+(MIT/UCL).
+
+   4.​ Consistency Requirements: Insurers, guarantees or probabilities that things will or
+       won’t happen, and how they are demonstrated. Also to pass FAA regulations.
+       https://www.easa.europa.eu/en/document-library/easy-access-rules/online-publications/ea
+       sy-access-rules-small-category-vca?page=16#_Toc256000109
+       https://www.htfmarketintelligence.com/press-release/north-america-evtol-battery-failure-i
+       nsurance-market
+           a.​ Probability & Failure Rates: Failure Probability Criteria (14 CFR 25.1309 / EASA
+               SC-VTOL):
+                 i.​ Auxiliary / APU Batteries: Loss of system safety due to single-cell
+                                                          −7
+                      runaway must be shown to be < 10 per flight hour.
+               ii.​   All-Electric / Propulsion Batteries: A catastrophic thermal event resulting
+                      in total loss of thrust or structural hull failure must meet the "Extremely
+                                                               −9
+                       Improbable" standard, defined as < 10 failures per flight hour.
+   5.​ Thermal Non-Propagation Thresholds: Single-Cell Thermal Runaway Test (RTCA
+       DO-311A Section 2.4.5 / FAA Special Conditions): the thermal barrier must limit heat
+       transfer from a failing cell to surrounding equipment. The trigger cell is driven into
+       thermal runaway (via overcharge, needle penetration, or patch heater) and typically
+       exceeds +800 C to +1,000 C.
+           a.​ Adjacent Cell Maximum Surface Temperature: Thermal insulation must keep
+               adjacent cells safely below +150 C (or below the cell manufacturer's designated
+               thermal runaway onset temperature, typically +150 C to +180 C) to prevent
+               catastrophic chain-reaction propagation.
+           b.​ Observation Window: The containment system must hold these temperature
+               boundaries and show zero flame propagation for a minimum of 30 minutes
+               post-event without active cooling or external intervention.
+   6.​ Gas Venting, Volumetric Expansion, and Pressure Limit: Under RTCA DO-311A and
+       FAA SC 25-412-SC, off-gas management must prevent structural enclosure rupture and
+       toxic cabin contamination:
+           a.​ Overboard Vent Exhaust Pressure: Internal module pressure burst discs / relief
+               valves must actuate within 0.5 to 2.0 psi (3.5 to 13.8 kPa) to route gas directly
+               into dedicated exhaust ducts before internal pressure compromises module walls.
+           b.​ Gas Venting Flow Rate Volume: Containment ducting must accommodate peak
+               gas generation rates of 100 to 300 L/min per cell during primary decomposition,
+               consisting primarily of hydrogen (𝐻2), carbon monoxide (𝐶𝑂), and volatile
+              organic solvents.
+
+
+===== PDF PAGE 4 =====
+        c.​ Flammable Gas Dilution Limit: Duct purging or secondary venting must
+            maintain gas concentrations below 25% of the Lower Explosive Limit (LEL)
+            for hydrogen (H2 LEL = 45 by volume in air) within any unvented airframe bays
+            to prevent deflagration.
+        d.​ Cabin Toxicity Thresholds: In the event of a leak into pressurized zones,
+            continuous exposure limits for toxic species must not exceed:
+               i.​ Carbon Monoxide (𝐶𝑂): Max 50ppm long-term / 200 ppm short-term
+                   ceiling.
+              ii.​ Hydrogen Fluoride (𝐻𝐹): Max 3 ppm
+7.​ Material Flammability Requirements (14 CFR § 25.853): All inter-cell barriers,
+    aerogel blankets, mica shields, and structural housings must pass FAR Part 25 Appendix
+    F Bunsen burner flame testing:
+        a.​ Vertical Burn Test (25.853 Appendix F Part I):
+               i.​ Flame exposure: 60 seconds (or 12 seconds for non-structural internal
+                   liners).
+              ii.​ Flame temperature: Minimum 843 C (1,550 F)
+             iii.​ Burn length: Average burn length ≤ 3 inches (76 mm).
+             iv.​ After-flame time: Average self-extinguishing flame time ≤ 15 seconds
+                   after removal of the burner.
+              v.​ Drip flame time: Dwell time of flaming drips on the test floor ≤ 3
+                   seconds.
+8.​ Environmental & Structural Hardening Limits (RTCA DO-160G): containment
+    assemblies are pre-conditioned through harsh operational environmental cycling to
+    ensure structural integrity:
+        a.​ Thermal Cycling (DO-160G Section 4 & 5):
+               i.​ Extreme operating temperatures: -55 C +85 C at simulated pressure
+                   altitudes up to 70, 000𝑓𝑡.
+              ii.​ Ramp rates: 2 C/min to 10 C/min across continuous multi-dwell cycles.
+        b.​ Vibration Profiles (DO-160G Section 8 Category R/S):
+               i.​ Frequency spectrum: Broadband random vibration from 5 Hz to 2,000 Hz
+                   across 3 orthogonal axes (𝑋, 𝑌, 𝑍).
+              ii.​ Spectral density: Power Spectral Density (PSD) from 0.01 g2/Hz to 0.1
+                   g2/Hz (yielding continuous RMS acceleration of 1.5 grms to 6.0 + grms for 3
+                   hours per axis.
+        c.​ Crash Safety & Operational Shock (DO-160G Section 7):
+               i.​ Operational Shock: 6g peak sawtooth pulse with 11ms duration (3 shocks
+                   per direction across 6 directions).
+              ii.​ Crash Safety Impulse: 20g peak acceleration sawtooth pulse (11 ms
+                   duration) to guarantee that containment structures and internal inter-cell
+                   barriers maintain physical containment during emergency impact events.
+
+
+===== PDF PAGE 5 =====
+Easy Access Rules for small category VCA | EASA
+
+
+===== PDF PAGE 6 =====
+Application: all-electric, battery-powered passenger aircraft (commonly categorized as electric
+Vertical Take-Off and Landing [eVTOL], urban air mobility [UAM], or regional electric aircraft)
+
+   1.​ Thermal Non-Propagation Thresholds: Single-Cell Thermal Runaway Test (RTCA
+       DO-311A Section 2.4.5 / FAA Special Conditions) - Thermal insulation must keep
+       adjacent cells safely below +150 C (or below the cell manufacturer's designated thermal
+       runaway onset temperature, typically +150 C to +180 C) at simulated pressure altitudes
+       up to 70,000 ft (DO-160G Section 4 & 5). There should be zero flame propagation and
+       temperature maintenance for ≥ 30 minutes.
+   2.​ Post-Crash Survivability: a 15.2 m drop and not pose a risk to human life, i.e. not leak
+       gas, not fly into the cockpit, not become deformed and therefore a potential bomb. Needs
+       to survive crash conditions 6g (operational shock) to 20 g (crash impulse) for 11 ms
+       duration (DO-160G Section 7)
+   3.​ High gravimetric energy density (primary constraint): The battery pack must provide
+       sufficient usable energy per unit mass to meet the aircraft's range and payload
+       requirements. For a 19-seat, all-electric commuter aircraft, a representative target is
+       approximately 650 Wh/kg at the pack level. Weight requirement on module weight.
+   4.​ Flammable Gas Dilution Limit: Duct purging or secondary venting must maintain gas
+       concentrations below 25% of the Lower Explosive Limit (LEL) for hydrogen (H2 LEL =
+       4% by volume in air) within any unvented airframe bays to prevent deflagration.
+   5.​ Early Thermal Runaway Detection and Fail-Safe Warning Systems: Regulatory
+       basis: FAA AC 20-184A (Appendix C, Special Conditions 7–9; Appendices D and G), 14
+       CFR §§25.1309 and 25.1322, RTCA DO-311A §2.1.4.2, RTCA DO-160G, and
+       EUROCAE ED-289. The battery monitoring system must detect abnormal cell
+       temperature, voltage, or gas emissions and alert the pilot within 10 seconds, with
+       critical sensor readings updated at least once per second (1 Hz) and automatic
+       charging disconnection upon confirmed overtemperature or battery failure. Detection
+       and warning systems must undergo RTCA DO-160G environmental testing and
+       fault-injection testing, demonstrating reliable operation under temperature extremes,
+       vibration, altitude changes, and individual sensor failures, with zero missed required
+       warnings across the qualification test matrix.
+
+
+===== PDF PAGE 7 =====
+Flame propagation prevention in batteries technologies
+
+Possible: combination of venting and materials that change conductivity at different temps, then
+crash that bih. venting has been shown to be great at regulating module temperature, and this
+thermally responsive material would allow for ONE module undergoing thermal runaway to
+suddenly become insulated while the venting mechanism still cools other modules.
+We can also explore putting sensors that detect thermal runaway INTO the venting channels, but
+that might be OD for an 8 week lil research project.
+
+   ●​ Ceramic coatings?
+   ●​ Phase change materials
+   ●​ Microlayers or super thin coatings
+   ●​ Aerogelllllll - Knudsen effect, pore size (20 - 40 mm) smaller than the mean free path
+   ●​ Making sure vents don't get clogged with loose materials or particles
+   ●​ Prevention of gas propagation or making sure gas that escapes a battery is properly
+      handled
+   ●​ Passive localized cooling, so it somehow reroutes cooling to hot modules
+   ●​ Active discharge of thermal runaway module without getting rid of the baseline energy
+      levels required to maintain propulsion
+   ●​ Taking coolant from other parts of the aircraft in an emergency to quickly prevent
+      thermal runaway without the other parts of the the aircraft getting slimed out
+   ●​ Discover some new perfect material that has EVEN BETTER thermal reactive
+      conduction responsive thingy.
+
+Gap: venting dynamics and flame quenching needs to be evaluated at flight altitudes and
+pressure drops. Low pressure increases gas volume expansion, velocities, and mass flow rates.
+Need to build strong vents to withstand.
+Gap: Low atm reduces physical barrier convection cooling efficiency
+Gap: Existing papers do not offer ultra-lightweight < 5 - 8%) integrated duct-barrier solutions
+                  −9
+that meet FAA 10       safety probability metrics without compromising flight range.
+
+Beta Battery - https://beta.team/battery
+https://www.nature.com/articles/s41560-024-01535-5 - temperature responsive material 2024
+https://ideas.repec.org/a/eee/rensus/v239y2026ics136403212600448x.html - review on thermal
+runaway propagation prevention in aircraft batteries
+https://iopscience.iop.org/article/10.1149/1945-7111/adc50f - venting batteries APL 2025
+
+
+===== PDF PAGE 8 =====
+Multiple materials (conductive, insulating, phase change) and reaction heat and
+pressure-triggered venting.
+https://www.sciencedirect.com/science/article/pii/S259011682600086X
+Battery thermal stability - https://xray.greyb.com/ev-battery/thermal-stability-nmc
+    -​ This website is an exhaustive list of a bunch of battery properties
+
+Thermal isolation
+
+Lava rock -
+https://heatshieldproducts.com/product/automotive/component-heat-shields/battery-heat-shield/
+
+Thin aerogel -https://aerogelzone.com/thin-aerogel-thermal-barrier/
+Aero gel for prototyping - https://aerogel-it.shop/collections/home
+Mica insulators - https://www.ashevillemica.com/automotive-mica/
+
+Thermal Insulation and Fireproof Aerogel Composites for Automotive Batteries -
+https://www.mdpi.com/2310-2861/11/10/791
+
+Organic and Inorganic Hybrid Composite Phase Change Material for Inhibiting the Thermal
+Runaway of Lithium-Ion Batteries https://www.mdpi.com/2313-0105/9/10/513
+
+1. Electrical isolation: stopping “current dumping” between parallel cells
+
+Your list only addresses heat. In parallel-connected packs, a failing cell can also be fed by its
+neighbors’ current. One study found that packs with electrically connected cells propagated
+thermal runaway because neighboring cells dumped current into the failing one, while packs with
+electrically disconnected cells did not propagate and neighbors stayed below 85 °C. That work
+led to the first battery design with individual cell fusing built into the current collectors. The
+approach adds very little mass. A related idea is thermally disconnecting busbars, since copper
+busbars between tightly packed modules can become a heat transfer path during a fire.​
+ https://ideas.repec.org/a/eee/appene/v286y2021ics0306261921000568.html IDEAS home
+Printed from https://ideas.repec.org/a/eee/appene/v286y2021ics0306261921000568.html +2
+
+2. Endothermic “sacrificial” chemistry (different from PCMs)
+
+Instead of melting, these materials decompose chemically and absorb heat at runaway
+temperatures. Aluminum hydroxide, for example, releases its crystal water when it decomposes,
+absorbing heat, and leaves behind porous alumina that then acts as an insulator. Decomposition
+onset can be matched to the runaway window: about 200 °C for aluminum hydroxide and about
+330 °C for magnesium hydroxide. This gives you a heat sink and an insulator in one material,
+
+
+===== PDF PAGE 9 =====
+which could be a low-mass complement to your thermally responsive material idea. GM has a
+patent on this approach.​
+ https://patents.justia.com/patent/20240106021 usptouspto
+
+3. Intumescent materials
+
+These are distinct from ceramic coatings because they swell into an insulating char only when
+heated, so they are thin and light during normal operation. In an early Tesla patent, uncoated cells
+propagated runaway to the next cell within 3 to 4 minutes, while intumescent-coated cells did not
+propagate. A Warwick study comparing five barriers found a stainless steel barrier coated with
+intumescent flame-retardant fabric performed best, and sidewall rupture counts correlated
+linearly with propagation rate. That makes it relevant if you’re using high-energy cylindrical
+cells.​
+ https://wrap.warwick.ac.uk/186891 usptowarwick
+
+4. Flame arrestors and quenching meshes in the vent path
+
+This addresses your altitude and venting gap directly. A conductive mesh over the vent cools
+exiting gas below its auto-ignition temperature, and the required hole size depends on the gas’s
+auto-ignition temperature and velocity. There is a trade-off you’ll care about at low pressure:
+smaller openings reject more heat but increase the forces on the mesh during a vent. A 2025 BIT
+study designed a multilayer quenching plate and found that front-facing configurations needed
+five layers at 75% SOC and seven at 100% SOC, while side-facing configurations needed only
+three. Re-evaluating that layer count at altitude-level gas velocities could be a well-scoped
+8-week question.​
+
+https://pure.bit.edu.cn/en/publications/design-of-a-multilayer-flame-arrestor-for-lithium-ion-batte
+ries-a/ Low profile pressure disconnect device for lithium ion batteries +2
+
+5. Self-triggered suppression microcapsules
+
+This is a passive alternative to your “borrow coolant from the aircraft” idea, with no plumbing.
+The capsules rupture at 130 °C and release Novec 1230, which extinguishes flames, and
+HFO-1336mzz(Z), which provides cooling; together they delayed runaway and inhibited
+propagation. Earlier UMD work found that Novec 1230 at 15.2 vol.% significantly inhibited
+combustion of ejected material and prevented complete propagation through fully charged cell
+arrays.​
+ https://pubs.rsc.org/en/content/articlehtml/2025/ta/d5ta03776j rscumd
+
+6. Oxygen exclusion and inerting
+
+
+===== PDF PAGE 10 =====
+This approach removes oxygen from the fire triangle instead of fighting heat. In one cited test,
+propagation occurred at normal 21% oxygen, but no significant propagation to adjacent cells
+occurred when oxygen was reduced to about 11.3%. The caveat is that nitrogen doesn’t instantly
+penetrate sealed cells, so inerting suppresses the fire around the cell rather than the runaway
+inside it. A sealed module with a one-way vent, which keeps oxygen out while letting gas
+escape, is a lighter variant of the same idea.​
+ https://www.aidic.it/cisap12fex26/programma/22Renzi.docx aidicaidic
+
+7. Two-phase dielectric immersion
+
+Cells sit in a fluid that boils at a chosen temperature. In Carrar’s test, a 72 Ah pouch cell was
+driven above 800 °C while the adjacent cell stayed at about 50 °C, and the company says the
+system works passively, without sensors or suppression systems. The fluid mass is the obvious
+problem for your weight budget, but it is a useful benchmark to compare against.​
+
+https://chargedevs.com/newswire/carrar-says-its-immersion-cooled-battery-architecture-stops-the
+rmal-runaway-even-with-a-cell-above-800-c/ chargedevschargedevs
+
+8. Heat pipes that vent and become insulators
+
+This is closest to your thermal-switch concept. In this patent, a heat pipe cools cells normally.
+After a thermal event, a pressure-relief device lets it dump its working fluid to become a vented
+heat pipe, which then inhibits heat transfer to the next cell. So it conducts heat when things are
+normal and insulates during a failure, using existing hardware.​
+ https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/9689624 uspto
+
+9. Intra-cell safety: stopping the first cell from running away
+
+Stanford developed a current-collector coating that shuts the battery down under overheating or
+shorting and lets it resume normal function afterward, with a switching temperature that can be
+tuned. On the electrolyte side, a nonflammable localized high-concentration electrolyte raised the
+runaway trigger temperature by 47.3 °C and lowered the peak runaway temperature by 71.8 °C.
+A caution: a Nature Communications study found that non-flammable concentrated electrolytes
+could not prevent runaway, so “nonflammable” does not mean “safe.”​
+ https://ideas.repec.org/a/nat/natene/v1y2016i1d10.1038_nenergy.2015.9.html IDEAS home
+Printed from https://ideas.repec.org/a/nat/natene/v1y2016i1d10.1038_nenergy.2015.9.html +2
+
+10. Pack geometry and directional venting
+
+This is free in terms of mass. A CFD study of an LFP module found that inverting the cells and
+exhausting from both the side and bottom of the module was the best venting scheme. TUM
+
+
+===== PDF PAGE 11 =====
+work also showed that vented particles, not just gas, significantly affect propagation in enclosed
+packs, which ties into your vent-clogging concern.​
+ https://doaj.org/article/7c2a909c5188428a93eb51ca06bb1ed9 doajtum
+
+11. Off-gas detection before runaway
+
+This is a simpler, off-the-shelf version of your “sensors in vent channels” idea. In third-party
+testing, an off-gas sensor gave 6.4 minutes of warning before runaway, and stopping the charge
+when it alarmed avoided runaway entirely. Notably, a hydrogen sensor only detected gas at the
+moment of runaway. This pairs naturally with your “active discharge” idea, because the warning
+gives the system time to act.​
+
+https://www.honeywell.com/us/en/insights/articles/national-lab-testing-demonstrates-value-in-ea
+rly-detection
+
+
+===== PDF PAGE 12 =====
+Materials
+    ●​ Ceramics
+    ●​ Phase change materials
+           ○​ Organic and Inorganic Hybrid Composite Phase Change Material for Inhibiting the
+                Thermal Runaway of Lithium-Ion Batteries https://www.mdpi.com/2313-0105/9/10/513
+    ●​ Aerogel
+    ●​ https://www.nature.com/articles/s41560-024-01535-5 - temperature responsive material 2024
+    ●​ Mica insulators
+    ●​ Endothermic “sacrificial” chemistry - Aluminum hydroxide
+           ○​ https://patents.justia.com/patent/20240106021 usptouspto
+    ●​ Intumescent materials - painting/coating
+           ○​ https://wrap.warwick.ac.uk/186891 usptowarwick
+    ●​ Fast and reversible thermoresponsive polymer switching materials for safer batteries
+           ○​ https://ideas.repec.org/a/nat/natene/v1y2016i1d10.1038_nenergy.2015.9.html IDEAS
+                home Printed from
+                https://ideas.repec.org/a/nat/natene/v1y2016i1d10.1038_nenergy.2015.9.html +2
+    ●​ Lava rock -
+       https://heatshieldproducts.com/product/automotive/component-heat-shields/battery-heat-shield/
+
+
+Tested Material Combinations in Literature
+Multiple materials (conductive, insulating, phase change) and reaction heat and pressure-triggered
+venting. https://www.sciencedirect.com/science/article/pii/S259011682600086X
+
+Research into mitigating lithium-ion battery thermal runaway propagation has increasingly focused on
+multi-functional hybrid systems that pair static thermal insulation with active enthalpy absorption or
+dynamic thermal regulation.
+
+    ●​ Aerogel + Phase Change Material (PCM) Composites
+          ○​ Mechanism: Combining nanoporous silica or nanofiber aerogel matrices impregnated
+              with organic/inorganic phase change materials (CPCMs). The PCM acts as an active
+              latent heat sink during early-stage thermal spikes, while the inorganic aerogel framework
+              prevents liquid leakage and provides permanent low thermal conductivity (approx 0.013 -
+              0.018 W/m*K) once phase transition occurs.
+          ○​ Literature Reference: Mei et al. (2023) developed organic-inorganic hybrid CPCM
+              aerogel matrices, demonstrating effective suppression of thermal propagation. Similarly,
+              Wong et al. (2024) evaluated nanofiber aerogel composite materials integrated with
+              phase-absorption layers to delay time intervals between runaway events in high-energy
+              modules.
+    ●​ Temperature-Responsive Polymer Switch + Insulation Interlayers
+
+
+===== PDF PAGE 13 =====
+           ○​ Mechanism: Advanced thermal-switching materials that dynamically alter their thermal
+              conductivity (transitioning from a conductive state during normal operation to an
+              adiabatic insulating state during high-temperature anomalies).
+           ○​ Literature Reference: Wang et al. (2024) designed a rapid temperature-responsive thermal
+              regulator that prevents up to 80% of heat transmission during thermal runaway while
+              maintaining uniform temperature distribution under normal working conditions.
+
+2. Phase-Change Material (PCM) + Intumescent Polymer (Enthalpy Buffer + Expandable Shield)
+
+   ●​ How They Work Together: Encapsulate cells in a composite PCM wax/salt matrix, and coat
+      module divider walls with an intumescent polymer coating.
+   ●​ Synergy: The PCM acts as an active heat sink during early-stage thermal spikes, absorbing latent
+      thermal energy at a constant temperature before thermal runaway fully triggers. If the trigger cell
+      exceeds the PCM's heat capacity and ignites, the extreme heat causes the intumescent coating to
+      expand up to 100×, creating a secondary char barrier that blocks runaway flame propagation to
+      the next cell tier.
+   ●​ Primary Application: Dense pouch or cylindrical cell arrays. explored in advanced thermal
+      protection systems, particularly for dense battery packs and aerospace applications where space is
+      tightly constrained.
+   ●​ Weaknesses: Significant volumetric expansion requires mechanical spacing allowances within
+      the module design. Liquid PCM leakage risks and chemical incompatibility between organic
+      waxes and polymer binder matrices can also complicate manufacturing.
+   ●​ Unexplored Areas: Long-term thermal-cycling durability under repeated charge/discharge loads
+      (where repeated melting and solidifying of the PCM can degrade surrounding intumescent
+      bonding integrity) remains underexplored in literature.
+
+3. Ceramic Fiber Paper + Steel Structural Framing (Thermal Separation + Mechanical
+Containment)
+
+   ●​ How They Work Together: Line steel compartment walls or structural module frames with
+      compressible aluminosilicate ceramic fiber paper.
+   ●​ Synergy: Steel provides high structural rigidity, containment strength, and blast resistance, but its
+      high thermal conductivity causes heat to rapidly transfer to neighboring compartments. Thin
+      ceramic fiber paper insulates the steel surfaces, preventing thermal bridging while retaining the
+      structural enclosure benefits.
+   ●​ Primary Application: Sub-module bulkheads and module housing frames.
+   ●​ Weaknesses: Ceramic fiber papers are friable, prone to shedding particulates under vibrational
+      stress, and add non-active weight that degrades the gravimetric energy density of the battery pack.
+   ●​ Unexplored Areas: Optimization of ultra-thin, binder-modified ceramic papers that maintain
+      high compression resilience under high-vibration aerospace or EV operating environments while
+      completely eliminating particulate dusting.
+
+4. Intumescent Aerogel Composites (Integrated Dual Barrier)
+
+
+===== PDF PAGE 14 =====
+    ●​ How They Work Together: A single manufactured composite material featuring a nanoporous
+       aerogel core impregnated or laminated with intumescent expanding compounds.
+    ●​ Synergy: Combines the low static thermal conductivity of aerogel with dynamic thermal
+       insulation—as temperatures exceed 200°C, the intumescent component expands to fill air gaps
+       left by cell swelling or geometric deformation during runaway.
+    ●​ Weaknesses: High production costs, multi-step chemical synthesis complexity, and potential
+       brittleness of the aerogel framework under mechanical shear stress.
+    ●​ Unexplored Areas: Scalable, low-cost impregnation techniques for embedding intumescent
+       nanoparticles directly into flexible aerogel blankets without destroying the delicate 3D
+       nanoporous pore structure.
+
+Untested or Novel Material Combinations (Ranked from Most to
+Least Promising)
+Below are innovative combinations of the listed materials that have not been heavily explored or
+published in standard configurations, ranked by overall potential impact.
+
+1. Silica Aerogel + Endothermic Aluminum Hydroxide + Phlogopite Mica
+    ●​ Concept: Sandwiching an ultra-thin silica aerogel layer infused with aluminum hydroxide (
+       𝐴𝑙(𝑂𝐻)3) powder, backed by a rigid phlogopite mica flame shield.
+    ●​ Strengths:
+           ○​ Provides a triple-defense mechanism: aerogel stops conductive heat transfer, aluminum
+              hydroxide undergoes an endothermic decomposition releasing cooling water vapor (
+              𝐴𝑙(𝑂𝐻)3 → 𝐴𝑙2𝑂3 + 3𝐻2𝑂) upon reaching high temperatures, and mica deflects direct
+             high-velocity plasma/flame jets.
+    ●​ Weaknesses:
+         ○​ Increased thickness and weight penalty; potential manufacturing challenges in uniformly
+             distributing aluminum hydroxide within brittle aerogel structures.
+
+2. Phase Change Material (PCM) + Intumescent Coating + Basalt ("Lava Rock") Fiber Wrap
+    ●​ Concept: Encapsulating cells in a PCM matrix while wrapping the module assembly in a basalt
+       fiber fabric coated with an intumescent paint.
+    ●​ Strengths:
+           ○​ Basalt fiber offers superior radiant heat resistance and structural integrity under fire
+                conditions. If the PCM saturates and a cell breaches, the intumescent coating expands up
+                to 100 × to seal air gaps and trap expanding gases.
+    ●​ Weaknesses:
+           ○​ Significant volumetric expansion requires dedicated mechanical spacing tolerances;
+                heavy multi-layer setup reduces pack gravimetric energy density.
+
+3. Aluminosilicate Ceramic Fiber Paper + Aluminum Hydroxide Slurry Impregnation
+    ●​ Concept: Impregnating porous high-temperature ceramic fiber paper with an endothermic
+       aluminum hydroxide binder solution.
+
+
+===== PDF PAGE 15 =====
+    ●​ Strengths:
+           ○​ Ceramic fiber maintains structural stability above 1, 200°𝐶, while the sacrificial
+              endothermic chemistry absorbs massive thermal energy during decomposition.
+    ●​ Weaknesses:
+           ○​ Ceramic fiber papers are friable and prone to shedding particulate matter; water vapor
+              release from aluminum hydroxide during accidental mild overheating could potentially
+              interact with compromised cell packaging.
+
+4. Basalt ("Lava Rock") Fiber Fabric + Mica Plate Lamination
+    ●​ Concept: Mechanically stitching or bonding basalt fiber textile layers directly to rigid phlogopite
+       mica plates.
+    ●​ Strengths:
+           ○​ High flexibility, ease of cutting/prototyping, and exceptional resistance to open flames
+               and electrical arcing.
+    ●​ Weaknesses:
+           ○​ Lacks intrinsic low thermal conductivity (both basalt and mica conduct heat faster than
+               aerogels) and provides zero active latent heat buffering.
+
+Carbon Fiber Reinforced Polymer (CFRP) & Lightweight
+Composites
+Carbon Fiber Reinforced Polymer (CFRP) and lightweight composite materials are heavily utilized in
+aerospace engineering due to their exceptional strength-to-weight ratios. When applied to lithium-ion
+battery containment and thermal runaway prevention, they serve as lightweight structural housings or
+localized cell sleeves.
+
+
+Have Been Done
+    1.​ CFRP Structural Enclosures + Internal Aerogel / Mica Blankets
+          ○​ How They Work Together: The aircraft battery module uses a lightweight molded
+              CFRP outer box or tray for primary structural rigidity, lined internally with thin
+              nanoporous silica aerogel sheets and phlogopite mica plates.
+          ○​ Strengths: CFRP provides high specific strength and stiffness without the heavy
+              gravimetric penalty of steel or thick aluminum, while the internal aerogel and mica layers
+              provide thermal insulation and flame deflection.
+          ○​ Weaknesses: CFRP matrices are organic polymer-based and can degrade, delaminate, or
+              burn when subjected to prolonged direct high-temperature flame jets ( >600 C) unless
+              protected by an inner thermal barrier.
+    2.​ NASA-Style CFRP Cell Sleeves / Wraps
+          ○​ How They Work Together: Individual cylindrical cells are wrapped in a thin,
+              custom-engineered carbon fiber sleeve infused with flame-retardant epoxy matrices.
+          ○​ Strengths: Prevents sidewall ruptures (SWR) of small cylindrical cells, adds minimal
+              mass compared to metal housings, and is non-electrically conductive depending on the
+              weave and matrix sizing.
+
+
+===== PDF PAGE 16 =====
+Not Yet Been Done (Unexplored or Emerging Areas)
+    1.​ Intumescent-Impregnated CFRP Matrix Composites
+            ○​ Concept: Embedding expandable intumescent microcapsules directly into the epoxy
+               resin matrix of the structural CFRP weave during manufacturing.
+            ○​ Strengths: During normal flight, the CFRP functions purely as a high-strength structural
+               skin. If a localized thermal runaway spike occurs, the embedded intumescent compounds
+               activate, swelling internally to choke off oxygen and create a thick carbonaceous char
+               barrier within the composite plies themselves.
+            ○​ Weaknesses: Introducing foreign compounds into the epoxy matrix can compromise the
+               interlaminar shear strength and mechanical fatigue life of the composite under cyclic
+               aircraft loading.
+    2.​ CFRP + Aerogel-Core Sandwich Panels with Integrated Micro-Venting Channels
+            ○​ Concept: A structural sandwich panel consisting of thin CFRP face sheets enclosing a
+               core made of intumescent aerogel composite, integrated with micro-machined venting
+               flutes that safely channel off-gases overboard.
+            ○​ Strengths: Offers a multi-functional structural wall that simultaneously handles
+               mechanical crash loads, provides ultra-low thermal insulation, and acts as a
+               pressure-relief duct manifold for aviation environments.
+            ○​ Weaknesses: Extremely complex and costly multi-step manufacturing process; difficult
+               to nondestructively inspect for internal micro-delamination after vibrational stress.
+
+Key Trade-Offs for Aviation (eVTOL / Commuter Aircraft)
+   ●​ Thermal-Structural Conflict: While CFRP provides exceptional weight savings to help reach
+       pack targets (≈ 650 𝑊ℎ/𝑘𝑔), standard polymer matrices lose structural integrity at elevated
+       temperatures ( >300- 400 C).
+   ●​ Regulatory Compliance: Any CFRP housing or internal composite barrier used in passenger
+       aircraft must satisfy strict flammability, smoke, and toxicity (FST) mandates such as FAR 25.853
+       and UL 94 V-0, requiring specialized flame-retardant resin systems (e.g., modified cyanate esters
+       or high-temperature epoxy syntactics).
+
+References
+Mei, J., Shi, G., Liu, H., & Wang, Z. (2023). Organic and inorganic hybrid composite phase change
+material for inhibiting the thermal runaway of lithium-ion batteries. Batteries, 9(10), 513.
+https://doi.org/10.3390/batteries9100513
+
+Cited by: 13
+
+Wang, J., Feng, X., Yu, Y., Huang, H., Zheng, M., Xu, Y., Wu, J., Yang, Y., & Lu, J. (2024). Rapid
+temperature-responsive thermal regulator for safety management of battery modules. Nature Energy, 9(8),
+939–946. https://doi.org/10.1038/s41560-024-01535-5
+
+Cited by: 94
+
+
+===== PDF PAGE 17 =====
+Wong, S. K., Li, K., Rui, X., Fan, L., Ouyang, M., & Feng, X. (2024). Mitigating thermal runaway
+propagation in high specific energy lithium-ion battery modules through nanofiber aerogel composite
+material. Energy, 307, 132353. https://doi.org/10.1016/j.energy.2024.132353
+
+Cited by: 56
+
+
+===== PDF PAGE 18 =====
+Three-Material Hybrid Barrier Combinations for Electric Aviation
+
+   1.​ Carbon Fiber Reinforced Polymer (CFRP) Plate + Nanoporous Silica Aerogel Sheet +
+       Phlogopite Mica Plate
+          a.​ Using a thin CFRP plate (high stiffness) as the structural outer wall of the barrier
+               box, lined internally with aerogel (highly flexible) and mica (stiff plate, note: can
+               crack/fracture under bending stress).
+   2.​ PCM Composite Matrix + Intumescent Polymer Coating + Compressible Ceramic Fiber
+       Paper
+          a.​ Packing the space between the steel rod and Target Cell 2 with a PCM (semi-rigid
+               to waxy, minimal structural stability) matrix and lining the walls with
+               intumescent-coated ceramic paper.
+          b.​ Intumescent Polymer Coating (rubbery, low structural rigidity), Compressible
+               Ceramic Fiber Paper (soft, blanket-like cushion)
+          c.​ Setup Limitation: Option B uses a controlled electric cartridge heater, meaning
+               there is no real chemical off-gassing or raw flame to trigger the intumescent
+               expansion properly. An intumescent coating relies on extreme flash heat or direct
+               flame to expand 100 ×; a clean electric steel rod might not trigger full
+               intumescent expansion unless the setpoint exceeds 300 –400 C, making this
+               combination harder to evaluate cleanly without a real thermal runaway trigger.
+   3.​ Ceramic Fiber Felt + Silica Aerogel + Phlogopite Mica (Flexible Inorganic Sandwich
+       Barrier)
+          a.​ No outer structural frame
+   4.​ Combination: Aerogel + Phlogopite Mica (Flexible + Rigid Hybrid)
+          a.​ An ultra-thin flexible aerogel blanket is placed against the steel rod/cell face to
+               conform to the geometry, backed by a rigid phlogopite mica plate clamped inside
+               the barrier wall slot.
+
+Combination 1: Structural-Thermal-Flame Barrier
+
+Materials: CFRP Plate + Nanoporous Silica Aerogel Sheet + Phlogopite Mica Plate
+
+Material-by-Material Reasoning
+
+   1.​ Carbon Fiber Reinforced Polymer (CFRP) Plate
+          ○​ Reasoning: Serves as the primary structural housing and load-bearing
+             inter-module wall. Unlike heavy steel or aluminum, CFRP provides an
+             exceptional specific strength-to-weight ratio, ensuring the battery pack satisfies
+             aviation gravimetric energy density goals without compromising structural
+             rigidity.
+
+
+===== PDF PAGE 19 =====
+2.​ Nanoporous Silica Aerogel Sheet
+       ○​ Reasoning: Implemented as the core static thermal insulator. With extreme
+          porosity (≈99%) and an ultra-low thermal conductivity (k≈0.013–0.018 W/m⋅K),
+          it blocks conductive heat flux to keep adjacent cell skin temperatures safely below
+          the 150∘C non-propagation threshold during a thermal event.
+3.​ Phlogopite Mica Plate
+       ○​ Reasoning: Acts as a sacrificial high-temperature (>1,000∘C) flame and plasma
+          shield. Raw aerogels can erode under direct high-velocity particle ejecta; the mica
+          plate deflects incandescent jets and provides essential dielectric insulation against
+          electrical arcing.
+●​ Strengths:
+       ○​ Exceptional weight-to-strength performance tailored for aerospace structural
+          demands.
+       ○​ Robust multi-stage defense against both slow conductive heat transfer and
+          high-velocity plasma jets.
+       ○​ Cell Deformation Behavior: The rigid exterior Carbon Fiber Reinforced
+          Polymer (CFRP) housing combined with internal mica plates provides a strong
+          mechanical box structure. This constrains normal cell swelling and prevents
+          neighboring cells from bulging into one another during high-rate aviation
+          discharge cycles.
+       ○​ Post-Crash Survivability Probability: Very High: CFRP offers an exceptional
+          strength-to-weight ratio that absorbs high-G crash impulses without yielding or
+          adding excessive dead weight (preserving the ≈ 650𝑊ℎ/𝑘𝑔 pack target). The
+          outer composite housing prevents the battery array from breaking apart or
+          deforming into a "bomb" structure during a crash event, satisfying DO-160G
+          crash safety requirements while the inner aerogel and mica layers maintain
+          thermal stability.
+●​ Weaknesses:
+       ○​ CFRP polymer matrices degrade if exposed directly to prolonged temperatures
+          above 200∘C–300∘C without protective facings.
+       ○​ Rigid mica and CFRP plates require precise mechanical tolerances to
+          accommodate normal cell swelling. Because the CFRP and mica layers are rigid,
+          they lack high elasticity. If a cell undergoes severe swelling or mechanical
+          deformation during early-stage abuse, rigid plates can create localized pressure
+          pinch-points, potentially accelerating internal short circuits.
+
+Resembling Literature & Work: Research into lightweight structural composite enclosures
+   paired with multi-layer thermal barriers. Studies evaluate how combining structural
+   composites (like carbon fiber or high-strength polymers) with internal low-conductivity
+   aerogel pads and mica flame shields prevents thermal propagation while maintaining
+   structural integrity.
+
+
+===== PDF PAGE 20 =====
+   ●​ Liu et al. (2022 / 2024) – "Experimental study on the alleviation of thermal runaway
+      propagation from an overcharged lithium-ion battery module using different thermal
+      insulation layers" (Energy / Journal of Energy Storage), which examines the synergy of
+      modular thermal insulation layers and high-temperature mineral shields.
+   ●​ PatSnap Eureka EV Safety Reports (2026) – Detailing structural composite enclosures
+      and passive thermal barriers utilizing aerogel felts and mica compression plates for
+      electric vehicle and aviation modules.
+
+Combination 2: Enthalpy-Dynamic-Cushion Barrier
+
+Materials: PCM Composite Matrix + Intumescent Polymer Coating + Compressible Ceramic
+Fiber Paper
+
+Material-by-Material Reasoning
+
+   1.​ Phase-Change Material (PCM) Composite Matrix
+          ○​ Reasoning: Functions as an active latent heat sink. During heavy aircraft
+              discharge cycles (e.g., 3C–5C takeoff/climb) or early thermal spikes, the PCM
+              absorbs massive amounts of thermal energy nearly isothermally via phase
+              transition, smoothing out operating temperatures.
+   2.​ Intumescent Polymer Coating
+          ○​ Reasoning: Provides dynamic thermal expansion. When subjected to temperatures
+              exceeding critical thresholds (≈200∘C), the intumescent binder swells up to 100×
+              its original volume, generating a thick carbonaceous char layer that autonomously
+              seals air gaps created by cell deformation.
+   3.​ Compressible Aluminosilicate Ceramic Fiber Paper
+          ○​ Reasoning: Acts as a high-temperature structural cushion and thermal break. It
+              withstands continuous temperatures above 1,000∘C while absorbing multi-axis
+              aircraft vibrations (DO-160G Section 8) and buffering mechanical expansion
+              cycles.
+   ●​ Strengths:
+          ○​ Dynamic gap-filling and active enthalpy buffering prevent thermal spikes from
+              escalating into full runaway.
+          ○​ Compressible ceramic layers absorb mechanical shock and vibration effectively
+              under flight conditions.
+          ○​ Cell Deformation Behavior: Highly compliant. The compressible ceramic fiber
+              paper and soft PCM/intumescent matrix act as mechanical buffers. They naturally
+              absorb and accommodate the breathing, expansion, and minor geometrical
+              deformations of pouch or prismatic cells over their operational lifetime.
+   ●​ Weaknesses:
+
+
+===== PDF PAGE 21 =====
+         ○​ PCMs add non-active weight and present potential liquid leakage risks if
+            encapsulation fails under extreme mechanical shock.
+         ○​ Intumescent expansion requires dedicated void space within the module
+            architecture to prevent over-pressurization.
+         ○​ Under massive structural impacts or crashes, soft or semi-fluid materials provide
+            virtually zero structural rigidity on their own, leaving the cells vulnerable to
+            crushing unless housed in a rigid secondary frame.
+   ●​ Post-Crash Survivability Probability: Moderate.
+         ○​ Reasoning: While this combination excels at internal thermal management and
+            local gap-sealing via intumescent expansion (100 ×), it lacks structural
+            load-bearing capacity. Under a severe crash impulse (20𝑔), a module relying
+            solely on soft PCMs and ceramic paper risks bulk structural collapse, potentially
+            causing widespread mechanical deformation across the cell array unless backed
+            by an external aerospace-grade frame.
+
+Resembling Literature & Work: Work focusing on active latent heat buffers combined with
+expandable intumescent coatings and high-temperature inorganic fiber pads to manage both
+normal operating heat and extreme thermal events.
+
+Key References:
+
+   ●​ MDPI Reviews on Phase Change Materials for Battery Thermal Management (2026) –
+      Systematically evaluating composite PCM degradation, latent heat storage, and
+      integration with fire-retardant intumescent systems.
+   ●​ US Patent US20170214103A1 – "Lithium Ion Battery With Thermal Runaway
+      Protection" – Describing endothermic ceramic matrices and multi-component insulation
+      configurations that combine energy absorption with high-temperature barrier protection.
+
+
+
+Combination 3: Ceramic Fiber Felt + Silica Aerogel + Phlogopite Mica (Flexible
+Inorganic Sandwich Barrier)
+Material-by-Material Reasoning
+   1.​ Ceramic Fiber Felt (CFF)
+           ○​ Reasoning: Serves as a high-temperature compressible fibrous backbone ( >1,000
+               C). It absorbs multi-axis mechanical vibrations (DO-160G) and maintains
+               structural thickness under compression.
+   2.​ Silica Aerogel Blanket (FA)
+           ○​ Reasoning: Impregnated or layered directly within the felt matrix to provide
+               world-class static thermal insulation (approx 0.013 - 0.018 W/m K), blocking
+               conductive heat transfer between cells.
+
+
+===== PDF PAGE 22 =====
+   3.​ Phlogopite Mica Roll (MR)
+          ○​ Reasoning: Applied as an outer protective face sheet. It provides an impermeable,
+             high-temperature dielectric shield that deflects direct high-velocity plasma jets
+             and incandescent particle ejecta without eroding.
+   ●​ Strengths:
+          ○​ 100% inorganic composition ensures zero toxic smoke emission or organic binder
+             degradation during a fire event.
+          ○​ Exceptional flexibility and vibration resistance tailored for dynamic aerospace
+             environments.
+          ○​ Cell Deformation Behavior: The compressible ceramic felt core functions like an
+             engineered cushion. It dynamically absorbs normal cell swelling and multi-axis
+             vibrational stresses (satisfying DO-160G Section 8 vibration criteria) without
+             transmitting rigid pressure spikes back to the cell casing.
+   ●​ Weaknesses:
+          ○​ Lacks active latent heat buffering (no PCM) during early-stage temperature
+             spikes.
+          ○​ Slightly thicker profile than bare aerogel films due to the underlying felt and mica
+             layers.
+          ○​ Entirely flexible systems offer no structural containment against high-pressure gas
+             venting or violent cell expansion, meaning individual cells can still push outward
+             if internal pressures spike.
+   ●​ Post-Crash Survivability Probability: Moderate-Low (As a standalone housing).
+          ○​ Reasoning: While completely inorganic and non-flammable under extreme flame
+             jets, a soft sandwich barrier cannot provide structural crash containment. To
+             achieve high survivability probability in an aircraft, this flexible blanket must be
+             paired with an outer lightweight structural frame (such as a thin CFRP or titanium
+             exoskeleton) to prevent catastrophic pack deformation during a crash landing.
+
+Supporting Literature References
+   ●​ PMC Research (2025) – "Thermal Insulation Efficiency and Mechanisms of Flexible
+      Sandwich Thermal Barriers for Lithium-Ion Batteries" (PMC11989640) – Specifically
+      investigates flexible sandwich structures combining mica rolls, ceramic fiber felts, and
+      fiberglass aerogels, analyzing coupled heat transfer mechanisms and cold-surface
+      temperature rise.
+
+
+===== PDF PAGE 23 =====
+Material Properties
+
+ Material            Ability to Absorb /     Structural            Unique Traits
+                     Manage Heat             Stability
+
+
+
+ Carbon Fiber        Low-Moderate: Acts      Very High             Extremely lightweight;
+ Reinforced          primarily as a          (Rigid):              tailored for aerospace
+ Polymer (CFRP)      structural barrier      Exceptional           gravimetric targets (
+                     rather than a thermal   strength-to-weigh     ≈ 650𝑊ℎ/𝑘𝑔); requires
+                     sink; susceptible to    t ratio; high         flame-retardant sizing to
+ 0. 5𝑚𝑚 to 2. 0𝑚𝑚    epoxy matrix            in-plane stiffness    pass FST mandates.
+ (commonly 1. 0𝑚𝑚)   degradation above       and tensile
+                     200°C–300°C.            strength.
+
+
+
+ Phlogopite /        Moderate-High           High (Rigid           Excellent natural electrical
+ Muscovite Mica      (Thermal Shielding):    Plates) / Low         insulator (dielectric);
+                     Withstands extreme      (Flexible Rolls):     sacrificial mineral structure
+                     temperatures            Rigid plates          that chars/deflects without
+ 0. 2𝑚𝑚 to 1. 5𝑚𝑚    (>1,000°C) without      maintain flat         emitting toxic smoke.
+ (commonly 0. 5𝑚𝑚)   melting; reflects       structural form;
+                     radiant heat and        flexible rolls
+                     blocks plasma jets.     conform to
+                                             curves but lack
+                                             load-bearing
+                                             strength.
+
+
+
+ Nanoporous Silica   Exceptional             Very Low (Soft        The lightest solid material
+ Aerogel             (Thermal Barrier):      & Fragile):           known; requires
+                     World-class static      Extremely porous      encapsulation or a backing
+                     thermal conductivity;   ~99%; has             layer (like mica or felt) to
+                     blocks conductive       near-zero             protect against physical
+                     heat flux entirely.     structural rigidity   erosion.
+                                             and can powder
+ 0. 5𝑚𝑚 to 3. 0𝑚𝑚                            or compress
+ (commonly 1. 0𝑚𝑚                            permanently
+ or 3. 0𝑚𝑚)                                  under heavy
+                                             loads.
+
+
+===== PDF PAGE 24 =====
+Phase-Change         Very High (Latent        Low (Semi-Rigid       Prevents transient
+Materials (PCMs)     Heat Buffer):            to Liquid): Waxy      temperature spikes from
+                     Absorbs massive          solid when cool,      triggering full runaway; risk
+                     thermal energy           liquid when           of liquid leakage if
+                     isothermally via         heated; provides      encapsulation fails under
+                     phase transition         zero structural       shock.
+                     (melting                 load-bearing
+                     paraffin/salts) during   capacity.
+                     early thermal spikes.
+
+
+
+Intumescent          High (Dynamic            Low (Rubbery /        Expands exponentially up to
+Polymers /           Endothermic Char):       Soft): Functions      100× its original volume
+Coatings             Absorbs heat during      as a coating or       when exposed to heat
+                     initial decomposition    paint; mechanical     ($\approx
+                     and forms an             rigidity is           \mathbf{200^\circ\text{C}}$)
+                     insulating               negligible prior to   to autonomously seal air
+                     carbonaceous char        expansion.            gaps and block flames.
+                     barrier.
+
+
+
+Ceramic Fiber        High (High-Temp          Moderate              Excellent vibration damping
+Paper / Felt         Insulation):             (Compressible         (DO-160G Section 8); prone
+(Aluminosilicate)    Withstands               Cushion): Soft        to particulate dusting if
+                     continuous               and spring-like;      unsealed.
+                     temperatures             engineered to
+0. 5𝑚𝑚 to 3. 0𝑚𝑚     >1,000°C while           absorb vibrations
+(commonly 1. 0𝑚𝑚     providing a stable       and mechanical
+or 2. 0𝑚𝑚)           thermal break.           "breathing"
+                                              without rigidity.
+
+
+
+Aluminum             Very High                None (Powder /        Acts as a chemical cooling
+Hydroxide (𝐴𝑙(𝑂𝐻)3   (Sacrificial             Filler): Must be      agent right at the source of
+)                    Endothermic):            bound within a        thermal abuse.
+                     Undergoes                polymer, textile,
+                     endothermic              or slurry matrix to
+                     decomposition (          be utilized.
+                     2𝐴𝑙(𝑂𝐻)3 → 𝐴𝑙2𝑂3 + 3𝐻
+                     ) past 200°C,
+                     absorbing massive
+                     heat and releasing
+                     cooling water vapor.
+
+
+===== PDF PAGE 25 =====
+ Basalt ("Lava            Moderate (Radiant        Moderate             Volcanic rock-derived
+ Rock") Fiber             Shield): Offers good     (Textile Weave):     mineral; highly
+                          high-temperature         Flexible fabric      flame-resistant, eco-friendly,
+                          resistance and flame     that retains         and cost-effective compared
+ 1. 0𝑚𝑚 to 4. 0𝑚𝑚         barrier properties up    tensile strength     to specialized carbon or
+ (commonly 2. 0𝑚𝑚)        to ~700°C–800°C.         under fire           aramid fibers.
+                                                   conditions better
+                                                   than standard
+                                                   glass fiber.
+
+
+
+
+Layer 1 (Cell-Facing Shield): 0. 5𝑚𝑚 Phlogopite Mica Sheet (deflects direct flame jets and plasma
+arcing).
+
+Layer 2 (Core Thermal Insulation): 2. 0𝑚𝑚 Silica Aerogel Blanket (blocks conductive heat transfer to
+keep adjacent cells below 150 C.
+
+Layer 3 (Mechanical Cushion / Outer Wrap): 1. 0𝑚𝑚 to 1. 5𝑚𝑚 Basalt Fiber Felt or Ceramic Paper
+(absorbs cell "breathing" and multi-axis aircraft vibrations).
+
+Total Stack Thickness: 3. 5𝑚𝑚 to 4. 0𝑚𝑚, leaving a safe buffer for modular assembly tolerances.
+
+
+===== PDF PAGE 26 =====
+10/12 - 10/16
+
+Currently $330
+
+Battery Dimensions: 65.00mm; diameter max 18.40mm (2.55906 in , 0.7244094 in)
+
+Budget: $650
+ON SOME REAL SHIT: Batteries
+https://www.18650batterystore.com/products/samsung-25r-18650 x 4 = 30
+
+Cartridge heater: $20
+https://oemheaters.com/product/5260/34-inch-x-25-inch-60w-120v-cartridge-heater?utm_source
+=chatgpt.com
+
+Sand: $8
+https://www.walmart.com/ip/Stoney-River-White-Aquatic-Sand-5-Pound-Bag/193179912?utm_
+medium=feed&utm_source=chatgpt.com&oppcref=1cddd204-1889-45aa-989f-f9ba63fb05ec
+
+New rigid shmittle 0.032 inch (0.8128 mm)
+https://www.mcmaster.com/85165K26/
+    -​ $77.97 each
+
+SUPERIOR aerogel 65 bucks + 10 dollar shipping 4 day shipping, 2mm (1300 C)
+https://www.buyaerogel.com/product/skogar-ht/?attribute_size=40+cm+x+30+cm+x+2+mm
+    -​ 40 cm x 30 cm
+    -​ 15.748’’ x 12’’
+
+1.5 mm: https://www.buyaerogel.com/product/airloy-hr-rollable-sheet/ (300 C)
+    -​ $90 for 6’’ x 1 ft
+
+
+Basalt Fabric: https://www.mcmaster.com/products/~/material~basalt-fabric/?s=basalt+fiber
+   -​ Get the 2” width
+   -​ 1.19062 mm thick, 3/64 inch thick
+   -​ $20.25 each for 15 ft OR $33.75 for 25 ft
+
+High-Strength Lightweight Carbon Fiber Sheet: 12" x 24" x 1/32" Part number 8181K32 $100.31
+https://www.mcmaster.com/products/sheet-stock/carbon-fiber-1~/?s=carbon+fiber+sheet+stock
+    -​ Thickness: 0.79375 mm
+
+
+4mm / 10/64inch total thickness
+
+
+===== PDF PAGE 27 =====
+Layer possibilities:
+Mica aerogel mica
+Carbon fiber aerogel carbon fiber
+Mica ceramic aerogel ceramic mica
+Basalt aerogel basalt
+Basalt mica aerogel mica basalt
+
+
+
+
+Fuelcell store
+McMaster?
+
+Both blocks are 12’’ inches long – Need to cut to 2’’
+   1.​ Block of steel (runaway cell) -
+       https://speedymetals.com/p-473-12-x-2-cold-finished-1018.aspx
+   2.​ Block of aluminum (adjacent cell) -
+       https://speedymetals.com/p-473-12-x-2-cold-finished-1018.aspx
+
+
+
+
+ Categor           Item             Qty       Est.     Supplier / link    Why we need it
+    y                                         cost
+
+ Barrier    Phlogopite mica, 0.51 2 sheets   $49.08   ElectronTubeSto    Thin electrical +
+            mm                                        re                 thermal barrier
+                                                                         benchmark
+
+
+===== PDF PAGE 28 =====
+Barrier   Ceramic-fiber paper,    2 sheets   $20.00   Discount Glass      Cheap
+          1/8 in                                      Supply              high-temperature
+                                                                          insulation control
+
+Barrier   304 stainless shim,     1          $28.30   Online Metals       Warwick-style
+          0.010 in                                                        metal barrier /
+                                                                          face sheet
+
+Barrier   3-mm silica-aerogel     1          ~$70.0   Aerogel-it          Very-low-conducti
+          blanket                            0                            vity benchmark;
+                                                                          listed from €49
+                                                                          before shipping
+
+Barrier   Intumescent/silicone    1          ~$35.0   Mid-Mountain        Heat-triggered
+          fiberglass sample                  0        ARMATEX SIF         expanding barrier;
+                                                                          combine with
+                                                                          stainless
+
+PCM       Sodium acetate          1          $21.95   The Science         MDPI-inspired
+          trihydrate, 500 g                           Company             phase-change
+                                                                          experiment
+
+PCM       Paraffin wax, 500 g     1          $15.38   Fisher Scientific   Second PCM
+                                                                          component
+
+Dummy     6061 aluminum,          2          $15.44   Online Metals       Machine
+cells     3/4-in round bar × 12                                           cylindrical battery
+          in                                                              surrogates
+
+Heating   12-V, 40-W cartridge    4          $22.00   SeeMeCNC            Controlled heat
+          heaters                                                         inside dummy
+                                                                          cells
+
+Heating   12-V, 50-W silicone     1          $23.64   PMD Way             Alternative
+          heating pad                                                     broad-area heat
+                                                                          source
+
+Power     12-V, 10-A Mean         1          $27.70   Bravo Electro       Heater/fan power
+          Well supply                                                     if a lab supply
+                                                                          isn't available
+
+Control   PWM MOSFET              2          $3.90    Abra Electronics    Arduino heater
+          heater modules                                                  control + spare
+
+
+===== PDF PAGE 29 =====
+Venting   12-V blower fans        2-pack   $8.19    Blower-fan        Forced-air /
+                                                    option            directed-vent
+                                                                      comparison
+
+DAQ       Arduino UNO R4          1        $20.00   Arduino           Data logging and
+          Minima                                                      heater/fan control
+
+DAQ       MAX31850K               4        $59.80   Adafruit          Four simultaneous
+          thermocouple                                                high-temperature
+          amplifiers                                                  channels
+
+Sensors   Fiberglass K-type       4        $39.80   Adafruit          Source,
+          thermocouples                                               barrier-hot,
+                                                                      barrier-cold and
+                                                                      receiver
+                                                                      temperatures
+
+Wiring    Inline fuse holders +   2        $9.98    Progressive       Heater circuit
+          fuses                                     Automations       protection
+
+Wiring    Ceramic high-temp       1        $7.00    Duralite          Connections near
+          terminal block                                              heated fixture
+
+Wiring    High-temp fiberglass    5 ft     $10.00   JDCustoms USA     Protect wiring
+          wire sleeve                                                 near heaters
+
+Battery   18650 holder clips      8        $7.60    SparkFun          Removable
+hardwar                                                               connections for
+e                                                                     normal-cell tests
+
+Fixture   Fasteners, spacers,     allowanc $15.00   Lab/local stock   Maintain
+          wire, paste, misc.      e                                   repeatable
+                                                                      geometry/contact
+                                                                      pressure
+
+Batteries Samsung 25R 18650       4        $19.96   18650 Battery     Normal-operatio
+                                                    Store             n validation only,
+                                                                      not abuse testing
+
+Safety    Steel secondary         1        $13.99   Harbor Freight    Guard around the
+          guard                                     steel can         heated surrogate
+                                                                      fixture; do not
+                                                                      seal around
+
+
+===== PDF PAGE 30 =====
+                                                                                  live-cell abuse
+                                                                                  tests
+
+ Softwar    Arduino IDE               —           $0         Arduino              Logging/control
+ e
+
+ Softwar    Python/Jupyter            —           $0         Python               Data reduction,
+ e                                                                                plots,
+                                                                                  uncertainty/statisti
+                                                                                  cs
+
+ Softwar    Zotero                    —           $0         Zotero               Literature
+ e                                                                                management
+
+ Softwar    CAD/Onshape               —           $0         Onshape/instituti    Fixture and duct
+ e          Education                                        on software          design
+
+ Researc    Papers/library/standar —              $0         University/librar    Use institutional
+ h          ds                                    planne     y access             access rather than
+                                                  d                               buying individual
+                                                                                  papers/standards
+
+            Selected purchase                     $543.7
+            subtotal                              1
+
+            8% contingency                        $43.50                          Shipping, tax,
+                                                                                  vendor quote
+                                                                                  variation
+
+            Projected project                     $587.2                          $62.79 remains
+            spend                                 1
+
+
+
+Estimated Material Prices & Purchasing Links
+   ●​ 1. Pre-Made CFRP Flat Plates / Sheets ($40 – $120 per sheet)
+          ○​ Application: Used for rigid module end-plates, exterior structural housing walls, or
+             inter-cell flat bulkheads.
+          ○​ Example / Source: DragonPlate Carbon Fiber Sheets offers standard (1 mm 12’’ x 12’’)
+             structural laminate plates for approximately $107. Thinner or smaller cut-offs can be
+             found on industrial suppliers like McMaster-Carr for 40–80.
+   ●​ 2. Carbon Fiber Sleeves / Tubing for Cylindrical Cells ($25 – $60)
+          ○​ Application: Used to slide over individual cylindrical cells (e.g., 21700 or 18650 formats)
+             to test custom lightweight thermal barrier sleeves.
+
+
+===== PDF PAGE 31 =====
+       ○​ Example / Source: CompositesCanada Carbon Fiber Braided Sleeves or similar specialty
+          suppliers sell expandable carbon fiber sleeves by the yard for around $25 to $50.
+●​ 3. DIY Vacuum Bagging / Resin Starter Kit ($80 – $150)
+       ○​ Application: If you want to mold your own custom composite panels infused with
+          fire-retardant epoxy or intumescent additives.
+       ○​ Example / Source: Fiber Glast Epoxy Resin & Carbon Fiber Starter Kits provide woven
+          fabric, high-temp epoxy, and vacuum film components ranging from $90 to $160.
+
+
+===== PDF PAGE 32 =====
+Hardware details
+
+Fixture. The test sits in a cinderblock cavity, and the cinderblock sits in a cardboard box. The
+bottom of the cinderblock is sealed with plastic wrap and duct tape to keep the sand in. The
+barrier is clamped vertically in the middle of the cavity, dividing it into a hot side and a cold side.
+Both sides are filled with sand. Make the barrier span the full width of the cavity, or at least
+extend well past the heater and battery on every edge. Otherwise heat can travel through the sand
+around the barrier instead of through it.
+
+Sand. Use dry sand. Damp sand absorbs heat as its water evaporates, which would make every
+barrier look better than it is. Use the same mass of sand on each side every run, and pack it the
+same way each time. Sand conducts better when packed tightly, so inconsistent packing adds
+scatter to your results. Let the sand cool fully between runs, or swap in fresh room-temperature
+sand. Sand holds a lot of heat.
+
+Hot side. A high-temperature cartridge heater, rated for at least 700 °C, is pressed directly
+against the barrier’s hot face. Power it through a variac. Since the variac is manual, you set the
+temperature by adjusting voltage while watching the heater thermocouple. Note your variac
+setting for each run. Ramp to about 600 °C and hold for 30 minutes. A real runaway spikes
+within seconds and then decays, so holding at peak is conservative. Report your ramp rate and
+the manual control as limitations of the method.
+
+A bare cartridge heater only touches the barrier along a narrow strip, so it heats a line rather than
+a whole face the way a failing cell would. Note this in your report. Cartridge heaters also rely on
+
+
+===== PDF PAGE 33 =====
+their surroundings to carry heat away, and sand does this poorly. Bring the voltage up gradually
+so the heater element doesn’t overheat and burn out.
+
+Cold side. The battery is pressed directly against the barrier’s cold face. Use a fully discharged
+cell or an inert dummy cell, not a charged one (see Safety). The battery thermocouple sits on the
+face touching the barrier, which is the cell’s hottest point. That makes the reading conservative,
+which is the right direction for this test.
+
+Spacing. Because the heater and battery press directly on the barrier, the gap between them
+equals the barrier’s thickness. Thinner barriers therefore put the heat source closer to the cell.
+That’s realistic, since a thinner barrier in a module saves space, but keep it in mind when
+comparing materials of different thicknesses. Intumescents will expand against the sand rather
+than into open space, which is more confining than a real module. Note this as well.
+
+Thermocouples. There are two: one on the heater and one on the battery, each on the side facing
+the barrier. Mount them at the same height, directly across the barrier from each other, so both
+measure the same heat path. Use a mineral-insulated K-type probe for the heater thermocouple,
+because the fiberglass-insulated kind fails above about 480 °C. Glass-insulated wire is fine for
+the battery thermocouple, held on with Kapton tape. Read both through MAX31856 boards at 1
+Hz on the ESP32, which now only logs data and doesn’t control the heater. Your detection
+subgroup can still reuse this data.
+
+Test matrix
+
+Cooldown is still the bottleneck. The sand and cinderblock hold more heat than the old fixture,
+so expect even longer waits. The intumescent and endothermic samples are destroyed in each
+test, so run the matrix in phases.
+
+
+   Phase        When                                   What                                  Runs
+
+
+
+ A:            Weeks      Every barrier once, plus a no-barrier control and mica as the About
+ Screening     2–3        reference material                                            8
+
+
+
+ B:            Weeks      Top 3–4 barriers by figure of merit, 3 repeats each              About
+ Finalists     4–5                                                                         12
+
+
+===== PDF PAGE 34 =====
+ C: Shock     Weeks       Finalist samples shocked at 20 g / 11 ms, then thermally       About
+              5–6         tested and compared with unshocked results                     6
+
+
+Without altitude runs, Phase B is roughly half as long as before, which frees up time for extra
+repeats if you want tighter error bars. Cinderblocks, sand, and boxes are cheap, so a second
+fixture is easy to build. One can cool while the other runs.
+
+For the no-barrier control, clamp nothing in the middle and use a thin sheet of a non-conducting
+material, or leave a fixed air gap with spacers so the sand from each side doesn’t merge. For your
+barrier set: the control, mica, aerogel, the intumescent paint on thin steel, the expandable
+graphite/silicone composite at two loadings, the aluminum hydroxide/silicone composite, and an
+industry sample if you get one. Make enough of each finalist for three thermal runs plus shock
+samples.
+
+Procedure for each run
+
+   1.​ Weigh the barrier sample and measure its thickness at several points.
+   2.​ Check that the plastic wrap and tape on the bottom of the cinderblock are intact.
+   3.​ Clamp the barrier in the middle of the cavity.
+   4.​ Press the heater against the hot face and the battery against the cold face. Check that both
+       thermocouples are seated and level with each other.
+   5.​ Fill each side with the same mass of dry sand, packed the same way as previous runs.
+   6.​ Log 2 minutes of baseline.
+   7.​ Bring the variac up to reach setpoint. Start the 30-minute clock when the heater
+       thermocouple reaches it.
+   8.​ If the battery thermocouple reaches 150 °C, cut power and record the time. That’s a failed
+       barrier, and heating further adds risk without adding information.
+   9.​ At 30 minutes, cut heater power and keep logging until the battery temperature has
+       peaked and begun to fall. The sand stores heat and keeps feeding it to the battery after the
+       heater is off, so this may take longer than the 10 minutes you used before.
+   10.​After cooldown, remove the sand and gently brush the barrier clean. Weigh it again. The
+       mass loss tells you how much gas it released, which matters for your purge subgroup.
+       Photograph it and measure any char thickness or cracking.
+
+Analysis
+
+Plot battery temperature against time for every barrier on one graph, with a line at 150 °C. That
+single figure carries most of your story. Then make a scatter plot of t₁₅₀ or peak battery
+temperature against areal density, so the lightest effective barriers stand out in one corner.
+
+
+===== PDF PAGE 35 =====
+Finally, translate each result to the pack level. Barrier mass per cell divided by an assumed cell
+mass gives a parasitic mass fraction, and that converts directly into a Wh/kg penalty.
+
+Safety
+
+Use a discharged or dummy battery. If a charged lithium cell gets hot enough, it can go into real
+thermal runaway and vent flammable, toxic gas inside a cardboard box. Even with a discharged
+cell, stop at 150 °C on the battery thermocouple.
+
+Run tests in a fume hood or outdoors. Hot silicone, intumescents, and graphite release smoke and
+gases, sometimes including ammonia.
+
+Keep the heater leads and anything hot away from the cardboard. Cardboard can ignite well
+below your 600 °C setpoint. The plastic wrap on the bottom will melt at roughly 100 °C, so
+check it after each run and replace it if it’s softened. A tray under the box will catch sand if the
+seal fails.
+
+Variac-powered cartridge heaters run on 120 V. Have someone qualified check the wiring, plug
+in through a GFCI, and keep a kill switch within reach. Ideally, add an independent
+over-temperature cutoff on the heater too. Keep an extinguisher and a bucket of dry sand nearby,
+and never leave a run unattended.
+
+Thermocouple Check
+
+Purpose: confirm that both thermocouples read correctly against a reference thermometer.
+
+Method:
+
+      1.​ Fill a beaker with room-temperature water.
+      2.​ Place both thermocouples in the water and let the readings settle.
+      3.​ Measure the water temperature with a reference thermometer.
+
+Results:
+
+Sensor​Reading (°C)​ Difference from thermometer (°C)
+
+Thermometer (reference)​        21.9​   —
+
+T1​      21.8​   −0.1
+
+T2​      22.2​   +0.3
+
+Conclusion: both thermocouples agree with the reference within 0.3°C, well inside the standard
+type K tolerance of ±2.2°C. No correction needed.
+
+
+===== PDF PAGE 36 =====
+1. Preparation (once)
+
+   1.​ Dry the sand in an oven at 110–150°C for 1–2 hours and let it cool.
+   2.​ Check the thermocouples in room-temperature water against a reference thermometer
+       (done: both within 0.3°C).
+   3.​ Build the barrier boxes: cut and fold the mica boxes, then wrap them with aerogel,
+       joined with stainless tie wire.
+           ○​ Layer order, hot to cold: rod → mica (box 1) → intumescent coat, if used →
+               aerogel → mica (box 2) → cell
+   4.​ Prepare the rod: fit the cartridge heater snugly in the reamed hole. Attach T2 to the rod
+       surface facing the barrier, and T3 to cell 2’s surface facing the barrier.
+   5.​ Set up the electrical side: grounded rod and heater sheath, GFCI outlet, fuse, variac
+       taped at 120V maximum, multimeter on the variac output and an ammeter or clamp meter
+       for current.
+
+2. Burn-in and calibration (aluminum dummy cell)
+
+   1.​ Assemble the setup: rod and dummy in their boxes, sand in the corners, outer insulation
+       wrap, boxes clamped together the same way every time.
+   2.​ Run outdoors or under ventilation. The first heating burns off the mica binder and any
+       residue on the aerogel or sand.
+   3.​ Boost: run at 100V from room temperature and record the time for T2 to reach 480°C.
+       That time is y.
+   4.​ Find the hold voltage: switch to 55V. Adjust 3–5V at a time, waiting about 10 minutes
+       after each change, until T2 holds steady near 500°C. That voltage is Y.
+   5.​ Verify: cool fully, then run the full recipe from cold (X = 100V for y minutes, then Y for
+       the rest). Confirm T2 lands at about 490–510°C.
+   6.​ Record the “before” condition of the barrier: photos, mass (without sand) and
+       thickness at 3 marked points.
+
+
+===== PDF PAGE 37 =====
+Technology Constraints
+Technology Readiness Level: 4
+   -​ Airplane simulation: level 5
+
+Application: all-electric, battery-powered passenger aircraft (commonly categorized as electric
+Vertical Take-Off and Landing [eVTOL], urban air mobility [UAM], or regional electric aircraft)
+
+   1.​ Thermal Non-Propagation Thresholds: Single-Cell Thermal Runaway Test (RTCA
+       DO-311A Section 2.4.5 / FAA Special Conditions) - Thermal insulation must keep
+       adjacent cells safely below +150 C (or below the cell manufacturer's designated thermal
+       runaway onset temperature, typically +150 C to +180 C) at simulated pressure altitudes
+       up to 70,000 ft (DO-160G Section 4 & 5). There should be zero flame propagation and
+       temperature maintenance for ≥ 30 minutes.
+   2.​ Post-Crash Survivability: a 15.2 m drop and not pose a risk to human life, i.e. not leak
+       gas, not fly into the cockpit, not become deformed and therefore a potential bomb. Needs
+       to survive crash conditions 6g (operational shock) to 20 g (crash impulse) for 11 ms
+       duration (DO-160G Section 7)
+   3.​ High gravimetric energy density (primary constraint): The battery pack must provide
+       sufficient usable energy per unit mass to meet the aircraft's range and payload
+       requirements. For a 19-seat, all-electric commuter aircraft, a representative target is
+       approximately 650 Wh/kg at the pack level. Weight requirement on module weight.
+   4.​ Early Thermal Runaway Detection and Fail-Safe Warning Systems: Regulatory
+       basis: FAA AC 20-184A (Appendix C, Special Conditions 7–9; Appendices D and G), 14
+       CFR §§25.1309 and 25.1322, RTCA DO-311A §2.1.4.2, RTCA DO-160G, and
+       EUROCAE ED-289. The battery monitoring system must detect abnormal cell
+       temperature, voltage, or gas emissions and alert the pilot within 10 seconds, with
+       critical sensor readings updated at least once per second (1 Hz) and automatic
+       charging disconnection upon confirmed overtemperature or battery failure. Detection
+       and warning systems must undergo RTCA DO-160G environmental testing and
+       fault-injection testing, demonstrating reliable operation under temperature extremes,
+       vibration, altitude changes, and individual sensor failures, with zero missed required
+       warnings across the qualification test matrix.
+
+
+
+
+Budget: $650
+
+
+===== PDF PAGE 38 =====
+Material Densities
+Here is the ranking of all the physical barrier and structural materials discussed, ordered from lowest
+density (lightest) to highest density (heaviest):
+
+    1.​ Nanoporous Silica Aerogel Sheets
+                                                     3
+           ○​ Density: ≈ 0. 003 𝑡𝑜 0. 15𝑔/𝑐𝑚 (Bulk density)
+           ○​ Note: The lightest material available, owing to its extremely high porosity (approx 99%).
+    2.​ Ceramic Fiber Paper / Mats (Aluminosilicate)
+                                                 3
+           ○​ Density: ≈ 0. 20 𝑡𝑜 0. 50𝑔/𝑐𝑚 (Bulk density)
+           ○​ Note: Highly porous fibrous insulation engineered for high-temperature resistance.
+    3.​ Phase-Change Materials (PCMs, e.g., Paraffin Wax Matrices)
+                                                 3
+           ○​ Density: ≈ 0. 80 𝑡𝑜 0. 90𝑔/𝑐𝑚 (Solid state)
+           ○​ Note: Organic waxes or salt hydrates used for latent heat enthalpy buffering.
+    4.​ Carbon Fiber Reinforced Polymer (CFRP) Composite Plates / Skins
+                                                 3
+            ○​ Density: ≈ 1. 50 𝑡𝑜 1. 60𝑔/𝑐𝑚
+            ○​ Note: High-strength, lightweight structural composite used for aerospace enclosures and
+               housings.
+    5.​ Intumescent Polymers / Coatings / Foams
+                                                 3
+           ○​ Density: ≈ 1. 10 𝑡𝑜 1. 40𝑔/𝑐𝑚
+           ○​ Note: Standard polymer binder and resin densities prior to volumetric expansion under
+              heat.
+    6.​ Aluminum Hydroxide (𝐴𝑙(𝑂𝐻)3)
+                                        3
+           ○​ Density: ≈ 2. 42𝑔/𝑐𝑚 (Material density)
+           ○​ Note: Used as a sacrificial endothermic filler compound that releases water vapor upon
+                thermal decomposition.
+    7.​ Basalt / "Lava Rock" Fiber Wraps
+                                        3
+           ○​ Density: ≈ 2. 67𝑔/𝑐𝑚 (Solid mineral density; textile bulk density is lower)
+           ○​ Note: Volcanic rock-derived mineral fibers offering high radiant heat and flame
+               resistance.
+    8.​ Phlogopite & Muscovite Mica Shields
+                                                 3
+            ○​ Density: ≈ 2. 70 𝑡𝑜 2. 85𝑔/𝑐𝑚 (Crystal/sheet density)
+            ○​ Note: Dense mineral plates providing rigid dielectric separation and direct flame-jet
+               defense.
+
+
+===== PDF PAGE 39 =====
+Comparison of Experiment Setups - 10/16
+2 batteries
+
+
+
+
+Cartridge + Battery
+
+
+
+
+Option A: heater coil wrapped around a real cell 1
+
+Pros
+
+   ●​ Realistic geometry and materials on both sides.
+   ●​ Cells are cheap (the 25R is $4.99), and the setup is simple to build.
+
+Cons
+
+   ●​ It can’t get hot enough. A charged cell starts heating itself at roughly 80–120 °C, so to stay
+      safely out of runaway you’d have to stay below that. Your barrier would then be holding back less
+      than 100 °C instead of a runaway-like 500 °C or more, which makes the test far too easy and not
+      representative.
+
+
+===== PDF PAGE 40 =====
+   ●​ Discharging cell 1 doesn’t fully fix it. An empty cell won’t run away violently, but well above
+      150 °C it will still vent flammable electrolyte vapor.
+   ●​ The coil sits between the cell and the wall. It changes the contact you’re trying to measure, and
+      the coil runs hotter than the cell, so you can’t be sure what temperature the barrier actually sees.
+
+Option B: cartridge heater in place of cell 1
+
+Pros
+
+   ●​ It can safely reach about 500 °C and hold it for the full 30 minutes, which is what your
+      requirement calls for.
+   ●​ Temperature control by PID makes runs repeatable from one barrier to the next: or open control
+   ●​ It’s reusable, with no hazardous chemistry.
+
+Cons
+
+   ●​ It needs a sleeve. A 6 mm cartridge heater doesn’t fill an 18.4 mm box. Machine a steel rod
+      about 18 mm in diameter and 65 mm long, with a 6 mm hole down the center for the heater, so
+      the “hot cell” touches the walls the same way a real cell would.
+   ●​ Not a real cell. There’s no internal heat generation, venting, or flame, the same limitation as the
+      block design. Note it in your report.
+
+
+===== PDF PAGE 41 =====
+Final test with cartridge heater
+Detecting change in temperature for neighboring
+Barrier: extending time
+
+Definition of thermal runaway for cartridge heater and/or adjacent cell
+   -​ How fast of temperature increase
+   -​ How long of temperature
+   -​ Ex: In the course of the “lab period/number of time”, the temperature doesn’t reach _
+
+
+Acceptance Criteria
+
+Test setup (apply to every run)
+
+   ●​ Cell 1 (heat source): a steel rod heated by a cartridge heater, standing in for a cell in
+      thermal runaway. It is held at T2 = 500°C ±10°C, measured on the rod surface at the
+      barrier.
+   ●​ Cell 2: a Samsung [model] lithium-ion cell at [100]% state of charge. Use a fresh cell for
+      every run.
+   ●​ Hold time: the 30-minute clock starts when T2 first reaches 500°C.
+   ●​ Kept the same every run: barrier build, sand fill, clamping and spacers, thermocouple
+      attachment, outer insulation wrap, and starting temperature (room temperature ±[3]°C).
+   ●​ Invalid runs: a run doesn’t count if T2 leaves the 490–510°C range after reaching
+      setpoint, or if a thermocouple comes loose. Treat either as a setup problem, not a barrier
+      failure.
+
+1. The barrier prevents thermal runaway from spreading to cell 2 for 30 minutes
+
+   ●​ Definition: thermal runaway is when a cell’s internal chemical reactions produce heat
+      faster than it can escape. The cell then keeps heating itself, ending in venting, fire or
+      rupture. In this test, the barrier must keep cell 2 below the temperature where its own
+      self-heating would begin.
+   ●​ Pass, all of the following for the full 30-minute hold:
+          ○​ T3 (cell 2 surface at the barrier) stays below [100°C].
+                  ■​ Why 100°C: in lithium-ion cells, the protective layer on the anode starts
+                       breaking down at about 80–120°C, separators begin melting at about
+                       130°C, and self-heating usually starts somewhere between 90 and 150°C.
+                       A 100°C limit leaves margin. Confirm it against the Samsung
+                       datasheet.
+          ○​ Cell 2 shows no venting, smoke, swelling or fire.
+   ●​ On failure: record the time at which T3 crossed the limit, or when venting started.
+
+
+===== PDF PAGE 42 =====
+2. The barrier is still usable after one run
+
+   ●​ Reusable vs. consumable parts:
+         ○​ The mica box is expected to be reusable.
+         ○​ [The aerogel wrap is replaced each run, or is expected to be reusable; decide
+              which.]
+   ●​ Burn-in first: do the “before” measurements after one burn-in run, because the first
+      heating burns off the mica’s binder.
+   ●​ Pass, for the reusable parts:
+         ○​ No through-cracks, holes or peeling layers on the barrier face, documented with
+              before-and-after photos at the same angle and lighting.
+         ○​ The box holds its shape and can be taken apart and reassembled without breaking.
+
+3. The setup and results are reproducible
+
+   ●​ Number of runs: at least 3 valid runs with the same configuration, each with a fresh
+      Samsung cell.
+   ●​ Main metric: the rise in T3 over the hold, ΔT3 = T3 at 30 min − T3 at start. Each run’s
+      ΔT3 must be within ±10% of the average of all runs.
+         ○​ Use the temperature rise rather than the raw T3 reading, because a percentage of a
+            raw °C value depends on the starting temperature.
+   ●​ Secondary metric: the time for T3 to reach [50°C] is within ±10% across runs.
+
+Safety requirements (before any run with a real cell)
+
+   ●​ Location: outdoors or in a fume hood or fire-rated enclosure. A cell in a runaway
+      releases flammable, toxic gases, including hydrogen fluoride.
+   ●​ Manual monitoring: T2, T3 and cell 1’s voltage are logged remotely, and operators will
+      open-control
+   ●​ Fire response: plenty of water ready nearby for cooling the cell.
+
+Limitations (state in the report)
+
+   ●​ Heat only: the heater reproduces conducted heat only. It does not vent gas, eject material
+      or produce flame jets like a real cell in a runaway, so the test doesn’t show how the
+      barrier handles those.
+   ●​ Lower peak, longer hold: 500°C is below the 600–800°C+ peak a real Samsung cell can
+      reach. But holding it for 30 minutes delivers far more total heat than a real event, where
+      the peak lasts only minutes. Overall, the test is conservative for heat soaking through the
+      barrier.

@@ -1,0 +1,330 @@
+{
+  "collected_at": "2026-10-30T10:03:08.572185-07:00",
+  "files": [
+    {
+      "source": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "destination": "host/plot.py",
+      "sha256": "4d2fe38807fc1acb0427129011bc1ecf17a4b50db1b6f6ebd5efc942b6d3c4db",
+      "bytes": 2392,
+      "source_mtime": "2026-10-26T09:48:53.329526-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+      "destination": "firmware/thermocouple_logger/thermocouple_logger.ino",
+      "sha256": "aa2cc9936ce5c0a43a16bc90ea20d73f0c02d11d96c75cd9558c1fe2a2f6799f",
+      "bytes": 966,
+      "source_mtime": "2026-10-26T10:08:34.267323-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Arduino/tc_diag/tc_diag.ino",
+      "destination": "firmware/tc_diag/tc_diag.ino",
+      "sha256": "70f5ec1b6b59a20de490e0253137ab7cdda4ac70f71f22ea86ab0d04206ae8d2",
+      "bytes": 1191,
+      "source_mtime": "2026-10-26T10:00:39.722292-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Arduino/tc_fault/tc_fault.ino",
+      "destination": "firmware/tc_fault/tc_fault.ino",
+      "sha256": "0185b104d8496739df3bba605ed9278e4c1ec62471983eec713446e57b2edb85",
+      "bytes": 841,
+      "source_mtime": "2026-10-26T10:14:38.661037-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/ChE 126 Design.pdf",
+      "destination": "references/design/ChE 126 Design.pdf",
+      "sha256": "1f6e8ffa32f13f6e7a3250be18e433e620cee61c927ff283a5601d57b966188a",
+      "bytes": 887344,
+      "source_mtime": "2026-10-30T09:46:17.518421-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/High-Strength Basalt Pipe Insulation, 2_ Wide _ McMaster-Carr.pdf",
+      "destination": "references/datasheets/High-Strength Basalt Pipe Insulation, 2_ Wide _ McMaster-Carr.pdf",
+      "sha256": "ad346c270c96d890d7b5182689b8b0920f7647793c0ddc12cd5d774aa9d4e761",
+      "bytes": 573379,
+      "source_mtime": "2026-10-30T09:22:10.889816-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/Extra-High-Temperature Electrically Insulating Mica, 23_ x 39_ Sheet, 0.032_ Thick _ McMaster-Carr.pdf",
+      "destination": "references/datasheets/Extra-High-Temperature Electrically Insulating Mica, 23_ x 39_ Sheet, 0.032_ Thick _ McMaster-Carr.pdf",
+      "sha256": "3599cee0cb881cd012db2d555bc14997b401e4b8b823c16e9d5a11c99deb335c",
+      "bytes": 382347,
+      "source_mtime": "2026-10-30T09:21:49.812778-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/ChE 126 Materials Ordering.xlsx",
+      "destination": "references/orders/ChE 126 Materials Ordering.xlsx",
+      "sha256": "54718da8ab40aeb6c7ce61443dc08deb23c89934fbb3292fd93d47a489c7d90f",
+      "bytes": 90352,
+      "source_mtime": "2026-10-30T09:44:30.596104-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/school/Insertion Heater with Braided Wire Lead Covering, for 1_2_ Hole, 120V AC, 2-1_2_ Long Heating Element, 300W _ McMaster-Carr.pdf",
+      "destination": "references/datasheets/Insertion Heater with Braided Wire Lead Covering, for 1_2_ Hole, 120V AC, 2-1_2_ Long Heating Element, 300W _ McMaster-Carr.pdf",
+      "sha256": "ab431f850b45403ddf0a921ddca87eba1c42f24d557117af054494bab8e04c3f",
+      "bytes": 389164,
+      "source_mtime": "2026-10-29T07:40:46.081041-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/05_interface_contact_sensitivity.png",
+      "destination": "references/exports/05_interface_contact_sensitivity.png",
+      "sha256": "e50cf790e7b87af87fca238c327d540bb617429ac22e0828e4068fdfdc6330dc",
+      "bytes": 96765,
+      "source_mtime": "2026-10-30T09:46:22.242435-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip",
+      "destination": "references/exports/mica_basalt_aluminum_thermal_model.zip",
+      "sha256": "81cb4551cc052d84249326d24f47f60a21e1c2e09ba677097a2692d8d95e62bb",
+      "bytes": 630964,
+      "source_mtime": "2026-10-30T09:49:10.512908-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!thermal_stack_model.py",
+      "destination": "models/thermal-stack/thermal_stack_model.py",
+      "sha256": "92987a6eb630ddf7a5c7a7c0494f11d7264b287ce36a996b8e314780993560a4",
+      "bytes": 23249,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!README_thermal_experiment.md",
+      "destination": "models/thermal-stack/README_thermal_experiment.md",
+      "sha256": "658c782f38b4cf77e4887cd91b467e6213bfbd0ad983cd21d1ede5825ea3636f",
+      "bytes": 6941,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!model_run_log.txt",
+      "destination": "models/thermal-stack/model_run_log.txt",
+      "sha256": "27b41a9f2ca34304c95d642e0a5761f4f7ee674daa6ebc53172d9b39898b8ac9",
+      "bytes": 741,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!01_conduction_comparison.png",
+      "destination": "models/thermal-stack/01_conduction_comparison.png",
+      "sha256": "1ebeaf1afb884905de1fd5f0b0a9c777a400c31ec2b6c9c7dd69d68e8c9f540a",
+      "bytes": 102438,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!02_thermocouple_vs_time.png",
+      "destination": "models/thermal-stack/02_thermocouple_vs_time.png",
+      "sha256": "115ceb7cc6bd0313082ee577f698bac3625dd98946d1d4246a320d0756ad1c16",
+      "bytes": 232773,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!03_time_to_targets.png",
+      "destination": "models/thermal-stack/03_time_to_targets.png",
+      "sha256": "198f0d45d7c0645d6e3069d549ff391b0eff8d1c5aabc71e1cc317658871eeaa",
+      "bytes": 135328,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!04_aluminum_spreading_illustration.png",
+      "destination": "models/thermal-stack/04_aluminum_spreading_illustration.png",
+      "sha256": "74c6d074c7a21428d9f32665c7ce414129ac8ee045c1c6f6d8da0bceea124463",
+      "bytes": 107570,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!05_interface_contact_sensitivity.png",
+      "destination": "models/thermal-stack/05_interface_contact_sensitivity.png",
+      "sha256": "e50cf790e7b87af87fca238c327d540bb617429ac22e0828e4068fdfdc6330dc",
+      "bytes": 96765,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!thermal_predictions.csv",
+      "destination": "models/thermal-stack/thermal_predictions.csv",
+      "sha256": "0d4fc2799d2ce909fea116d93761f3d816b3b6e6f823a943ae01fe2989798594",
+      "bytes": 53058,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/home/colin/Downloads/mica_basalt_aluminum_thermal_model.zip!measurements_template.csv",
+      "destination": "models/thermal-stack/measurements_template.csv",
+      "sha256": "173171709a4133d7e5aca21a3e3ab3517ff6d372b2cff0acea5fc34be69431cb",
+      "bytes": 9324,
+      "kind": "extracted-archive-member"
+    },
+    {
+      "source": "/tmp/maxds/ds.pdf",
+      "destination": "references/datasheets/MAX31855.pdf",
+      "sha256": "45904b81e79c46af49fd5c880df7ec04678c8599be9df73cea8422d241ceb7a2",
+      "bytes": 1015656,
+      "source_mtime": "2026-10-26T10:24:46.646693-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/adkdoc/sch.pdf",
+      "destination": "references/hardware/arduino-mega-adk-schematic.pdf",
+      "sha256": "821e7491d29a62a3de67d128f6bc7b3e654f0ddfb3cd448f01fe93696479b796",
+      "bytes": 101558,
+      "source_mtime": "2026-10-26T10:08:00.839726-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/adkdoc/front.jpg",
+      "destination": "references/hardware/mega-adk-front.jpg",
+      "sha256": "08827c8ebf622c36cdbe457b0102b1935743a1a42c3cbd1ce055333d97152967",
+      "bytes": 89695,
+      "source_mtime": "2026-10-26T10:08:01.183722-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/adkdoc/content.md",
+      "destination": "references/hardware/mega-adk-vendor-documentation.md",
+      "sha256": "c87a4729e71b10aaecf299e7f5532c493ae5f83a6797d9476fa48c33a46278be",
+      "bytes": 16109,
+      "source_mtime": "2026-10-26T10:07:55.262293-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/tempco.txt",
+      "destination": "references/text/tempco-heater-instructions.txt",
+      "sha256": "108d59b5eb31b0e646ec21a74d8e065d58ed0137db2f86aa42575375e15fa3fd",
+      "bytes": 6026,
+      "source_mtime": "2026-10-26T10:40:54.402251-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/megaadk-flash.bin",
+      "destination": "provenance/claude/prior-board-flash.bin",
+      "sha256": "7c5ddfc07a496c37371ec25576cbc72eef5a4bb264ee312432c2e7fc02148948",
+      "bytes": 262144,
+      "source_mtime": "2026-10-23T10:26:37.890721-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/megaadk-flash.hex",
+      "destination": "provenance/claude/prior-board-flash.hex",
+      "sha256": "83cec7224882f52347649346b82776e31e79514880965211af3081be6d08b7a2",
+      "bytes": 622652,
+      "source_mtime": "2026-10-23T10:26:02.035794-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/tcplot.log",
+      "destination": "provenance/claude/tcplot.log",
+      "sha256": "3d23c1ba7649700d3d7d79edc0458405e88a42dbe999755292b2033c3c7f4322",
+      "bytes": 2137,
+      "source_mtime": "2026-10-26T10:29:11.314264-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd/tool-results/webfetch-1793036443765-bojg5m.pdf",
+      "destination": "references/datasheets/webfetch-1793036443765-bojg5m.pdf",
+      "sha256": "ffbfd0df01e295a330e343dd413b27cb0a4438ef79e7a8f1e3eaba453cb84c0d",
+      "bytes": 2319219,
+      "source_mtime": "2026-10-26T10:40:43.778172-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/brain/notes/generated/classes/ChE 126/Fall 2026 Theme Battery Array Fires.md",
+      "destination": "references/course/Fall 2026 Theme Battery Array Fires.md",
+      "sha256": "f440b56ec6e4809c76bbe3e48db80198313615a3d5409b2bfe501b3078e94fea",
+      "bytes": 5930,
+      "source_mtime": "2026-10-18T22:52:37.656316-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/brain/notes/generated/classes/ChE 126/Syllabus Fall 2026-27.md",
+      "destination": "references/course/Syllabus Fall 2026-27.md",
+      "sha256": "17e1dfd68bec47b90880239481a5695a78570c545476fe0dbd0424cbb1a376a5",
+      "bytes": 7423,
+      "source_mtime": "2026-10-18T22:52:37.654316-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/brain/notes/Apple Notes/Notes/2025-10-11 Thermal data logger.md",
+      "destination": "references/historical-notes/2025-10-11 Thermal data logger.md",
+      "sha256": "ee542a5f95318cd51509c3ef262f413487619912c92c7926afe95e1a4c3afcbb",
+      "bytes": 329,
+      "source_mtime": "2026-10-17T22:01:40.785848-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/home/colin/dotfiles/modules/features/arduino.nix",
+      "destination": "references/environment/arduino.nix",
+      "sha256": "a9fd23230260d36f8147e99972eed801582e67269567b72a52ab6594cad766f8",
+      "bytes": 237,
+      "source_mtime": "2026-10-23T09:58:31.198432-07:00",
+      "kind": "copied-original"
+    },
+    {
+      "source": "/tmp/maxds/ds.txt",
+      "destination": "references/text/MAX31855-original.txt",
+      "sha256": "c9810237ee78516eb53bc21988336c633ef97f07799c33a4dd474f805afae21e",
+      "bytes": 56276,
+      "source_mtime": "2026-10-26T10:24:47.108712-07:00",
+      "kind": "copied-original"
+    }
+  ],
+  "derived_files": [
+    {
+      "destination": "references/text/High-Strength Basalt Pipe Insulation, 2_ Wide _ McMaster-Carr.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "8c5028a08ddd3277ce08db5109fb39d65e1dcec36c37012e3121a8c71cb3e5d8"
+    },
+    {
+      "destination": "references/text/Extra-High-Temperature Electrically Insulating Mica, 23_ x 39_ Sheet, 0.032_ Thick _ McMaster-Carr.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "c583108ca8c46043a160e14a776c47eeb7e1b0ebdf041c98cdd397def45ce1db"
+    },
+    {
+      "destination": "references/text/arduino-mega-adk-schematic.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "1a716dde2964d843b6a9158663da65dc321bfb5d2e57827ff71c0bdc58e9acc7"
+    },
+    {
+      "destination": "references/text/MAX31855.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "5fb28cf019e93208cba59e7dbf236e0305f153b3bdf55901675eeea601bb2142"
+    },
+    {
+      "destination": "references/text/ChE 126 Design.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "dbe0b324d74757fe5294b9d414edfa5038734ec726e5d1d3b023ee9bcf63b52e"
+    },
+    {
+      "destination": "references/text/Insertion Heater with Braided Wire Lead Covering, for 1_2_ Hole, 120V AC, 2-1_2_ Long Heating Element, 300W _ McMaster-Carr.txt",
+      "method": "pdftotext -layout; added numbered PDF-page separators",
+      "sha256": "cf84bea928cbfbc0defb0db43ba4a5bb0779e0f5c2f860488ac52f25888f0157"
+    },
+    {
+      "destination": "references/orders/extracted/workbook-index.json",
+      "source": "references/orders/ChE 126 Materials Ordering.xlsx",
+      "method": "openpyxl; formulas and cached values exported separately; no recalculation",
+      "sha256": "2fb30eb419784049e47fade83c59603298f8813c43204dc7b538d09a1ecc0a43"
+    },
+    {
+      "destination": "references/orders/extracted/Materials.cached-values.csv",
+      "source": "references/orders/ChE 126 Materials Ordering.xlsx",
+      "method": "openpyxl; formulas and cached values exported separately; no recalculation",
+      "sha256": "bb4e20b7a1135ba461404ac0b045d56e2c349cee17ad54ec4390327854481552"
+    },
+    {
+      "destination": "references/orders/extracted/Materials.formulas.csv",
+      "source": "references/orders/ChE 126 Materials Ordering.xlsx",
+      "method": "openpyxl; formulas and cached values exported separately; no recalculation",
+      "sha256": "8dc85b9d60ae5349014bb0479154865fa9dd9457aeef3758c15b39eadf588e2b"
+    }
+  ],
+  "conversation_sources": {
+    "claude": "/home/colin/.claude/projects/-home-colin/c01abf05-72d5-4b9f-99b7-0a3729022dfd.jsonl",
+    "chatgpt": "https://chatgpt.com/share/6ae4c9fc-e620-83e8-af32-5ab02745aa19"
+  },
+  "historical_reconstruction_index": "provenance/claude/code-history/index.json"
+}

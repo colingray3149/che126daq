@@ -1,0 +1,214 @@
+[
+  {
+    "timestamp": "2026-10-26T16:25:47.805Z",
+    "tool": "Write",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+      "content": "// Two Adafruit AD8495 type K amplifiers on A1 and A2.\n// AD8495 output: Vout = 1.25 V + 5 mV/°C  ->  T = (Vout - 1.25) / 0.005\n// Prints CSV over serial at 115200: time_s,t1_C,t2_C\n\nconst float VREF = 5.0;          // Mega analog reference (default 5 V)\nconst int SAMPLES = 32;          // readings averaged per channel to cut noise\nconst unsigned long PERIOD_MS = 500;\n\nfloat readTempC(int pin) {\n  long sum = 0;\n  for (int i = 0; i < SAMPLES; i++) sum += analogRead(pin);\n  float volts = (sum / (float)SAMPLES) * VREF / 1023.0;\n  return (volts - 1.25) / 0.005;\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  Serial.println(\"time_s,t1_C,t2_C\");\n}\n\nvoid loop() {\n  static unsigned long next = 0;\n  if (millis() < next) return;\n  next += PERIOD_MS;\n\n  Serial.print(millis() / 1000.0, 2);\n  Serial.print(',');\n  Serial.print(readTempC(A1), 1);\n  Serial.print(',');\n  Serial.println(readTempC(A2), 1);\n}\n"
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Write",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+      "content": "// Two Adafruit AD8495 type K amplifiers on A1 and A2.\n// AD8495 output: Vout = 1.25 V + 5 mV/°C  ->  T = (Vout - 1.25) / 0.005\n// Prints CSV over serial at 115200: time_s,t1_C,t2_C\n\nconst float VREF = 5.0;          // Mega analog reference (default 5 V)\nconst int SAMPLES = 32;          // readings averaged per channel to cut noise\nconst unsigned long PERIOD_MS = 500;\n\nfloat readTempC(int pin) {\n  long sum = 0;\n  for (int i = 0; i < SAMPLES; i++) sum += analogRead(pin);\n  float volts = (sum / (float)SAMPLES) * VREF / 1023.0;\n  return (volts - 1.25) / 0.005;\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  Serial.println(\"time_s,t1_C,t2_C\");\n}\n\nvoid loop() {\n  static unsigned long next = 0;\n  if (millis() < next) return;\n  next += PERIOD_MS;\n\n  Serial.print(millis() / 1000.0, 2);\n  Serial.print(',');\n  Serial.print(readTempC(A1), 1);\n  Serial.print(',');\n  Serial.println(readTempC(A2), 1);\n}\n"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:27:58.976Z",
+    "tool": "Write",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "content": "#!/usr/bin/env nix-shell\n#!nix-shell -i python3 -p \"python3.withPackages (p: [p.matplotlib p.pyserial p.tkinter])\"\n# Live plot of the two thermocouples from thermocouple_logger.ino.\n# Shows the last 20 s; usage: ./plot.py [port]   (default /dev/ttyACM0)\n\nimport sys\nfrom collections import deque\n\nimport matplotlib\nmatplotlib.use(\"TkAgg\")\nimport matplotlib.pyplot as plt\nfrom matplotlib.animation import FuncAnimation\nimport serial\n\nPORT = sys.argv[1] if len(sys.argv) > 1 else \"/dev/ttyACM0\"\nWINDOW_S = 20\nCOLORS = (\"#2a78d6\", \"#eb6834\")  # TC1 blue, TC2 orange\n\nser = serial.Serial(PORT, 115200, timeout=0)\nt, tc = deque(), (deque(), deque())\nbuf = b\"\"\n\nfig, ax = plt.subplots(figsize=(8, 4.5))\nfig.canvas.manager.set_window_title(\"Thermocouples\")\nlines = [ax.plot([], [], color=c, lw=2, label=f\"TC{i+1} (A{i+1})\")[0] for i, c in enumerate(COLORS)]\ntags = [ax.text(0, 0, \"\", fontsize=10, va=\"center\", color=\"#333\") for _ in COLORS]\nax.set_xlabel(\"time (s)\")\nax.set_ylabel(\"temperature (°C)\")\nax.grid(color=\"#e5e5e2\", lw=0.8)\nfor side in (\"top\", \"right\"):\n    ax.spines[side].set_visible(False)\nax.legend(loc=\"upper left\", frameon=False)\n\n\ndef update(_):\n    global buf\n    buf += ser.read(ser.in_waiting or 1)\n    *rows, buf = buf.split(b\"\\n\")\n    for row in rows:\n        try:\n            s, a, b = map(float, row.decode().strip().split(\",\"))\n        except ValueError:\n            continue  # header or partial line\n        t.append(s); tc[0].append(a); tc[1].append(b)\n    if not t:\n        return\n    while t[-1] - t[0] > WINDOW_S:\n        t.popleft(); tc[0].popleft(); tc[1].popleft()\n\n    start = max(0, t[-1] - WINDOW_S)\n    ax.set_xlim(start, start + WINDOW_S)\n    lo, hi = min(min(tc[0]), min(tc[1])), max(max(tc[0]), max(tc[1]))\n    pad = max(1, (hi - lo) * 0.15)\n    ax.set_ylim(lo - pad, hi + pad)\n    for line, tag, ys in zip(lines, tags, tc):\n        line.set_data(t, ys)\n        tag.set_position((t[-1] + 0.2, ys[-1]))\n        tag.set_text(f\"{ys[-1]:.1f} °C\")\n\n\nanim = FuncAnimation(fig, update, interval=100, cache_frame_data=False)\nfig.subplots_adjust(right=0.86)\nfor tag in tags:\n    tag.set_clip_on(False)\nplt.show()\n"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:28:05.966Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && chmod +x plot.py && nix-shell -p \"python3.withPackages (p: [p.matplotlib p.pyserial p.tkinter])\" --run 'python3 -c \"import matplotlib, serial, tkinter; matplotlib.use(\\\"TkAgg\\\"); import ast; ast.parse(open(\\\"plot.py\\\").read()); print(\\\"ok\\\", matplotlib.__version__)\"' 2>&1 | tail -2; ls /dev/ttyACM* 2>&1",
+      "timeout": 300000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:29:45.261Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:31:23.255Z",
+    "tool": "Write",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+      "content": "// Two Adafruit MAX31855 type K breakouts sharing CLK and DO, each with its own CS.\n// Wiring: Vin -> 5V (or 3.3V), GND -> GND, CLK -> D5, DO -> D3, CS -> D4 (TC1) / D6 (TC2)\n// Prints CSV over serial at 115200: time_s,t1_C,t2_C  (nan = thermocouple fault, e.g. open circuit)\n\n#include <Adafruit_MAX31855.h>\n\nconst int PIN_CLK = 5, PIN_DO = 3, PIN_CS1 = 4, PIN_CS2 = 6;\nconst unsigned long PERIOD_MS = 500;\n\nAdafruit_MAX31855 tc1(PIN_CLK, PIN_CS1, PIN_DO);\nAdafruit_MAX31855 tc2(PIN_CLK, PIN_CS2, PIN_DO);\n\nvoid setup() {\n  Serial.begin(115200);\n  tc1.begin();\n  tc2.begin();\n  delay(500);  // MAX31855 needs a moment after power-up\n  Serial.println(\"time_s,t1_C,t2_C\");\n}\n\nvoid loop() {\n  static unsigned long next = 0;\n  if (millis() < next) return;\n  next += PERIOD_MS;\n\n  Serial.print(millis() / 1000.0, 2);\n  Serial.print(',');\n  Serial.print(tc1.readCelsius(), 2);\n  Serial.print(',');\n  Serial.println(tc2.readCelsius(), 2);\n}\n"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:31:26.254Z",
+    "tool": "Edit",
+    "input": {
+      "replace_all": false,
+      "file_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "old_string": "    lo, hi = min(min(tc[0]), min(tc[1])), max(max(tc[0]), max(tc[1]))\n    pad = max(1, (hi - lo) * 0.15)\n    ax.set_ylim(lo - pad, hi + pad)\n    for line, tag, ys in zip(lines, tags, tc):\n        line.set_data(t, ys)\n        tag.set_position((t[-1] + 0.2, ys[-1]))\n        tag.set_text(f\"{ys[-1]:.1f} °C\")",
+      "new_string": "    good = [y for ys in tc for y in ys if not math.isnan(y)]\n    if good:\n        lo, hi = min(good), max(good)\n        pad = max(1, (hi - lo) * 0.15)\n        ax.set_ylim(lo - pad, hi + pad)\n    for line, tag, ys in zip(lines, tags, tc):\n        line.set_data(t, ys)\n        if math.isnan(ys[-1]):\n            tag.set_position((t[-1] + 0.2, ax.get_ylim()[0]))\n            tag.set_text(\"fault\")\n        else:\n            tag.set_position((t[-1] + 0.2, ys[-1]))\n            tag.set_text(f\"{ys[-1]:.1f} °C\")"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:31:27.039Z",
+    "tool": "Edit",
+    "input": {
+      "replace_all": false,
+      "file_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "old_string": "import sys\n",
+      "new_string": "import math\nimport sys\n"
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Write",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/thermocouple_logger.ino",
+      "content": "// Two Adafruit MAX31855 type K breakouts sharing CLK and DO, each with its own CS.\n// Wiring: Vin -> 5V (or 3.3V), GND -> GND, CLK -> D5, DO -> D3, CS -> D4 (TC1) / D6 (TC2)\n// Prints CSV over serial at 115200: time_s,t1_C,t2_C  (nan = thermocouple fault, e.g. open circuit)\n\n#include <Adafruit_MAX31855.h>\n\nconst int PIN_CLK = 5, PIN_DO = 3, PIN_CS1 = 4, PIN_CS2 = 6;\nconst unsigned long PERIOD_MS = 500;\n\nAdafruit_MAX31855 tc1(PIN_CLK, PIN_CS1, PIN_DO);\nAdafruit_MAX31855 tc2(PIN_CLK, PIN_CS2, PIN_DO);\n\nvoid setup() {\n  Serial.begin(115200);\n  tc1.begin();\n  tc2.begin();\n  delay(500);  // MAX31855 needs a moment after power-up\n  Serial.println(\"time_s,t1_C,t2_C\");\n}\n\nvoid loop() {\n  static unsigned long next = 0;\n  if (millis() < next) return;\n  next += PERIOD_MS;\n\n  Serial.print(millis() / 1000.0, 2);\n  Serial.print(',');\n  Serial.print(tc1.readCelsius(), 2);\n  Serial.print(',');\n  Serial.println(tc2.readCelsius(), 2);\n}\n"
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Edit",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "old_string": "    lo, hi = min(min(tc[0]), min(tc[1])), max(max(tc[0]), max(tc[1]))\n    pad = max(1, (hi - lo) * 0.15)\n    ax.set_ylim(lo - pad, hi + pad)\n    for line, tag, ys in zip(lines, tags, tc):\n        line.set_data(t, ys)\n        tag.set_position((t[-1] + 0.2, ys[-1]))\n        tag.set_text(f\"{ys[-1]:.1f} °C\")",
+      "new_string": "    good = [y for ys in tc for y in ys if not math.isnan(y)]\n    if good:\n        lo, hi = min(good), max(good)\n        pad = max(1, (hi - lo) * 0.15)\n        ax.set_ylim(lo - pad, hi + pad)\n    for line, tag, ys in zip(lines, tags, tc):\n        line.set_data(t, ys)\n        if math.isnan(ys[-1]):\n            tag.set_position((t[-1] + 0.2, ax.get_ylim()[0]))\n            tag.set_text(\"fault\")\n        else:\n            tag.set_position((t[-1] + 0.2, ys[-1]))\n            tag.set_text(f\"{ys[-1]:.1f} °C\")"
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Edit",
+    "input": {
+      "file_path": "/home/colin/Arduino/thermocouple_logger/plot.py",
+      "old_string": "import sys\n",
+      "new_string": "import math\nimport sys\n"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:31:31.322Z",
+    "tool": "Bash",
+    "input": {
+      "command": "pkill -f 'thermocouple_logger/plot.py|plot.py' ; sleep 1; cd ~/Arduino/thermocouple_logger && arduino-cli compile -b arduino:avr:megaADK -u -p /dev/ttyACM0 . 2>&1 | tail -3 && stty -F /dev/ttyACM0 115200 raw -echo && timeout 4 cat /dev/ttyACM0 | head -4",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:34:15.749Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && sed -i 's|CLK -> D5, DO -> D3, CS -> D4 (TC1) / D6 (TC2)|CLK -> D22, DO -> D24, CS -> D26 (TC1) / D28 (TC2)|; s|PIN_CLK = 5, PIN_DO = 3, PIN_CS1 = 4, PIN_CS2 = 6|PIN_CLK = 22, PIN_DO = 24, PIN_CS1 = 26, PIN_CS2 = 28|' thermocouple_logger.ino && grep -n PIN_ thermocouple_logger.ino | head -2 && grep -n 'D22' thermocouple_logger.ino && arduino-cli compile -b arduino:avr:megaADK -u -p /dev/ttyACM0 . 2>&1 | tail -1",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:39:53.994Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:45:26.742Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:48:53.089Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && python3 - <<'EOF'\np='plot.py'; s=open(p).read()\ns=s.replace('# Shows the last 20 s; usage: ./plot.py [port]   (default /dev/ttyACM0)','# Shows the last 20 s; usage: ./plot.py [port]   (default: first /dev/ttyACM*)')\ns=s.replace('import math\\nimport sys\\n','import glob\\nimport math\\nimport sys\\n')\ns=s.replace('PORT = sys.argv[1] if len(sys.argv) > 1 else \"/dev/ttyACM0\"','PORT = sys.argv[1] if len(sys.argv) > 1 else sorted(glob.glob(\"/dev/ttyACM*\"))[0]')\nopen(p,'w').write(s)\nEOF\ngrep -n PORT plot.py | head -1"
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:48:53.704Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && python3 - <<'EOF'\np='plot.py'; s=open(p).read()\ns=s.replace('# Shows the last 20 s; usage: ./plot.py [port]   (default /dev/ttyACM0)','# Shows the last 20 s; usage: ./plot.py [port]   (default: first /dev/ttyACM*)')\ns=s.replace('import math\\nimport sys\\n','import glob\\nimport math\\nimport sys\\n')\ns=s.replace('PORT = sys.argv[1] if len(sys.argv) > 1 else \"/dev/ttyACM0\"','PORT = sys.argv[1] if len(sys.argv) > 1 else sorted(glob.glob(\"/dev/ttyACM*\"))[0]')\nopen(p,'w').write(s)\nEOF\ngrep -n PORT plot.py | head -1"
+    }
+  },
+  {
+    "timestamp": null,
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:57:41.490Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && sed -i 's|CLK -> D22, DO -> D24, CS -> D26 (TC1) / D28 (TC2)|CLK -> D22 (shared), CS -> D26 (TC1) / D28 (TC2), DO -> D24 (TC1) / D30 (TC2)|; s|const int PIN_CLK = 22, PIN_DO = 24, PIN_CS1 = 26, PIN_CS2 = 28;|const int PIN_CLK = 22, PIN_CS1 = 26, PIN_CS2 = 28, PIN_DO1 = 24, PIN_DO2 = 30;|; s|tc1(PIN_CLK, PIN_CS1, PIN_DO)|tc1(PIN_CLK, PIN_CS1, PIN_DO1)|; s|tc2(PIN_CLK, PIN_CS2, PIN_DO)|tc2(PIN_CLK, PIN_CS2, PIN_DO2)|; s|^// Two Adafruit MAX31855 type K breakouts sharing CLK and DO, each with its own CS.|// Two Adafruit MAX31855 type K breakouts sharing CLK, each with its own CS and DO.|' thermocouple_logger.ino && sed -n 1,11p thermocouple_logger.ino && p=$(ls /dev/ttyACM* | head -1) && arduino-cli compile -b arduino:avr:megaADK -u -p $p . 2>&1 | tail -1",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T16:57:51.297Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  },
+  {
+    "timestamp": "2026-10-26T17:00:39.555Z",
+    "tool": "Bash",
+    "input": {
+      "command": "mkdir -p ~/Arduino/tc_diag && cat > ~/Arduino/tc_diag/tc_diag.ino <<'EOF'\n// Wiring check: select each CS in turn and read 32 bits from each DO pin.\nconst int CLK = 22, CS[] = {26, 28}, DO[] = {24, 30};\n\nuint32_t read32(int cs, int dout) {\n  uint32_t v = 0;\n  digitalWrite(cs, LOW);\n  delayMicroseconds(10);\n  for (int i = 0; i < 32; i++) {\n    digitalWrite(CLK, LOW); delayMicroseconds(10);\n    v = (v << 1) | digitalRead(dout);\n    digitalWrite(CLK, HIGH); delayMicroseconds(10);\n  }\n  digitalWrite(cs, HIGH);\n  return v;\n}\n\nvoid setup() {\n  Serial.begin(115200);\n  pinMode(CLK, OUTPUT); digitalWrite(CLK, LOW);\n  for (int c : CS) { pinMode(c, OUTPUT); digitalWrite(c, HIGH); }\n  for (int d : DO) pinMode(d, INPUT_PULLUP);\n  delay(500);\n}\n\nvoid loop() {\n  for (int c : CS) for (int d : DO) {\n    uint32_t v = read32(c, d);\n    Serial.print(\"CS\"); Serial.print(c); Serial.print(\" DO\"); Serial.print(d);\n    Serial.print(\" 0x\"); Serial.print(v, HEX);\n    if (v != 0 && v != 0xFFFFFFFF) {\n      Serial.print(\" tc=\"); Serial.print(((int32_t)v >> 18) * 0.25);\n      Serial.print(\" internal=\"); Serial.print(((int16_t)(v & 0xFFF0) >> 4) * 0.0625);\n      Serial.print(\" fault=\"); Serial.print(v & 7);\n    }\n    Serial.println();\n  }\n  Serial.println();\n  delay(1000);\n}\nEOF\ncd ~/Arduino/tc_diag && p=$(ls /dev/ttyACM* | head -1) && arduino-cli compile -b arduino:avr:megaADK -u -p $p . 2>&1 | tail -1 && stty -F $p 115200 raw -echo && timeout 4 cat $p | head -12",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T17:04:16.514Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && sed -i 's|^// Two Adafruit MAX31855 type K breakouts sharing CLK, each with its own CS and DO.|// Two Adafruit MAX31855 type K breakouts, each on its own pins.|; s|^// Wiring: .*|// Wiring: Vin -> 5V, GND -> GND; TC1 CLK/DO/CS -> D22/D24/D26, TC2 CLK/DO/CS -> D23/D25/D27|; s|^const int PIN_CLK = .*|const int PIN_CLK1 = 22, PIN_DO1 = 24, PIN_CS1 = 26;\\nconst int PIN_CLK2 = 23, PIN_DO2 = 25, PIN_CS2 = 27;|; s|tc1(PIN_CLK, |tc1(PIN_CLK1, |; s|tc2(PIN_CLK, |tc2(PIN_CLK2, |' thermocouple_logger.ino && sed -n 1,12p thermocouple_logger.ino && p=$(ls /dev/ttyACM* | head -1) && arduino-cli compile -b arduino:avr:megaADK -u -p $p . 2>&1 | tail -1",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T17:08:34.129Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && sed -i 's|TC2 CLK/DO/CS -> D23/D25/D27|TC2 CLK/DO/CS -> D28/D30/D32|; s|^const int PIN_CLK2 = 23, PIN_DO2 = 25, PIN_CS2 = 27;|const int PIN_CLK2 = 28, PIN_DO2 = 30, PIN_CS2 = 32;|' thermocouple_logger.ino && sed -n 2p thermocouple_logger.ino && sed -n 7,8p thermocouple_logger.ino && p=$(ls /dev/ttyACM* | head -1) && arduino-cli compile -b arduino:avr:megaADK -u -p $p . 2>&1 | tail -1",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T17:14:38.443Z",
+    "tool": "Bash",
+    "input": {
+      "command": "mkdir -p ~/Arduino/tc_fault && cat > ~/Arduino/tc_fault/tc_fault.ino <<'EOF'\n// Print MAX31855 fault bits and cold-junction temp for both boards.\n#include <Adafruit_MAX31855.h>\nAdafruit_MAX31855 tc[] = {Adafruit_MAX31855(22, 26, 24), Adafruit_MAX31855(28, 32, 30)};\n\nvoid setup() {\n  Serial.begin(115200);\n  for (auto &t : tc) t.begin();\n  delay(500);\n}\n\nvoid loop() {\n  for (int i = 0; i < 2; i++) {\n    float c = tc[i].readCelsius();\n    uint8_t e = tc[i].readError();\n    Serial.print(\"TC\"); Serial.print(i + 1);\n    Serial.print(\" tc=\"); Serial.print(c);\n    Serial.print(\" board=\"); Serial.print(tc[i].readInternal());\n    Serial.print(\" fault=\");\n    if (!e) Serial.print(\"none\");\n    if (e & MAX31855_FAULT_OPEN) Serial.print(\"OPEN \");\n    if (e & MAX31855_FAULT_SHORT_GND) Serial.print(\"SHORT_GND \");\n    if (e & MAX31855_FAULT_SHORT_VCC) Serial.print(\"SHORT_VCC \");\n    Serial.println();\n  }\n  delay(1000);\n}\nEOF\ncd ~/Arduino/tc_fault && p=$(ls /dev/ttyACM* | head -1) && timeout 90 arduino-cli compile -b arduino:avr:megaADK -u -p $p . 2>&1 | grep -i error; sleep 1; p=$(ls /dev/ttyACM* | head -1) && stty -F $p 115200 raw -echo && timeout 4 cat $p | head -6",
+      "timeout": 120000
+    }
+  },
+  {
+    "timestamp": "2026-10-26T17:14:55.317Z",
+    "tool": "Bash",
+    "input": {
+      "command": "cd ~/Arduino/thermocouple_logger && ./plot.py > /tmp/tcplot.log 2>&1",
+      "run_in_background": true
+    }
+  }
+]
