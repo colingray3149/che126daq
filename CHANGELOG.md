@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-10-30 — Durable interactive DAQ hub
+
+- Added a local Python command hub, left terminal/right responsive Plotly graph,
+  keyboard history, historical views and visible connection/fault/reset state.
+- Auto-start durable logging on first matching USB connection; unique short
+  numeric run directories, per-row CSV flushing, event records, preserved
+  Markdown comments, clean finalization and no automatic run commits/deletion.
+- Added editable TOML configuration, exact USB identity selection, pinned Nix
+  app/devShell and supervised user-service instructions. Original plotter is
+  preserved unchanged but superseded.
+- Exercised real hardware/UI and isolated throwaway transport/visual smoke;
+  both real channels emitted NaN faults, not validated temperatures. No firmware,
+  pin definitions or heater controls changed; no permanent tests added.
+
 ## 2026-10-30 — Initial collection
 
 - Consolidated saved Arduino logger/diagnostics, host plotter, recoverable historical code, and project conversation text without changing runtime behavior.

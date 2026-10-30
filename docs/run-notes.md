@@ -1,6 +1,6 @@
-# Running the imported code
+# Running the DAQ hub and imported code
 
-These commands use the repository root as the working directory. Current executable sources were copied unchanged. Historical code and source errors are explicitly retained for later refinement.
+The hub is the primary interface. Firmware and the historical plotter remain unchanged.
 
 ## Arduino
 
@@ -15,7 +15,106 @@ Compilation does not upload. No upload was performed during this collection. Sel
 
 `tc_fault` uses the current logger pin map but outputs human-readable diagnostics. `tc_diag` uses an OLD pin map; see [wiring.md](wiring.md). Neither diagnostic output is a compatible input to the CSV plotter.
 
-## Live plotting
+## DAQ hub (primary interface)
+
+```sh
+nix run path:/home/colin/Projects/che126daq
+# development, using the same pinned Python dependencies:
+nix develop path:/home/colin/Projects/che126daq
+python host/hub.py --config /home/colin/Projects/che126daq/hub.toml
+```
+
+Open http://127.0.0.1:8765. Plotly is served locally from the Python package,
+not a CDN. Server binds IPv4 loopback only. Keep exactly one serial reader;
+the hub opens with Linux exclusive access. Nothing uploads firmware, changes
+pin definitions, or controls heaters. Opening/reconnecting may reset the board.
+Auto-detection requires the configured VID, PID **and serial number** to match
+exactly one device. An explicit port overrides identity selection. No automatic
+retry loop: use `reconnect` after correcting a missing/disconnected device.
+
+The first successful serial open automatically starts a saved run (valid
+temperature measurements are not required). `stop` leaves serial monitoring
+open but discards subsequent samples until `start`; the graph freezes.
+`restart` finalizes and allocates a new run. `save` flushes and refreshes
+metadata without stopping. `clear` clears only the requesting browser view.
+`list` / `view 001` loads a labeled saved snapshot while live logging continues;
+`live` restores the active stream. `note text` always appends to the **active**
+run, even while viewing history. `window 120` / `window all` changes the plot
+window; zoom/pan and legend toggles are available. `help`, `status`, `config`
+and `channels` expose details; unknown commands/errors remain visible.
+↑/↓ recalls the last 100 commands in this browser's local storage.
+
+`hub.toml` is the only configuration file. Edit and restart the server to apply.
+Nix defaults to `$HOME/Projects/che126daq/hub.toml`, regardless of working
+directory; override with `CHE126DAQ_CONFIG` or `--config`.
+Relative `runs_dir` resolves beside the config, never beside the Nix store copy.
+`--runs-dir /tmp/...` and `--port ...` are explicit isolated smoke overrides.
+
+Runs allocate numeric directories by atomic mkdir, increasing beyond existing
+numeric entries, never overwriting previous directories. Files:
+
+- `data.csv`: host UTC, independent monotonic host elapsed seconds, original
+  board uptime, reset epoch, TC1/TC2 °C, fault/reset/all-zero flags; flushed each row.
+- `events.csv`: timestamped startup/header, malformed/oversized rows, disconnect,
+  regression and command-stop events. Partial lines wait for newline; oversized
+  partial buffers are discarded visibly. Missing/NaN temperatures remain gaps;
+  real zeros remain zero with an explicit all-zero caveat. No sensor identity,
+  fault cause, calibration or validity is inferred.
+- `notes.md`: generated timestamps/config/device/sample count/stop reason plus
+  user-owned content after `## Comments` (initially a literal blank line).
+  Metadata updates preserve that suffix; deleting the heading causes a visible
+  refusal rather than replacing notes. `note` appends timestamped text.
+
+All rows stay on disk; live and historical graphs retain at most `plot_points`
+(default 7200). Historical plots use the last retained saved rows. Board resets
+increment epochs; x is independent host elapsed time. A disconnected device
+leaves the run open, with missing time visible; explicit reconnect resumes it.
+Browser refresh/disconnect does not own acquisition. Ctrl-C or SIGTERM finalizes
+the run. Abrupt kill/power loss can leave metadata marked recording; per-row
+flush is not an fsync/power-loss guarantee. Do not delete/move active run files.
+Runs are ignored by Git and never automatically committed or deleted.
+
+For a supervised user service, without tying acquisition to a shell:
+
+```sh
+systemd-run --user --unit=che126daq-hub --collect \
+  --working-directory=/home/colin/Projects/che126daq \
+  nix run path:/home/colin/Projects/che126daq
+systemctl --user status che126daq-hub
+journalctl --user -u che126daq-hub
+systemctl --user stop che126daq-hub
+```
+
+Stop the existing service before starting another port reader. The service
+survives browser/shell closure, not necessarily user logout; no login/boot
+autostart or linger setting is installed.
+
+The service left running on 2026-10-30 uses the already-built executable,
+GC-rooted at ignored `build/hub`, so it does not wait on Nix cache availability.
+After stopping that service, relaunch that same installed build with:
+
+```sh
+systemd-run --user --unit=che126daq-hub --collect \
+  --working-directory=/home/colin/Projects/che126daq \
+  /home/colin/Projects/che126daq/build/hub/bin/che126daq
+```
+
+For rebuilding when this workstation's configured private cache is unavailable:
+
+```sh
+nix build path:/home/colin/Projects/che126daq \
+  --option substituters https://cache.nixos.org --option builders '' \
+  --out-link /home/colin/Projects/che126daq/build/hub
+```
+
+Commissioning evidence: [activity log](activity-log.md#2026-10-30--interactive-durable-daq-hub).
+Real board input was `nan` on both channels; no valid temperature or attached
+probe was established. Real historical rendering, live recording during history,
+refresh persistence, command history, two laptop layouts, isolated PTY edge
+cases and separately labeled synthetic curves/gaps were exercised. All
+throwaway scripts/datasets were removed; no permanent tests were added.
+
+## Historical live plotter (superseded)
 
 On this NixOS workstation the original executable script has a nix-shell shebang for matplotlib, pyserial, and tkinter:
 
@@ -35,8 +134,8 @@ Known imported limitations, intentionally not fixed in this collection:
 
 - Legend still says `(A1)` / `(A2)` from the early analog version. These are stale labels; actual MAX31855 signals use the digital pins in wiring.md.
 - Default port picks the first sorted `/dev/ttyACM*`, not board identity. Specify a port explicitly; no-device and unplug/reconnect handling are not robust.
-- All-zero MAX31855 frames are not rejected. Today's zeros do not validate wiring or temperature.
-- Uptime/reset/wrap behavior, durable logging, units/metadata standardization and calibrated uncertainty remain for subsequent work with the user.
+- All-zero MAX31855 frames are not rejected. The initial collection's zeros did not validate wiring or temperature.
+- Uptime/reset/wrap behavior, durable logging and metadata are handled by the hub instead. Calibrated uncertainty remains unverified.
 
 ## Thermal model
 

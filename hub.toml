@@ -1,0 +1,15 @@
+# Relative storage resolves beside this file, never the launch working directory.
+runs_dir = "runs"
+port = 8765
+plot_points = 7200 # one hour at nominal 2 Hz; all samples remain in CSV
+
+[serial]
+port = "" # explicit override; empty selects ONLY the matching USB identity below
+baud = 115200
+vid = 0x2341
+pid = 0x0044
+serial_number = "64935343733351C0B251"
+
+[channels]
+TC1 = "MAX31855, degrees Celsius; CLK/DO/CS 22/24/26; probe unverified"
+TC2 = "MAX31855, degrees Celsius; CLK/DO/CS 28/30/32; probe unverified"

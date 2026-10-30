@@ -10,6 +10,33 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Activity log](docs/activity-log.md) — what was actually done and observed.
 - [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.
 
+## DAQ hub
+
+```sh
+nix run path:/home/colin/Projects/che126daq
+```
+
+Open **http://127.0.0.1:8765**. The left terminal accepts `help`, `status`,
+`start`, `stop`, `restart`, `save`, `clear`, `list`, `view 001`, `live`,
+`note your comment`, `window 120`, `config`, and `reconnect`; ↑/↓ recalls history.
+The first successful matching USB connection **automatically starts durable logging**.
+Closing/refreshing the browser does not stop recording. `stop` finalizes a run;
+`clear` changes only this browser's plot/console; `save` flushes without stopping.
+Historical views are labeled and do not interrupt the active recording.
+
+Each run has a short, never-overwritten directory: `runs/001/`, `runs/002/`, …
+`data.csv` is flushed per row; `events.csv` records serial/reset/errors;
+`notes.md` records metadata and preserves user edits below `## Comments`.
+Runs are ignored by Git. No synthetic acquisition or heater controls exist.
+NaNs plot as gaps; all-zero streams carry a warning, not a claim of valid sensors.
+
+Edit **[hub.toml](hub.toml)** for USB identity/explicit port, baud, storage, retained
+plot points and HTTP port. Relative storage resolves beside that file.
+Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
+or pass `--config /absolute/path/hub.toml` for another checkout.
+See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.
+
+
 ## Layout
 
 | Directory | Contents |
@@ -17,7 +44,8 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 | `firmware/thermocouple_logger/` | Latest saved two-channel MAX31855 logger; 115200 baud CSV; nominal 2 Hz |
 | `firmware/tc_fault/` | Fault/cold-junction diagnostic using the same pin map |
 | `firmware/tc_diag/` | Older shared-clock raw-frame diagnostic; DIFFERENT wiring |
-| `host/plot.py` | Original live two-channel plot; rolling 20 seconds; does not save a recording |
+| `host/hub.py`, `host/web/`, `hub.toml` | Primary command-first durable DAQ hub; local aiohttp/pyserial/Plotly |
+| `host/plot.py` | Superseded original plotter, retained unchanged for provenance; no saving, stale A1/A2 labels |
 | `models/thermal-stack/` | Extracted ChatGPT model, five figures, predictions, blank measurement template, original model notes |
 | `references/` | Original design PDF, order XLSX, datasheets, course notes, export ZIP; searchable PDF text and spreadsheet CSV views |
 | `provenance/claude/` | Readable old session, relevant code-changing calls, historical source snapshots, prior flash backups |

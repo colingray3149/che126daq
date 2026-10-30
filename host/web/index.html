@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ChE 126 · DAQ hub</title>
+<link rel="stylesheet" href="/static/style.css">
+<script defer src="/plotly.js"></script><script defer src="/static/app.js"></script>
+</head>
+<body>
+<header><strong>ChE 126 <span>DAQ hub</span></strong><span id="recording">Connecting to hub…</span></header>
+<main>
+<section class="terminal" aria-label="Command terminal">
+<div class="section-title">Command terminal <span>help · ↑↓ history</span></div>
+<div id="console" role="log" aria-live="polite"></div>
+<form id="command-form" autocomplete="off"><label for="command">›</label><input id="command" name="command" aria-label="DAQ command" placeholder="help" spellcheck="false" autofocus></form>
+<div class="hint">First hardware connection auto-starts a saved run.<br>clear = view only · stop = finalize · save = flush</div>
+</section>
+<section class="workspace" aria-label="Temperature acquisition">
+<div class="plot-heading"><strong id="view-label">LIVE · waiting</strong><span id="sample-count"></span></div>
+<div id="connection" class="connection">Waiting for server</div>
+<div id="sensors" class="sensors"></div>
+<div id="warning" role="status"></div>
+<div id="plot" aria-label="TC1 and TC2 temperatures in degrees Celsius over host elapsed seconds"></div>
+<div id="event" class="event"></div>
+<footer>Read-only serial · no heater controls · sensor identity / calibration unverified<br><span id="storage"></span></footer>
+</section>
+</main>
+</body></html>
