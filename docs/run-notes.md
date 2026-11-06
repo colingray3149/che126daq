@@ -26,15 +26,20 @@ python host/hub.py --config /home/colin/Projects/che126daq/hub.toml
 
 Open http://127.0.0.1:8765. Plotly is served locally from the Python package,
 not a CDN. Server binds IPv4 loopback only. Keep exactly one serial reader;
-the hub opens with Linux exclusive access. Nothing uploads firmware, changes
-pin definitions, or controls heaters. Opening/reconnecting may reset the board.
+the hub opens with Linux exclusive access. It does not upload firmware.
+`start exp2` explicitly arms compatible board-local heater control; see
+[EXP2 operation](exp2.md). Opening/reconnecting may reset the board, which is
+unsafe with an energized NC-wired heater: physically disconnect heater power first.
 Auto-detection requires the configured VID, PID **and serial number** to match
 exactly one device. An explicit port overrides identity selection. No automatic
 retry loop: use `reconnect` after correcting a missing/disconnected device.
 
-The first successful serial open automatically starts a saved run (valid
-temperature measurements are not required). `stop` leaves serial monitoring
-open but discards subsequent samples until `start`; the graph freezes.
+By default, the first successful serial open automatically starts a saved run
+(valid temperature measurements are not required). Launch with `--wait-for-start`
+to monitor live sensors without allocating a recording until an explicit START;
+this also avoids allocating a baseline run before the next numbered experiment.
+`stop` leaves serial monitoring open but discards subsequent samples until
+`start`; the graph freezes.
 `restart` finalizes and allocates a new run. `save` flushes and refreshes
 metadata without stopping. `clear` clears only the requesting browser view.
 `list` / `view 001` loads a labeled saved snapshot while live logging continues;
@@ -44,7 +49,28 @@ window; zoom/pan and legend toggles are available. `help`, `status`, `config`
 and `channels` expose details; unknown commands/errors remain visible.
 ↑/↓ recalls the last 100 commands in this browser's local storage.
 
-`hub.toml` is the only configuration file. Edit and restart the server to apply.
+`start exp2` starts a fresh saved run and manually re-arms without pre-start
+sensor, temperature, IDLE-state or physical-reset gates. `experiment.toml`
+supplies the target, runtime cutoffs, hysteresis and timing; TC2 stays optional.
+Cooling alone never re-arms, but an explicit new START works after stop/trip.
+`stop exp2` stops heat while retaining cooldown logging. Plain `stop` must
+confirm heater stop before finalizing recording. Active control cannot be
+silently abandoned by `restart` or `reconnect`. Compatible telemetry, command
+acknowledgements and controller transitions are shown/logged; an unavailable
+link means the physical heater state is unknown, not guaranteed OFF.
+
+`start exp3` / `stop exp3` have the same lifecycle using `experiment3.toml`,
+with reversed probes: raw TC2 is logical TC1/heater, raw TC1 is logical TC2/rear.
+Both settings files include the host-only manual `variac_voltage_V` record;
+software does not set or measure that voltage. The idle board's boot defaults
+are not the selected experiment's settings; explicit START applies that file.
+
+`hub.toml` configures the DAQ connection/storage/UI; restart the server after editing it.
+`experiment.toml`, beside that file, configures control and is reread on every
+`start exp2`; no server restart or reflash is needed for experiment edits.
+Editing it alone does not change an active controller. `config` shows edited
+and applied values; saved runs include the selected `experiment.toml` or
+`experiment3.toml`, `experiment-applied.json`, and `run-metadata.json`.
 Nix defaults to `$HOME/Projects/che126daq/hub.toml`, regardless of working
 directory; override with `CHE126DAQ_CONFIG` or `--config`.
 Relative `runs_dir` resolves beside the config, never beside the Nix store copy.

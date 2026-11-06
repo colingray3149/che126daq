@@ -23,6 +23,23 @@ DO / SO / SDO ---------------------> 30
 CS    ----------------------------> 32
 ```
 
+For **experiment 2**, amplifier **1 / TC1** measures the cartridge heater; amplifier **2 / TC2** measures the opposite face of the barrier. Identify the amplifier by its signal pin connections, not the probe's appearance.
+
+**EXP3 / reversed probes:** leave amplifier pin wiring unchanged. With
+`swap_inputs = true`, raw amplifier 2 (28/30/32) supplies logical TC1/heater
+feedback; raw amplifier 1 (22/24/26) supplies logical TC2/rear cutoff.
+Raw CSV remains amplifier order. Run 017 has this reversed physical placement,
+but its old controller did not apply the swap. The display correction alone
+does not correct control. See [deployment status](docs/exp2.md).
+
+## Experiment 2 relay module
+
+With **all power disconnected**: module **+ → Mega 5V**, **− → Mega GND**, **S → D33** (the odd-numbered pin beside TC2's D32). This assumes the verified 5V, active-HIGH module profile used by the EXP2 firmware; check its switching behavior with the variac unplugged before connecting heater power.
+
+The requested **COM–NC** contact wiring passes heater power when the coil is unpowered. For that profile, the firmware commands **D33 HIGH to cut heat**, **LOW to request heat**. **NC is not fail-safe: losing Arduino/relay power or resetting the board can turn the heater ON.** A separate independent high-limit disconnect is required; COM–NO is the recommended fail-off contact choice and needs the matching firmware profile.
+
+Voltage is set/measured manually at the heater: the earlier EXP2 preset was 30V RMS; EXP3 requests 65V RMS, recorded in `experiment3.toml`. The Arduino does not set or measure it, and no 65V tuning validation is claimed. No AC conductor or relay contact connects to Arduino GND. Protective earth is not the heater's neutral/return. Keep mains terminals enclosed and dry.
+
 ## Where the signal holes are
 
 Orient the Arduino with its USB connectors to the LEFT and its big double-row header to the RIGHT. The inner column, closer to the main processor, is the EVEN-numbered column.

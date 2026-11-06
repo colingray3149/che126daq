@@ -1,5 +1,7 @@
 # Heater warm-up and a minimal control-identification plan
 
+**2026-11-02 update:** [Relay/sand control design](relay-sand-control.md) analyzes the now-available heated run 006, recovers the design PDF's draft 500°C ±10°C / 30-minute criterion, and covers the newly reported Songle relay. This older plan's “no valid heated data” status was historical; run 006 now contains finite heated readings plus substantial faults, but still lacks measured input and power-off history. No hardware control has been deployed.
+
 ## Current answer to “100 V → 500°C: how long?”
 
 There is not yet a defensible single time for this apparatus. The heater rating determines nominal electrical power, not the heater/fixture heat capacity or losses. The executed calculation and clearly labeled sensitivity examples are in [heater-timing/results.md](../models/heater-timing/results.md). No hypothetical capacity or loss parameter is presented as measured heater data.

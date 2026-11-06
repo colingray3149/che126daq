@@ -1,0 +1,4 @@
+cycle_period_s,cycles_per_hold,contact_transitions_per_hold
+10.0,180.0,360.0
+20.0,90.0,180.0
+60.0,30.0,60.0

@@ -4,7 +4,7 @@
 
 - USB identification on 2026-10-30: **Arduino Mega ADK**, `/dev/ttyACM0`, FQBN `arduino:avr:megaADK`, VID:PID `2341:0044`. Port names can change after replugging. Raw identification: `../provenance/hardware/board-list-2026-10-30.json`.
 - Amplifier identity comes from the user's 2026-10-26 Claude conversation: **Adafruit MAX31855 K-type breakout**, not an analog AD8495 and not MAX31856. Physical amplifier labels/revision and present jumper placement have not been visually inspected this session.
-- The table below matches the **current saved logger** `../firmware/thermocouple_logger/thermocouple_logger.ino`, lines 7–8, and `tc_fault`. It is not a claim that the present wires or loaded firmware bytes have been verified.
+- The table below matches the current saved logger's pin constants and `tc_fault`. It is not a claim that the present wires or loaded firmware bytes have been verified.
 
 ## Connections
 
@@ -17,6 +17,15 @@
 | `CS` | Digital **26** | Digital **32** |
 
 Five wires per amplifier. Each signal has its own Arduino pin; both amplifiers still share the Arduino's electrical 5V and ground rails. Use separate available 5V/GND header sockets or a sound distribution rail, not two loose wires jammed into one socket.
+
+For **EXP2**, TC1 is the heater-side probe and TC2 is the opposite barrier face. Relay module S uses **D33**, + uses 5V and − uses GND under the documented 5V active-HIGH profile. The requested COM–NC power contacts mean HIGH cuts commanded heat and LOW permits it; losing Arduino/coil power can turn the heater ON. See [EXP2 operation](exp2.md) for wiring, polarity verification and independent cutoff requirements.
+
+For **EXP3**, the operator-reported reversed physical placement is handled by
+`swap_inputs = true`: amplifier 2/raw TC2 is heater feedback, amplifier 1/raw TC1
+is the rear cutoff input. Pin wiring and raw CSV order stay unchanged.
+The logical plot labels show each raw source explicitly. Firmware/host v4 was
+deployed after run 017 finished. `start exp3` applies the corrected control
+mapping; changing the display alone never changes controller inputs.
 
 `D22` means the hole labeled **22**, not a literal label “D22”. With USB connectors to the left and the large double-row header on the right, **22, 24, 26, 28, 30, 32 are consecutive holes down the inner/even column**, nearest the main processor. The header's top power row is **5V**, not 22. Follow the silkscreen numbers; do not count blindly. See `../references/hardware/mega-adk-front.jpg` and the OEM schematic.
 
@@ -44,7 +53,7 @@ On 2026-10-30, a roughly five-second read at 115200 baud produced the expected C
 
 ## Firmware variants: do not mix these pin maps
 
-- `thermocouple_logger`: table above; 115200 baud; three CSV columns; nominal 500 ms period.
+- `thermocouple_logger`: table above; 115200 baud; three CSV columns plus `#CTRL` EXP2 telemetry; nominal 500 ms sampling and explicit serial-command control on D33.
 - `tc_fault`: same current pin map; human-readable fault bits and cold-junction temperatures, **not CSV** for `host/plot.py`.
 - `tc_diag`: **historical shared-clock diagnostic**, CLK 22, CS 26/28, DO 24/30. It does **not** match the current TC2 28/30/32 wiring. Preserved unchanged for provenance; do not upload it assuming the current table applies.
 - Earlier AD8495/A1/A2 and shared-clock/data snapshots are historical, not alternative instructions.

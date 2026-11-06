@@ -98,3 +98,35 @@ Sources and product limits: [current-check-sources.md](current-check-sources.md)
 5. **Sand condition:** bag label and a view showing fill height, packing, and heater/probe positions. Record sand mass and preparation/condition alongside the image.
 
 These are suggested evidence to capture, not invented missing photographs or a requirement for elaborate documentation.
+
+## 2026-11-06 — Test-day restart and previous-session outcome
+
+- Colin reported that the previous session did not reach an experimental run because of too many thermocouple issues. Treat the saved troubleshooting/heat-gun acquisition as commissioning data, not a completed controlled cartridge/barrier hold. Further lessons were not supplied because copy/paste failed; no additional observations are inferred.
+- Existing evidence: run 014 contains faults on both channels and serial disconnections; run 015 contains repeated TC2 faults and a serial disconnect, ending with application shutdown. These events do not establish whether the root cause was probe contact/grounding, wiring, amplifier, USB connection or another issue.
+- Current saved `experiment.toml`: target 300°C, hysteresis 3°C, TC1 cutoff 320°C, enabled TC2 cutoff **85°C**, prediction lead 5s, minimum OFF time 5s, hold band ±5°C, hold duration 1800s. The 85°C value supersedes the earlier 140°C operating choice for the next START; saved settings are not proof of board-applied settings.
+- Test-day inspection found the localhost DAQ endpoint unavailable, no matching DAQ/Arduino process, and no `/dev/ttyACM*` device. No serial port was opened, board reset/upload performed, settings changed or heating command issued.
+- Immediate diagnostic priority: establish stable channel readings and identify whether faults follow a probe, amplifier/channel or fixture contact, with heater power disconnected and wiring changes made unpowered. Grounded-tip/MAX31855 incompatibility remains a possibility, not a confirmed diagnosis; do not remove protective earth to suppress faults.
+
+## 2026-11-06 — Run 017 reversed probes; EXP3 preparation
+
+- Operator reported that the two probes were accidentally reversed in run 017: physical/raw channel 1 measured the opposite barrier face and physical/raw channel 2 measured the heater. Added this correction through the running hub's `note` command; raw CSV columns and existing samples were not rewritten.
+- The recorded `TC2_LIMIT` event at 17:36:27 UTC therefore acted on the heater probe under the applied 85°C cutoff, not the intended rear-side probe. This is not evidence of a successful 300°C hold or of the rear-side cutoff operating on its intended location.
+- Split the live graph into independently scaled temperature panels: logical TC1/heater blue from raw TC2; logical TC2/rear orange from raw TC1. Labels preserve the raw-channel identity. Run-specific historical interpretation prevents this correction from silently swapping other old runs.
+- Operator requested EXP3 with a 65V manually set preset and the existing temperature/timing settings. At nominal 48Ω this is 88.02W ON power, 4.694 times the 30V nominal power; no voltage-based temperature rescaling or physically validated retuning is claimed.
+- Operator selected **prepare now, deploy after recording**. The active v3 firmware/host and recording are left running. Correcting the displayed labels does not change the current controller's input mapping; EXP3's board-local swap requires the later firmware upload and host restart.
+
+## 2026-11-06 — Run 017 closeout and EXP3 deployment
+
+- Operator described the completed test as the **first successful test**, with **1 mica layer, 2 basalt-fabric layers and 1 aluminum layer**. Recorded this assessment in run 017's notes. Hot-to-cold order, thicknesses, sand condition and actual voltage history were not established by this closeout.
+- Finalized run 017 by the DAQ `stop` command: **2504 samples**, approximately **1250.91s** between first and last saved samples. Both raw channels had zero nonfinite temperature samples in this run. Corrected rear/raw TC1 peak was **29.25°C**; corrected heater/raw TC2 peak was **85.75°C**. The recorded controller trip was `TC2_LIMIT` under the 85°C setting, acting on the reversed heater probe. This is a successful trial by the operator's assessment, not a completed 300°C/30-minute hold.
+- Uploaded the previously verified v4 firmware, restarted the DAQ with `--wait-for-start`, and reopened the browser terminal. Confirmed real-board v4 IDLE/commanded OFF with live readings and no recording allocated; run 018 remained available for the next explicit `start exp3`. No heating START was issued during deployment.
+- Added the reported stack as comments in `experiment3.toml`, so the next run's exact config snapshot carries it. EXP3 remains target 300°C, heater cutoff 320°C, enabled rear cutoff **85°C**, swap enabled, 65V manual-preset metadata, and the existing timing/hold settings.
+- Clarification after operator question: the initial UI showed the board's inactive boot default rear cutoff **140°C**, not a raised EXP3 cutoff. The actual control swap and 85°C cutoff apply together on `start exp3`. Relabeled boot values explicitly to distinguish them from selected experiment settings.
+
+## 2026-11-06 — Run 019 display correction and STOP evidence
+
+- Operator reported still seeing combined graphs and a rapidly rising trace labeled TC2, questioned the swap/85°C trip, and required `stop exp3` to cut heat. Accepted the display report; the exact old tab/version was not captured, so stale browser code is a possible cause, not established fact.
+- Live events show run 018 allocated at 18:00:01.418Z, then finalized when EXP3 START allocated run 019 at 18:03:54.036Z. Board acknowledged `swap_inputs=true`, heater cutoff 320°C, rear cutoff 85°C and target 300°C. A STOP sent at 18:04:26.789Z was acknowledged at 18:04:26.840Z as STOPPED/`heater_on=false`.
+- Inspection's additional `stop exp3` returned already inactive/no STOP sent. Fresh telemetry remained STOPPED/OFF and run 019 kept recording. No real START, upload or serial reconnect was issued during this investigation.
+- Saved run 019 heater/raw TC2 peaked at 113.5°C; rear/raw TC1 was approximately 30°C during inspection. The 85°C rear threshold does not apply to the heater after the swap. Cooldown from the heater peak was visible, but relay-contact state/current were not independently measured.
+- Replaced the shared subplot figure with two distinct graphs and opened the versioned page. Verified every retained plotted value against its physical CSV/API channel: blue TC1/heater ← raw TC2; orange TC2/rear ← raw TC1. Historical 016 retained unswapped mapping, 017 retained its reversal. Native STOP/cutoff regressions passed.

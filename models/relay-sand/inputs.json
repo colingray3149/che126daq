@@ -1,0 +1,40 @@
+{
+  "heater": {"rated_V": 120.0, "rated_W": 300.0, "diameter_m": 0.0127, "envelope_length_m": 0.0635, "heated_length_m": 0.0396875},
+  "design": {"target_C": 500.0, "band_C": 10.0, "hold_s": 1800.0, "ambient_C": 25.0},
+  "mica": {"thickness_m": 0.0008128, "k_W_mK": 0.3, "width_m": 0.0508, "height_m": 0.1524},
+  "electrical_examples_V": [20, 30, 40, 50, 55, 60, 80, 100, 120],
+  "sand_sensitivity": {
+    "note": "Analyst-selected geometry/material sensitivities, NOT fitted QUIKRETE properties or a high-temperature wet-sand prediction. Published room-temperature sand endpoints motivate the range. A 500 C near-heater region dries; homogeneous wet k is counterfactual at that temperature.",
+    "outer_radius_m": [0.03, 0.05, 0.1],
+    "effective_k_W_mK": [0.25, 0.6, 1.5, 2.5],
+    "dry_bulk_density_kg_m3": 1600.0,
+    "solid_cp_J_kgK": 750.0,
+    "water_density_kg_m3": 1000.0,
+    "water_cp_J_kgK": 4180.0,
+    "volumetric_water_fraction": [0.0, 0.05, 0.15],
+    "water_examples_kg": [0.01, 0.05, 0.1],
+    "boiling_C_at_1atm": 100.0,
+    "latent_J_kg_at_1atm": 2257000.0
+  },
+  "switching_sensitivity": {
+    "note": "Capacities, periods and dwell times are sensitivity inputs, not measured plant parameters or approved tuning.",
+    "assumed_capacity_J_K": [25.0, 50.0, 100.0],
+    "pulse_s": [1.0, 5.0, 10.0],
+    "on_voltage_V": [30.0, 60.0, 120.0],
+    "cycle_period_s": [10.0, 20.0, 60.0],
+    "reference_ramp_scenario_voltage_V": 120.0
+  },
+  "relay_driver": {"coil_V": 5.0, "coil_R_ohm": 70.0, "coil_R_tolerance_fraction": 0.1, "base_R_ohm": 330.0, "base_pulldown_R_ohm": 10000.0, "assumed_gpio_high_V": 4.2, "assumed_VBE_max_V": 1.2, "forced_beta": 10.0},
+  "sources": {
+    "heater": "https://www.mcmaster.com/4877K305/",
+    "mica": "https://www.mcmaster.com/85165K26/",
+    "design": "../../references/design/ChE 126 Design.pdf pp. 36 and 41; draft target, not operating approval",
+    "sand": "https://api.mountainscholar.org/server/api/core/bitstreams/734815a7-9c1c-4679-ae98-1c491ae33d74/content (Smits et al., 2009, pp. 4 and 6: measured dry k 0.24/0.30, saturated 2.5/2.9 W/mK; dry density 1620/1800 kg/m3)",
+    "heat_capacity": "https://open.library.okstate.edu/rainorshine/chapter/13-2-soil-thermal-properties/ (Eq. 13-2 and Table 13-1; room-temperature constituent properties only)",
+    "water": "http://wpage.unina.it/petrilli/gasvapor/steam.htm?html (steam table at 100 C, 101.3 kPa; rounded latent heat)",
+    "conduction": "https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node118.html",
+    "relay": "https://www.jotrin.jp/userfiles/downloadfile/SRD_05VDC_SL_C/SRD_05VDC_SL_C_DATASHEET.pdf",
+    "arduino": "https://docs.arduino.cc/retired/boards/arduino-mega-adk-rev3/",
+    "transistor": "https://www.onsemi.com/pdf/datasheet/p2n2222a-d.pdf"
+  }
+}

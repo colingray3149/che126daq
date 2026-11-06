@@ -1,0 +1,540 @@
+{
+  "executed_utc": "2026-11-02T17:41:36.106560+00:00",
+  "source_run": "/home/colin/Projects/che126daq/runs/006/data.csv",
+  "run_sha256": "5c314843f42165eaca16269fc6bbcec54d6ac88b31e2103b1b7e134198bbaf82",
+  "inputs_sha256": "e9b7478b9fe00450945b36f1222e2e7579d55753a85e0aded462780b239a941b",
+  "script_sha256": "586f213fbc65db165fc4c91903b94d6bc890ce00a445250c44f006088705a349",
+  "samples": 819,
+  "both_fault_samples": 59,
+  "both_fault_percent": 7.203907203907204,
+  "channel_summary": {
+    "tc1_C": {
+      "finite": 759,
+      "faults": 60,
+      "peak_C": 219.75,
+      "peak_host_s": 87.067228,
+      "first_C": 24.5,
+      "last_C": 28.25,
+      "max_10s_OLS_C_s": 3.251107381326846,
+      "max_10s_window_host_s": [
+        60.533999,
+        70.483592
+      ],
+      "first_observed_crossing_host_s": {
+        "50": 27.95855,
+        "100": 43.043533,
+        "150": 60.533999,
+        "200": 66.564175,
+        "250": null
+      }
+    },
+    "tc2_C": {
+      "finite": 760,
+      "faults": 59,
+      "peak_C": 261.0,
+      "peak_host_s": 78.020213,
+      "first_C": 25.0,
+      "last_C": 24.75,
+      "max_10s_OLS_C_s": 5.29407079446515,
+      "max_10s_window_host_s": [
+        27.656875,
+        37.011713
+      ],
+      "first_observed_crossing_host_s": {
+        "50": 21.927836,
+        "100": 33.092177,
+        "150": 42.138775,
+        "200": 60.533999,
+        "250": 61.136944
+      }
+    }
+  },
+  "max_absolute_channel_difference": {
+    "host_s": 61.136944,
+    "tc1_C": 167.75,
+    "tc2_C": 258.75,
+    "difference_C": 91.0
+  },
+  "nominal_R_ohm": 48.0,
+  "relay_driver": {
+    "nominal_coil_A": 0.07142857142857142,
+    "nominal_coil_W": 0.35714285714285715,
+    "low_resistance_coil_A_ignoring_transistor_drop": 0.07936507936507936,
+    "base_resistor_current_A_at_assumed_GPIO_V": 0.00909090909090909,
+    "base_current_A_after_pulldown": 0.00897090909090909,
+    "required_base_A_at_forced_beta": 0.007936507936507936
+  },
+  "design": {
+    "target_C": 500.0,
+    "band_C": 10.0,
+    "hold_s": 1800.0,
+    "ambient_C": 25.0
+  },
+  "actual_run_input_voltage_V": null,
+  "actual_power_off_time_s": null,
+  "identified_hold_power_W": null,
+  "identified_PI_gains": null,
+  "assumptions": {
+    "heater": {
+      "rated_V": 120.0,
+      "rated_W": 300.0,
+      "diameter_m": 0.0127,
+      "envelope_length_m": 0.0635,
+      "heated_length_m": 0.0396875
+    },
+    "design": {
+      "target_C": 500.0,
+      "band_C": 10.0,
+      "hold_s": 1800.0,
+      "ambient_C": 25.0
+    },
+    "mica": {
+      "thickness_m": 0.0008128,
+      "k_W_mK": 0.3,
+      "width_m": 0.0508,
+      "height_m": 0.1524
+    },
+    "electrical_examples_V": [
+      20,
+      30,
+      40,
+      50,
+      55,
+      60,
+      80,
+      100,
+      120
+    ],
+    "sand_sensitivity": {
+      "note": "Analyst-selected geometry/material sensitivities, NOT fitted QUIKRETE properties or a high-temperature wet-sand prediction. Published room-temperature sand endpoints motivate the range. A 500 C near-heater region dries; homogeneous wet k is counterfactual at that temperature.",
+      "outer_radius_m": [
+        0.03,
+        0.05,
+        0.1
+      ],
+      "effective_k_W_mK": [
+        0.25,
+        0.6,
+        1.5,
+        2.5
+      ],
+      "dry_bulk_density_kg_m3": 1600.0,
+      "solid_cp_J_kgK": 750.0,
+      "water_density_kg_m3": 1000.0,
+      "water_cp_J_kgK": 4180.0,
+      "volumetric_water_fraction": [
+        0.0,
+        0.05,
+        0.15
+      ],
+      "water_examples_kg": [
+        0.01,
+        0.05,
+        0.1
+      ],
+      "boiling_C_at_1atm": 100.0,
+      "latent_J_kg_at_1atm": 2257000.0
+    },
+    "switching_sensitivity": {
+      "note": "Capacities, periods and dwell times are sensitivity inputs, not measured plant parameters or approved tuning.",
+      "assumed_capacity_J_K": [
+        25.0,
+        50.0,
+        100.0
+      ],
+      "pulse_s": [
+        1.0,
+        5.0,
+        10.0
+      ],
+      "on_voltage_V": [
+        30.0,
+        60.0,
+        120.0
+      ],
+      "cycle_period_s": [
+        10.0,
+        20.0,
+        60.0
+      ],
+      "reference_ramp_scenario_voltage_V": 120.0
+    },
+    "relay_driver": {
+      "coil_V": 5.0,
+      "coil_R_ohm": 70.0,
+      "coil_R_tolerance_fraction": 0.1,
+      "base_R_ohm": 330.0,
+      "base_pulldown_R_ohm": 10000.0,
+      "assumed_gpio_high_V": 4.2,
+      "assumed_VBE_max_V": 1.2,
+      "forced_beta": 10.0
+    },
+    "sources": {
+      "heater": "https://www.mcmaster.com/4877K305/",
+      "mica": "https://www.mcmaster.com/85165K26/",
+      "design": "../../references/design/ChE 126 Design.pdf pp. 36 and 41; draft target, not operating approval",
+      "sand": "https://api.mountainscholar.org/server/api/core/bitstreams/734815a7-9c1c-4679-ae98-1c491ae33d74/content (Smits et al., 2009, pp. 4 and 6: measured dry k 0.24/0.30, saturated 2.5/2.9 W/mK; dry density 1620/1800 kg/m3)",
+      "heat_capacity": "https://open.library.okstate.edu/rainorshine/chapter/13-2-soil-thermal-properties/ (Eq. 13-2 and Table 13-1; room-temperature constituent properties only)",
+      "water": "http://wpage.unina.it/petrilli/gasvapor/steam.htm?html (steam table at 100 C, 101.3 kPa; rounded latent heat)",
+      "conduction": "https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node118.html",
+      "relay": "https://www.jotrin.jp/userfiles/downloadfile/SRD_05VDC_SL_C/SRD_05VDC_SL_C_DATASHEET.pdf",
+      "arduino": "https://docs.arduino.cc/retired/boards/arduino-mega-adk-rev3/",
+      "transistor": "https://www.onsemi.com/pdf/datasheet/p2n2222a-d.pdf"
+    }
+  },
+  "electrical": [
+    {
+      "load_RMS_V": 20,
+      "nominal_W": 8.333333333333334,
+      "nominal_A": 0.4166666666666667,
+      "fraction_of_rated_power": 0.027777777777777776
+    },
+    {
+      "load_RMS_V": 30,
+      "nominal_W": 18.75,
+      "nominal_A": 0.625,
+      "fraction_of_rated_power": 0.0625
+    },
+    {
+      "load_RMS_V": 40,
+      "nominal_W": 33.333333333333336,
+      "nominal_A": 0.8333333333333334,
+      "fraction_of_rated_power": 0.1111111111111111
+    },
+    {
+      "load_RMS_V": 50,
+      "nominal_W": 52.083333333333336,
+      "nominal_A": 1.0416666666666667,
+      "fraction_of_rated_power": 0.17361111111111113
+    },
+    {
+      "load_RMS_V": 55,
+      "nominal_W": 63.020833333333336,
+      "nominal_A": 1.1458333333333333,
+      "fraction_of_rated_power": 0.21006944444444442
+    },
+    {
+      "load_RMS_V": 60,
+      "nominal_W": 75.0,
+      "nominal_A": 1.25,
+      "fraction_of_rated_power": 0.25
+    },
+    {
+      "load_RMS_V": 80,
+      "nominal_W": 133.33333333333334,
+      "nominal_A": 1.6666666666666667,
+      "fraction_of_rated_power": 0.4444444444444444
+    },
+    {
+      "load_RMS_V": 100,
+      "nominal_W": 208.33333333333334,
+      "nominal_A": 2.0833333333333335,
+      "fraction_of_rated_power": 0.6944444444444445
+    },
+    {
+      "load_RMS_V": 120,
+      "nominal_W": 300.0,
+      "nominal_A": 2.5,
+      "fraction_of_rated_power": 1.0
+    }
+  ],
+  "sand_radial_sensitivities": [
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.040148947078558754,
+      "radial_only_W_at_target": 19.07074986231541,
+      "continuous_equivalent_V": 30.255511785311775,
+      "duty_if_60V_available": 0.25427666483087213
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.096357472988541,
+      "radial_only_W_at_target": 45.769799669556974,
+      "continuous_equivalent_V": 46.87163731019789,
+      "duty_if_60V_available": 0.610263995594093
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.2408936824713525,
+      "radial_only_W_at_target": 114.42449917389244,
+      "continuous_equivalent_V": 74.11056578077674,
+      "duty_if_60V_available": 1.5256599889852325
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.4014894707855875,
+      "radial_only_W_at_target": 190.70749862315407,
+      "continuous_equivalent_V": 95.67632901565254,
+      "duty_if_60V_available": 2.542766648308721
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.03021028306480893,
+      "radial_only_W_at_target": 14.349884455784242,
+      "continuous_equivalent_V": 26.244893862952534,
+      "duty_if_60V_available": 0.1913317927437899
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.07250467935554143,
+      "radial_only_W_at_target": 34.43972269388218,
+      "continuous_equivalent_V": 40.65841474167856,
+      "duty_if_60V_available": 0.45919630258509575
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.1812616983888536,
+      "radial_only_W_at_target": 86.09930673470545,
+      "continuous_equivalent_V": 64.28659831773541,
+      "duty_if_60V_available": 1.1479907564627394
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.3021028306480893,
+      "radial_only_W_at_target": 143.4988445578424,
+      "continuous_equivalent_V": 82.993641556305,
+      "duty_if_60V_available": 1.9133179274378986
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.02261422409740535,
+      "radial_only_W_at_target": 10.74175644626754,
+      "continuous_equivalent_V": 22.706922059602043,
+      "duty_if_60V_available": 0.14322341928356722
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.054274137833772836,
+      "radial_only_W_at_target": 25.780215471042098,
+      "continuous_equivalent_V": 35.177412392187414,
+      "duty_if_60V_available": 0.3437362062805613
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.1356853445844321,
+      "radial_only_W_at_target": 64.45053867760525,
+      "continuous_equivalent_V": 55.620372675172284,
+      "duty_if_60V_available": 0.8593405157014034
+    },
+    {
+      "assumed_length_m": 0.0396875,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.22614224097405347,
+      "radial_only_W_at_target": 107.4175644626754,
+      "continuous_equivalent_V": 71.80559236026411,
+      "duty_if_60V_available": 1.432234192835672
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.064238315325694,
+      "radial_only_W_at_target": 30.513199779704653,
+      "continuous_equivalent_V": 38.27053160626102,
+      "duty_if_60V_available": 0.40684266372939537
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.15417195678166562,
+      "radial_only_W_at_target": 73.23167947129117,
+      "continuous_equivalent_V": 59.28845262462141,
+      "duty_if_60V_available": 0.976422392950549
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.385429891954164,
+      "radial_only_W_at_target": 183.0791986782279,
+      "continuous_equivalent_V": 93.74327462039578,
+      "duty_if_60V_available": 2.441055982376372
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.03,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.6423831532569401,
+      "radial_only_W_at_target": 305.13199779704655,
+      "continuous_equivalent_V": 121.0220471412471,
+      "duty_if_60V_available": 4.068426637293954
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.04833645290369429,
+      "radial_only_W_at_target": 22.959815129254785,
+      "continuous_equivalent_V": 33.197456622522,
+      "duty_if_60V_available": 0.3061308683900638
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.11600748696886629,
+      "radial_only_W_at_target": 55.10355631021149,
+      "continuous_equivalent_V": 51.42927865418833,
+      "duty_if_60V_available": 0.7347140841361531
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.29001871742216573,
+      "radial_only_W_at_target": 137.75889077552873,
+      "continuous_equivalent_V": 81.31682948335713,
+      "duty_if_60V_available": 1.836785210340383
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.05,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.4833645290369429,
+      "radial_only_W_at_target": 229.59815129254787,
+      "continuous_equivalent_V": 104.97957545181013,
+      "duty_if_60V_available": 3.0613086839006383
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 0.25,
+      "radial_G_W_K": 0.03618275855584856,
+      "radial_only_W_at_target": 17.186810314028065,
+      "continuous_equivalent_V": 28.722236944105646,
+      "duty_if_60V_available": 0.22915747085370752
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 0.6,
+      "radial_G_W_K": 0.08683862053403654,
+      "radial_only_W_at_target": 41.24834475366736,
+      "continuous_equivalent_V": 44.49629814013783,
+      "duty_if_60V_available": 0.5499779300488982
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 1.5,
+      "radial_G_W_K": 0.21709655133509134,
+      "radial_only_W_at_target": 103.12086188416839,
+      "continuous_equivalent_V": 70.35482478437483,
+      "duty_if_60V_available": 1.3749448251222451
+    },
+    {
+      "assumed_length_m": 0.0635,
+      "assumed_outer_radius_m": 0.1,
+      "assumed_k_W_mK": 2.5,
+      "radial_G_W_K": 0.3618275855584856,
+      "radial_only_W_at_target": 171.86810314028065,
+      "continuous_equivalent_V": 90.82768823840817,
+      "duty_if_60V_available": 2.2915747085370755
+    }
+  ],
+  "water_sensitivities": [
+    {
+      "assumed_local_water_kg": 0.01,
+      "water_sensible_J": 3135.0000000000005,
+      "water_latent_J": 22570.0,
+      "water_total_J": 25705.0,
+      "equivalent_average_W_over_hold": 14.280555555555555,
+      "water_only_loss_free_time_at_60V_s": 342.73333333333335
+    },
+    {
+      "assumed_local_water_kg": 0.05,
+      "water_sensible_J": 15675.0,
+      "water_latent_J": 112850.0,
+      "water_total_J": 128525.0,
+      "equivalent_average_W_over_hold": 71.40277777777777,
+      "water_only_loss_free_time_at_60V_s": 1713.6666666666667
+    },
+    {
+      "assumed_local_water_kg": 0.1,
+      "water_sensible_J": 31350.0,
+      "water_latent_J": 225700.0,
+      "water_total_J": 257050.0,
+      "equivalent_average_W_over_hold": 142.80555555555554,
+      "water_only_loss_free_time_at_60V_s": 3427.3333333333335
+    }
+  ],
+  "conditional_ramp_scaling": [
+    {
+      "V": 20,
+      "conditional_scaled_C_s": 0.1470575220684764
+    },
+    {
+      "V": 30,
+      "conditional_scaled_C_s": 0.3308794246540719
+    },
+    {
+      "V": 40,
+      "conditional_scaled_C_s": 0.5882300882739055
+    },
+    {
+      "V": 50,
+      "conditional_scaled_C_s": 0.9191095129279776
+    },
+    {
+      "V": 55,
+      "conditional_scaled_C_s": 1.1121225106428525
+    },
+    {
+      "V": 60,
+      "conditional_scaled_C_s": 1.3235176986162875
+    },
+    {
+      "V": 80,
+      "conditional_scaled_C_s": 2.352920353095622
+    },
+    {
+      "V": 100,
+      "conditional_scaled_C_s": 3.6764380517119104
+    },
+    {
+      "V": 120,
+      "conditional_scaled_C_s": 5.29407079446515
+    }
+  ],
+  "switching_cycles": [
+    {
+      "cycle_period_s": 10.0,
+      "cycles_per_hold": 180.0,
+      "contact_transitions_per_hold": 360.0
+    },
+    {
+      "cycle_period_s": 20.0,
+      "cycles_per_hold": 90.0,
+      "contact_transitions_per_hold": 180.0
+    },
+    {
+      "cycle_period_s": 60.0,
+      "cycles_per_hold": 30.0,
+      "contact_transitions_per_hold": 60.0
+    }
+  ]
+}

@@ -1,5 +1,53 @@
 # Changelog
 
+## 2026-11-06 — Distinct TC graph panels and live STOP investigation
+
+- Replaced the shared Plotly subplot figure with two separate bordered graphs, individual controls and independent temperature axes. Each heading shows logical role, raw source and plotted temperature; live panels identify the heater versus rear cutoff.
+- Versioned UI asset URLs to bypass cached script/styles on page reload. Retained per-run interpretation and untouched raw CSV.
+- Investigated the operator's rising-TC2 report against run 019: the board had acknowledged swapped inputs and the 85°C rear cutoff, then STOP/commanded OFF at 18:04:26.840Z. Heater/raw TC2 peaked at 113.5°C; rear/raw TC1 was about 30°C during inspection. No physical power-removal guarantee is inferred from telemetry.
+- Verified plotted values against every retained raw sample, historical 016/017 mappings, continued run 019 cooldown recording, and native controller STOP/cutoff regressions. No firmware upload, acquisition restart or real heater START during this correction.
+
+## 2026-11-06 — Finalize run 017 and deploy EXP3
+
+- Finalized run 017 with 2504 samples and recorded the operator's first-successful-test assessment and 1 mica / 2 basalt-fabric / 1 aluminum layer stack.
+- Uploaded the verified v4 firmware and reopened the updated DAQ. Added `--wait-for-start` to retain live monitoring without automatically allocating a run; confirmed real idle/off telemetry and no run 018 allocation.
+- Preserved EXP3's 85°C rear cutoff and swapped input setting. Distinguished inactive board boot defaults from selected experiment settings in the live UI. Added planned stack comments to the next-run configuration snapshot.
+
+## 2026-11-06 — Split plots, reversed run 017 and staged EXP3
+
+- Split heater/rear traces into independent °C axes, retaining shared elapsed time, raw-source legends and fault gaps. Corrected run 017's displayed roles without changing raw CSV, and recorded the operator's reversal in its notes and experiment log.
+- Added `experiment3.toml` and `start exp3` / `stop exp3` with a 65V manual-preset record. Voltage is not set/measured by software and never rescales temperature data; existing temperature/timing settings are preserved.
+- Added atomic v4 `swap_inputs` control mapping: raw channel 2 heater, raw channel 1 rear for EXP3. Mapping changes remap cached samples and reseed slope history without refreshing stale acquisitions. Saved run metadata preserves interpretation independently of the active controller.
+- Verified native controller regressions, seven host regressions, Mega ADK compile, actual-sketch/host PTY trips and browser commands. EXP3 remains staged per operator choice; live run 017 was not stopped, its server was not restarted, and no firmware was uploaded.
+
+## 2026-11-02 — Editable per-experiment settings
+
+- Added repository `experiment.toml` and opened it with the whole project in Zed. Each START reloads target, cutoffs, hysteresis, prediction/OFF timing and hold settings; edits alone do not change active settings.
+- Added atomic `exp2-v3` settings payload/acknowledgement, applied-settings UI, edited-versus-applied `config` output and per-run source/applied snapshots. Invalid config leaves the current experiment/run untouched.
+- Compiled/uploaded once to enable configuration; subsequent edits require no reflash/server restart. Passed controller/Python checks and actual-sketch/hub PTY reload/cutoff tests, then verified the real board remained idle without arming a heater experiment.
+
+## 2026-11-02 — Operator START and single-TC testing
+
+- Removed all EXP2 sensor/temperature/freshness/state preflight gates and the physical-reset/three-valid-samples requirements; every explicit START allocates a fresh run and manually re-arms.
+- Made TC2 optional for single-TC testing, retaining its finite-reading ≥140°C runtime trip. UI warns when rear-side protection is unavailable; TC1/runtime communication interlocks remain.
+- Updated board/host contract to `exp2-v2`, compiled/uploaded with user-confirmed unplugged variac, passed control/acquisition regressions and observed the user's actual TC1-only RUNNING session without interrupting it.
+
+## 2026-11-02 — Experiment 2 heater control
+
+- Added `start exp2` / `stop exp2`, strict board telemetry/acknowledgements, durable experiment/output transition logging and live controller status. Normal connection/start commands log only; no automatic heating.
+- Added board-local provisional predictive hysteresis for TC1 at 300°C, latched inclusive TC2 ≥140°C trip, sensor/host freshness checks, TC1 high limit and 30-minute continuous indicated-temperature hold completion.
+- Implemented the explicitly requested NC active-HIGH D33 profile, with repeated fail-ON/power-loss limitations and independent cutoff requirements; no claim that software makes NC wiring fail-safe.
+- Compiled/uploaded Mega ADK firmware with relay/TCs disconnected, observed real idle/fault telemetry, and left the actual DAQ client recording missing-probe readings without arming heat.
+- Passed native controller and Python acquisition regressions; exercised actual sketch + hub via isolated PTY and the browser CLI, including trip latch, manual stop/cooldown and restart refusal. No powered heater/relay or physical hold validation.
+
+## 2026-11-02 — Measured mica trace and relay/sand control design
+
+- Analyzed local run 006 without changing raw data; saved a measured-temperature/fault plot, numerical trace summaries and source/script/input hashes.
+- Recovered the draft 500°C ±10°C / 30-minute criterion from design PDF p. 41; distinguished it from earlier 600°C and unvalidated voltage recipes.
+- Added reproducible nominal-power, mica, sand-conduction/heat-capacity, evaporation, pulse-energy and relay-driver calculations with explicit unmeasured assumptions.
+- Documented Mega ADK D7 reservation/D33 choice, bare-relay transistor/flyback wiring, unknown-module limitations, conditional variac commissioning choice and independent safety requirements.
+- Executed the calculation/plot path and visually inspected the measured graph and Songle manufacturer contact diagram. No firmware, DAQ behavior, raw runs or heater power changed; no physical hold validation claimed.
+
 ## 2026-10-30 — Heater timing and minimal control-identification plan
 
 - Executed a cited 100 V nominal-power calculation and explicit heat-capacity/loss sensitivities for the requested 500°C target; retained the actual apparatus time as unknown rather than inventing thermal parameters.

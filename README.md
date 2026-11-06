@@ -6,10 +6,14 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 
 - [Quick wiring diagram](WIRING-QUICK.md) — plain text, also opened in Kate.
 - [Wiring and safe connection order](docs/wiring.md) — current saved pin map and hardware caveats.
+- [Editable experiment settings](experiment.toml) — target, cutoffs, hysteresis and timing; save, then `start exp2` reloads them without a server restart or another firmware upload.
+- [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
+- [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v4 firmware/host.
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
 - [100 V timing calculation](models/heater-timing/results.md) and [minimal control-identification plan](docs/heater-control-plan.md) — explicit sensitivities and a two-to-three-run workflow, not a fabricated warm-up time.
+- [Measured run 006 + relay/sand research](docs/relay-sand-control.md) — earlier 500°C/30-minute draft criterion, actual trace/faults, wet-sand sensitivities and runnable calculations; superseded for operating targets by experiment 2.
 - [Setup source index](docs/setup-source-index.md) — where the useful setup material is, and which drafts conflict.
 - [Activity log](docs/activity-log.md) — what was actually done and observed.
 - [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.
@@ -21,31 +25,48 @@ nix run path:/home/colin/Projects/che126daq
 ```
 
 Open **http://127.0.0.1:8765**. The left terminal accepts `help`, `status`,
-`start`, `stop`, `restart`, `save`, `clear`, `list`, `view 001`, `live`,
-`note your comment`, `window 120`, `config`, and `reconnect`; ↑/↓ recalls history.
-The first successful matching USB connection **automatically starts durable logging**.
-Closing/refreshing the browser does not stop recording. `stop` finalizes a run;
+`start`, `start exp2`, `stop exp2`, `stop`, `restart`, `save`, `clear`, `list`,
+`view 001`, `live`, `note your comment`, `window 120`, `config`, and `reconnect`;
+↑/↓ recalls history. The first matching USB connection **starts logging, never heating**.
+`start exp2` creates a fresh saved run and explicitly re-arms without sensor,
+temperature, IDLE-state or physical-reset preflight requirements. TC2 is optional;
+its 140°C runtime cutoff applies when a valid reading exists. `stop exp2` cuts
+commanded heat but keeps cooldown logging; another START needs no board reset.
+Plain `stop` must stop heat before finalizing a run.
 `clear` changes only this browser's plot/console; `save` flushes without stopping.
 Historical views are labeled and do not interrupt the active recording.
 
 Each run has a short, never-overwritten directory: `runs/001/`, `runs/002/`, …
 `data.csv` is flushed per row; `events.csv` records serial/reset/errors;
 `notes.md` records metadata and preserves user edits below `## Comments`.
-Runs are ignored by Git. No synthetic acquisition or heater controls exist.
+Runs are ignored by Git. No synthetic acquisition mode exists. EXP2 control is explicit;
+NC contact wiring cannot fail OFF on loss of Arduino power. See the operating guide.
 NaNs plot as gaps; all-zero streams carry a warning, not a claim of valid sensors.
 
 Edit **[hub.toml](hub.toml)** for USB identity/explicit port, baud, storage, retained
 plot points and HTTP port. Relative storage resolves beside that file.
+Edit **[experiment.toml](experiment.toml)** for heater control. Each `start exp2`
+reloads it and sends all settings atomically; editing alone leaves an active
+run unchanged. `config` shows edited versus board-applied values. Each run saves
+the exact config source and acknowledged settings for reproducibility.
+EXP3 selects **[experiment3.toml](experiment3.toml)** with `start exp3`;
+`swap_inputs` changes board control roles, while `variac_voltage_V` is recorded
+manual-preset metadata, not a power command or temperature scaling factor.
+Plots have independent heater/rear temperature axes and show raw source channels.
+Run 017's reported reversal is annotated without modifying its raw CSV.
 Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
 or pass `--config /absolute/path/hub.toml` for another checkout.
 See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.
+Launch with `--wait-for-start` to connect and display sensor status without
+automatically allocating a run. An explicit `start exp3` then allocates the next
+numbered folder and applies its settings; no heat starts on connection.
 
 
 ## Layout
 
 | Directory | Contents |
 |---|---|
-| `firmware/thermocouple_logger/` | Latest saved two-channel MAX31855 logger; 115200 baud CSV; nominal 2 Hz |
+| `firmware/thermocouple_logger/` | Two-channel MAX31855 logger + board-local EXP2 controller; 115200 baud CSV/control telemetry; nominal 2 Hz |
 | `firmware/tc_fault/` | Fault/cold-junction diagnostic using the same pin map |
 | `firmware/tc_diag/` | Older shared-clock raw-frame diagnostic; DIFFERENT wiring |
 | `host/hub.py`, `host/web/`, `hub.toml` | Primary command-first durable DAQ hub; local aiohttp/pyserial/Plotly |

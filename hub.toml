@@ -11,5 +11,5 @@ pid = 0x0044
 serial_number = "64935343733351C0B251"
 
 [channels]
-TC1 = "MAX31855, degrees Celsius; CLK/DO/CS 22/24/26; probe unverified"
-TC2 = "MAX31855, degrees Celsius; CLK/DO/CS 28/30/32; probe unverified"
+TC1 = "Raw physical channel 1; MAX31855 CLK/DO/CS 22/24/26; role comes from run mapping; probe identity/calibration unverified"
+TC2 = "Raw physical channel 2; MAX31855 CLK/DO/CS 28/30/32; role comes from run mapping; probe identity/calibration unverified"
