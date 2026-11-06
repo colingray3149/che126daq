@@ -8,7 +8,13 @@
 #include <string.h>
 
 using che126_exp2::Controller;
+using che126_exp2::Phase;
 using che126_exp2::Settings;
+using che126_exp2::BOOST_FINAL;
+using che126_exp2::HEAT_100;
+using che126_exp2::HOLD_100;
+using che126_exp2::HOLD_FINAL;
+using che126_exp2::RAMP_200;
 
 static void expectSettings(const Controller &c, const Settings &expected) {
     const Settings &actual=c.settings();
@@ -48,6 +54,60 @@ static void arm(Controller &c, uint32_t now, float hot=25, float rear=25) {
             now,hot,rear);
 }
 
+static void armExp4(Controller &c, uint32_t now, float raw1=25, float raw2=25) {
+    armLine(c,"EXP4 START 1 700 3 730 85 1 5000 5000 5 0 1",
+            now,raw1,raw2);
+    assert(c.program()==che126_exp2::PROGRAM_EXP4);
+    assert(c.phase()==HEAT_100);
+    assert(c.tc2Required());
+    assert(c.setpointC()==100.0f);
+}
+
+static void armExp4NoPrediction(Controller &c, uint32_t now) {
+    armLine(c,"EXP4 START 1 700 3 730 85 1 0 0 5 0 1",now);
+    assert(c.commandOk());
+    assert(c.phase()==HEAT_100);
+}
+
+static uint32_t reachExp4Phase(Controller &c, Phase desired, uint32_t base=0) {
+    uint32_t now=ready(c,base);
+    armExp4NoPrediction(c,now);
+    now+=500;
+    if (desired==HEAT_100) return now;
+
+    c.handleCommand("EXP2 PING",now+500);
+    c.onSample(now+500,25,100);
+    now+=500;
+    assert(c.phase()==HOLD_100);
+    assert(c.state()==che126_exp2::HOLD);
+    if (desired==HOLD_100) return now;
+
+    c.handleCommand("EXP4 NEXT 2",now);
+    assert(c.commandOk());
+    assert(c.phase()==RAMP_200);
+    if (desired==RAMP_200) return now;
+
+    c.handleCommand("EXP2 PING",now+500);
+    c.onSample(now+500,25,200);
+    now+=500;
+    assert(c.phase()==BOOST_FINAL);
+    assert(c.heaterOn());
+    if (desired==BOOST_FINAL) return now;
+
+    c.handleCommand("EXP2 PING",now+500);
+    c.onSample(now+500,25,700);
+    now+=500;
+    assert(c.phase()==HOLD_FINAL);
+    assert(!c.heaterOn());
+    return now;
+}
+
+static float phaseHeater(Phase phase) {
+    return phase==HEAT_100 ? 25.0f :
+           phase==HOLD_100 || phase==RAMP_200 ? 100.0f :
+           phase==BOOST_FINAL ? 200.0f : 700.0f;
+}
+
 int main() {
     {
         Controller c;
@@ -63,6 +123,17 @@ int main() {
         assert(c.settings().hold_band_c==5.0f);
         assert(c.settings().hold_duration_ms==1800000);
         assert(!c.settings().swap_inputs);
+        assert(c.program()==che126_exp2::PROGRAM_SINGLE);
+        assert(c.phase()==che126_exp2::SINGLE);
+        assert(!c.tc2Required());
+        assert(c.setpointC()==300.0f);
+        assert(c.slopeCPerSecond()==0.0f);
+        const Settings exp4=Controller::defaultExp4Settings();
+        assert(exp4.target_c==700.0f);
+        assert(exp4.tc1_cutoff_c==730.0f);
+        assert(exp4.tc2_cutoff_c==85.0f);
+        assert(exp4.hold_duration_ms==0);
+        assert(exp4.swap_inputs);
     }
     {
         Controller c; uint32_t now=ready(c,0,95,25);
@@ -410,6 +481,264 @@ int main() {
         assert(c.heaterOn());  // Mapping can change back on a later manual START.
     }
     {
+        Controller c; uint32_t now=ready(c);
+        c.handleCommand("EXP4 NEXT 8",now);
+        assert(!c.commandOk());  // NEXT is meaningless to the single program.
+        assert(c.phase()==che126_exp2::SINGLE);
+
+        armExp4NoPrediction(c,now);
+        now+=500;
+        assert(c.heaterOn());
+        const Settings expected=c.settings();
+        c.handleCommand("EXP4 NEXT 9",now);
+        assert(!c.commandOk());  // Early NEXT cannot queue a later transition.
+        assert(c.requestId()==9);
+        assert(c.phase()==HEAT_100);
+        assert(c.heaterOn());
+        expectSettings(c,expected);
+
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,100);
+        now+=500;
+        assert(c.phase()==HOLD_100);
+        assert(!c.heaterOn());
+        for (unsigned i=1; i<=10; ++i) {
+            c.handleCommand("EXP2 PING",now+i*500);
+            c.onSample(now+i*500,25,100);
+            assert(c.phase()==HOLD_100);  // No hold timer can synthesize NEXT.
+        }
+        now+=5000;
+        c.handleCommand("EXP4 NEXT 10",now);
+        assert(c.commandOk());
+        assert(c.requestId()==10);
+        assert(c.phase()==RAMP_200);
+        assert(c.state()==che126_exp2::RUNNING);
+        assert(c.setpointC()==100.0f);
+        assert(!c.heaterOn());
+
+        const char *const rejected[]={"EXP4 NEXT 11","EXP4 NEXT 999","EXP4 NEXT 0",
+                                      "EXP4 NEXT 12 extra","EXP2 NEXT 13"};
+        for (unsigned i=0; i<sizeof(rejected)/sizeof(rejected[0]); ++i) {
+            c.handleCommand(rejected[i],now);
+            assert(!c.commandOk());
+            assert(c.phase()==RAMP_200);
+            assert(c.setpointC()==100.0f);
+            assert(!c.heaterOn());  // Duplicate/new-id NEXT changes no trajectory/output.
+            expectSettings(c,expected);
+        }
+    }
+    {
+        Controller c;
+        const uint32_t now=reachExp4Phase(c,RAMP_200,UINT32_MAX-10000);
+        for (unsigned i=1; i<=91; ++i) {
+            const uint32_t t=now+i*1000;
+            c.handleCommand("EXP2 PING",t);
+            c.onSample(t,25,25);
+            assert(c.phase()==RAMP_200);
+            if (i==45) assert(fabs(c.setpointC()-150.0f)<0.0001f);
+        }
+        assert(fabs(c.setpointC()-200.0f)<0.0001f);
+        assert(c.state()==che126_exp2::RUNNING);  // Ninety seconds alone is not 200 C.
+        assert(c.heaterOn());
+
+        c.handleCommand("EXP2 PING",now+92000);
+        c.onSample(now+92000,25,200);
+        assert(c.phase()==BOOST_FINAL);  // Measured crossing, including across millis wrap.
+        assert(c.setpointC()==700.0f);
+        assert(c.heaterOn());
+        c.handleCommand("EXP2 PING",now+93000);
+        c.onSample(now+93000,25,700);
+        assert(c.phase()==HOLD_FINAL);
+        assert(!c.heaterOn());
+        assert(c.state()==che126_exp2::HOLD);
+    }
+    {
+        Controller c; uint32_t now=ready(c);
+        armLine(c,"EXP4 START 1 700 3 730 85 1 0 5000 5 0 1",now);
+        now+=500;
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,100);
+        now+=500;
+        assert(c.phase()==HOLD_100);
+        assert(!c.heaterOn());
+        const uint32_t off=now;
+        c.handleCommand("EXP4 NEXT 2",now);
+        assert(c.commandOk());
+        c.handleCommand("EXP2 PING",off+500);
+        c.onSample(off+500,25,150);
+        assert(!c.heaterOn());
+        c.handleCommand("EXP2 PING",off+1000);
+        c.onSample(off+1000,25,200);
+        assert(c.phase()==BOOST_FINAL);
+        assert(!c.heaterOn());  // Crossing 200 C shortly after OFF cannot bypass dwell.
+        for (unsigned i=2; i<=5; ++i) {
+            c.handleCommand("EXP2 PING",off+i*1000);
+            c.onSample(off+i*1000,25,200);
+            assert(c.heaterOn()==(i==5));
+        }
+    }
+    {
+        Controller c; uint32_t now=ready(c); armExp4(c,now); now+=500;
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,100);
+        now+=500;
+        assert(c.phase()==HOLD_100);
+        c.handleCommand("EXP4 NEXT 2",now);
+        assert(c.commandOk());
+        for (unsigned i=1; i<=91; ++i) {
+            const uint32_t t=now+i*1000;
+            c.handleCommand("EXP2 PING",t);
+            c.onSample(t,25,199);
+        }
+        assert(c.phase()==RAMP_200);
+        assert(c.setpointC()==200.0f);
+        assert(c.heaterOn());  // Saturated reference cannot trap at 199 C.
+        c.handleCommand("EXP2 PING",now+92000);
+        c.onSample(now+92000,25,200);
+        assert(c.phase()==BOOST_FINAL);
+        assert(c.heaterOn());
+    }
+    {
+        Controller c; uint32_t now=ready(c); armExp4(c,now); now+=500;
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,100);
+        now+=500;
+        assert(c.phase()==HOLD_100);
+        c.handleCommand("EXP4 NEXT 2",now);
+        assert(c.commandOk());
+
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,190);
+        now+=500;
+        assert(c.phase()==RAMP_200);
+        for (unsigned i=1; i<=12; ++i) {
+            c.handleCommand("EXP2 PING",now+i*500);
+            c.onSample(now+i*500,25,190);
+        }
+        now+=6000;  // Flush the old jump out of the trailing slope window.
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,200);
+        now+=500;
+        assert(c.phase()==BOOST_FINAL);
+        assert(c.heaterOn());  // Continuous ON, never a fixed-duty boost.
+
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,600);
+        now+=500;
+        assert(c.phase()==HOLD_FINAL);  // Predicted intercept precedes measured 700 C.
+        assert(!c.heaterOn());
+        assert(c.setpointC()==700.0f);
+        assert(c.state()==che126_exp2::RUNNING);
+        assert(c.holdSeconds()==0);  // Predictive capture below band is not hold time.
+        const uint32_t final_start=now;
+        for (unsigned i=1; i<=1801; ++i) {
+            const uint32_t t=final_start+i*1000;
+            c.handleCommand("EXP2 PING",t);
+            c.onSample(t,25,600);
+        }
+        assert(c.phase()==HOLD_FINAL);
+        assert(c.state()==che126_exp2::RUNNING);  // No legacy 1800 s completion.
+        assert(c.holdSeconds()==0);
+
+        now=final_start+1801000;
+        c.handleCommand("EXP2 PING",now+1000);
+        c.onSample(now+1000,25,700);
+        now+=1000;
+        assert(c.state()==che126_exp2::HOLD);
+        assert(c.holdSeconds()==0);
+        c.handleCommand("EXP2 PING",now+1000);
+        c.onSample(now+1000,25,700);
+        now+=1000;
+        assert(c.holdSeconds()==1);
+        c.handleCommand("EXP2 PING",now+1000);
+        c.onSample(now+1000,25,600);
+        now+=1000;
+        assert(c.phase()==HOLD_FINAL);
+        assert(c.state()==che126_exp2::RUNNING);
+        assert(c.holdSeconds()==0);  // Leaving the band resets continuous hold time.
+        c.handleCommand("EXP2 PING",now+1000);
+        c.onSample(now+1000,25,700);
+        now+=1000;
+        assert(c.state()==che126_exp2::HOLD);
+        assert(c.holdSeconds()==0);
+        c.handleCommand("EXP2 PING",now+1000);
+        c.onSample(now+1000,25,700);
+        assert(c.holdSeconds()==1);
+    }
+    {
+        const Phase phases[]={HEAT_100,HOLD_100,RAMP_200,BOOST_FINAL,HOLD_FINAL};
+        for (unsigned i=0; i<sizeof(phases)/sizeof(phases[0]); ++i) {
+            Controller c;
+            const uint32_t now=reachExp4Phase(c,phases[i]);
+            c.onSample(now+500,85,phaseHeater(phases[i]));
+            assert(!c.heaterOn());
+            assert(c.state()==che126_exp2::TRIPPED);
+            assert(strcmp(c.reason(),"TC2_LIMIT")==0);
+            assert(c.phase()==phases[i]);  // Rear limit wins over any transition.
+        }
+        for (unsigned i=0; i<sizeof(phases)/sizeof(phases[0]); ++i) {
+            Controller c;
+            const uint32_t now=reachExp4Phase(c,phases[i]);
+            c.onSample(now+500,NAN,phaseHeater(phases[i]));
+            assert(!c.heaterOn());
+            assert(c.state()==che126_exp2::TRIPPED);
+            assert(strcmp(c.reason(),"TC2_FAULT")==0);
+            assert(c.phase()==phases[i]);
+        }
+        for (unsigned i=0; i<sizeof(phases)/sizeof(phases[0]); ++i) {
+            Controller c;
+            const uint32_t now=reachExp4Phase(c,phases[i]);
+            c.handleCommand("EXP2 STOP 99",now+500);
+            assert(c.commandOk());
+            assert(!c.heaterOn());
+            assert(c.state()==che126_exp2::STOPPED);
+            assert(strcmp(c.reason(),"STOP")==0);
+            assert(c.phase()==phases[i]);  // STOP never erases diagnostic phase.
+        }
+    }
+    {
+        Controller c;
+        const uint32_t now=reachExp4Phase(c,RAMP_200);
+        c.update(now+1500);
+        assert(!c.heaterOn());
+        assert(c.state()==che126_exp2::TRIPPED);
+        assert(strcmp(c.reason(),"SENSOR_STALE")==0);
+        assert(c.phase()==RAMP_200);
+    }
+    {
+        Controller c;
+        const uint32_t now=reachExp4Phase(c,RAMP_200);
+        const Settings expected=c.settings();
+        const bool output=c.heaterOn();
+        static const char *const invalid[] = {
+            "EXP4 START 90 200 3 730 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700.001 3 730 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 701 3 730 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 700 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730.001 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 731 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 84.999 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85.001 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85 0 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85 1 5000 5000 5 1 1",
+            "EXP4 START 90 700 5.001 730 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85 1 5000 5000 5.001 0 1",
+            "EXP4 START 90 700 3 730 85 1 2147483648 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85 1 5000 2147483648 5 0 1",
+            "EXP4 START 90 700 -1 730 85 1 5000 5000 5 0 1",
+            "EXP4 START 90 700 3 730 85 1 5000 5000 5 0 2"
+        };
+        for (unsigned i=0; i<sizeof(invalid)/sizeof(invalid[0]); ++i) {
+            assert(c.handleCommand(invalid[i],now));
+            assert(!c.commandOk());
+            assert(c.requestId()==90);
+            assert(c.phase()==RAMP_200);
+            assert(c.setpointC()==100.0f);
+            assert(c.heaterOn()==output);
+            expectSettings(c,expected);  // Rejection is atomic in every field.
+        }
+    }
+    {
         static const char *const invalid[] = {
             "EXP2 START",
             "EXP2 START 1",
@@ -447,5 +776,5 @@ int main() {
             expectSettings(c,expected);
         }
     }
-    puts("EXP2 passed: v4 atomic settings/swap parsing, raw-probe mapping and cached-sample reseeding, changed thresholds/lead/dwell/cutoffs, disabled rear cutoff, untimed/configured hold, unconditional START/manual re-arm, runtime interlocks, STOP and millis rollover.");
+    puts("EXP2/EXP4 passed: v5 atomic envelopes, explicit NEXT, staged ramp/boost/final hold, all-phase rear/STOP interlocks, staleness, mapping and millis rollover; legacy single-target behavior preserved.");
 }

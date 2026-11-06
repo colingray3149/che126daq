@@ -9,6 +9,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Editable experiment settings](experiment.toml) — target, cutoffs, hysteresis and timing; save, then `start exp2` reloads them without a server restart or another firmware upload.
 - [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
 - [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v4 firmware/host.
+- [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program--prepared-not-deployed) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold. Code-only v5 preparation; high-temperature hardware is not cleared.
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
@@ -26,13 +27,14 @@ nix run path:/home/colin/Projects/che126daq
 ```
 
 Open **http://127.0.0.1:8765**. The left terminal accepts `help`, `status`,
-`start`, `start exp2`, `stop exp2`, `stop`, `restart`, `save`, `clear`, `list`,
-`view 001`, `live`, `note your comment`, `window 120`, `config`, and `reconnect`;
+`start`, `start exp2` / `exp3` / `exp4`, `stop exp2` / `exp3` / `exp4`,
+`next`, `stop`, `restart`, `save`, `clear`, `list`, `view 001`, `live`,
+`note your comment`, `window 120`, `config`, and `reconnect`;
 ↑/↓ recalls history. The first matching USB connection **starts logging, never heating**.
 `start exp2` creates a fresh saved run and explicitly re-arms without sensor,
-temperature, IDLE-state or physical-reset preflight requirements. TC2 is optional;
-its 140°C runtime cutoff applies when a valid reading exists. `stop exp2` cuts
-commanded heat but keeps cooldown logging; another START needs no board reset.
+temperature, IDLE-state or physical-reset preflight requirements. TC2 is optional
+for EXP2/3 and required for EXP4; runtime cutoffs come from the selected file.
+`stop exp2` cuts commanded heat but keeps cooldown logging; another START needs no board reset.
 Plain `stop` must stop heat before finalizing a run.
 `clear` changes only this browser's plot/console; `save` flushes without stopping.
 Historical views are labeled and do not interrupt the active recording.
@@ -55,6 +57,10 @@ EXP3 selects **[experiment3.toml](experiment3.toml)** with `start exp3`;
 manual-preset metadata, not a power command or temperature scaling factor.
 Plots have independent heater/rear temperature axes and show raw source channels.
 Run 017's reported reversal is annotated without modifying its raw CSV.
+EXP4 selects **[experiment4.toml](experiment4.toml)** and requires the prepared
+v5 host/firmware pair. `next` advances only an in-band 100°C hold; it never
+allocates a new recording. The requested 100 V and 700°C program is not
+physically commissioned. Existing real v4 services were intentionally left running.
 Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
 or pass `--config /absolute/path/hub.toml` for another checkout.
 See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.

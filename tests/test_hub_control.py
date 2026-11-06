@@ -1,4 +1,4 @@
-"""Consumer-visible acquisition boundaries and Experiment 2/3 configuration behavior."""
+"""Consumer-visible acquisition boundaries and Experiment 2/3/4 control behavior."""
 import asyncio
 import csv
 import importlib.util
@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest import mock
 
 SPEC = importlib.util.spec_from_file_location('che126_hub', Path(__file__).parents[1] / 'host' / 'hub.py')
 hub_module = importlib.util.module_from_spec(SPEC)
@@ -29,6 +30,13 @@ def experiment_settings(**updates):
     return settings
 
 
+def exp4_settings(**updates):
+    settings = experiment_settings(target_C=700.0, tc1_cutoff_C=730.0, tc2_cutoff_C=85.0,
+                                   hold_s=0.0, swap_inputs=True)
+    settings.update(updates)
+    return settings
+
+
 def experiment_text(settings, variac_voltage_V=30.0):
     def value(key):
         item = settings[key]
@@ -38,13 +46,24 @@ def experiment_text(settings, variac_voltage_V=30.0):
     return '\n'.join(lines) + '\n'
 
 
-def controller_telemetry(request_id, settings, state='RUNNING', command_ok=True, heater_on=False):
+def controller_telemetry(request_id, settings, state='RUNNING', command_ok=True, heater_on=False,
+                         program='single', phase=None, setpoint_C=None, slope_C_per_s=0.0):
+    if phase is None:
+        phase = 'HEAT_100' if program == 'exp4' else 'SINGLE'
+    if setpoint_C is None:
+        setpoint_C = {'HEAT_100': 100.0, 'HOLD_100': 100.0, 'RAMP_200': 100.0,
+                      'BOOST_FINAL': 200.0, 'HOLD_FINAL': settings['target_C']}.get(
+                          phase, settings['target_C'])
     return {
-        'protocol': 'exp2-v4',
+        'protocol': 'exp2-v5',
         'state': state,
         'reason': state,
         'heater_on': heater_on,
-        'tc2_required': False,
+        'program': program,
+        'phase': phase,
+        'setpoint_C': setpoint_C,
+        'slope_C_per_s': slope_C_per_s,
+        'tc2_required': program == 'exp4',
         'relay_contact': 'NC',
         'active_high': True,
         'hold_s': 0,
@@ -62,17 +81,28 @@ class FakePort:
         self.writes = []
         self.acknowledgements = []
 
-    def queue(self, settings, state='RUNNING', command_ok=True, heater_on=False):
-        self.acknowledgements.append((settings, state, command_ok, heater_on))
+    def queue(self, settings, state='RUNNING', command_ok=True, heater_on=False,
+              program='single', phase=None, setpoint_C=None, verb=None):
+        self.acknowledgements.append((verb, {
+            'settings': settings, 'state': state, 'command_ok': command_ok,
+            'heater_on': heater_on, 'program': program, 'phase': phase,
+            'setpoint_C': setpoint_C,
+        }))
 
     def write(self, data):
         self.writes.append(data)
         parts = data.decode('ascii').strip().split()
-        if len(parts) >= 3 and parts[0] == 'EXP2' and parts[1] in {'START', 'STOP'}:
-            settings, state, command_ok, heater_on = self.acknowledgements.pop(0)
-            report = controller_telemetry(int(parts[2]), settings, state, command_ok, heater_on)
-            raw = ('#CTRL ' + json.dumps(report)).encode('ascii')
-            self.loop.call_soon_threadsafe(self.hub.consume, raw)
+        controlled = (len(parts) >= 3 and
+                      ((parts[0] == 'EXP2' and parts[1] in {'START', 'STOP'})
+                       or (parts[0] == 'EXP4' and parts[1] in {'START', 'NEXT'})))
+        if controlled:
+            for i, (verb, details) in enumerate(self.acknowledgements):
+                if verb is None or verb == parts[1]:
+                    self.acknowledgements.pop(i)
+                    report = controller_telemetry(int(parts[2]), **details)
+                    raw = ('#CTRL ' + json.dumps(report)).encode('ascii')
+                    self.loop.call_soon_threadsafe(self.hub.consume, raw)
+                    break
         return len(data)
 
 
@@ -110,6 +140,32 @@ class AcquisitionBoundaries(unittest.TestCase):
             rows = list(csv.DictReader(stream))
         self.assertEqual([(float(r['tc1_C']), float(r['tc2_C'])) for r in rows],
                          [(25, 26), (27, 28)])
+    def test_v5_envelope_fields_and_conditional_tc2_are_strict(self):
+        valid = controller_telemetry(1, exp4_settings(), program='exp4', phase='HOLD_100')
+        invalid = []
+        for key, value in (
+                ('protocol', 'exp2-v4'), ('program', 'exp3'), ('phase', 'SINGLE'),
+                ('setpoint_C', float('nan')), ('slope_C_per_s', float('inf')),
+                ('tc2_required', False)):
+            report = dict(valid)
+            report[key] = value
+            invalid.append(report)
+        single = controller_telemetry(2, experiment_settings())
+        single['tc2_required'] = True
+        invalid.append(single)
+        invalid.append(dict(valid, settings=exp4_settings(tc1_cutoff_C=731.0)))
+        for report in invalid:
+            with self.subTest(report={key: report[key] for key in
+                                      ('protocol', 'program', 'phase', 'setpoint_C',
+                                       'slope_C_per_s', 'tc2_required')}):
+                before = self.hub.bad_rows
+                self.hub.consume(('#CTRL ' + json.dumps(report)).encode())
+                self.assertEqual(self.hub.bad_rows, before + 1)
+                self.assertIsNone(self.hub.controller_received)
+        self.hub.consume(('#CTRL ' + json.dumps(valid)).encode())
+        self.assertEqual(self.hub.controller['program'], 'exp4')
+        self.assertEqual(self.hub.controller['phase'], 'HOLD_100')
+        self.assertTrue(self.hub.controller['tc2_required'])
 
 
 class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
@@ -124,6 +180,8 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         self.experiment3_path = self.config_path.parent / 'experiment3.toml'
         self.experiment3_path.write_text(experiment_text(
             experiment_settings(tc2_cutoff_C=85.0, swap_inputs=True), variac_voltage_V=65.0))
+        self.experiment4_path = self.config_path.parent / 'experiment4.toml'
+        self.experiment4_path.write_text(experiment_text(exp4_settings(), variac_voltage_V=100.0))
         self.hub = hub_module.Hub({'plot_points': 10}, base / 'runs', self.config_path)
         self.port = FakePort(self.hub)
         self.hub.port = self.port
@@ -133,8 +191,19 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         self.hub.stop('Test complete')
         self.storage.cleanup()
 
+    async def start_exp4(self):
+        requested = exp4_settings()
+        self.port.queue(requested, program='exp4', phase='HEAT_100')
+        result = await self.hub.execute_command('start exp4')
+        self.assertEqual(result['effect'], 'live')
+        return requested
 
-
+    def enter_exp4_hold(self, heater=100.0):
+        settings = self.hub.controller['settings']
+        report = controller_telemetry(self.hub.request_id, settings, state='HOLD',
+                                      program='exp4', phase='HOLD_100')
+        self.hub.consume(('#CTRL ' + json.dumps(report)).encode())
+        self.hub.consume(f'1.0,25,{heater}'.encode())
 
     async def test_invalid_edit_leaves_current_run_and_serial_untouched(self):
         requested = experiment_settings()
@@ -212,6 +281,149 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
             await self.hub.execute_command('start exp3')
         self.assertFalse((self.hub.run.path / 'experiment-applied.json').exists())
         self.assertEqual(self.hub.controller['state'], 'STOPPED')
+
+    async def test_exp4_start_next_stop_retain_run_and_raw_channels(self):
+        requested = await self.start_exp4()
+        run = self.hub.run
+        run_path = run.path
+        self.assertEqual(self.port.writes[0], b'EXP2 PING\n')
+        self.assertTrue(self.port.writes[1].startswith(b'EXP4 START '))
+        self.assertEqual(self.hub.controller['program'], 'exp4')
+        self.assertEqual(self.hub.controller['phase'], 'HEAT_100')
+        metadata = json.loads((run_path / 'run-metadata.json').read_text())
+        self.assertEqual(metadata, {'experiment': 'exp4', 'swap_inputs': True,
+                                    'variac_voltage_V': 100.0})
+        applied = json.loads((run_path / 'experiment-applied.json').read_text())
+        self.assertEqual(applied['requested'], requested)
+        self.assertEqual(applied['applied'], requested)
+
+        self.enter_exp4_hold()
+        with (run_path / 'data.csv').open() as stream:
+            row = next(csv.DictReader(stream))
+        self.assertEqual((float(row['tc1_C']), float(row['tc2_C'])), (25.0, 100.0))
+        self.assertIn('HOLD_100', (run_path / 'events.csv').read_text())
+        self.port.queue(requested, program='exp4', phase='RAMP_200')
+        result = await self.hub.execute_command('next')
+        self.assertIn('RAMP_200', result['message'])
+        self.assertIs(self.hub.run, run)
+        self.assertEqual(self.hub.controller['phase'], 'RAMP_200')
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP4 NEXT '))
+        self.assertEqual([p for p in self.hub.root.iterdir() if p.is_dir()], [run_path])
+
+        self.port.queue(requested, state='STOPPED', program='exp4', phase='RAMP_200')
+        await self.hub.execute_command('stop exp4')
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP2 STOP '))
+        self.assertIs(self.hub.run, run)
+        self.assertFalse(run.data.closed)
+
+        status = self.hub.status()
+        self.assertEqual(status['experiment'], 'exp4')
+        self.assertEqual(status['variac_voltage_V'], 100.0)
+        self.assertTrue(status['display_swapped'])
+        viewed = await self.hub.execute_command(f'view {run_path.name}')
+        self.assertEqual(viewed['experiment'], 'exp4')
+        self.assertEqual(viewed['variac_voltage_V'], 100.0)
+        config = json.loads((await self.hub.execute_command('config'))['message'])
+        self.assertEqual(config['experiments']['exp4']['edited_settings'], requested)
+        self.assertEqual(config['experiments']['exp4']['variac_voltage_V'], 100.0)
+        help_text = (await self.hub.execute_command('help'))['message']
+        self.assertIn('start exp4', help_text)
+        self.assertIn('next', help_text)
+
+    async def test_invalid_exp4_envelope_preserves_run_and_serial(self):
+        requested = experiment_settings()
+        self.port.queue(requested)
+        await self.hub.start_experiment('exp2')
+        current = self.hub.run
+        writes_before = list(self.port.writes)
+        invalid_settings = (
+            exp4_settings(target_C=200.0), exp4_settings(target_C=700.1),
+            exp4_settings(tc1_cutoff_C=700.0), exp4_settings(tc1_cutoff_C=730.1),
+            exp4_settings(tc2_cutoff_C=84.9), exp4_settings(tc2_cutoff_enabled=False),
+            exp4_settings(hold_s=0.001), exp4_settings(hysteresis_C=5.1),
+            exp4_settings(hold_band_C=5.1),
+        )
+        for settings in invalid_settings:
+            with self.subTest(settings=settings):
+                self.experiment4_path.write_text(experiment_text(settings, variac_voltage_V=100.0))
+                with self.assertRaises(ValueError):
+                    await self.hub.start_experiment('exp4')
+                self.assertIs(self.hub.run, current)
+                self.assertEqual(self.port.writes, writes_before)
+        self.assertEqual([p for p in self.hub.root.iterdir() if p.is_dir()], [current.path])
+
+    async def test_exp4_start_program_mismatch_stops_without_applied_claim(self):
+        requested = exp4_settings()
+        self.port.queue(requested, program='single', phase='SINGLE')
+        self.port.queue(requested, state='STOPPED', program='single', phase='SINGLE')
+        with self.assertRaisesRegex(hub_module.ControlError, 'program acknowledgement mismatch'):
+            await self.hub.start_experiment('exp4')
+        self.assertFalse((self.hub.run.path / 'experiment-applied.json').exists())
+        self.assertEqual(self.hub.controller['state'], 'STOPPED')
+        self.assertTrue(any(line.startswith(b'EXP4 START ') for line in self.port.writes))
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP2 STOP '))
+
+    async def test_next_rejection_retains_run_and_does_not_claim_or_retry(self):
+        requested = await self.start_exp4()
+        self.enter_exp4_hold()
+        run = self.hub.run
+        writes_before = len(self.port.writes)
+        self.port.queue(requested, state='HOLD', command_ok=False,
+                        program='exp4', phase='HOLD_100')
+        with self.assertRaisesRegex(hub_module.ControlError, 'NEXT rejected'):
+            await self.hub.execute_command('next')
+        self.assertIs(self.hub.run, run)
+        self.assertEqual(len(self.port.writes), writes_before + 1)
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP4 NEXT '))
+        self.assertEqual(self.hub.controller['phase'], 'HOLD_100')
+        self.assertIsNone(self.hub.pending)
+        self.assertFalse(self.hub.control_uncertain)
+
+    async def test_next_timeout_sends_stop_retains_run_and_never_retries_next(self):
+        requested = await self.start_exp4()
+        self.enter_exp4_hold()
+        run = self.hub.run
+        writes_before = len(self.port.writes)
+        self.port.queue(requested, state='STOPPED', program='exp4', phase='HOLD_100', verb='STOP')
+        with mock.patch.object(hub_module, 'ACK_TIMEOUT_S', 0.01):
+            with self.assertRaisesRegex(hub_module.ControlError, 'will not be retried'):
+                await self.hub.execute_command('next')
+            await asyncio.sleep(0.03)
+        self.assertIs(self.hub.run, run)
+        self.assertFalse(run.data.closed)
+        self.assertEqual(len(self.port.writes), writes_before + 2)
+        self.assertTrue(self.port.writes[-2].startswith(b'EXP4 NEXT '))
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP2 STOP '))
+        self.assertEqual(self.hub.controller['state'], 'STOPPED')
+        self.assertEqual(self.hub.controller['phase'], 'HOLD_100')
+        self.assertIsNone(self.hub.pending)
+        self.assertFalse(self.hub.control_uncertain)
+
+    async def test_next_mismatched_acceptance_stops_without_phase_claim(self):
+        requested = await self.start_exp4()
+        self.enter_exp4_hold()
+        run = self.hub.run
+        writes_before = len(self.port.writes)
+        self.port.queue(requested, state='HOLD', program='exp4', phase='HOLD_100', verb='NEXT')
+        self.port.queue(requested, state='STOPPED', program='exp4', phase='HOLD_100', verb='STOP')
+        with self.assertRaisesRegex(hub_module.ControlError, 'did not confirm active EXP4 RAMP_200'):
+            await self.hub.execute_command('next')
+        self.assertIs(self.hub.run, run)
+        self.assertFalse(run.data.closed)
+        self.assertEqual(len(self.port.writes), writes_before + 2)
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP2 STOP '))
+        self.assertEqual(self.hub.controller['state'], 'STOPPED')
+        self.assertFalse(self.hub.control_uncertain)
+
+    async def test_next_requires_hold_phase_and_fresh_in_band_heater(self):
+        await self.start_exp4()
+        writes_before = list(self.port.writes)
+        with self.assertRaisesRegex(hub_module.ControlError, 'HOLD_100'):
+            await self.hub.execute_command('next')
+        self.enter_exp4_hold(heater=110.0)
+        with self.assertRaisesRegex(hub_module.ControlError, 'within 100 C'):
+            await self.hub.execute_command('next')
+        self.assertEqual(self.port.writes, writes_before)
 
     async def test_legacy_run_annotation_survives_restart_and_history_view(self):
         run_path = self.hub.root / '017'

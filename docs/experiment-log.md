@@ -162,3 +162,13 @@ of actual operating voltage. Voltage timing/adjustments were not supplied.
 - Serial disconnected at **18:54:09.273 UTC**. At closeout inspection, the host still held the recording open, with no samples after 18:54:08.997. No reconnect, new START or heater command was issued to log this result. Current physical power after disconnect is unknown to software; NC wiring can fail ON on loss of controller power.
 - Sources: `runs/023/data.csv`, `events.csv`, `experiment-applied.json`, original `experiment.toml` and `run-metadata.json`. Appended the operator assessment, voltage correction and measured summary through the DAQ `note` command, then `save` refreshed the run metadata. The 15-second report watcher includes the updated run notes in `runs/023/report.html`; its preset label continues to reflect the original saved 65 V configuration.
 
+
+## 2026-11-06 — EXP4 requested policy and revised target
+
+- Requested sequence: manual100V; heater100°C hold until explicit operator NEXT; nominal90s reference ramp to200°C; measured200 crossing enables full-power boost; regulate at final target until rear85°C or STOP/fault.
+- User revised **800°C → 700°C** after review of the saved heater's760°C exposure limit, and then requested **code and push only**, not a hardware restart. This is a prepared profile, not a new physical experiment; no new real run number was allocated.
+- `experiment4.toml` defaults: final700°C, heater trip730°C, required rear trip85°C, prediction5s, minimumOFF5s, hysteresis3°C, band±5°C, no timed completion, swapped inputs,100V metadata. The software backstop is not an independently verified safe operating limit.
+- Earlier run023 analysis and the exact phase/feedback rules are in [EXP4 operation](exp2.md#exp4-staged-100-v-program--prepared-not-deployed). Run023's original65V snapshot remains unchanged; the analysis explicitly uses the operator-reported approximate70V condition.
+- Saved component data also lists heater leads≈449°C, basalt≈649°C, and a possible500°C probe whose installed identity is unverified. A rear reading below85°C does not establish compliance at these other locations. Physical high-temperature commissioning remains uncleared.
+- Software verification used synthetic probe readings, an actual-sketch native runtime and an isolated host, not a thermal model or the actual heater. No measured700°C results, ramp accuracy or future-run success is inferred.
+

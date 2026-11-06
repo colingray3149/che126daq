@@ -1,4 +1,4 @@
-// CHE126 experiments 2/3: two MAX31855s plus an active-HIGH relay on D33.
+// CHE126 experiments 2/3/4: two MAX31855s plus an active-HIGH relay on D33.
 // TC1 CLK/DO/CS = D22/D24/D26; TC2 = D28/D30/D32. CSV remains raw physical
 // channels time_s,t1_C,t2_C at 115200 baud, with one #CTRL JSON line per sample.
 //
@@ -52,13 +52,23 @@ void printDurationSeconds(uint32_t milliseconds) {
 
 void emitTelemetry() {
   const che126_exp2::Settings &settings = controller.settings();
-  Serial.print(F("#CTRL {\"protocol\":\"exp2-v4\",\"state\":\""));
+  Serial.print(F("#CTRL {\"protocol\":\"exp2-v5\",\"program\":\""));
+  Serial.print(controller.programName(controller.program()));
+  Serial.print(F("\",\"phase\":\""));
+  Serial.print(controller.phaseName(controller.phase()));
+  Serial.print(F("\",\"state\":\""));
   Serial.print(controller.stateName(controller.state()));
   Serial.print(F("\",\"reason\":\""));
   Serial.print(controller.reason());
   Serial.print(F("\",\"heater_on\":"));
   Serial.print(controller.heaterOn() ? F("true") : F("false"));
-  Serial.print(F(",\"tc2_required\":false,\"relay_contact\":\"NC\","));
+  Serial.print(F(",\"setpoint_C\":"));
+  Serial.print(controller.setpointC(), 3);
+  Serial.print(F(",\"slope_C_per_s\":"));
+  Serial.print(controller.slopeCPerSecond(), 6);
+  Serial.print(F(",\"tc2_required\":"));
+  Serial.print(controller.tc2Required() ? F("true") : F("false"));
+  Serial.print(F(",\"relay_contact\":\"NC\","));
   Serial.print(F("\"active_high\":true,\"hold_s\":"));
   Serial.print((unsigned long)controller.holdSeconds());
   Serial.print(F(",\"request_id\":"));

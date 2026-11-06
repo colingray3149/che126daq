@@ -64,19 +64,25 @@ function updateStatus(s) {
   if (c) {
     const heat = c.heater_on === true ? 'ON' : c.heater_on === false ? 'OFF' : 'UNKNOWN';
     const cfg = c.settings;
+    const staged = c.program === 'exp4';
+    const setpoint = staged ? c.setpoint_C : cfg?.target_C;
     const hold = cfg && Number.isFinite(c.hold_s)
       ? (cfg.hold_s > 0 ? `${Math.floor(c.hold_s)} / ${cfg.hold_s} s in band` : 'timed hold disabled')
       : 'hold unavailable';
     $('control-settings').textContent = cfg
-      ? `${c.request_id === 0 ? 'Inactive boot defaults — NOT the selected experiment settings' : 'Applied control'}: ${cfg.swap_inputs ? 'raw TC2 heater / raw TC1 rear' : 'raw TC1 feedback / raw TC2 cutoff'} · target ${cfg.target_C}°C · ON ≤${Number((cfg.target_C - cfg.hysteresis_C).toFixed(3))}°C · feedback trip ${cfg.tc1_cutoff_C}°C · other probe ${cfg.tc2_cutoff_enabled ? 'trip ' + cfg.tc2_cutoff_C + '°C' : 'cutoff disabled'} · OFF dwell ${cfg.min_off_s}s`
+      ? `${c.request_id === 0 ? 'Inactive boot defaults — NOT the selected experiment settings' : 'Applied control'}: ${cfg.swap_inputs ? 'raw TC2 heater / raw TC1 rear' : 'raw TC1 feedback / raw TC2 cutoff'} · ${staged ? 'phase setpoint' : 'target'} ${setpoint}°C${staged ? ' · final target ' + cfg.target_C + '°C' : ''} · feedback trip ${cfg.tc1_cutoff_C}°C · rear ${cfg.tc2_cutoff_enabled ? 'trip ' + cfg.tc2_cutoff_C + '°C' : 'cutoff disabled'} · OFF dwell ${cfg.min_off_s}s`
       : 'Applied settings unavailable';
     if (s.run && Number.isFinite(s.variac_voltage_V)) {
       $('control-settings').textContent += ` · manual preset ${s.variac_voltage_V}V RMS (not measured)`;
     }
     $('controller').textContent = `${c.request_id === 0 ? 'Controller' : (s.experiment || 'exp2').toUpperCase()} ${c.state || 'UNKNOWN'}${c.pending ? ' · command pending' : ''} · commanded heat ${heat} · ${hold}${c.reason ? ' · ' + c.reason : ''}${c.request_id === 0 ? ' · boot defaults; selected file applies on START' : ''}`;
+    if (staged) {
+      $('controller').textContent += ` · ${c.phase} · slope ${Number(c.slope_C_per_s).toFixed(2)}°C/s`;
+      if (c.phase === 'HOLD_100' && c.active) $('controller').textContent += ' · waiting for explicit next';
+    }
     $('controller').classList.toggle('fault', ['TRIPPED', 'UNKNOWN'].includes(c.state) || c.heater_on === null);
     $('heater-settings').textContent = historical ? 'Saved temperatures; controller status above is LIVE.'
-      : cfg ? `Target ${cfg.target_C}°C · heater cutoff ${cfg.tc1_cutoff_C}°C` : 'Control settings unavailable';
+      : cfg ? `${staged ? 'Phase setpoint' : 'Target'} ${setpoint}°C · heater cutoff ${cfg.tc1_cutoff_C}°C` : 'Control settings unavailable';
     $('rear-settings').textContent = historical ? 'Saved temperatures; independent temperature scale.'
       : cfg ? (cfg.tc2_cutoff_enabled ? `Rear cutoff ${cfg.tc2_cutoff_C}°C — not the heater cutoff` : 'Rear cutoff DISABLED') : 'Control settings unavailable';
   } else {
@@ -94,8 +100,12 @@ function updateStatus(s) {
   const controlSwapped = c?.settings?.swap_inputs ?? false;
   if (s.values[controlSwapped ? 1 : 0] === null) warnings.push('Control feedback missing: runtime shutdown; START itself is not blocked.');
   if (c?.settings?.tc2_cutoff_enabled === false) warnings.push('Rear cutoff disabled in applied settings.');
-  else if (s.values[controlSwapped ? 0 : 1] === null) warnings.push(`Optional cutoff probe missing: ${c?.settings?.tc2_cutoff_C ?? 'configured'}°C protection unavailable.`);
-  if (liveSwapped !== controlSwapped) warnings.push('Display follows the reported probe placement; START must apply the matching input mapping. Use EXP3 for the reversed probes.');
+  else if (s.values[controlSwapped ? 0 : 1] === null) warnings.push(c?.tc2_required
+    ? 'Required rear probe missing: EXP4 commands heat OFF.'
+    : `Optional cutoff probe missing: ${c?.settings?.tc2_cutoff_C ?? 'configured'}°C protection unavailable.`);
+  if (liveSwapped !== controlSwapped) warnings.push('Display follows the reported probe placement; START must apply the matching input mapping.');
+  if (c?.program === 'exp4') warnings.push('EXP4 high-temperature program is uncommissioned; software thresholds do not establish hardware suitability.');
+  if (c?.protocol !== 'exp2-v5') warnings.push('EXP4 requires the prepared v5 host and firmware; this board is not reporting v5.');
   $('channel-mapping').textContent = `Independent °C scales · ${displayedSwapped() ? 'swapped display: TC1 ← raw TC2; TC2 ← raw TC1' : 'display follows raw channel order'} · raw CSV unchanged; no voltage scaling.`;
   if (s.zero_count) warnings.push('All-zero stream is NOT proof of valid temperatures or working probes.');
   warnings.push('NC wiring: Arduino power loss can turn heat ON. Independent cutoff required.');
@@ -161,7 +171,7 @@ $('command').addEventListener('keydown', event => {
   historyIndex = Math.max(0, Math.min(history.length, historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
   $('command').value = historyIndex === history.length ? draft : history[historyIndex];
 });
-log('DAQ hub · durable temperature recording.\nNo automatic heating. With --wait-for-start, no recording until explicit START.\nSplit plots use independent °C scales; raw CSV is unchanged.\nstart exp2 / start exp3 load their respective saved profiles.\nstop exp2 / stop exp3: cut heat, keep cooldown logging.\nconfig: show edited and applied settings.\nNC wiring cannot fail OFF on Arduino power loss.\nType help for commands; ↑/↓ recalls history.');
+log('DAQ hub · durable temperature recording.\nNo automatic heating. With --wait-for-start, no recording until explicit START.\nSplit plots use independent °C scales; raw CSV is unchanged.\nstart exp2 / start exp3 / start exp4 load their saved profiles (EXP4 requires v5).\nEXP4: 100°C hold → explicit next → 90s ramp to 200°C → boost/final hold.\nstop exp2 / stop exp3 / stop exp4: command heat OFF, keep cooldown logging.\nconfig: show edited and applied settings.\nNC wiring cannot fail OFF on Arduino power loss.\nType help for commands; ↑/↓ recalls history.');
 async function initialize() {
   try {
     const response = await fetch('/static/run-mappings.json', {cache: 'no-store'});

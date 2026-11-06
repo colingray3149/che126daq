@@ -27,6 +27,11 @@ The logical plot labels show each raw source explicitly. Firmware/host v4 was
 deployed after run 017 finished. `start exp3` applies the corrected control
 mapping; changing the display alone never changes controller inputs.
 
+Prepared EXP4 uses the same default swapped wiring with both probes required;
+its 100 V/700°C program is code-only and is not cleared for this assembly.
+See [EXP4 limits](exp2.md#exp4-staged-100-v-program--prepared-not-deployed) before
+any hardware cutover. No reset/upload was performed during its implementation.
+
 `D22` means the hole labeled **22**, not a literal label “D22”. With USB connectors to the left and the large double-row header on the right, **22, 24, 26, 28, 30, 32 are consecutive holes down the inner/even column**, nearest the main processor. The header's top power row is **5V**, not 22. Follow the silkscreen numbers; do not count blindly. See `../references/hardware/mega-adk-front.jpg` and the OEM schematic.
 
 These are software-SPI digital connections. **Do not use A1/A2** for this setup. Do not confuse breakout `VIN` (which accepts regulated 5V on this Adafruit board) with Arduino `VIN` (external supply input). Do not connect either breakout to Arduino VIN, a heater supply, mains, or a 3Vo/regulator-output pin.

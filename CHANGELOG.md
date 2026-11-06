@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-06 — Prepared EXP4 staged controller, code-only
+
+- Added `experiment4.toml`, `start exp4`, acknowledged `next`, and `stop exp4`: 100°C hold, explicit advance, 90s reference ramp to 200°C, measured-crossing boost and predictive final regulation at the revised 700°C target; 100 V is manual-preset metadata.
+- Added v5 program/phase/setpoint/slope telemetry, atomic EXP4 envelope validation, required-rear fault shutdown, all-phase 85°C rear/730°C heater trips, OFF dwell on boost entry, correct in-band hold accounting, and STOP on unresolved NEXT. Existing single-target EXP2/3 behavior remains.
+- Updated live graph labels and offline reports for staged targets. Documented run 023 slope/power estimates, feedback policy, component-rating limits and non-deployment status.
+- Native controller regressions, 15 host behavior regressions, Mega build (18,450 bytes flash / 1,135 bytes static RAM), actual-sketch/host PTY smoke and browser command/report checks passed. The synthetic runtime was isolated from real hardware.
+- User changed 800°C to 700°C and then requested code/push only. No real upload, reset, reconnect, host restart or heater command was issued. The existing assembly is not cleared for physical 700°C operation.
+
 ## 2026-11-06 — Fifteen-second report updates
 
 - Added `host/report.py --watch`: atomically regenerate the selected run's report every 15 seconds and enable browser reloads at the same interval. Preserve manual zoom, linked-time preference and scroll; full-run views expand with incoming data.

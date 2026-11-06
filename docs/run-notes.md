@@ -65,6 +65,14 @@ Both settings files include the host-only manual `variac_voltage_V` record;
 software does not set or measure that voltage. The idle board's boot defaults
 are not the selected experiment's settings; explicit START applies that file.
 
+EXP4 uses `start exp4`, `next` and `stop exp4` with `experiment4.toml` and the
+prepared v5 host/firmware pair. Its fixed first phases hold 100°C, await explicit
+NEXT, then track a 90-second reference to 200°C before measured-crossing boost
+and final hold. Both probes are required and rear cutoff is fixed at 85°C.
+See [EXP4 policies and limits](exp2.md#exp4-staged-100-v-program--prepared-not-deployed).
+This is code-only preparation; do not restart the live v4 host against the
+new source without a coordinated, physically isolated firmware cutover.
+
 `hub.toml` configures the DAQ connection/storage/UI; restart the server after editing it.
 `experiment.toml`, beside that file, configures control and is reread on every
 `start exp2`; no server restart or reflash is needed for experiment edits.

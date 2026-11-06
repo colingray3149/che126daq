@@ -1,12 +1,115 @@
-# Experiments 2 and 3: operator-controlled START
+# Experiments 2, 3 and 4: operator-controlled START
+
+## EXP4: staged 100 V program — prepared, not deployed
+
+**2026-11-06 status:** user revised the final target from 800°C to **700°C**
+and requested **code and push only**. The new source uses `exp2-v5`; it has
+not been uploaded and the live host has not been restarted. Do not expect
+`start exp4` or `next` to work on the still-deployed v4 controller.
+
+### Hardware limits are not cleared
+
+The saved [4877K305 heater specification](https://www.mcmaster.com/4877K305/)
+lists maximum exposure **1400°F = 760°C** and lead exposure **840°F ≈449°C**.
+The saved basalt datasheet lists **1200°F ≈649°C**; the possible Adafruit
+probe documented in `references/current-check/probe.txt` is rated **500°C**,
+and the actual installed probe identity is unverified. The earlier 800°C
+request exceeds even the heater's catalog limit.
+
+**The 700°C code setting is not approval to run the existing assembly.**
+A rear TC below 85°C does not establish safe heater-lead or intermediate-layer
+temperatures. The provisional 730°C software heater trip is not an independent
+cutoff or an overshoot guarantee. Probe attachment/calibration, compatible
+temperature ratings, lead routing, mounting and an independent power disconnect
+must be established before physical commissioning. Keep heater power physically
+isolated for upload/reset: the selected NC contact can close on power/reset loss.
+
+### Commands and phase policy
+
+`experiment4.toml` records a **100 V manual preset**, final target **700°C**,
+heater trip **730°C**, required rear trip **85°C**, hysteresis **3°C**,
+prediction lead **5s**, minimum OFF dwell **5s**, band **±5°C**, no final hold
+timer, and the existing reversed-probe mapping. Voltage is never set/measured
+by this software. Raw TC2 supplies logical TC1/heater; raw TC1 supplies TC2/rear.
+
+1. **`start exp4` → HEAT_100 / HOLD_100.** Allocate a new run, acknowledge
+   the staged program and settings, and regulate toward 100°C. Far below the
+   target, ON can be continuous; approaching it, predictive OFF overrides a
+   preference for longer ON periods. Entering 95–105°C qualifies HOLD_100;
+   leaving that band returns to HEAT_100. There is no automatic timed advance.
+2. **Explicit `next` → RAMP_200.** The host and board require the active
+   HOLD_100 phase and an in-band heater reading. Start a board-clock reference
+   `R(t) = 100 + 100 × min(t / 90s, 1)` °C. Duplicate, early, stale or
+   out-of-band NEXT is rejected, not queued. NEXT does not allocate another run.
+   Once deployed, an explicit operator “next” in assistant chat authorizes one
+   `next` command to the DAQ; no background chat timer advances the experiment.
+3. **Measured heater ≥200°C → BOOST_FINAL.** The measured crossing, not expiry
+   of 90s, advances the phase. An early crossing advances early. If the heater
+   is still below 200°C at 90s, finish the approach with ON permitted after
+   minimum OFF dwell; the timer alone never claims the target was reached.
+4. **BOOST_FINAL → HOLD_FINAL.** Request continuous ON, subject to OFF dwell
+   and all interlocks, until the positive-slope forecast intercepts the final
+   target. Then cut OFF and use predictive hysteresis around 700°C. This
+   deliberately stops full-power boost before foreseeable overshoot, rather
+   than leaving power permanently ON after reaching the target.
+5. **HOLD_FINAL continues until STOP or a trip.** No 30-minute completion
+   timer. State is HOLD only while actually inside the configured final band;
+   `hold_s` is continuous in-band time, not time since predictive capture.
+
+`stop exp4` sends universal STOP and retains cooldown recording; plain `stop`
+also finalizes the recording after confirming commanded OFF. Unresolved NEXT
+or a mismatched accepted acknowledgement triggers best-effort STOP, never a
+NEXT retry. A valid rejected NEXT leaves the current trajectory alone.
+
+### Estimation and feedback policy
+
+Run 023's operator reported approximately **70 V**, while its immutable preset
+metadata remains 65 V. Analysis uses the reported 70 V only as an approximation.
+First upward crossings are linearly interpolated between adjacent heater/raw
+TC2 samples; slopes below use actual host elapsed timestamps:
+
+| Run 023 heating quantity | Value |
+|---|---:|
+| First 100°C crossing, elapsed | 32.1752s |
+| First 200°C crossing, elapsed | 74.7849s |
+| 100→200°C interval | 42.6098s |
+| Least-squares slope over 85 samples in that interval | 2.3512°C/s |
+| Requested 100→200°C reference slope | 1.1111°C/s |
+| Nominal ON power at 70 V, assuming 48 Ω | 102.08 W |
+| Nominal ON power at 100 V, assuming 48 Ω | 208.33 W |
+
+The historical fit is `sum((t-mean(t))*(T-mean(T))) / sum((t-mean(t))²)`.
+Power ratio is `(100/70)² = 2.0408`; simply scaling the measured slope would
+give 4.7984°C/s and a 23.16% average duty for 1.1111°C/s. **Neither is a
+validated plant model or an implemented fixed-duty recipe.** Actual voltage
+history, losses, heat capacity, lag, moisture and changing boundaries are not
+identified by that calculation. In particular, forcing ON longer than OFF is
+not defensible for the requested slow ramp at twice the nominal input power.
+
+Online feedback reuses the bounded 16-entry history at nominal 500ms sampling:
+`slope = (latest valid heater - oldest valid heater within 5s) / actual elapsed`.
+This is a trailing secant, **not** the historical least-squares fit. The forecast
+is `T + max(slope, 0) × 5s`. For a stationary hold, cut when that forecast reaches
+the target. During the unsaturated ramp, compare it with the future reference
+`R(t + 5s)`; ON re-entry also requires temperature below current reference minus
+3°C and at least 5s since OFF. OFF/trips are immediate, not delayed by dwell.
+At the saturated 200°C reference the predictive deadband is bypassed until
+actual crossing, to avoid stalling just below the phase boundary.
+
+Rear ≥85°C and heater ≥730°C override all active phases and latch OFF. Unlike
+EXP2/3, EXP4 requires a finite rear reading; missing/nonfinite rear trips
+`TC2_FAULT`. Invalid heater feedback, 1500ms sample staleness, 2500ms heartbeat
+timeout and explicit STOP also override every phase. These are software
+commands; relay contact welding, bad probe contact and NC power-loss behavior
+still require independent protection. Physical tracking within exactly 90s and
+700°C performance have not been demonstrated.
 
 ## EXP3: reversed probes and 65V preset
 
-**Deployment status (2026-11-06): v4 firmware uploaded and updated host running.**
-Run 017 was finalized with 2504 samples. The host was reopened with
-`--wait-for-start`, which shows live sensor status without allocating a recording;
-the next explicit `start exp3` is intended to allocate run 018. No heating was
-started during deployment. Upload/reset can close the NC relay.
+**Historical deployment status:** v4 was uploaded after run 017 finished.
+The host reopened with `--wait-for-start`, avoiding automatic run allocation;
+later run 023 used EXP3. EXP4/v5 is now prepared in source only. No new upload,
+reset, reconnect or live experiment command was issued while preparing EXP4.
 
 Edit [`../experiment3.toml`](../experiment3.toml), save, and use
 `start exp3`. Use `stop exp3` to command heat OFF while keeping cooldown logging.
@@ -149,7 +252,7 @@ The Arduino does not detect its reset button as an experiment event. Reset resta
 
 ## Firmware / checks
 
-Current protocol is **`exp2-v4`**, with `tc2_required:false` and a nested `settings` object reporting the nine temperature/timing settings plus `swap_inputs`. Temperature CSV stays `time_s,t1_C,t2_C` in raw physical channel order; START carries one complete validated settings payload with its request ID and the final swap flag, while STOP/PING are unchanged. Exact-ID acknowledgements and runtime heartbeat remain; neither is a sensor preflight. The board owns control, not browser JavaScript. Run 017 remains a historical v3 run; subsequent experiments use the deployed v4 firmware.
+Prepared source protocol is **`exp2-v5`**, a clean host/firmware cutover. It adds `program`, `phase`, `setpoint_C` and `slope_C_per_s`; `tc2_required` is true for EXP4 and false for the single-target EXP2/3 program. The nested settings retain the existing ten fields. CSV stays `time_s,t1_C,t2_C` in raw physical order. EXP4 uses `EXP4 START` with the existing settings payload and `EXP4 NEXT <id>`; universal `EXP2 STOP` and `EXP2 PING` remain. Exact-ID acknowledgements and board-owned runtime control remain. Existing real v4 services/firmware were not replaced during this code-only change; deploy host and firmware together after physical clearance.
 
 ```sh
 arduino-cli compile --fqbn arduino:avr:megaADK firmware/thermocouple_logger
@@ -180,3 +283,12 @@ Earlier v2 verification (before editable settings): the user confirmed the varia
 - Executed actual sketch and host through an isolated PTY using synthetic probes and copied config. Raw channel 2 at 85°C did not trigger the rear cutoff; raw channel 1 at 85°C did. Raw channel 2 at 320°C triggered the heater limit; missing raw channel 2 triggered feedback shutdown. Saved CSV retained raw order and run metadata recorded EXP3/swap/65V.
 - In the actual browser command interface against that isolated runtime, `config` showed both profiles, `start exp3` armed the mapped controller, raw heater 300°C switched OFF into HOLD, and `stop exp3` retained cooldown logging. The 65V metadata and mapped raw-source labels were visually checked.
 - Visually checked the live split plots and historical 016/017 mapping without a live control command. Real run 017 continued recording on v3 throughout. Synthetic services/scaffolding were removed after proof; the staged Mega build remains for deferred deployment. No physical 65V control tuning or 300°C hold was validated.
+
+### EXP4 software verification, 2026-11-06
+
+- Native controller regressions passed: atomic envelopes, early/duplicate NEXT, phase transitions, 90s reference and actual-crossing gate, predictive capture, boost OFF dwell, in-band hold accounting, required-rear/overtemperature/STOP/staleness interlocks, mapping and wrapping timestamps.
+- Fifteen host behavior regressions passed, including envelope rejection before run mutation, program acknowledgement, NEXT timeout/mismatch STOP, raw-data preservation and retained recording. Removed a brittle log-capitalization test rather than pinning incidental message wording.
+- Mega ADK build passed: **18,450 bytes flash / 1,135 bytes static RAM**. Image staged under `/tmp/che126-exp4-build`, **not uploaded**.
+- Actual sketch executed natively with synthetic thermocouples and an isolated PTY to the actual host on port 8767. Advanced simulated board time in 500ms steps with synthetic heartbeats. Demonstrated 100°C hold, explicit NEXT, ~150°C reference halfway, reference 200°C without false phase advance, measured-200 boost, predictive capture and final hold, rear85 trip, required-rear NaN trip, heater730 trip and STOP retaining recording.
+- Actual browser against that isolated runtime verified `start exp4`, `next`, moving-setpoint/phase/slope labels and `stop exp4`. The offline report showed the staged program and saved phases. No real thermal-ramp accuracy, relay-contact state, physical 700°C operation or assembly suitability was validated.
+
