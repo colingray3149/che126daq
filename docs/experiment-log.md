@@ -130,3 +130,35 @@ These are suggested evidence to capture, not invented missing photographs or a r
 - Inspection's additional `stop exp3` returned already inactive/no STOP sent. Fresh telemetry remained STOPPED/OFF and run 019 kept recording. No real START, upload or serial reconnect was issued during this investigation.
 - Saved run 019 heater/raw TC2 peaked at 113.5°C; rear/raw TC1 was approximately 30°C during inspection. The 85°C rear threshold does not apply to the heater after the swap. Cooldown from the heater peak was visible, but relay-contact state/current were not independently measured.
 - Replaced the shared subplot figure with two distinct graphs and opened the versioned page. Verified every retained plotted value against its physical CSV/API channel: blue TC1/heater ← raw TC2; orange TC2/rear ← raw TC1. Historical 016 retained unswapped mapping, 017 retained its reversal. Native STOP/cutoff regressions passed.
+
+## 2026-11-06 — Run 023 / EXP3: successful operator-reported run at approximately 70 V
+
+**Outcome:** operator described this run as “great” and **successful**, operated
+at **approximately 70 V**. This is the reported operating condition, not an
+electrically measured voltage trace. The immutable saved profile records the
+original **65 V preset**; retain it as requested configuration, not as evidence
+of actual operating voltage. Voltage timing/adjustments were not supplied.
+
+### Setup and interpretation
+
+- Saved setup comments carry the previously reported **1 mica / 2 basalt-fabric / 1 aluminum layer** assembly. No new hot-to-cold order, thicknesses, sand condition or setup-change observation was supplied for this closeout.
+- Logical **TC1/heater/blue = raw TC2**; logical **TC2/rear/orange = raw TC1**. Raw CSV order is unchanged.
+- Board-acknowledged settings: target **300°C**, hysteresis **3°C**, heater cutoff **320°C**, rear cutoff **85°C enabled**, prediction **5s**, minimum OFF **5s**, hold band **±5°C**, requested continuous hold **1800s**, input swap enabled.
+
+### Measured record
+
+| Quantity | Run 023 evidence |
+|---|---|
+| Saved samples | 3313 |
+| First / last sample UTC | 18:26:33.875 / 18:54:08.997 |
+| Time between first and last sample | 1655.12s (27m 35.12s) |
+| Heater peak / last | 303.00°C / 277.00°C |
+| Rear peak / last | 83.75°C / 83.75°C |
+| Nonfinite temperature samples | 0 on either channel |
+| Hold counter at STOP | 1218s (20m 18s), board-reported |
+
+- START request 5 was acknowledged at **18:26:33.572 UTC**.
+- STOP request 6 was acknowledged at **18:53:37.360 UTC**, reporting **STOPPED / heater_on=false**. The 1218s hold counter does **not** establish completion of the configured 1800s continuous hold; operator success assessment is recorded separately from that criterion. No COMPLETE or TRIPPED transition was found in the saved events.
+- Serial disconnected at **18:54:09.273 UTC**. At closeout inspection, the host still held the recording open, with no samples after 18:54:08.997. No reconnect, new START or heater command was issued to log this result. Current physical power after disconnect is unknown to software; NC wiring can fail ON on loss of controller power.
+- Sources: `runs/023/data.csv`, `events.csv`, `experiment-applied.json`, original `experiment.toml` and `run-metadata.json`. Appended the operator assessment, voltage correction and measured summary through the DAQ `note` command, then `save` refreshed the run metadata. The 15-second report watcher includes the updated run notes in `runs/023/report.html`; its preset label continues to reflect the original saved 65 V configuration.
+

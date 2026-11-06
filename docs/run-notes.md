@@ -100,6 +100,53 @@ the run. Abrupt kill/power loss can leave metadata marked recording; per-row
 flush is not an fsync/power-loss guarantee. Do not delete/move active run files.
 Runs are ignored by Git and never automatically committed or deleted.
 
+### Full-run interactive reports
+
+The live dashboard retains at most `plot_points`; use the read-only report
+generator for **every saved sample**, including runs longer than that limit:
+
+```sh
+nix develop
+python host/report.py runs/023
+xdg-open runs/023/report.html
+```
+
+Choose the actual run folder. The output is a self-contained, offline HTML file
+with embedded Plotly: no CDN, serial connection, DAQ restart or heater controls.
+It includes separate blue TC1/heater and orange TC2/rear graphs, independent
+temperature axes, complete axis titles/units, optional linked time zoom, full-run
+reset, high-resolution PNG and SVG export, and a raw-CSV snapshot download.
+Run metadata/legacy corrections determine the plotted channel roles; raw CSV
+is never reordered or rewritten. Saved controller settings, summary statistics,
+recorded events and notes provide context without claiming measured heater power.
+
+Reports take a bounded snapshot of the CSV, including every complete row and
+preserving missing readings as gaps; an incomplete trailing row is excluded and
+reported. No smoothing/downsampling or voltage rescaling is applied. The report
+includes its generation time, first/last sample timestamps and CSV SHA-256.
+While the run's saved state is `recording`, it is prominently marked **not final**.
+The saved state may remain `recording` after an abrupt shutdown; the report does
+not independently determine whether acquisition is still alive.
+
+For automatic updates while recording, run:
+
+```sh
+python host/report.py runs/023 --watch
+```
+
+The watcher regenerates `report.html` every 15 seconds; the generated page
+reloads every 15 seconds and preserves zoom, linked-axis preference and scroll
+using browser session storage. Fit-full-run views expand with new data.
+Open/reload the report once after starting watch mode. Browser background-tab
+throttling or rendering time may delay visible refreshes; generation and page
+reload are separate schedules, so check the displayed last-sample timestamp.
+The watcher remains tied to the selected run folder, not subsequent runs.
+
+Stopping this watcher does not stop acquisition; the page then only reloads
+the last generated snapshot. For a static final report, stop the watcher and
+rerun without `--watch` after normal run finalization. Only `report.html` is
+replaced atomically. Generated reports live inside the ignored run folder.
+
 For a supervised user service, without tying acquisition to a shell:
 
 ```sh

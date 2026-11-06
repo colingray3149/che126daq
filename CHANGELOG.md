@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-06 — Fifteen-second report updates
+
+- Added `host/report.py --watch`: atomically regenerate the selected run's report every 15 seconds and enable browser reloads at the same interval. Preserve manual zoom, linked-time preference and scroll; full-run views expand with incoming data.
+- Started a separate persistent read-only watcher for run 023. Observed an automatic browser refresh from 2468 to 2498 plotted samples with the 100–200s zoom and scroll position intact; no acquisition/control commands issued.
+
+## 2026-11-06 — Read-only full-run graph reports
+
+- Added `host/report.py` to produce self-contained interactive `runs/<run>/report.html` snapshots using the existing Plotly dependency, without serial access or acquisition changes.
+- Included all complete CSV rows beyond the live retention limit, per-run probe mapping, separate graphs with complete axes, linked time zoom, full-run reset, PNG/SVG export and exact raw snapshot download. Faults remain gaps; partial trailing rows are excluded explicitly.
+- Added saved settings, measured summaries, events, notes, generation/sample timestamps and CSV hash. Active-run snapshots are clearly labeled not final and can be regenerated after recording ends.
+- Exercised real run 023, historical run 017, a 7,301-row partial-write/fault case, desktop/narrow browser layouts, linked zoom and image rendering. No live control command, host restart or firmware change.
+
 ## 2026-11-06 — Distinct TC graph panels and live STOP investigation
 
 - Replaced the shared Plotly subplot figure with two separate bordered graphs, individual controls and independent temperature axes. Each heading shows logical role, raw source and plotted temperature; live panels identify the heater versus rear cutoff.

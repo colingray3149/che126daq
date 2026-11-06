@@ -17,6 +17,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Setup source index](docs/setup-source-index.md) — where the useful setup material is, and which drafts conflict.
 - [Activity log](docs/activity-log.md) — what was actually done and observed.
 - [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.
+- [Full-run interactive reports](docs/run-notes.md#full-run-interactive-reports) — `python host/report.py runs/023`; offline graphs with every saved sample, complete axes, linked zoom and PNG/SVG exports, without interrupting the DAQ.
 
 ## DAQ hub
 
