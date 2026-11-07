@@ -1,0 +1,41 @@
+# EXP4 STAGED CONTROL SETTINGS
+# Save this file, then type: start exp4
+# Each START reloads these values. Editing alone does NOT change an active run.
+# The variac is adjusted manually; software never sets or measures its voltage.
+# EXP4 is uncommissioned. These software limits do not certify probe, assembly,
+# heater, wiring, relay, or power-loss safety.
+# 700 C is code-only and NOT approved for the current assembly: saved ratings
+# include basalt 1200 F (~649 C), a possible probe rating of 500 C (identity
+# unverified), heater 760 C maximum exposure, and leads 449 C. Rear 85 C does
+# not bound intermediate basalt/lead temperatures or imply layers reach 700 C.
+
+# Final logical heater target, degrees C. EXP4 requires 200 < target <= 700.
+target_C = 700.0
+
+# Predictive-hysteresis deadband, degrees C; EXP4 permits 0 through 5.
+hysteresis_C = 3.0
+
+# Logical heater emergency cutoff, degrees C; target < cutoff <= 730.
+tc1_cutoff_C = 730.0
+
+# Logical rear emergency cutoff, fixed at 85 C for EXP4 and always required.
+tc2_cutoff_C = 85.0
+tc2_cutoff_enabled = true
+
+# Predictive OFF lead and minimum OFF dwell, seconds. Safety OFF is immediate.
+prediction_lead_s = 5.0
+min_off_s = 5.0
+
+# HOLD_100 entry and NEXT eligibility band, degrees C; EXP4 permits 0 through 5.
+hold_band_C = 5.0
+
+# EXP4 holds at 100 C until explicit NEXT and at final target indefinitely.
+# No final hold timer is permitted.
+hold_s = 0.0
+
+# true: raw physical TC1 is rear and raw physical TC2 is the heater.
+# Firmware swaps inputs for control only; CSV columns always stay raw TC1/TC2.
+swap_inputs = true
+
+# Host-only record of the manual variac preset; never used to rescale readings.
+variac_voltage_V = 100.0

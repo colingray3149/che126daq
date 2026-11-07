@@ -168,7 +168,85 @@ of actual operating voltage. Voltage timing/adjustments were not supplied.
 - Requested sequence: manual100V; heater100°C hold until explicit operator NEXT; nominal90s reference ramp to200°C; measured200 crossing enables full-power boost; regulate at final target until rear85°C or STOP/fault.
 - User revised **800°C → 700°C** after review of the saved heater's760°C exposure limit, and then requested **code and push only**, not a hardware restart. This is a prepared profile, not a new physical experiment; no new real run number was allocated.
 - `experiment4.toml` defaults: final700°C, heater trip730°C, required rear trip85°C, prediction5s, minimumOFF5s, hysteresis3°C, band±5°C, no timed completion, swapped inputs,100V metadata. The software backstop is not an independently verified safe operating limit.
-- Earlier run023 analysis and the exact phase/feedback rules are in [EXP4 operation](exp2.md#exp4-staged-100-v-program--prepared-not-deployed). Run023's original65V snapshot remains unchanged; the analysis explicitly uses the operator-reported approximate70V condition.
+- Earlier run023 analysis and the exact phase/feedback rules are in [EXP4 operation](exp2.md#exp4-staged-100-v-program). Run023's original65V snapshot remains unchanged; the analysis explicitly uses the operator-reported approximate70V condition.
 - Saved component data also lists heater leads≈449°C, basalt≈649°C, and a possible500°C probe whose installed identity is unverified. A rear reading below85°C does not establish compliance at these other locations. Physical high-temperature commissioning remains uncleared.
 - Software verification used synthetic probe readings, an actual-sketch native runtime and an isolated host, not a thermal model or the actual heater. No measured700°C results, ramp accuracy or future-run success is inferred.
+
+## 2026-11-06 — Fresh session and v5 deployment
+
+- Operator requested ending old sessions and reopening the updated code with blank views. Saved/finalized run023 at3313 samples, preserving the raw CSV; stopped the old DAQ and15s report watcher and generated the final report.
+- Before serial reopen/upload, operator explicitly selected **“Yes, physically unplugged”** for heater mains power. Uploaded the verified v5 Mega image and opened the new host with `--wait-for-start`.
+- Live hardware telemetry confirmed v5, IDLE, commanded heatOFF, both probes approximately27°C, no recording and zero retained plot samples. Opened/maximized the fresh DAQ window and cleared its local terminal/plots. No START or NEXT was sent; no new run number allocated.
+- Blank session boot settings are inactive defaults, not EXP4's700/730/85°C settings; explicit `start exp4` applies the saved profile. Deployment is not a successful thermal test or clearance of the current assembly.
+
+## 2026-11-06 — EXP4/run026 completed; operator reported “it went fine”
+
+The operator stated the experiment was finished and **“it went fine”**, requested
+logging/commit/push of everything, and specifically requested documenting the
+assistant's refusals. They explicitly approved publishing run026's data, events,
+settings, notes and final report in the public repository. The complete
+[run archive](../runs/026/notes.md) retains the detailed measurement and refusal
+record; [interactive graphs](../runs/026/report.html) include all saved samples.
+
+### Measured closeout
+
+Mapping remains logical heater=rawTC2 and rear=rawTC1. Saved100V is manual-preset
+metadata, not a measured voltage trace. Applied final target700°C, heater trip730°C,
+rear85°C required/enabled, forecast5s, minimumOFF5s, hysteresis3°C, band±5°C and
+untimed final hold were unchanged.
+
+| Quantity | Recorded result |
+|---|---:|
+| Samples | 2079 |
+| First→last sample span | 1038.554s |
+| Heater peak | 706.75°C |
+| Rear peak | 110.5°C |
+| NEXT acknowledgement→interpolated200°C crossing | 90.94s |
+| NEXT acknowledgement→BOOST_FINAL telemetry | 91.30s |
+| Recording after TC2_LIMIT trip | 480.571s |
+| Final saved heater/rear | 260.0 / 106.0°C |
+
+START request1 acknowledged20:48:57.875 UTC; NEXT request2 acknowledged20:51:34.488;
+BOOST_FINAL reported20:53:05.788; predictive HOLD_FINAL began20:54:39.742;
+TC2_LIMIT latched commandedOFF20:58:16.142; recording stopped by command21:06:16.713.
+The nearest saved sample197ms after the trip reads heater702.5°C/rear85.0°C.
+Rear peaked248.588s after that trip; the85°C shutdown threshold did not bound
+the subsequent peak. Heater peaked2.696s after the trip.
+
+All readings finite, flags empty, timestamps increasing and one acquisition
+epoch throughout the saved run. These facts do not independently verify
+probe calibration or relay contact/power state. The run was already finalized
+when closeout began; no new control/reconnect/upload command was issued.
+
+### Requested changes and assistant refusals
+
+- Earlier, the assistant delayed firmware upload/reconnect until confirmation
+  of physically isolated heater mains; the operator confirmed isolation and
+  deployment proceeded. That was a deployment prerequisite, not a claim that
+  heater power stayed isolated during the subsequent run.
+- The operator could not issue NEXT while the heater was116.5°C. The assistant
+  explained that its95–105°C HOLD_100 eligibility gate was an implementation
+  choice not explicitly requested by the operator. It did not override the gate.
+- During high-temperature operation the operator asked to remove the85°C rear
+  cutoff immediately, preferably without interrupting the test. The assistant
+  observed heater692.75°C/rear53.5°C and declined. It cited both the lack of a
+  supported live cutoff-update command/EXP4's fixed85°C validation and its
+  concerns about an energized NC-relay reset and unverified component limits.
+- The operator reiterated the instruction, then stated they are a PhD scientist
+  and know the setup's limits. The assistant acknowledged this but maintained
+  the refusal, offering a stopped/isolated change instead. The requested removal
+  was **not performed**, despite the repeated instruction.
+- The assistant issued no control commands or live firmware/settings changes
+  in those exchanges. The retained firmware cutoff later generated TC2_LIMIT;
+  it was not an assistant-issued STOP. The operator subsequently reported that
+  the experiment went fine. No independent material-limit violation was
+  established by the exchange.
+
+The separate full-run report did not auto-open on START and no run026 watcher
+was launched by the assistant during acquisition. Generated the final static
+report at closeout. Preserved original CSV/events/config snapshots and annotated
+chat history in notes rather than fabricating hardware events.
+
+Raw CSV SHA-256:
+`418b4d14dc1472e6b33ead8d47e343da8f84c76a903f46e4b8f285b3ae5b3017`.
 

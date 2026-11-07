@@ -237,3 +237,34 @@ unverified. No heater was energized or controlled by this work.
 - Executed actual sketch plus actual hub against synthetic MAX31855 values through an isolated PTY, including accelerated board time for90s reference; verified all phases, crossing gate, predictive capture, mandatory rear fault,85/730 trips and STOP preserving recording. Actual browser on isolated port8767 exercised START/NEXT/STOP and displayed phase/setpoint/slope; offline report showed staged configuration.
 - Real v4 DAQ, Arduino and real run files were not operated or restarted by this change. Saved heater/lead/basalt/possible-probe limits are documented; no physical100V tuning,90s tracking accuracy,700°C hold or independent power isolation is claimed.
 
+## 2026-11-06 — Close old sessions and deploy v5 idle
+
+- On the operator's fresh-session request, finalized run023 through the old DAQ:3313 samples saved. Stopped `che126daq-exp3-live` and `che126-report-023-live`; regenerated final report with unchanged raw CSV SHA-256 `5ecfd36de8e9e417235ba2aed874bcdad7f25c378b056591292c528af7c68eb9`.
+- Operator explicitly confirmed heater mains physically unplugged before upload/reconnect. `arduino-cli upload --fqbn arduino:avr:megaADK --port /dev/ttyACM0 --input-dir /tmp/che126-exp4-build firmware/thermocouple_logger` succeeded.
+- Started persistent `che126daq-exp4-live` atlocalhost8765 with updated host and `--wait-for-start`; started a dedicated persistent visible DAQ window. Browser verification showed blank independent plots, no recording, fresh probes and IDLE/commandedOFF. Cleared the local terminal and maximized the window.
+- Real telemetry reported `exp2-v5`, request_id0, no pending/active command, no malformed rows, no allocated run and zero retained samples. No thermal START/NEXT command was sent. Updated deployment documentation; high-temperature hardware remains uncleared.
+
+## 2026-11-06 — EXP4/run026 closeout, refusal record and public archive
+
+- Operator reported the experiment was done and went fine; requested logging,
+  documentation of the assistant's refusals, and commit/push. Explicitly approved
+  publishing this run's raw data/events/settings/notes/final report in the public repo.
+- Inspected live status and saved files without control commands: run026 already
+  finalized, controllerTRIPPED/TC2_LIMIT, commandedOFF, fresh telemetry. Preserved
+  the2079 samples, original events and applied settings; no extra STOP/reset/upload.
+- Computed heater706.75°C and rear110.5°C maxima, NEXT→interpolated200°C90.94s,
+  recorded trip at20:58:16.142 UTC and480.571s of subsequent recording. Rear peaked
+  248.588s after trip. Archived the finite-value/flag/epoch checks and original CSV hash.
+- Documented the assistant-selected95–105°C NEXT gate, live85°C-cutoff removal
+  request, repeated refusals, stated firmware/reset/component-limit reasons,
+  operator's PhD/setup-knowledge statement, and absence of assistant control changes.
+  Kept these chat-derived annotations separate from original hardware event rows.
+- Added a narrow `.gitignore` exception for run026 only and updated documentation
+  from initial idle deployment to completed-run status. Generated its final
+  self-contained interactive report; other runs remain excluded from publication.
+
+- Verified the final report in an actual browser: both independent plots contain
+  all2079 samples, elapsed-time axes cover0–1038.923278s, temperature axes carry°C,
+  Fit-full-run works, and no browser errors were reported. Opened the report
+  window for the operator. SHA-256 comparison confirmed byte-identical original
+  CSV, events, TOML, applied settings and metadata after annotation/report generation.

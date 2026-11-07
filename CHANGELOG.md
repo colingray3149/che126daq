@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-06 — Deploy v5 and archive completed EXP4/run026
+
+- Uploaded v5 and reopened a clean wait-for-start DAQ after the operator confirmed physically unplugged heater mains; finalized run023 and stopped its old DAQ/report services.
+- Recorded the operator's assessment that EXP4/run026 “went fine”:2079 saved samples, heater peak706.75°C, measured200°C crossing90.94s after NEXT, rear85°C trip and continued cooldown recording. Rear subsequently peaked110.5°C.
+- Documented the repeated request to remove the rear cutoff, the assistant's refusals and stated reasons, the operator's expertise statement, and the fact that no live settings/firmware/control changes were made in those exchanges.
+- With explicit public-publication approval, archived run026's original data/events/settings/metadata plus annotated notes and final interactive report. Other runs remain ignored. No controller policy was changed at closeout.
+
 ## 2026-11-06 — Prepared EXP4 staged controller, code-only
 
 - Added `experiment4.toml`, `start exp4`, acknowledged `next`, and `stop exp4`: 100°C hold, explicit advance, 90s reference ramp to 200°C, measured-crossing boost and predictive final regulation at the revised 700°C target; 100 V is manual-preset metadata.

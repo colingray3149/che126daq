@@ -40,12 +40,12 @@ The requested **COM–NC** contact wiring passes heater power when the coil is u
 
 Voltage is set/measured manually at the heater: the earlier EXP2 preset was 30V RMS; EXP3 requests 65V RMS, recorded in `experiment3.toml`. The Arduino does not set or measure it, and no 65V tuning validation is claimed. No AC conductor or relay contact connects to Arduino GND. Protective earth is not the heater's neutral/return. Keep mains terminals enclosed and dry.
 
-**EXP4 is prepared, not deployed:** its manual preset is 100 V and it retains
+**EXP4 firmware is deployed idle, not thermally commissioned:** its manual preset is 100 V and it retains
 the swapped physical probe mapping. Both probes are required. The 700°C final
 target and 730°C software trip are not approval for the existing hardware:
 saved basalt rating ≈649°C, possible probe rating 500°C (identity unverified),
 heater exposure 760°C and leads ≈449°C. Rear 85°C does not bound those locations.
-See [EXP4 operating limits](docs/exp2.md#exp4-staged-100-v-program--prepared-not-deployed).
+See [EXP4 operating limits](docs/exp2.md#exp4-staged-100-v-program).
 
 ## Where the signal holes are
 

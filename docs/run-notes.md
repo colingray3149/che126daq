@@ -66,12 +66,14 @@ software does not set or measure that voltage. The idle board's boot defaults
 are not the selected experiment's settings; explicit START applies that file.
 
 EXP4 uses `start exp4`, `next` and `stop exp4` with `experiment4.toml` and the
-prepared v5 host/firmware pair. Its fixed first phases hold 100°C, await explicit
+deployed v5 host/firmware pair. Its fixed first phases hold 100°C, await explicit
 NEXT, then track a 90-second reference to 200°C before measured-crossing boost
 and final hold. Both probes are required and rear cutoff is fixed at 85°C.
-See [EXP4 policies and limits](exp2.md#exp4-staged-100-v-program--prepared-not-deployed).
-This is code-only preparation; do not restart the live v4 host against the
-new source without a coordinated, physically isolated firmware cutover.
+See [EXP4 policies and limits](exp2.md#exp4-staged-100-v-program).
+The v5 host/firmware pair is deployed with `--wait-for-start` after confirmed
+heater mains isolation. EXP4/run026 has since completed and is publicly archived.
+Keep power physically isolated for any later upload/reset; software deployment
+does not establish thermal limits.
 
 `hub.toml` configures the DAQ connection/storage/UI; restart the server after editing it.
 `experiment.toml`, beside that file, configures control and is reread on every
@@ -106,7 +108,9 @@ leaves the run open, with missing time visible; explicit reconnect resumes it.
 Browser refresh/disconnect does not own acquisition. Ctrl-C or SIGTERM finalizes
 the run. Abrupt kill/power loss can leave metadata marked recording; per-row
 flush is not an fsync/power-loss guarantee. Do not delete/move active run files.
-Runs are ignored by Git and never automatically committed or deleted.
+Runs are never automatically committed or deleted. `.gitignore` excludes them
+except `runs/026/`, explicitly approved by the operator for public archival with
+its original CSV, events, settings/metadata, annotated notes and final report.
 
 ### Full-run interactive reports
 
@@ -149,11 +153,15 @@ Open/reload the report once after starting watch mode. Browser background-tab
 throttling or rendering time may delay visible refreshes; generation and page
 reload are separate schedules, so check the displayed last-sample timestamp.
 The watcher remains tied to the selected run folder, not subsequent runs.
+Neither START nor NEXT launches this separate report watcher or opens its page.
+For the completed public example, open `runs/026/report.html` from a clone or
+download the HTML and open it locally; GitHub's source view is not the plot UI.
 
 Stopping this watcher does not stop acquisition; the page then only reloads
 the last generated snapshot. For a static final report, stop the watcher and
 rerun without `--watch` after normal run finalization. Only `report.html` is
-replaced atomically. Generated reports live inside the ignored run folder.
+replaced atomically. Reports normally stay in ignored run folders; the operator
+explicitly approved publishing run026's final static report with its raw record.
 
 For a supervised user service, without tying acquisition to a shell:
 

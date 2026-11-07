@@ -1,11 +1,21 @@
 # Experiments 2, 3 and 4: operator-controlled START
 
-## EXP4: staged 100 V program — prepared, not deployed
+## EXP4: staged 100 V program
 
-**2026-11-06 status:** user revised the final target from 800°C to **700°C**
-and requested **code and push only**. The new source uses `exp2-v5`; it has
-not been uploaded and the live host has not been restarted. Do not expect
-`start exp4` or `next` to work on the still-deployed v4 controller.
+**2026-11-06 deployment status:** after code-only preparation, the operator
+requested fresh updated sessions and explicitly confirmed heater mains power
+was physically unplugged. Uploaded the verified v5 Mega image and restarted
+the v5 host with `--wait-for-start`. Live telemetry confirmed `exp2-v5`,
+IDLE, commanded heat OFF, fresh probes and no recording. No START was sent.
+Run 023 was finalized at 3313 samples; old DAQ/report services were closed.
+The requested final target remains **700°C**, revised from 800°C.
+Firmware deployment does **not** clear the assembly for high-temperature operation.
+
+**Later run outcome:** EXP4/run026 is complete; the operator reported that it
+“went fine.” Its2079 samples include a706.75°C recorded heater peak, the retained
+rear85°C trip and cooldown. See the [published run archive](../runs/026/notes.md)
+for exact phase timings, post-trip rear rise and the requested refusal record.
+The deployment paragraph above describes the initial idle state, not closeout.
 
 ### Hardware limits are not cleared
 
@@ -252,7 +262,7 @@ The Arduino does not detect its reset button as an experiment event. Reset resta
 
 ## Firmware / checks
 
-Prepared source protocol is **`exp2-v5`**, a clean host/firmware cutover. It adds `program`, `phase`, `setpoint_C` and `slope_C_per_s`; `tc2_required` is true for EXP4 and false for the single-target EXP2/3 program. The nested settings retain the existing ten fields. CSV stays `time_s,t1_C,t2_C` in raw physical order. EXP4 uses `EXP4 START` with the existing settings payload and `EXP4 NEXT <id>`; universal `EXP2 STOP` and `EXP2 PING` remain. Exact-ID acknowledgements and board-owned runtime control remain. Existing real v4 services/firmware were not replaced during this code-only change; deploy host and firmware together after physical clearance.
+Deployed protocol is **`exp2-v5`**, a clean host/firmware cutover. It adds `program`, `phase`, `setpoint_C` and `slope_C_per_s`; `tc2_required` is true for EXP4 and false for the single-target EXP2/3 program. The nested settings retain the existing ten fields. CSV stays `time_s,t1_C,t2_C` in raw physical order. EXP4 uses `EXP4 START` with the existing settings payload and `EXP4 NEXT <id>`; universal `EXP2 STOP` and `EXP2 PING` remain. Exact-ID acknowledgements and board-owned runtime control remain. Host and firmware were replaced together after the operator confirmed physically unplugged heater power; subsequent physical run026 is archived with its measured results and operator assessment.
 
 ```sh
 arduino-cli compile --fqbn arduino:avr:megaADK firmware/thermocouple_logger

@@ -9,4 +9,6 @@ build/
 *.kate-swp
 *.swp
 *~
-runs/
+# Keep acquisition local except run 026, explicitly approved for public archival.
+runs/*
+!runs/026/

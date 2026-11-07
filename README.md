@@ -8,9 +8,10 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Wiring and safe connection order](docs/wiring.md) — current saved pin map and hardware caveats.
 - [Editable experiment settings](experiment.toml) — target, cutoffs, hysteresis and timing; save, then `start exp2` reloads them without a server restart or another firmware upload.
 - [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
-- [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v4 firmware/host.
-- [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program--prepared-not-deployed) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold. Code-only v5 preparation; high-temperature hardware is not cleared.
+- [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
+- [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
+- [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
 - [100 V timing calculation](models/heater-timing/results.md) and [minimal control-identification plan](docs/heater-control-plan.md) — explicit sensitivities and a two-to-three-run workflow, not a fabricated warm-up time.
@@ -42,7 +43,8 @@ Historical views are labeled and do not interrupt the active recording.
 Each run has a short, never-overwritten directory: `runs/001/`, `runs/002/`, …
 `data.csv` is flushed per row; `events.csv` records serial/reset/errors;
 `notes.md` records metadata and preserves user edits below `## Comments`.
-Runs are ignored by Git. No synthetic acquisition mode exists. EXP2 control is explicit;
+Runs are ignored by Git except explicitly approved public archive `runs/026/`.
+No synthetic acquisition mode exists. EXP2 control is explicit;
 NC contact wiring cannot fail OFF on loss of Arduino power. See the operating guide.
 NaNs plot as gaps; all-zero streams carry a warning, not a claim of valid sensors.
 
@@ -57,10 +59,13 @@ EXP3 selects **[experiment3.toml](experiment3.toml)** with `start exp3`;
 manual-preset metadata, not a power command or temperature scaling factor.
 Plots have independent heater/rear temperature axes and show raw source channels.
 Run 017's reported reversal is annotated without modifying its raw CSV.
-EXP4 selects **[experiment4.toml](experiment4.toml)** and requires the prepared
+EXP4 selects **[experiment4.toml](experiment4.toml)** with the deployed
 v5 host/firmware pair. `next` advances only an in-band 100°C hold; it never
-allocates a new recording. The requested 100 V and 700°C program is not
-physically commissioned. Existing real v4 services were intentionally left running.
+allocates a new recording. EXP4/run026 completed with an operator-reported
+successful outcome; its measured record and retained rear-cutoff trip are archived.
+The v5 DAQ was launched with `--wait-for-start`; old v4 DAQ/report services
+were closed after saving run023. A completed thermal run does not independently
+establish calibration or component limits.
 Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
 or pass `--config /absolute/path/hub.toml` for another checkout.
 See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.
