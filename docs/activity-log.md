@@ -297,3 +297,21 @@ unverified. No heater was energized or controlled by this work.
   Clarified that planned run018 is not the successful EXP3 closeout record023.
 - Retained all26 folders and original CSVs, event logs, settings and report
   snapshots. Other recordings remain supporting history, not blanket failures.
+
+## 2026-11-09 — Render and publish both graphs for every recording
+
+- Operator requested generated/rendered graphs for each run on GitHub. Generated
+  full interactive reports for001–026 and exported both actual Plotly traces per
+  run to1400×700 PNGs through an isolated Chromium renderer; no hardware connection.
+- Added per-run READMEs embedding heater/rear images, counts, raw-channel labels,
+  CSV hashes and data/events/notes/report links. All runs link from the archive;
+  actual tests017/023/026 retain their prominent labels.
+- Eight early runs contain at least one channel with no finite temperature data.
+  Rendered explicit missing-data annotations instead of fabricating zero readings.
+  Missing values in partial traces remain gaps. Also exercised the lone-finite-
+  reading marker path using a throwaway offline fixture outside the repository.
+- Verified all52 graph sample/finite counts, raw mappings, full elapsed ranges
+  and1400×700 PNG dimensions against original CSVs. Visually checked the exported
+  missing-data and EXP4 images; the isolated browser reported no page errors.
+  All97 original source records (CSV/events/notes/settings/metadata) stayed unchanged.
+  Only derived reports/images and navigation/documentation were added or updated.

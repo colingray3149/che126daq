@@ -66,7 +66,9 @@ def build_report(run_path, watch=False):
         finite = [value for value in values if value is not None]
         label = f'TC{i + 1} · {role} (raw TC{raw})'
         fig = go.Figure(go.Scatter(
-            x=elapsed, y=values, customdata=custom, name=label, mode='lines',
+            x=elapsed, y=values, customdata=custom, name=label,
+            mode='lines+markers' if len(finite) == 1 else 'lines',
+            marker={'size': 7, 'color': color},
             connectgaps=False, line={'color': color, 'width': 2},
             hovertemplate=('Elapsed %{x:.2f} s<br>%{y:.2f} °C<br>UTC %{customdata[0]}'
                            '<br>Flags: %{customdata[1]}<br>Epoch: %{customdata[2]}'
@@ -82,6 +84,10 @@ def build_report(run_path, watch=False):
                    'showline': True, 'ticks': 'outside', 'mirror': True},
             yaxis={'title': {'text': 'Temperature (°C)', 'standoff': 16},
                    'automargin': True, 'showline': True, 'ticks': 'outside', 'mirror': True})
+        if not finite:
+            fig.add_annotation(
+                text='No finite temperature samples<br>Missing readings are not zero',
+                x=0.5, y=0.5, xref='paper', yref='paper', showarrow=False)
         detail = 'No saved controller settings for this run.'
         if settings:
             detail = (f'Heater target {settings["target_C"]:g}°C · high cutoff {settings["tc1_cutoff_C"]:g}°C'

@@ -131,6 +131,21 @@ with embedded Plotly: no CDN, serial connection, DAQ restart or heater controls.
 It includes separate blue TC1/heater and orange TC2/rear graphs, independent
 temperature axes, complete axis titles/units, optional linked time zoom, full-run
 reset, high-resolution PNG and SVG export, and a raw-CSV snapshot download.
+
+Every archived run001–026 now has `heater.png`, `rear.png` and a `README.md`
+that embeds both images for direct GitHub viewing. These1400×700 PNGs were rendered
+from the report's actual Plotly graphs with the full x-axis range, not from a
+cropped screenshot. They contain every saved sample; missing values remain gaps.
+An entirely nonfinite channel is labeled “No finite temperature samples” rather
+than fabricated as a zero trace; a lone finite sample is shown as a marker.
+The three actual tests remain prominently labeled in the archive and run pages.
+
+Static images are snapshots: regenerating HTML alone does not update the PNGs.
+For an updated image, open the new report, choose **Fit full run**, and use the
+camera export on each graph; save the results as `heater.png` and `rear.png`
+beside that run's CSV before committing. The browser export used for this archive
+was `Plotly.toImage(graph, {format: 'png', width: 1400, height: 700, scale: 1})`.
+
 Run metadata/legacy corrections determine the plotted channel roles; raw CSV
 is never reordered or rewritten. Saved controller settings, summary statistics,
 recorded events and notes provide context without claiming measured heater power.
@@ -164,8 +179,8 @@ Stopping this watcher does not stop acquisition; the page then only reloads
 the last generated snapshot. For a static final report, stop the watcher and
 rerun without `--watch` after normal run finalization. Only `report.html` is
 replaced atomically. Reports are kept beside their source data in the numbered
-run folders and included in archive commits; existing reports for017,023,026 are
-published. Opening a report does not restart acquisition or control the heater.
+run folders and included in archive commits; all26 runs have generated HTML
+reports and rendered PNGs. Opening them does not restart acquisition or control heat.
 
 For a supervised user service, without tying acquisition to a shell:
 

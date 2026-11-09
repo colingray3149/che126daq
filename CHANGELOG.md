@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — Render full graphs for every run
+
+- Generated26 complete interactive reports and52 rendered1400×700 PNGs, with a per-run README displaying both temperature graphs directly on GitHub. Linked every graph page from the archive and retained the three actual-test labels.
+- Used every saved CSV row, original/legacy channel mapping, full elapsed axes and independent°C scales. Labeled all-nonfinite channels explicitly and made single finite readings visible as markers.
+- Verified all52 plotted row/finite counts, raw mappings, x-ranges and PNG dimensions against source data; visually checked rendered graphs and exercised a single-reading fixture. All97 original CSV/event/note/settings/metadata files remained byte-identical.
+
 ## 2026-11-09 — Identify the three actual tests
 
 - Prominently labeled actual tests1/2/3 as runs017/023/026 in the archive/project indexes, experiment log and each selected run's notes, based on recorded operator closeouts.
