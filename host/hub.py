@@ -20,9 +20,10 @@ from serial.tools import list_ports
 FIELDS = ['utc', 'host_elapsed_s', 'board_time_s', 'epoch', 'tc1_C', 'tc2_C', 'flags']
 CONTROLLER_PROTOCOL = 'exp2-v5'
 CONTROLLER_STATES = {'IDLE', 'RUNNING', 'HOLD', 'TRIPPED', 'COMPLETE', 'STOPPED'}
-CONTROLLER_PROGRAMS = {'single', 'exp4'}
+CONTROLLER_PROGRAMS = {'single', 'exp4', 'exp5'}
 CONTROLLER_PHASES = {'SINGLE', 'HEAT_100', 'HOLD_100', 'RAMP_200', 'BOOST_FINAL', 'HOLD_FINAL'}
-EXP4_PHASES = CONTROLLER_PHASES - {'SINGLE'}
+STAGED_PHASES = CONTROLLER_PHASES - {'SINGLE'}
+STAGED_PROGRAMS = {'exp4', 'exp5'}
 ACTIVE_STATES = {'RUNNING', 'HOLD'}
 EXPERIMENT_KEYS = ('target_C', 'hysteresis_C', 'tc1_cutoff_C', 'tc2_cutoff_C',
                    'tc2_cutoff_enabled', 'prediction_lead_s', 'min_off_s',
@@ -31,6 +32,7 @@ EXPERIMENT_PROFILES = {
     'exp2': {'filename': 'experiment.toml', 'title': 'Experiment 2'},
     'exp3': {'filename': 'experiment3.toml', 'title': 'Experiment 3'},
     'exp4': {'filename': 'experiment4.toml', 'title': 'Experiment 4'},
+    'exp5': {'filename': 'experiment5.toml', 'title': 'Experiment 5'},
 }
 TEMPERATURE_KEYS = ('target_C', 'tc1_cutoff_C', 'tc2_cutoff_C')
 NONNEGATIVE_C_KEYS = ('hysteresis_C', 'hold_band_C')
@@ -53,9 +55,10 @@ start              Start a new saved run (or keep the active one).
 start exp2         Start Experiment 2 with experiment.toml; no sensor/reset preflight.
 start exp3         Start Experiment 3 with experiment3.toml; no sensor/reset preflight.
 start exp4         Start Experiment 4 with experiment4.toml; no sensor/reset preflight.
-next               Advance EXP4 from HOLD_100 only; never queued or retried.
+start exp5         Start Experiment 5 with experiment5.toml; no sensor/reset preflight.
+next               Advance EXP4/EXP5 from HOLD_100 only; never queued or retried.
 stop               STOP an active experiment, await acknowledgement, then finalize.
-stop exp2/exp3/exp4
+stop exp2/exp3/exp4/exp5
                    Request universal STOP and await acknowledgement; keep cooldown logging.
 restart            Finalize current run and start a fresh directory (not while active).
 save               Flush current files and report their location; keep recording.
@@ -69,8 +72,9 @@ status             Show connection, recording, controller freshness and faults.
 config / channels  Show hub and experiment settings; experiment edits apply on next START.
 reconnect          Close/reopen serial once; refused while an experiment is active.
 help               Show commands. Up/Down recalls command history.
-Experiment 2 assumes 30 V RMS, Experiment 3 assumes 65 V RMS, and Experiment 4
-assumes 100 V RMS manual presets. EXP4 holds at 100 C until explicit next.
+Experiment 2 assumes 30 V RMS, Experiment 3 assumes 65 V RMS, and Experiments 4/5
+assume 100 V RMS manual presets. EXP4/EXP5 hold at 100 C until explicit next;
+EXP5 then regulates at its final target for 60 seconds before COMPLETE.
 The variac is never set or measured by this software; voltage never rescales data.
 Raw CSV tc1_C/tc2_C always mean physical input channels 1/2, including swapped runs.
 The requested COM-NC, active-HIGH relay profile FAILS ON if Arduino power/reset
@@ -260,20 +264,26 @@ class Hub:
                 for key in EXPERIMENT_KEYS}
 
     @staticmethod
-    def validate_exp4_settings(settings):
-        """Validate the staged-program envelope on normalized settings."""
+    def validate_staged_settings(settings, program):
+        """Validate EXP4/EXP5 staged-program envelopes on normalized settings."""
+        label = program.upper()
         if not 200 < settings['target_C'] <= 700:
-            raise ValueError('EXP4 target_C must be > 200 and <= 700')
+            raise ValueError(f'{label} target_C must be > 200 and <= 700')
         if not settings['target_C'] < settings['tc1_cutoff_C'] <= 730:
-            raise ValueError('EXP4 requires target_C < tc1_cutoff_C <= 730')
-        if settings['tc2_cutoff_C'] != 85 or settings['tc2_cutoff_enabled'] is not True:
-            raise ValueError('EXP4 requires tc2_cutoff_C = 85 and tc2_cutoff_enabled = true')
-        if settings['hold_s'] != 0:
-            raise ValueError('EXP4 requires hold_s = 0; final hold has no timer')
+            raise ValueError(f'{label} requires target_C < tc1_cutoff_C <= 730')
+        rear_cutoff = 85 if program == 'exp4' else 120
+        if settings['tc2_cutoff_C'] != rear_cutoff or settings['tc2_cutoff_enabled'] is not True:
+            raise ValueError(f'{label} requires tc2_cutoff_C = {rear_cutoff} and tc2_cutoff_enabled = true')
+        required_hold = 0 if program == 'exp4' else 60
+        if settings['hold_s'] != required_hold:
+            detail = 'final hold has no timer' if program == 'exp4' else 'final hold is timed'
+            raise ValueError(f'{label} requires hold_s = {required_hold}; {detail}')
+        if program == 'exp5' and (settings['target_C'] != 700 or settings['tc1_cutoff_C'] != 730):
+            raise ValueError('EXP5 requires target_C = 700 and tc1_cutoff_C = 730')
         if not 0 <= settings['hysteresis_C'] <= 5:
-            raise ValueError('EXP4 hysteresis_C must be in [0, 5]')
+            raise ValueError(f'{label} hysteresis_C must be in [0, 5]')
         if not 0 <= settings['hold_band_C'] <= 5:
-            raise ValueError('EXP4 hold_band_C must be in [0, 5]')
+            raise ValueError(f'{label} hold_band_C must be in [0, 5]')
         return settings
 
     @staticmethod
@@ -300,8 +310,8 @@ class Hub:
                 raise ValueError('variac_voltage_V host-only metadata is required')
             voltage = self.normalize_voltage(data.pop('variac_voltage_V'))
             settings = self.normalize_experiment(data)
-            if profile == 'exp4':
-                self.validate_exp4_settings(settings)
+            if profile in STAGED_PROGRAMS:
+                self.validate_staged_settings(settings, profile)
         except (OSError, UnicodeError, ValueError) as exc:
             raise ValueError(f'Invalid experiment configuration {path}: {exc}') from exc
         metadata = {'experiment': profile, 'swap_inputs': settings['swap_inputs'],
@@ -427,10 +437,11 @@ class Hub:
         if not isinstance(data['phase'], str) or data['phase'] not in CONTROLLER_PHASES:
             raise ValueError(f'invalid controller phase {data["phase"]!r}')
         if ((data['program'] == 'single' and data['phase'] != 'SINGLE')
-                or (data['program'] == 'exp4' and data['phase'] not in EXP4_PHASES)):
+                or (data['program'] in STAGED_PROGRAMS and data['phase'] not in STAGED_PHASES)):
             raise ValueError(f'controller program/phase mismatch: {data["program"]!r}/{data["phase"]!r}')
-        if type(data['tc2_required']) is not bool or data['tc2_required'] != (data['program'] == 'exp4'):
-            raise ValueError('tc2_required must be true for EXP4 and false for single-target programs')
+        if (type(data['tc2_required']) is not bool
+                or data['tc2_required'] != (data['program'] in STAGED_PROGRAMS)):
+            raise ValueError('tc2_required must be true for staged programs and false for single-target programs')
         for key in ('setpoint_C', 'slope_C_per_s'):
             try:
                 finite = type(data[key]) in (int, float) and math.isfinite(data[key])
@@ -446,8 +457,8 @@ class Hub:
             raise ValueError('command_ok must be a boolean')
         try:
             settings = Hub.normalize_experiment(data['settings'])
-            if data['program'] == 'exp4':
-                Hub.validate_exp4_settings(settings)
+            if data['program'] in STAGED_PROGRAMS:
+                Hub.validate_staged_settings(settings, data['program'])
         except ValueError as exc:
             raise ValueError(f'invalid controller settings: {exc}') from exc
         if data['relay_contact'] != 'NC' or data['active_high'] is not True:
@@ -515,8 +526,8 @@ class Hub:
             raise ValueError('Only internal START, NEXT and STOP requests are permitted')
         if program not in CONTROLLER_PROGRAMS:
             raise ValueError(f'Invalid controller program {program!r}')
-        if verb == 'NEXT' and program != 'exp4':
-            raise ValueError('NEXT is only valid for EXP4')
+        if verb == 'NEXT' and program not in STAGED_PROGRAMS:
+            raise ValueError('NEXT is only valid for staged programs')
         if verb == 'START':
             if settings is None:
                 raise ValueError('START requires normalized experiment settings')
@@ -528,7 +539,7 @@ class Hub:
         if self.pending:
             raise ControlError('Another controller request is still pending.')
         request_id = self.next_request_id()
-        wire_program = 'EXP4' if program == 'exp4' and verb != 'STOP' else 'EXP2'
+        wire_program = program.upper() if program in STAGED_PROGRAMS and verb != 'STOP' else 'EXP2'
         if verb == 'START':
             command = (f'{wire_program} START {request_id} {" ".join(temperatures)} '
                        f'{int(settings["tc2_cutoff_enabled"])} {" ".join(durations[:2])} '
@@ -613,7 +624,7 @@ class Hub:
         self.start(run_metadata)
         self.event(f'{title} normalized requested settings: {json.dumps(requested, sort_keys=True)}')
         sensor_requirement = ('TC2 required; missing/nonfinite rear temperature trips OFF'
-                              if profile == 'exp4' else 'TC2 optional')
+                              if profile in STAGED_PROGRAMS else 'TC2 optional')
         self.event(f'{title} profile: {sensor_requirement}; runtime cutoffs use the requested settings; '
                    f'NC active-HIGH relay; {run_metadata["variac_voltage_V"]:g} V RMS manual preset '
                    'assumed, not measured or set by software. Raw CSV channels remain physical inputs 1/2.')
@@ -627,7 +638,7 @@ class Hub:
             await self.write_line('EXP2 PING\n')
             self.control_uncertain = True
             acknowledgement = await self.request(
-                'START', requested, 'exp4' if profile == 'exp4' else 'single')
+                'START', requested, profile if profile in STAGED_PROGRAMS else 'single')
         except ControlError as exc:
             if not self.control_uncertain:
                 raise
@@ -648,8 +659,8 @@ class Hub:
             self.event(f'{message}; requested configuration is not confirmed active.')
             stop_message = await self.best_effort_stop()
             raise ControlError(f'{message}. {stop_message} No new configuration is claimed active.')
-        expected_program = 'exp4' if profile == 'exp4' else 'single'
-        expected_phase = 'HEAT_100' if profile == 'exp4' else 'SINGLE'
+        expected_program = profile if profile in STAGED_PROGRAMS else 'single'
+        expected_phase = 'HEAT_100' if profile in STAGED_PROGRAMS else 'SINGLE'
         if acknowledgement['program'] != expected_program:
             message = (f'START program acknowledgement mismatch: requested={expected_program}, '
                        f'acknowledged={acknowledgement["program"]}')
@@ -683,8 +694,11 @@ class Hub:
         controller = self.controller
         if not self.controller_available or controller is None:
             raise ControlError('NEXT requires fresh controller telemetry; no command sent.')
-        if not self.active or controller['program'] != 'exp4' or controller['phase'] != 'HOLD_100':
-            raise ControlError('NEXT requires an active EXP4 HOLD_100 report; no command sent.')
+        if (not self.active or controller['program'] not in STAGED_PROGRAMS
+                or controller['phase'] != 'HOLD_100'):
+            raise ControlError('NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.')
+        program = controller['program']
+        label = program.upper()
         if self.last_sample is None or time.monotonic() - self.last_sample > SAMPLE_FRESH_S:
             raise ControlError('NEXT requires a fresh heater sample within the 100 C hold band; no command sent.')
         settings = controller['settings']
@@ -693,7 +707,7 @@ class Hub:
             raise ControlError('NEXT requires current heater temperature within 100 C +/- hold_band_C; no command sent.')
         self.control_uncertain = True
         try:
-            acknowledgement = await self.request('NEXT', program='exp4')
+            acknowledgement = await self.request('NEXT', program=program)
         except (ControlError, OSError) as exc:
             stop_message = await self.best_effort_stop()
             raise ControlError(f'{exc} {stop_message} No RAMP_200 transition is confirmed; '
@@ -710,17 +724,17 @@ class Hub:
                 stop_message = await self.best_effort_stop()
                 raise ControlError(f'{message} {stop_message}')
             raise ControlError(message)
-        if (acknowledgement['program'] != 'exp4' or acknowledgement['phase'] != 'RAMP_200'
+        if (acknowledgement['program'] != program or acknowledgement['phase'] != 'RAMP_200'
                 or acknowledgement['state'] not in ACTIVE_STATES):
             self.control_uncertain = True
             stop_message = await self.best_effort_stop()
-            raise ControlError('NEXT acknowledgement did not confirm active EXP4 RAMP_200; '
+            raise ControlError(f'NEXT acknowledgement did not confirm active {label} RAMP_200; '
                                f'no phase advance is claimed and NEXT will not be retried. {stop_message} '
                                'Recording remains open.')
         self.control_uncertain = False
         self.last_active = self.active
         return (f'NEXT request_id={acknowledgement["request_id"]} acknowledged; board reports '
-                f'{acknowledgement["state"]}/EXP4/RAMP_200. The existing recording remains active; '
+                f'{acknowledgement["state"]}/{label}/RAMP_200. The existing recording remains active; '
                 'serial status is not physical proof.')
 
     async def stop_experiment(self):
@@ -976,7 +990,7 @@ class Hub:
         no_args = {'help', 'status', 'start', 'stop', 'next', 'restart', 'save', 'clear', 'list', 'live', 'config', 'channels', 'reconnect'}
         if cmd in no_args and args and not (cmd in {'start', 'stop'} and len(args) == 1
                                              and args[0] in EXPERIMENT_PROFILES):
-            raise ValueError(f'{cmd} takes no arguments (except exactly: {cmd} exp2, {cmd} exp3 or {cmd} exp4)'
+            raise ValueError(f'{cmd} takes no arguments (except exactly: {cmd} exp2, {cmd} exp3, {cmd} exp4 or {cmd} exp5)'
                              if cmd in {'start', 'stop'} else f'{cmd} takes no arguments')
         result = {}
         if cmd == 'help':
@@ -999,7 +1013,7 @@ class Hub:
                 'hub_settings': self.config,
                 'hub_changes_apply': 'after server restart',
                 'experiments': profiles,
-                'experiment_changes_apply': 'on next start exp2, start exp3 or start exp4; active settings do not change',
+                'experiment_changes_apply': 'on next start exp2, start exp3, start exp4 or start exp5; active settings do not change',
                 'applied_controller_settings': applied,
                 'raw_csv_channels': 'tc1_C/tc2_C always remain physical input channels 1/2',
                 'variac_voltage_V': 'host-only manual preset metadata; never measured, set, or used to rescale data',
@@ -1013,7 +1027,7 @@ class Hub:
             message = await self.next_experiment()
         elif cmd == 'start':
             if self.active or self.last_active or self.control_uncertain:
-                raise ControlError('Refusing to replace recording while an experiment is active or unconfirmed; use stop exp2, stop exp3 or stop exp4 first.')
+                raise ControlError('Refusing to replace recording while an experiment is active or unconfirmed; use stop exp2, stop exp3, stop exp4 or stop exp5 first.')
             message = self.start()
             result['effect'] = 'live'
         elif cmd == 'stop':
@@ -1060,7 +1074,7 @@ class Hub:
             message = f'Plot window: {args[0]} (retained points only).'
         elif cmd == 'reconnect':
             if self.active or self.pending or (self.control_uncertain and self.port is not None):
-                raise ControlError('Refusing reconnect while an experiment is active or a command is unresolved; use stop exp2, stop exp3 or stop exp4 and await its acknowledgement.')
+                raise ControlError('Refusing reconnect while an experiment is active or a command is unresolved; use stop exp2, stop exp3, stop exp4 or stop exp5 and await its acknowledgement.')
             await self.connect()
             message = f'Connection: {self.device}. Opening serial may reset the board; no automatic START is sent.'
         else:

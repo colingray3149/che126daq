@@ -94,10 +94,13 @@ def build_report(run_path, watch=False):
                       if i == 0 else
                       (f'Rear cutoff {settings["tc2_cutoff_C"]:g}°C — applies to raw TC{raw}, not the heater'
                        if settings['tc2_cutoff_enabled'] else 'Rear cutoff disabled'))
-            if i == 0 and metadata['experiment'] == 'exp4':
-                detail = (f'EXP4: hold 100°C → explicit NEXT → 90s ramp to 200°C → '
+            if i == 0 and metadata['experiment'] in {'exp4', 'exp5'}:
+                program = metadata['experiment'].upper()
+                final = ('; 60s from measured target, then heat OFF'
+                         if program == 'EXP5' else '; indefinite final hold')
+                detail = (f'{program}: hold 100°C → explicit NEXT → 90s ramp to 200°C → '
                           f'boost/hold {settings["target_C"]:g}°C · high cutoff '
-                          f'{settings["tc1_cutoff_C"]:g}°C; phase transitions are in saved events')
+                          f'{settings["tc1_cutoff_C"]:g}°C{final}; phase transitions are in saved events')
         graph = fig.to_html(full_html=False, include_plotlyjs=(i == 0),
                             div_id=f'tc{i + 1}-graph', config={
                                 'responsive': True, 'displaylogo': False, 'scrollZoom': True,

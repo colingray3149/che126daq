@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ChE 126 · DAQ hub</title>
-<link rel="stylesheet" href="/static/style.css?v=exp4-v5">
-<script defer src="/plotly.js"></script><script defer src="/static/app.js?v=exp4-v5"></script>
+<link rel="stylesheet" href="/static/style.css?v=exp5-v5">
+<script defer src="/plotly.js"></script><script defer src="/static/app.js?v=exp5-v5"></script>
 </head>
 <body>
 <header><strong>ChE 126 <span>DAQ hub</span></strong><span id="recording">Connecting to hub…</span></header>
@@ -13,7 +13,7 @@
 <div class="section-title">Command terminal <span>help · ↑↓ history</span></div>
 <div id="console" role="log" aria-live="polite"></div>
 <form id="command-form" autocomplete="off"><label for="command">›</label><input id="command" name="command" aria-label="DAQ command" placeholder="help" spellcheck="false" autofocus></form>
-<div class="hint">No automatic heating.<br>EXP2/3/4 use their saved experiment TOML files.<br>start exp4 requires v5 host and firmware.<br>next = leave EXP4's 100°C hold.<br>stop exp4 = command heat OFF, keep cooldown logging</div>
+<div class="hint">No automatic heating.<br>EXP2/3/4/5 use their saved experiment TOML files.<br>start exp4 or start exp5 requires v5 host and firmware.<br>next = leave EXP4/EXP5's 100°C hold.<br>stop exp4 / stop exp5 = command heat OFF, keep cooldown logging</div>
 </section>
 <section class="workspace" aria-label="Temperature acquisition">
 <div class="plot-heading"><strong id="view-label">LIVE · waiting</strong><span id="sample-count"></span></div>

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-09 — EXP5 timed 700°C program / intended exp027
+
+- Added `experiment5.toml`, EXP5 firmware program, `start exp5`, program-aware `next`, `stop exp5`, telemetry/configuration validation and live UI support. EXP4 remains unchanged.
+- Preserved the100°C hold and explicit NEXT,90-second reference ramp to200°C, probe mapping and100V manual-preset metadata. EXP5 boosts at maximum commanded heat until measured heater≥700°C, then regulates for60 elapsed seconds and commands heat OFF while cooldown logging continues.
+- Changed the required rear/barrier cutoff to120°C for EXP5 only; retained730°C heater cutoff, sensor/staleness/heartbeat/STOP protections, prediction and OFF dwell. Predictive arrival cannot start the final timer; excursions cannot extend it.
+- Documented EXP5 and intended next recording exp027 without inventing measurements or claiming component-rating approval. Firmware upload and software verification evidence is recorded in the activity log.
+
 ## 2026-11-09 — Render full graphs for every run
 
 - Generated26 complete interactive reports and52 rendered1400×700 PNGs, with a per-run README displaying both temperature graphs directly on GitHub. Linked every graph page from the archive and retained the three actual-test labels.

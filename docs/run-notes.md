@@ -75,6 +75,13 @@ heater mains isolation. EXP4/run026 has since completed and is publicly archived
 Keep power physically isolated for any later upload/reset; software deployment
 does not establish thermal limits.
 
+EXP5 uses `experiment5.toml`, `start exp5`, `next`, and `stop exp5`.
+It retains the first EXP4 stages, then commands full boost until measured700°C,
+regulates for60 elapsed seconds from that crossing, and commands heat OFF.
+Its required rear cutoff is120°C; EXP4 remains85°C/untimed. See
+[EXP5 / intended exp027](experiment5.md). Use the updated EXP5-capable firmware
+and launch `--wait-for-start` to avoid allocating a run before explicit START.
+
 `hub.toml` configures the DAQ connection/storage/UI; restart the server after editing it.
 `experiment.toml`, beside that file, configures control and is reread on every
 `start exp2`; no server restart or reflash is needed for experiment edits.

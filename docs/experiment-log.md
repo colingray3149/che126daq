@@ -1,5 +1,22 @@
 # Experiment log
 
+## 2026-11-09 — EXP5 / planned exp027
+
+Operator requested the EXP4 sequence unchanged through its100°C hold,
+explicit NEXT and90-second ramp to200°C. EXP5 then commands maximum heat
+toward700°C, starts a60-second elapsed final hold at the first measured
+heater/cartridge temperature≥700°C, and commands heat OFF at its deadline.
+Required barrier/rear cutoff is120°C instead of85°C; EXP4 remains unchanged.
+All other settings, swapped raw-channel roles and100V manual-preset metadata
+are retained. Interlocks override the program and cooldown logging continues.
+See [full EXP5 definition and commands](experiment5.md) and
+[`experiment5.toml`](../experiment5.toml).
+
+The requested next recording is exp027 (`runs/027`); this entry does not
+fabricate a completed run or measurements. Operator explicitly requested
+updated firmware/commands and Arduino upload, not just a prepared image.
+No automatic START or hardware-validation campaign is requested.
+
 ## The three actual tests
 
 The operator requested that the three actual tests be distinguished from the

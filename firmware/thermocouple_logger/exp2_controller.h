@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// CHE126 experiments 2/3/4, protocol "exp2-v5"; START is explicit manual re-arming.
+// CHE126 experiments 2/3/4/5, protocol "exp2-v5"; START is explicit manual re-arming.
 // All times are uint32_t milliseconds from the same wrapping clock. This
 // class only decides the requested heater level; the sketch owns the relay.
 // NC wiring is NOT power-independent fail-safe: this active-HIGH module must
@@ -22,7 +22,7 @@ enum State : uint8_t {
   STOPPED
 };
 
-enum Program : uint8_t { PROGRAM_SINGLE, PROGRAM_EXP4 };
+enum Program : uint8_t { PROGRAM_SINGLE, PROGRAM_EXP4, PROGRAM_EXP5 };
 
 enum Phase : uint8_t {
   SINGLE,
@@ -77,6 +77,13 @@ public:
     settings.hold_band_c = 5.0f;
     settings.hold_duration_ms = 0;
     settings.swap_inputs = true;
+    return settings;
+  }
+
+  static Settings defaultExp5Settings() {
+    Settings settings = defaultExp4Settings();
+    settings.tc2_cutoff_c = 120.0f;
+    settings.hold_duration_ms = 60000UL;
     return settings;
   }
 
@@ -147,7 +154,7 @@ public:
       if (settings_.tc2_cutoff_enabled && finite2 &&
         tc2_c_ >= settings_.tc2_cutoff_c) {
         trip("TC2_LIMIT", now_ms);
-      } else if (program_ == PROGRAM_EXP4 && !finite2) {
+      } else if (stagedProgram() && !finite2) {
         trip("TC2_FAULT", now_ms);
       } else if (finite1 && tc1_c_ >= settings_.tc1_cutoff_c) {
         trip("HOT_LIMIT", now_ms);
@@ -180,7 +187,7 @@ public:
       trip("TC2_LIMIT", now_ms);
       return;
     }
-    if (program_ == PROGRAM_EXP4 && !finite(tc2_c_)) {
+    if (stagedProgram() && !finite(tc2_c_)) {
       trip("TC2_FAULT", now_ms);
       return;
     }
@@ -199,8 +206,8 @@ public:
       return;
     }
 
-    if (program_ == PROGRAM_EXP4) {
-      updateExp4(now_ms);
+    if (stagedProgram()) {
+      updateStaged(now_ms);
       return;
     }
 
@@ -230,7 +237,9 @@ public:
 
     static const char START_PREFIX[] = "EXP2 START ";
     static const char EXP4_START_PREFIX[] = "EXP4 START ";
-    static const char NEXT_PREFIX[] = "EXP4 NEXT ";
+    static const char EXP5_START_PREFIX[] = "EXP5 START ";
+    static const char EXP4_NEXT_PREFIX[] = "EXP4 NEXT ";
+    static const char EXP5_NEXT_PREFIX[] = "EXP5 NEXT ";
     static const char STOP_PREFIX[] = "EXP2 STOP ";
     uint32_t id = 0;
 
@@ -262,15 +271,42 @@ public:
       return true;
     }
 
-    if (strncmp(line, NEXT_PREFIX, sizeof(NEXT_PREFIX) - 1) == 0) {
-      const bool valid_id = parsePositiveId(line + sizeof(NEXT_PREFIX) - 1, id);
+    if (strncmp(line, EXP5_START_PREFIX, sizeof(EXP5_START_PREFIX) - 1) == 0) {
+      Settings candidate;
+      const bool valid =
+          parseStart(line + sizeof(EXP5_START_PREFIX) - 1, id, candidate) &&
+          validExp5Settings(candidate);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      start(id, candidate, PROGRAM_EXP5, now_ms);
+      return true;
+    }
+
+    if (strncmp(line, EXP4_NEXT_PREFIX, sizeof(EXP4_NEXT_PREFIX) - 1) == 0) {
+      const bool valid_id = parsePositiveId(line + sizeof(EXP4_NEXT_PREFIX) - 1, id);
       request_id_ = id;
       command_ok_ = false;
       if (!valid_id) {
         reject("BAD_COMMAND");
         return true;
       }
-      next(id, now_ms);
+      next(id, PROGRAM_EXP4, now_ms);
+      return true;
+    }
+
+    if (strncmp(line, EXP5_NEXT_PREFIX, sizeof(EXP5_NEXT_PREFIX) - 1) == 0) {
+      const bool valid_id = parsePositiveId(line + sizeof(EXP5_NEXT_PREFIX) - 1, id);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid_id) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      next(id, PROGRAM_EXP5, now_ms);
       return true;
     }
 
@@ -300,7 +336,7 @@ public:
   uint32_t holdSeconds() const { return hold_s_; }
   uint32_t requestId() const { return request_id_; }
   bool commandOk() const { return command_ok_; }
-  bool tc2Required() const { return program_ == PROGRAM_EXP4; }
+  bool tc2Required() const { return stagedProgram(); }
   const Settings &settings() const { return settings_; }
   float setpointC() const { return setpoint_c_; }
   float slopeCPerSecond() const { return slope_c_per_s_; }
@@ -318,7 +354,9 @@ public:
   }
 
   static const char *programName(Program program) {
-    return program == PROGRAM_EXP4 ? "exp4" : "single";
+    if (program == PROGRAM_EXP4) return "exp4";
+    if (program == PROGRAM_EXP5) return "exp5";
+    return "single";
   }
 
   static const char *phaseName(Phase phase) {
@@ -455,6 +493,14 @@ private:
            settings.hysteresis_c <= 5.0f && settings.hold_band_c <= 5.0f;
   }
 
+  static bool validExp5Settings(const Settings &settings) {
+    return settings.target_c == 700.0f &&
+           settings.tc1_cutoff_c == 730.0f &&
+           settings.tc2_cutoff_enabled && settings.tc2_cutoff_c == 120.0f &&
+           settings.hold_duration_ms == 60000UL &&
+           settings.hysteresis_c <= 5.0f && settings.hold_band_c <= 5.0f;
+  }
+
   // Parse all eleven START fields into independent outputs. id remains available
   // for rejection acknowledgement after a valid id but a bad settings field.
   static bool parseStart(const char *text, uint32_t &id, Settings &settings) {
@@ -491,6 +537,10 @@ private:
     return !overflow && id > 0 && *text == '\0';
   }
 
+  bool stagedProgram() const {
+    return program_ == PROGRAM_EXP4 || program_ == PROGRAM_EXP5;
+  }
+
   bool active() const { return state_ == RUNNING || state_ == HOLD; }
 
   void reject(const char *reason) {
@@ -519,8 +569,8 @@ private:
     }
     settings_ = settings;
     program_ = program;
-    phase_ = program == PROGRAM_EXP4 ? HEAT_100 : SINGLE;
-    setpoint_c_ = program == PROGRAM_EXP4 ? 100.0f : settings_.target_c;
+    phase_ = stagedProgram() ? HEAT_100 : SINGLE;
+    setpoint_c_ = stagedProgram() ? 100.0f : settings_.target_c;
     ramp_started_ms_ = now_ms;
     setHeater(false, now_ms);
     in_band_ = false;
@@ -532,10 +582,10 @@ private:
     request_id_ = id;
   }
 
-  void next(uint32_t id, uint32_t now_ms) {
+  void next(uint32_t id, Program expected_program, uint32_t now_ms) {
     const bool in_band = tc1_c_ >= 100.0f - settings_.hold_band_c &&
                          tc1_c_ <= 100.0f + settings_.hold_band_c;
-    if (program_ != PROGRAM_EXP4 || !active() || phase_ != HOLD_100 || !in_band) {
+    if (program_ != expected_program || !active() || phase_ != HOLD_100 || !in_band) {
       reject("NEXT_NOT_READY");
       return;
     }
@@ -606,7 +656,7 @@ private:
     }
   }
 
-  void updateExp4(uint32_t now_ms) {
+  void updateStaged(uint32_t now_ms) {
     if (phase_ == HEAT_100 || phase_ == HOLD_100) {
       const bool in_band = tc1_c_ >= 100.0f - settings_.hold_band_c &&
                            tc1_c_ <= 100.0f + settings_.hold_band_c;
@@ -668,24 +718,58 @@ private:
       reason_ = "RUNNING";
       setpoint_c_ = settings_.target_c;
       hold_s_ = 0;
-      const float positive_slope =
-          slope_c_per_s_ > 0.0f ? slope_c_per_s_ : 0.0f;
-      const float projected =
-          tc1_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
-      if (projected < settings_.target_c) {
-        // Full power is a phase policy, not a fixed duty cycle. Preserve an
-        // existing ON request, but never bypass minimum OFF on re-energization.
-        if (heater_on_ ||
-            elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
-          setHeater(true, now_ms);
+      if (program_ == PROGRAM_EXP5) {
+        if (tc1_c_ < settings_.target_c) {
+          // EXP5 boost ignores slope prediction: only the measured heater
+          // temperature may end maximum commanded heat and start the final hold.
+          if (heater_on_ ||
+              elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
+            setHeater(true, now_ms);
+          }
+          return;
         }
-        return;
+        phase_ = HOLD_FINAL;
+        hold_started_ms_ = now_ms;
+        hold_s_ = 0;
+      } else {
+        const float positive_slope =
+            slope_c_per_s_ > 0.0f ? slope_c_per_s_ : 0.0f;
+        const float projected =
+            tc1_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
+        if (projected < settings_.target_c) {
+          // Full power is a phase policy, not a fixed duty cycle. Preserve an
+          // existing ON request, but never bypass minimum OFF on re-energization.
+          if (heater_on_ ||
+              elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
+            setHeater(true, now_ms);
+          }
+          return;
+        }
+        phase_ = HOLD_FINAL;
+        hold_s_ = 0;
       }
-      phase_ = HOLD_FINAL;
-      hold_s_ = 0;
     }
 
-    // HOLD_FINAL has no timer-based completion and remains the terminal phase
+    if (program_ == PROGRAM_EXP5) {
+      // The final EXP5 hold is wall-clock time from the first measured target
+      // crossing. Leaving the regulation band neither pauses nor resets it.
+      phase_ = HOLD_FINAL;
+      setpoint_c_ = settings_.target_c;
+      const uint32_t hold_age = elapsed(now_ms, hold_started_ms_);
+      hold_s_ = hold_age / 1000UL;
+      if (hold_age >= settings_.hold_duration_ms) {
+        setHeater(false, now_ms);
+        state_ = COMPLETE;
+        reason_ = "HOLD_COMPLETE";
+        return;
+      }
+      state_ = HOLD;
+      reason_ = "HOLD";
+      regulate(settings_.target_c, settings_.target_c, true, now_ms);
+      return;
+    }
+
+    // EXP4 HOLD_FINAL has no timer-based completion and remains the terminal phase
     // label after STOP or a fault for diagnosis. State and hold_s retain their
     // continuous in-band meaning even when predictive capture occurs below it.
     phase_ = HOLD_FINAL;

@@ -1,5 +1,37 @@
 # Activity log
 
+## 2026-11-09 — EXP5 implemented, uploaded and prepared for exp027
+
+- Added the requested EXP5 program, settings, host commands, live UI and
+  full-history report labeling. EXP4 remains unchanged. EXP5 keeps100°C/NEXT
+  and the90-second-to200°C reference, then maximum commanded boost to measured
+  700°C,60 elapsed seconds of regulation, and COMPLETE/commanded heat OFF.
+  Required rear/barrier cutoff is120°C; heater cutoff remains730°C.
+- Native controller regressions passed, including measured-only timer start,
+  exact60-second completion across clock wrap, out-of-band elapsed time,
+  stage/NEXT rules and retained safety/EXP4 behavior. Corrected the new timer
+  test fixture to supply periodic acquisitions/heartbeats rather than creating
+  an unrelated59-second stale-sensor gap.
+- All16 Python host regressions passed. Ran the actual sketch natively with
+  synthetic MAX31855 inputs through the actual host command/parser paths:
+  START/NEXT,90-second reference, predictive arrival below700°C retaining
+  boost, measured700°C timer start, COMPLETE/OFF at60s, continued recording,
+  exact settings snapshot, rear119.75°C allowed and120°C trip. Generated an
+  EXP5 full-history report successfully. These synthetic runs used temporary
+  storage, not the real numbered archive.
+- Mega ADK final image compiled to19,118 bytes flash /1,163 bytes static RAM.
+  Uploaded successfully on `/dev/ttyACM0` after the operator explicitly requested
+  Arduino deployment. No physical heater START, NEXT or powered thermal test
+  was issued; no hardware inspection or recalibration was performed.
+- Launched the updated hub at http://127.0.0.1:8765 with `--wait-for-start`,
+  connected to the Arduino. Observed IDLE/commanded heat OFF, no recording and
+  no saved graph points. Opened a dedicated visible browser, cleared its view
+  and visually verified both empty temperature graphs. The next explicit
+  `start exp5` is intended to allocate `runs/027`; no placeholder run was created.
+- Board boot settings remain explicitly labeled inactive defaults until START
+  applies the EXP5 file. Deployment does not establish physical power removal,
+  sensor calibration or component suitability for700°C.
+
 ## 2026-10-30 — Initial consolidation
 
 ### Request and scope

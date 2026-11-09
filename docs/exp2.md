@@ -1,4 +1,4 @@
-# Experiments 2, 3 and 4: operator-controlled START
+# Experiments 2, 3, 4 and 5: operator-controlled START
 
 ## EXP4: staged 100 V program
 
@@ -302,3 +302,45 @@ Earlier v2 verification (before editable settings): the user confirmed the varia
 - Actual sketch executed natively with synthetic thermocouples and an isolated PTY to the actual host on port 8767. Advanced simulated board time in 500ms steps with synthetic heartbeats. Demonstrated 100°C hold, explicit NEXT, ~150°C reference halfway, reference 200°C without false phase advance, measured-200 boost, predictive capture and final hold, rear85 trip, required-rear NaN trip, heater730 trip and STOP retaining recording.
 - Actual browser against that isolated runtime verified `start exp4`, `next`, moving-setpoint/phase/slope labels and `stop exp4`. The offline report showed the staged program and saved phases. No real thermal-ramp accuracy, relay-contact state, physical 700°C operation or assembly suitability was validated.
 
+
+## EXP5 / exp027 timed 700°C program
+
+`experiment5.toml` defines EXP5; `start exp5` reloads and applies it to a fresh
+recording. The intended next recording is **exp027 / `runs/027`**. This is a
+program definition, not a claim that run027 has been recorded. Existing
+EXP4 settings and behavior are unchanged.
+
+1. Heat to the same 100°C entry band and hold there until explicit `next`.
+2. Run the same 90-second reference ramp from 100°C to 200°C. As in EXP4,
+   measured heater temperature reaching 200°C triggers boost; the reference
+   reaches 200°C at90s and stays there if the measured crossing takes longer.
+3. Command maximum available heat toward 700°C, subject to the existing minimum
+   OFF dwell and all runtime interlocks. No software voltage adjustment exists.
+   Predictive arrival alone does **not** start the final hold.
+4. On the first measured logical heater/cartridge reading **≥700°C**, start a
+   **60-second elapsed-time** final hold and use the existing predictive-hysteresis
+   regulation at 700°C. Temperature excursions do not restart or extend that
+   deadline. Safety trips can stop heat earlier.
+5. At 60 seconds, enter COMPLETE and command heat OFF. Acquisition continues
+   for cooldown; `stop exp5` also commands heat OFF without finalizing the run.
+
+Settings otherwise match EXP4: 3°C hysteresis, 730°C heater hard cutoff,
+5-second prediction lead, 5-second minimum OFF dwell, 5°C hold-entry band,
+swapped control inputs (raw TC2 heater, raw TC1 rear), and 100V manual-preset
+metadata. **The mandatory rear/barrier hard cutoff is 120°C rather than 85°C**,
+including during boost and final hold. Rear fault, heater fault, stale acquisition,
+host-heartbeat loss, STOP and heater overtemperature remain shutdown paths.
+Raw CSV channels are not swapped.
+
+Wire commands are `EXP5 START <id> <settings>` and `EXP5 NEXT <id>`.
+The `exp2-v5` telemetry envelope additionally accepts `program: "exp5"` with the
+existing staged phases; universal STOP/PING remain unchanged. An older v5 image
+without EXP5 support must be replaced before EXP5 can start. Preparing/pushing
+code does not upload firmware or energize hardware.
+
+The 120°C rear setting is an operator-requested software limit, not evidence
+of safe battery, lead or intermediate-layer temperatures. Saved ratings still
+include basalt approximately649°C, a possible500°C probe (identity unverified),
+heater exposure760°C and leads449°C. Raising the rear cutoff does not resolve
+those limits. With the saved NC relay profile, OFF is a command, not measured
+power removal; Arduino reset/power loss can fail ON.
