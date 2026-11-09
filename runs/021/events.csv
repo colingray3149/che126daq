@@ -1,0 +1,15 @@
+utc,event
+2026-11-06T18:26:16.167+00:00,Recording /home/colin/Projects/che126daq/runs/021
+2026-11-06T18:26:16.167+00:00,"Experiment 3 normalized requested settings: {""hold_band_C"": 5.0, ""hold_s"": 1800.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 300.0, ""tc1_cutoff_C"": 320.0, ""tc2_cutoff_C"": 85.0, ""tc2_cutoff_enabled"": true}"
+2026-11-06T18:26:16.167+00:00,"Experiment 3 profile: TC2 optional; runtime cutoffs use the requested settings; NC active-HIGH relay; 65 V RMS manual preset assumed, not measured or set by software. Raw CSV channels remain physical inputs 1/2."
+2026-11-06T18:26:16.167+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-06T18:26:16.168+00:00,"Pre-START report: IDLE/heater_on=False; reason=IDLE; serial report only, not a start requirement."
+2026-11-06T18:26:16.169+00:00,Sending EXP2 START request_id=3; no output change is assumed.
+2026-11-06T18:26:16.486+00:00,"Controller report IDLE/heater_on=False -> RUNNING/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-06T18:26:16.486+00:00,"EXP2 START request_id=3 acknowledgement: command_ok=True, state=RUNNING, heater_on=False; serial report, not physical proof."
+2026-11-06T18:26:16.486+00:00,"Experiment 3 board acknowledged settings: {""hold_band_C"": 5.0, ""hold_s"": 1800.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 300.0, ""tc1_cutoff_C"": 320.0, ""tc2_cutoff_C"": 85.0, ""tc2_cutoff_enabled"": true}"
+2026-11-06T18:26:16.790+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-06T18:26:21.792+00:00,Sending EXP2 STOP request_id=4; no output change is assumed.
+2026-11-06T18:26:22.105+00:00,"Controller report RUNNING/heater_on=True -> STOPPED/heater_on=False; reason=STOP; hold_s=0. Serial report, not physical proof."
+2026-11-06T18:26:22.106+00:00,"EXP2 STOP request_id=4 acknowledgement: command_ok=True, state=STOPPED, heater_on=False; serial report, not physical proof."
+2026-11-06T18:26:25.657+00:00,Restarted by command

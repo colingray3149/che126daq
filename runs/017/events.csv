@@ -1,0 +1,13 @@
+utc,event
+2026-11-06T17:33:17.246+00:00,Recording /home/colin/Projects/che126daq/runs/017
+2026-11-06T17:33:17.246+00:00,"Experiment 2 normalized requested settings: {""hold_band_C"": 5.0, ""hold_s"": 1800.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""target_C"": 300.0, ""tc1_cutoff_C"": 320.0, ""tc2_cutoff_C"": 85.0, ""tc2_cutoff_enabled"": true}"
+2026-11-06T17:33:17.246+00:00,"Experiment 2 profile: TC2 optional; runtime cutoffs use the requested settings; NC active-HIGH relay; 30 V RMS preset assumed (about 18.75 W nominal), not measured."
+2026-11-06T17:33:17.246+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-06T17:33:17.246+00:00,"Pre-START report: IDLE/heater_on=False; reason=IDLE; serial report only, not a start requirement."
+2026-11-06T17:33:17.249+00:00,Sending EXP2 START request_id=1; no output change is assumed.
+2026-11-06T17:33:17.359+00:00,"Controller report IDLE/heater_on=False -> RUNNING/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-06T17:33:17.359+00:00,"EXP2 START request_id=1 acknowledgement: command_ok=True, state=RUNNING, heater_on=False; serial report, not physical proof."
+2026-11-06T17:33:17.360+00:00,"Experiment 2 board acknowledged settings: {""hold_band_C"": 5.0, ""hold_s"": 1800.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""target_C"": 300.0, ""tc1_cutoff_C"": 320.0, ""tc2_cutoff_C"": 85.0, ""tc2_cutoff_enabled"": true}"
+2026-11-06T17:33:17.663+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-06T17:36:27.052+00:00,"Controller report RUNNING/heater_on=True -> TRIPPED/heater_on=False; reason=TC2_LIMIT; hold_s=0. Serial report, not physical proof."
+2026-11-06T17:54:08.898+00:00,Stopped by command

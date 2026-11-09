@@ -1,0 +1,6 @@
+utc,event
+2026-11-06T17:27:07.684+00:00,Recording /home/colin/Projects/che126daq/runs/016
+2026-11-06T17:27:07.992+00:00,Malformed serial row ('ascii' codec can't decode byte 0xfb in position 2: ordinal not in range(128)): b'\x18 \xfb%\x12`=\x89\xc8+\xf4\x1e\x18@\x9b\x1a\x92\xa5\x12_\xa3\x8dd%=\xbe}8`\xb4\xfa\x18&\xfb%\x12`=\x89\xc8+\xf0\x1e\x18@\x9b\x1a\x92\xa5\x12_\xa3\x8dd%=5\xda8`\xa4\xfa\xbc\x02\x97\x0c\x8a)_|\x12\xf2H\x9f\x17\xa1\x1d6\x97p\x84}\x82[n\xb9fe\xda\xa1\xc3Z\xa3\xc5\x02\x1f\xf3Q\x02^\xeau\xf5'
+2026-11-06T17:27:09.133+00:00,"Malformed serial row ('ascii' codec can't decode byte 0x88 in position 0: ordinal not in range(128)): b'\x88+,{\x93\xb2\x84\xb8\xe8\xc9\x84\x92\xcc\xdb\r\xb7\xec\x83\x15\xf0\xc3time_s,t1_C,t2_C\r'"
+2026-11-06T17:27:09.133+00:00,"Controller report unavailable -> IDLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-06T17:33:17.240+00:00,Finalizing previous run before Experiment 2

@@ -11,6 +11,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
 - [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
+- [All experimental runs, 001–026](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 33,538 sample rows.
 - [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
@@ -43,7 +44,9 @@ Historical views are labeled and do not interrupt the active recording.
 Each run has a short, never-overwritten directory: `runs/001/`, `runs/002/`, …
 `data.csv` is flushed per row; `events.csv` records serial/reset/errors;
 `notes.md` records metadata and preserves user edits below `## Comments`.
-Runs are ignored by Git except explicitly approved public archive `runs/026/`.
+All run folders are version-controlled directly under **[runs/](runs/README.md)**,
+including raw data, event logs, notes and every available settings/report file.
+The DAQ never automatically commits, pushes or deletes recordings.
 No synthetic acquisition mode exists. EXP2 control is explicit;
 NC contact wiring cannot fail OFF on loss of Arduino power. See the operating guide.
 NaNs plot as gaps; all-zero streams carry a warning, not a claim of valid sensors.
@@ -90,6 +93,7 @@ numbered folder and applies its settings; no heat starts on connection.
 | `provenance/hardware/` | USB identity and raw serial observation |
 | `provenance/source-manifest.json` | Original source paths, destinations, SHA-256 hashes; historical reconstructions have a separate index |
 | `docs/` | Current collection notes, uncertainties, wiring, verification/activity history |
+| `runs/` | Numbered original recordings 001–026; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
 
 ## Status at collection
 

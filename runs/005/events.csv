@@ -1,0 +1,14 @@
+utc,event
+2026-10-30T17:30:16.159+00:00,Recording /home/colin/Projects/che126daq/runs/005
+2026-10-30T17:30:16.462+00:00,"Malformed serial row (could not convert string to float: ''): b',nan,nan\r'"
+2026-10-30T17:30:16.463+00:00,Board time regressed 116.0 → 112.5; new epoch 2.
+2026-10-30T17:30:16.464+00:00,Board time regressed 116.0 → 112.5; new epoch 3.
+2026-10-30T17:30:17.672+00:00,CSV header received (startup/reset).
+2026-10-30T17:30:17.673+00:00,Board time regressed 116.0 → 0.5; new epoch 4.
+2026-10-30T17:30:54.550+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-10-30T17:30:56.061+00:00,CSV header received (startup/reset).
+2026-10-30T17:46:47.072+00:00,TC2: nan fault; plotted as gap.
+2026-10-30T17:46:59.745+00:00,TC2: nan fault; plotted as gap.
+2026-10-30T17:47:00.650+00:00,TC2: nan fault; plotted as gap.
+2026-10-30T17:54:39.500+00:00,TC1: nan fault; plotted as gap.
+2026-10-30T17:55:22.801+00:00,Stopped by command

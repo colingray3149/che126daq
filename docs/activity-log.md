@@ -268,3 +268,21 @@ unverified. No heater was energized or controlled by this work.
   Fit-full-run works, and no browser errors were reported. Opened the report
   window for the operator. SHA-256 comparison confirmed byte-identical original
   CSV, events, TOML, applied settings and metadata after annotation/report generation.
+
+## 2026-11-09 — Publish every run folder with direct navigation
+
+- Operator explicitly requested every run folder on GitHub, organized visibly
+  with all logs/documentation rather than buried in a miscellaneous folder.
+- Inventoried runs001–026:100 original files and33,538 CSV sample rows. All26
+  contain data.csv, events.csv and notes.md; preserved every existing config,
+  applied-settings/role metadata and HTML report without reconstructing missing files.
+- Removed the run ignore rule, retained the existing top-level numbered folders,
+  and added `runs/README.md` with direct data/log/notes/settings/report links plus
+  links to project-wide experiment/activity logs, wiring/control guides and refusals.
+- Original run006 notes say recording/Samples:0 while the CSV contains819 rows.
+  Documented that discrepancy in the archive index; did not alter the original.
+  No recording, serial, heater or firmware commands were involved.
+- Archive smoke verification resolved all136 index links, parsed every original
+  JSON/TOML snapshot, and matched all100 original file hashes before/after the
+  documentation changes. CSV sample counts match note headers except the
+  explicitly documented historical run006 discrepancy.

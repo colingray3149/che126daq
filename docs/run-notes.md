@@ -108,9 +108,12 @@ leaves the run open, with missing time visible; explicit reconnect resumes it.
 Browser refresh/disconnect does not own acquisition. Ctrl-C or SIGTERM finalizes
 the run. Abrupt kill/power loss can leave metadata marked recording; per-row
 flush is not an fsync/power-loss guarantee. Do not delete/move active run files.
-Runs are never automatically committed or deleted. `.gitignore` excludes them
-except `runs/026/`, explicitly approved by the operator for public archival with
-its original CSV, events, settings/metadata, annotated notes and final report.
+Runs are never automatically committed, pushed or deleted. The operator approved
+publishing **all run folders**; `.gitignore` no longer excludes `runs/`.
+The [top-level archive index](../runs/README.md) links every recording's original
+CSV, events, notes and available settings/metadata/reports. Missing historical
+snapshots are not fabricated. Run006's original notes retain a stale zero-count/
+`recording` header even though its CSV has819 rows; the index reports CSV counts.
 
 ### Full-run interactive reports
 
@@ -160,8 +163,9 @@ download the HTML and open it locally; GitHub's source view is not the plot UI.
 Stopping this watcher does not stop acquisition; the page then only reloads
 the last generated snapshot. For a static final report, stop the watcher and
 rerun without `--watch` after normal run finalization. Only `report.html` is
-replaced atomically. Reports normally stay in ignored run folders; the operator
-explicitly approved publishing run026's final static report with its raw record.
+replaced atomically. Reports are kept beside their source data in the numbered
+run folders and included in archive commits; existing reports for017,023,026 are
+published. Opening a report does not restart acquisition or control the heater.
 
 For a supervised user service, without tying acquisition to a shell:
 

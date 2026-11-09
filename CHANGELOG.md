@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — Publish all original run folders
+
+- Published runs001–026 directly under top-level `runs/`, preserving all100 original files and33,538 CSV sample rows: raw data, event logs, notes, available settings/metadata and the existing interactive reports.
+- Removed the blanket run ignore rule and the former run026-only exception. Added a browsable `runs/README.md` index and prominent project/documentation links; future runs remain visible to Git without automatic publication.
+- Kept original records unchanged, including run006's stale note header; documented its actual819 CSV rows rather than retroactively rewriting history. Experiment/activity logs, wiring/control guides and the refusal record remain linked from the archive.
+
 ## 2026-11-06 — Deploy v5 and archive completed EXP4/run026
 
 - Uploaded v5 and reopened a clean wait-for-start DAQ after the operator confirmed physically unplugged heater mains; finalized run023 and stopped its old DAQ/report services.

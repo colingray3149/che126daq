@@ -1,0 +1,99 @@
+utc,event
+2026-11-02T20:14:46.260+00:00,Recording /home/colin/Projects/che126daq/runs/014
+2026-11-02T20:14:51.204+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-02T20:14:51.218+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-02T20:14:52.673+00:00,CSV header received (startup/reset); controller freshness and pending commands cleared; no automatic START.
+2026-11-02T20:14:52.673+00:00,"Controller report unavailable -> IDLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-02T20:15:47.224+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:15:47.225+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:16:49.616+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:16:49.616+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:17:52.607+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:17:52.607+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:18:56.192+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:18:56.192+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:19:58.583+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:19:59.186+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:21:01.564+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:21:01.564+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:21:34.096+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:21:35.600+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:21:37.103+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:22:12.607+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:22:13.512+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:25:47.554+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:25:50.870+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:25:55.391+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:26:31.874+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:26:31.874+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:26:43.329+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:28:48.438+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:28:50.248+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:28:50.249+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:28:55.372+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:28:57.484+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:28:57.484+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:28:58.388+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:01.402+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:01.402+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:16.778+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:18.286+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:18.888+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:19.793+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:21.302+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:21.302+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:23.413+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:23.413+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:24.920+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:24.920+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:28.837+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:29:29.439+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:53.851+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:29:53.852+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:05.909+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:05.909+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:11.341+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:11.341+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:19.777+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:19.777+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:23.388+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:23.389+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:26.700+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:26.700+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:31.814+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:31.814+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:37.838+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:37.839+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:30:59.242+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:30:59.242+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:31:32.699+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:31:32.699+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:31:38.423+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:31:41.739+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:31:41.740+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:32:02.842+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:32:03.445+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:32:41.420+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:32:41.420+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:33:49.226+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:33:49.227+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:34:10.626+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:34:10.626+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:34:15.751+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:38:49.023+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:38:49.023+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:39:09.527+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:39:09.528+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:39:11.036+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:39:11.036+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:39:11.941+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:39:17.967+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:39:17.967+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:39:21.987+00:00,"Serial disconnected/error: device reports readiness to read but returned no data (device disconnected or multiple access on port?); recording remains open, reconnect explicitly."
+2026-11-02T20:39:21.987+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-02T20:42:04.685+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-02T20:42:04.697+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-02T20:42:06.158+00:00,"Malformed serial row ('ascii' codec can't decode byte 0xa1 in position 2: ordinal not in range(128)): b'u}\xa1\x98\x80\x9a$\x92\x0c\x17S-\x93\x97\xf6k\x97}8$\xb5\xfa^\x8d\x95B\xb0\xd5\x03\xd3=z=A\x99\x17\xd3\x87[\x97P\xb2\xb50\xbc\x10\x12\xce\xbd\xd2B\xd3Z\xa3^\x8d\x85\xe2\xb0\x96\xa1\x1a^j\x16\x19\xca\xb1\xf5\xe2g\x824B*!Oz\x99\x8c\xdd|)F,bX\xd0\xf2\x92\x81JP\x9a.\xd9u}\xa1\x18\x92\x9a4\x93\x12\xc6Z\xa3+\x97\xfei\xbe}8`\xb5\xfa\xd8\xd0\xf2\x92\x81^P\x9a\x87\xdbu}\xa1\x98\x80\x9a$\x92\x0c\x17S-\x93\x97\xf6k\x97}8$\xb5\xfa^\x8d\x95B\xb0\xd5\x03\xd3=z'"
+2026-11-02T20:42:06.158+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:42:06.158+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:42:22.805+00:00,Restarted by command

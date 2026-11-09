@@ -1,0 +1,60 @@
+utc,event
+2026-11-02T19:54:27.213+00:00,Recording /home/colin/Projects/che126daq/runs/012
+2026-11-02T19:54:27.514+00:00,"Malformed serial row (expected three CSV columns): b'_s"":5.000,""min_off_s"":5.000,""hold_band_C"":5.000,""hold_s"":1800.000}}\r'"
+2026-11-02T19:54:28.664+00:00,CSV header received (startup/reset); controller freshness and pending commands cleared; no automatic START.
+2026-11-02T19:54:28.665+00:00,"Controller report unavailable -> IDLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-02T20:06:09.489+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:06:26.048+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:07:32.303+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:07:36.523+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:07:41.949+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:07:46.471+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:27.472+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:27.472+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:08:29.280+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:29.281+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:08:33.800+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:37.416+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:37.416+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:08:52.491+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:54.301+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:08:54.904+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:09:00.332+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:09:03.952+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:09:03.952+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:09:40.429+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:09:40.730+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:10:44.350+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:10:44.351+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:04.838+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:07.250+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:08.758+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:09.964+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:10.868+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:10.869+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:15.691+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:15.691+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:16.895+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:38.896+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:11:45.226+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:11:45.226+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:02.405+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:02.405+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:04.214+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:06.323+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:06.323+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:22.897+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:25.308+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:37.667+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:37.667+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:47.311+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:47.311+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:56.650+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:56.650+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:12:58.157+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:59.665+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:12:59.665+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:13:46.678+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:13:49.089+00:00,TC1: nan fault; plotted as gap.
+2026-11-02T20:13:49.090+00:00,TC2: nan fault; plotted as gap.
+2026-11-02T20:14:27.727+00:00,Restarted by command

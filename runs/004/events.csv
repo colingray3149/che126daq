@@ -1,0 +1,5 @@
+utc,event
+2026-10-30T17:28:19.068+00:00,Recording /home/colin/Projects/che126daq/runs/004
+2026-10-30T17:28:20.587+00:00,CSV header received (startup/reset).
+2026-10-30T17:28:20.588+00:00,Board time regressed 335.5 → 0.5; new epoch 2.
+2026-10-30T17:28:34.801+00:00,Application shutdown

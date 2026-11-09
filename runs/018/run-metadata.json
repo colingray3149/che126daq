@@ -1,0 +1,5 @@
+{
+  "experiment": "exp2",
+  "swap_inputs": true,
+  "variac_voltage_V": 30.0
+}

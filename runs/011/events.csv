@@ -1,0 +1,26 @@
+utc,event
+2026-11-02T19:18:05.851+00:00,Recording /home/colin/Projects/che126daq/runs/011
+2026-11-02T19:18:05.852+00:00,"Experiment 2 profile: target 300 C; TC2 optional, valid TC2 >=140 C trips; NC active-HIGH relay; 30 V RMS preset assumed (about 18.75 W nominal), not measured."
+2026-11-02T19:18:05.853+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-02T19:18:05.853+00:00,"Pre-START report: IDLE/heater_on=False; reason=IDLE; serial report only, not a start requirement."
+2026-11-02T19:18:05.855+00:00,Sending EXP2 START request_id=1; no output change is assumed.
+2026-11-02T19:18:05.966+00:00,"Controller report IDLE/heater_on=False -> RUNNING/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:05.967+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:05.967+00:00,"EXP2 START request_id=1 acknowledgement: command_ok=True, state=RUNNING, heater_on=False; serial report, not physical proof."
+2026-11-02T19:18:27.398+00:00,"Controller report RUNNING/heater_on=True -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:32.530+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:47.013+00:00,"Controller report RUNNING/heater_on=True -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:49.125+00:00,"Controller report RUNNING/heater_on=False -> HOLD/heater_on=False; reason=HOLD; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:50.032+00:00,"Controller report HOLD/heater_on=False -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:18:52.148+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:02.409+00:00,"Controller report RUNNING/heater_on=True -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:07.539+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:11.159+00:00,"Controller report RUNNING/heater_on=True -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:15.989+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:17.499+00:00,"Controller report RUNNING/heater_on=True -> RUNNING/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:22.627+00:00,"Controller report RUNNING/heater_on=False -> RUNNING/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:46.571+00:00,Sending EXP2 STOP request_id=2; no output change is assumed.
+2026-11-02T19:19:46.764+00:00,"Controller report RUNNING/heater_on=True -> STOPPED/heater_on=False; reason=STOP; hold_s=0. Serial report, not physical proof."
+2026-11-02T19:19:46.764+00:00,"EXP2 STOP request_id=2 acknowledgement: command_ok=True, state=STOPPED, heater_on=False; serial report, not physical proof."
+2026-11-02T19:53:56.026+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-02T19:53:56.026+00:00,Application shutdown

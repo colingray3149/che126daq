@@ -1,0 +1,50 @@
+# EXP3 CONTROL SETTINGS
+# Save this file, then type: start exp3
+# Each START reloads these values. Editing alone does NOT change an active run.
+# The variac is adjusted manually; software never sets or measures its voltage.
+#
+# Planned next acquisition: run 018 (allocated only on explicit START).
+# Operator-reported stack: 1 mica layer, 2 basalt-fabric layers, 1 aluminum layer.
+# Hot-to-cold order, thicknesses and sand condition are not established here.
+# Prior run 017 was described by the operator as the first successful test;
+# its probes were reversed. This profile corrects that control mapping.
+
+# Desired logical heater temperature, degrees C.
+target_C = 300.0
+
+# Heat turns ON at or below target_C - hysteresis_C (currently 297 C).
+# Heat turns OFF at target_C, or earlier if the prediction below reaches it.
+hysteresis_C = 3.0
+
+# Runtime emergency cutoffs, degrees C. These are NOT START requirements.
+# tc1_cutoff_C is the logical heater cutoff; tc2_cutoff_C is the logical rear cutoff.
+# A new explicit START re-arms after a trip; cooling alone does not.
+tc1_cutoff_C = 320.0
+tc2_cutoff_C = 85.0
+
+# TC2 stays optional. If absent, rear-side protection is unavailable.
+# false disables the rear cutoff even when its mapped input has a reading.
+tc2_cutoff_enabled = true
+
+# Predictive OFF: logical heater + max(recent heating rate, 0) * this many seconds.
+# Set to 0 for ordinary temperature-only hysteresis.
+prediction_lead_s = 5.0
+
+# Minimum time OFF before heating can turn ON again, seconds.
+# Safety/predictive OFF is immediate. Very short values wear the relay.
+min_off_s = 5.0
+
+# Hold timer runs continuously inside target_C +/- hold_band_C.
+# Leaving this band resets the hold timer.
+hold_band_C = 5.0
+
+# Shut off after this many continuous seconds in the hold band.
+# 1800 = 30 minutes. Set 0 to disable timed completion; STOP/cutoffs still work.
+hold_s = 1800.0
+
+# true: raw physical TC1 is rear/barrier and raw physical TC2 is the heater.
+# Firmware swaps inputs for control only; CSV columns always stay raw TC1/TC2.
+swap_inputs = true
+
+# Host-only record of the manual variac preset; never used to rescale readings.
+variac_voltage_V = 65.0
