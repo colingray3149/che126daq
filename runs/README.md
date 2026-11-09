@@ -10,6 +10,26 @@ The initial full-archive publication contains **33,538 CSV sample rows** and
 folder also includes control configuration, applied-setting acknowledgements,
 role/voltage metadata and an interactive HTML report.
 
+## The three actual tests
+
+These are the three operator-identified successful tests. **Test 1–3 are
+navigation labels, not new run numbers or EXP command names.** Start here for
+the main experimental results; the other recording IDs below are retained
+supporting acquisition history, not additional members of this three-test set.
+
+| Actual test | Saved run | Identification | Data and logs | Full graphs |
+|---|---|---|---|---|
+| **Test 1** | **[017](017/)** | Operator's first successful test; 1 mica / 2 basalt-fabric / 1 aluminum layer; probes reversed; actual voltage history unspecified | [Data](017/data.csv) · [Events](017/events.csv) · [Notes](017/notes.md) | [Report](017/report.html) |
+| **Test 2** | **[023](023/)** | Successful EXP3 run at operator-reported approximately70V; original65V preset retained | [Data](023/data.csv) · [Events](023/events.csv) · [Notes](023/notes.md) | [Report](023/report.html) |
+| **Test 3** | **[026](026/)** | Successful EXP4 staged run;100V preset metadata,700°C final target; operator said it went fine | [Data](026/data.csv) · [Events](026/events.csv) · [Notes](026/notes.md) | [Report](026/report.html) |
+
+Run018 was an intended next recording number, not the completed successful EXP3
+test: the documented successful EXP3 closeout belongs to023. These labels follow
+the recorded operator assessments, not a new claim that every original target
+or hold-duration criterion was met. Source: [experiment log](../docs/experiment-log.md#the-three-actual-tests).
+Raw data, event logs, saved settings, folder numbers and original HTML snapshots
+are unchanged by this classification.
+
 ## Browse runs
 
 Counts below are read from the CSV, not inferred from saved note headers.
@@ -34,16 +54,16 @@ reconstructed or fabricated. Acquisition configuration is also recorded in notes
 | [014](014/) | 2,974 | [CSV](014/data.csv) | [Events](014/events.csv) | [Notes](014/notes.md) | — | — |
 | [015](015/) | 2,062 | [CSV](015/data.csv) | [Events](015/events.csv) | [Notes](015/notes.md) | — | — |
 | [016](016/) | 737 | [CSV](016/data.csv) | [Events](016/events.csv) | [Notes](016/notes.md) | — | — |
-| [017](017/) | 2,504 | [CSV](017/data.csv) | [Events](017/events.csv) | [Notes](017/notes.md) | [Control config](017/experiment.toml) · [Applied settings](017/experiment-applied.json) | [Interactive HTML](017/report.html) |
+| **[017 — Actual test 1](017/)** | 2,504 | [CSV](017/data.csv) | [Events](017/events.csv) | [Notes](017/notes.md) | [Control config](017/experiment.toml) · [Applied settings](017/experiment-applied.json) | [Interactive HTML](017/report.html) |
 | [018](018/) | 465 | [CSV](018/data.csv) | [Events](018/events.csv) | [Notes](018/notes.md) | [Run metadata](018/run-metadata.json) | — |
 | [019](019/) | 2,008 | [CSV](019/data.csv) | [Events](019/events.csv) | [Notes](019/notes.md) | [Control config](019/experiment.toml) · [Applied settings](019/experiment-applied.json) · [Run metadata](019/run-metadata.json) | — |
 | [020](020/) | 675 | [CSV](020/data.csv) | [Events](020/events.csv) | [Notes](020/notes.md) | [Run metadata](020/run-metadata.json) | — |
 | [021](021/) | 19 | [CSV](021/data.csv) | [Events](021/events.csv) | [Notes](021/notes.md) | [Control config](021/experiment.toml) · [Applied settings](021/experiment-applied.json) · [Run metadata](021/run-metadata.json) | — |
 | [022](022/) | 16 | [CSV](022/data.csv) | [Events](022/events.csv) | [Notes](022/notes.md) | [Run metadata](022/run-metadata.json) | — |
-| [023](023/) | 3,313 | [CSV](023/data.csv) | [Events](023/events.csv) | [Notes](023/notes.md) | [Control config](023/experiment.toml) · [Applied settings](023/experiment-applied.json) · [Run metadata](023/run-metadata.json) | [Interactive HTML](023/report.html) |
+| **[023 — Actual test 2](023/)** | 3,313 | [CSV](023/data.csv) | [Events](023/events.csv) | [Notes](023/notes.md) | [Control config](023/experiment.toml) · [Applied settings](023/experiment-applied.json) · [Run metadata](023/run-metadata.json) | [Interactive HTML](023/report.html) |
 | [024](024/) | 8 | [CSV](024/data.csv) | [Events](024/events.csv) | [Notes](024/notes.md) | [Run metadata](024/run-metadata.json) | — |
 | [025](025/) | 524 | [CSV](025/data.csv) | [Events](025/events.csv) | [Notes](025/notes.md) | [Run metadata](025/run-metadata.json) | — |
-| [026](026/) | 2,079 | [CSV](026/data.csv) | [Events](026/events.csv) | [Notes](026/notes.md) | [Control config](026/experiment.toml) · [Applied settings](026/experiment-applied.json) · [Run metadata](026/run-metadata.json) | [Interactive HTML](026/report.html) |
+| **[026 — Actual test 3](026/)** | 2,079 | [CSV](026/data.csv) | [Events](026/events.csv) | [Notes](026/notes.md) | [Control config](026/experiment.toml) · [Applied settings](026/experiment-applied.json) · [Run metadata](026/run-metadata.json) | [Interactive HTML](026/report.html) |
 
 ## Interpretation and historical caveats
 

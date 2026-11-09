@@ -1,4 +1,4 @@
-# Run 017
+# Run 017 — Actual test 1 of 3
 
 - Started UTC: 2026-11-06T17:33:17.243+00:00
 - Updated UTC: 2026-11-06T17:54:08.898+00:00
@@ -33,6 +33,12 @@
 ```
 
 ## Comments
+
+**Actual test 1 of 3:** the operator's first successful test, with the reported
+1 mica / 2 basalt-fabric / 1 aluminum layer stack. This is run017, not the
+subsequent planned run018. See [the three actual tests](../README.md#the-three-actual-tests).
+The original reversed-probe and cutoff qualifications below remain applicable;
+raw data, event logs and settings are unchanged.
 
 
 - 2026-11-06T17:39:38.731+00:00 — Operator correction: probes were reversed during this run. Raw tc1_C is opposite-barrier temperature; raw tc2_C is heater temperature. Preserve raw CSV columns. The TC2_LIMIT event therefore acted on the heater probe, not the intended barrier probe. Operator requests 65 V RMS preset for EXP3; earlier automatic 30 V note is an assumption, not a measured voltage. Actual voltage history of this run is not established.

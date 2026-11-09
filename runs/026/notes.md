@@ -1,4 +1,4 @@
-# Run 026
+# Run 026 — Actual test 3 of 3
 
 - Started UTC: 2026-11-06T20:48:57.702+00:00
 - Updated UTC: 2026-11-06T21:06:16.714+00:00
@@ -33,6 +33,11 @@
 ```
 
 ## Comments
+
+**Actual test 3 of 3:** the completed EXP4 staged run with100V preset metadata
+and700°C final target, which the operator reported went fine. See
+[the three actual tests](../README.md#the-three-actual-tests). The original
+measurements, rear-cutoff trip and refusal record below remain unchanged.
 
 ### Operator closeout
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — Identify the three actual tests
+
+- Prominently labeled actual tests1/2/3 as runs017/023/026 in the archive/project indexes, experiment log and each selected run's notes, based on recorded operator closeouts.
+- Distinguished the intended run018 from the subsequently successful EXP3 run023. Kept all supporting recordings available without labeling them uniformly as failures.
+- Classification changes only documentation; raw data, hardware events, saved settings, folder numbers and original HTML report snapshots remain unchanged.
+
 ## 2026-11-09 — Publish all original run folders
 
 - Published runs001–026 directly under top-level `runs/`, preserving all100 original files and33,538 CSV sample rows: raw data, event logs, notes, available settings/metadata and the existing interactive reports.

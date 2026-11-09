@@ -1,5 +1,24 @@
 # Experiment log
 
+## The three actual tests
+
+The operator requested that the three actual tests be distinguished from the
+26 saved recordings. Recorded closeout assessments identify:
+
+| Actual test | Run | Recorded assessment |
+|---|---|---|
+| **Test 1** | **[017](../runs/017/notes.md)** | First successful test; 1 mica / 2 basalt-fabric / 1 aluminum layer; reversed probes documented |
+| **Test 2** | **[023](../runs/023/notes.md)** | Successful EXP3 at approximately70V reported by the operator;65V remains the original saved preset |
+| **Test 3** | **[026](../runs/026/notes.md)** | EXP4 staged700°C-target run with100V preset metadata; operator reported it went fine |
+
+See [data, event logs and full graphs for all three](../runs/README.md#the-three-actual-tests).
+Test numbers here are chronological navigation labels, not replacements for run
+IDs or EXP program names. Run018 was the planned next recording after017, while
+the subsequently reported successful EXP3 run was023. Other run folders retain
+supporting acquisition history; they are not all being classified as failed or
+invalid. Original measurements, timestamps, applied settings and success/hold
+qualifications in the historical entries below remain unchanged.
+
 ## 2026-10-30 — Working setup and first checks
 
 **Source:** Colin's setup rundown and clarifications in this session. This entry records what was reported, not a claim that the assistant inspected or operated the fixture. It takes precedence over conflicting older design drafts when describing the current plan.

@@ -11,6 +11,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
 - [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
+- **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** Main results, separate from the remaining supporting recordings.
 - [All experimental runs, 001–026](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 33,538 sample rows.
 - [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.

@@ -286,3 +286,14 @@ unverified. No heater was energized or controlled by this work.
   JSON/TOML snapshot, and matched all100 original file hashes before/after the
   documentation changes. CSV sample counts match note headers except the
   explicitly documented historical run006 discrepancy.
+
+## 2026-11-09 — Distinguish the three actual tests from recording history
+
+- Operator requested explicit identification of the three actual tests.
+  Matched recorded closeouts: run017 first successful test, run023 successful
+  approximately70V EXP3, and run026 completed EXP4 reported as having gone fine.
+- Added prominent test1/2/3 labels and direct data/events/notes/graph links to the
+  archive index, project README and experiment log; labeled the three run notes.
+  Clarified that planned run018 is not the successful EXP3 closeout record023.
+- Retained all26 folders and original CSVs, event logs, settings and report
+  snapshots. Other recordings remain supporting history, not blanket failures.
