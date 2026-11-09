@@ -1,5 +1,32 @@
 # Activity log
 
+## 2026-11-09 — Publish successful EXP5/run028 with matching rendered graphs
+
+- Operator reported EXP5 “went well” and requested full GitHub publication in
+  the existing archive style. The completed EXP5 is run028; run027 is the
+  preceding supporting recording, finalized by EXP5 START. Retained both
+  original recording numbers and all acquisition/configuration source files.
+- Published run028's2,236 samples, events, original selected/applied settings,
+  mapping/voltage metadata and appended closeout. Measured heater peak707.75°C,
+  rear peak83.5°C. Events show HOLD_FINAL to COMPLETE in60.271s with hold_s=60,
+  followed by recorded cooldown. Preserved the operator's successful assessment
+  separately from the measured record.
+- Generated full-history offline reports and1400×700 heater/rear PNGs for
+  runs027/028, matching the existing per-run README layout, raw-source labels,
+  independent axes and blue/orange trace colors. Retained missing samples as
+  gaps in supporting run027 rather than filling them.
+- Compared every rendered x/y trace value, raw-channel mapping and full x range
+  with both source CSVs; verified all four PNG dimensions and visually inspected
+  the EXP5 report and exported graphs. All eight original CSV/event/settings/
+  metadata files remained byte-identical. Notes changed only through appended
+  publication context under Comments; no synthetic measurements were added.
+- Updated project/archive navigation, experiment closeout, report instructions
+  and changelog. The complete archive now contains28 recordings,36,798 sample
+  rows,28 interactive reports and56 rendered graph images. The first-three-test
+  history remains intact; EXP5/run028 is the fourth successful actual test.
+- Publication is read-only with respect to the DAQ: no firmware upload, serial
+  reconnect, heater command or acquisition restart was performed.
+
 ## 2026-11-09 — EXP5 implemented, uploaded and prepared for exp027
 
 - Added the requested EXP5 program, settings, host commands, live UI and

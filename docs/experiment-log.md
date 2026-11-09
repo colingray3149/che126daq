@@ -1,5 +1,42 @@
 # Experiment log
 
+## 2026-11-09 — EXP5/run028 completed; operator reported “it went well”
+
+The completed [run028](../runs/028/notes.md) is the **latest successful test and
+fourth actual test**, by the operator's assessment. Intended exp027 was finalized
+on EXP5 START, which allocated actual run028. Run027 remains supporting
+acquisition history with no EXP5 applied-settings snapshot.
+
+Raw heater/cartridge=TC2 and rear/barrier=TC1. The board acknowledged the saved
+700°C target,730°C heater cutoff,120°C rear cutoff and60s elapsed final hold;
+100V remains manual-preset metadata, not a measured voltage.
+
+| Quantity | Run028 evidence |
+|---|---:|
+| Saved samples | 2236 |
+| First→last sample span | 1116.729s |
+| First measured heater≥700°C | 700.25°C at18:32:12.535 UTC |
+| HOLD_FINAL / COMPLETE, UTC | 18:32:12.536 / 18:33:12.807 |
+| HOLD_FINAL→COMPLETE | 60.271s |
+| Heater / rear peak | 707.75 / 83.5°C |
+| COMPLETE→last saved sample | 787.820s |
+| Final saved heater/rear | 161.5 / 75.25°C |
+
+No cutoff, TRIPPED or sensor-fault trip appears in the saved events. All saved
+temperatures are finite and flags are empty. Recording continued through
+cooldown and stopped by command at18:46:21.060 UTC. These are saved measurements
+and controller reports, not independent calibration or power-state verification.
+See the [full run028 closeout](../runs/028/notes.md).
+
+## Latest successful test — EXP5 / fourth actual test
+
+| Actual test | Run | Recorded assessment |
+|---|---|---|
+| **Test 4** | **[028](../runs/028/notes.md)** | Successful completed EXP5 with60s measured-700°C final hold; operator reported it went well |
+
+The historical first-three set remains below unchanged; test numbers are
+chronological navigation labels, not replacements for run IDs or EXP names.
+
 ## 2026-11-09 — EXP5 / planned exp027
 
 Operator requested the EXP4 sequence unchanged through its100°C hold,

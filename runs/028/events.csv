@@ -1,0 +1,35 @@
+utc,event
+2026-11-09T18:27:43.484+00:00,Recording /home/colin/Projects/che126daq/runs/028
+2026-11-09T18:27:43.484+00:00,"Experiment 5 normalized requested settings: {""hold_band_C"": 5.0, ""hold_s"": 60.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 700.0, ""tc1_cutoff_C"": 730.0, ""tc2_cutoff_C"": 120.0, ""tc2_cutoff_enabled"": true}"
+2026-11-09T18:27:43.484+00:00,"Experiment 5 profile: TC2 required; missing/nonfinite rear temperature trips OFF; runtime cutoffs use the requested settings; NC active-HIGH relay; 100 V RMS manual preset assumed, not measured or set by software. Raw CSV channels remain physical inputs 1/2."
+2026-11-09T18:27:43.485+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-09T18:27:43.485+00:00,"Pre-START report: IDLE/heater_on=False; reason=IDLE; serial report only, not a start requirement."
+2026-11-09T18:27:43.486+00:00,Sending EXP5 START request_id=1; no output change is assumed.
+2026-11-09T18:27:43.595+00:00,"Controller report IDLE/single/SINGLE/heater_on=False -> RUNNING/exp5/HEAT_100/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:27:43.595+00:00,"EXP5 START request_id=1 acknowledgement: command_ok=True, state=RUNNING, program=exp5, phase=HEAT_100, heater_on=False; serial report, not physical proof."
+2026-11-09T18:27:43.595+00:00,"Experiment 5 board acknowledged settings: {""hold_band_C"": 5.0, ""hold_s"": 60.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 700.0, ""tc1_cutoff_C"": 730.0, ""tc2_cutoff_C"": 120.0, ""tc2_cutoff_enabled"": true}"
+2026-11-09T18:27:43.899+00:00,"Controller report RUNNING/exp5/HEAT_100/heater_on=False -> RUNNING/exp5/HEAT_100/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:27:55.431+00:00,"Controller report RUNNING/exp5/HEAT_100/heater_on=True -> RUNNING/exp5/HEAT_100/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:27:59.230+00:00,"Controller report RUNNING/exp5/HEAT_100/heater_on=False -> HOLD/exp5/HOLD_100/heater_on=False; reason=HOLD; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:28:03.426+00:00,"Controller report HOLD/exp5/HOLD_100/heater_on=False -> RUNNING/exp5/HEAT_100/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:28:44.208+00:00,"Controller report RUNNING/exp5/HEAT_100/heater_on=False -> HOLD/exp5/HOLD_100/heater_on=False; reason=HOLD; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:28:47.553+00:00,Sending EXP5 NEXT request_id=2; no output change is assumed.
+2026-11-09T18:28:47.603+00:00,"Controller report HOLD/exp5/HOLD_100/heater_on=False -> RUNNING/exp5/RAMP_200/heater_on=False; reason=NEXT; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:28:47.603+00:00,"EXP5 NEXT request_id=2 acknowledgement: command_ok=True, state=RUNNING, program=exp5, phase=RAMP_200, heater_on=False; serial report, not physical proof."
+2026-11-09T18:28:53.437+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=False -> RUNNING/exp5/RAMP_200/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:28:59.938+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=True -> RUNNING/exp5/RAMP_200/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:29:22.425+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=False -> RUNNING/exp5/RAMP_200/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:29:28.421+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=True -> RUNNING/exp5/RAMP_200/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:29:47.910+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=False -> RUNNING/exp5/RAMP_200/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:29:53.910+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=True -> RUNNING/exp5/RAMP_200/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:30:12.400+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=False -> RUNNING/exp5/RAMP_200/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:30:19.395+00:00,"Controller report RUNNING/exp5/RAMP_200/heater_on=True -> RUNNING/exp5/BOOST_FINAL/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:32:12.536+00:00,"Controller report RUNNING/exp5/BOOST_FINAL/heater_on=True -> HOLD/exp5/HOLD_FINAL/heater_on=False; reason=HOLD; hold_s=0. Serial report, not physical proof."
+2026-11-09T18:32:22.832+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=False -> HOLD/exp5/HOLD_FINAL/heater_on=True; reason=HOLD; hold_s=10. Serial report, not physical proof."
+2026-11-09T18:32:31.327+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=True -> HOLD/exp5/HOLD_FINAL/heater_on=False; reason=HOLD; hold_s=18. Serial report, not physical proof."
+2026-11-09T18:32:39.322+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=False -> HOLD/exp5/HOLD_FINAL/heater_on=True; reason=HOLD; hold_s=26. Serial report, not physical proof."
+2026-11-09T18:32:47.322+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=True -> HOLD/exp5/HOLD_FINAL/heater_on=False; reason=HOLD; hold_s=34. Serial report, not physical proof."
+2026-11-09T18:32:55.816+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=False -> HOLD/exp5/HOLD_FINAL/heater_on=True; reason=HOLD; hold_s=43. Serial report, not physical proof."
+2026-11-09T18:33:03.812+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=True -> HOLD/exp5/HOLD_FINAL/heater_on=False; reason=HOLD; hold_s=51. Serial report, not physical proof."
+2026-11-09T18:33:12.807+00:00,"Controller report HOLD/exp5/HOLD_FINAL/heater_on=False -> COMPLETE/exp5/HOLD_FINAL/heater_on=False; reason=HOLD_COMPLETE; hold_s=60. Serial report, not physical proof."
+2026-11-09T18:46:21.060+00:00,Stopped by command

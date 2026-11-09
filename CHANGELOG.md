@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — Publish completed EXP5/run028 and supporting run027
+
+- Preserved both new recordings without altering their original raw CSV, event, notes, settings or metadata bytes: run027 has1,024 supporting samples; completed EXP5/run028 has2,236 samples plus its control configuration and applied-setting acknowledgement. The complete001–028 archive now contains36,798 sample rows.
+- Recorded the operator's assessment that EXP5 went well and the event record's measured60-second target-hold completion, followed by commanded heat OFF, cooldown logging and recording stop. Labeled run028 as the fourth actual test while retaining the original three-test history and run027 as supporting acquisition.
+- Added matching per-run full-history rendered README/PNG and interactive HTML pages for runs027/028, linked all original records from the indexes, and updated archive totals to28 reports and56 PNGs. Verified the four new PNGs against every source x/y value and1400×700 dimensions; source hashes remained unchanged. No controller behavior was changed.
+
 ## 2026-11-09 — EXP5 timed 700°C program / intended exp027
 
 - Added `experiment5.toml`, EXP5 firmware program, `start exp5`, program-aware `next`, `stop exp5`, telemetry/configuration validation and live UI support. EXP4 remains unchanged.

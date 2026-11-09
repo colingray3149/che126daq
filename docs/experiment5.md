@@ -1,4 +1,9 @@
-# EXP5 — intended exp027
+# EXP5 — completed run028
+
+**Completed recording:** [run028](../runs/028/notes.md). The operator reported
+that it **“went well.”** The intended exp027 recording was finalized when EXP5
+START allocated the actual experiment recording, run028; run027 remains a
+supporting acquisition, not a completed EXP5 controlled test.
 
 Operator request: preserve EXP4's 100°C hold until explicit `next`, then its
 90-second reference ramp to 200°C. After the measured-200°C transition, apply
@@ -21,8 +26,10 @@ software controlled. `experiment5.toml` is the selected settings source.
 - `clear`: clear this browser's graphs/console only; saved data remains unchanged.
 
 Launch with `--wait-for-start` so opening the hub does not allocate an extra
-recording before intended `runs/027`. The experiment program is EXP5; exp027
-is the recording identifier, not another program command. No automatic START.
+recording. For this session, the intended `runs/027` was finalized on EXP5 START
+and the actual recording became `runs/028`. The experiment program is EXP5;
+exp027 was the intended recording identifier, not another program command.
+No automatic START.
 
 ## Deadline and limits
 

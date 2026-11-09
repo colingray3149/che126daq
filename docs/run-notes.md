@@ -79,8 +79,10 @@ EXP5 uses `experiment5.toml`, `start exp5`, `next`, and `stop exp5`.
 It retains the first EXP4 stages, then commands full boost until measured700°C,
 regulates for60 elapsed seconds from that crossing, and commands heat OFF.
 Its required rear cutoff is120°C; EXP4 remains85°C/untimed. See
-[EXP5 / intended exp027](experiment5.md). Use the updated EXP5-capable firmware
-and launch `--wait-for-start` to avoid allocating a run before explicit START.
+[completed EXP5/run028](experiment5.md). The operator said run028 went well;
+its saved events record measured completion of the60-second target hold, followed
+by heat OFF and cooldown. Run027 is the prior supporting recording. Both original
+recordings are archived with full-history reports and rendered graph pages.
 
 `hub.toml` configures the DAQ connection/storage/UI; restart the server after editing it.
 `experiment.toml`, beside that file, configures control and is reread on every
@@ -139,13 +141,14 @@ It includes separate blue TC1/heater and orange TC2/rear graphs, independent
 temperature axes, complete axis titles/units, optional linked time zoom, full-run
 reset, high-resolution PNG and SVG export, and a raw-CSV snapshot download.
 
-Every archived run001–026 now has `heater.png`, `rear.png` and a `README.md`
+Every archived run001–028 now has `heater.png`, `rear.png` and a `README.md`
 that embeds both images for direct GitHub viewing. These1400×700 PNGs were rendered
 from the report's actual Plotly graphs with the full x-axis range, not from a
 cropped screenshot. They contain every saved sample; missing values remain gaps.
 An entirely nonfinite channel is labeled “No finite temperature samples” rather
 than fabricated as a zero trace; a lone finite sample is shown as a marker.
-The three actual tests remain prominently labeled in the archive and run pages.
+The original three actual tests remain prominently labeled in the archive and run
+pages; successful EXP5/run028 is separately labeled as the fourth actual test.
 
 Static images are snapshots: regenerating HTML alone does not update the PNGs.
 For an updated image, open the new report, choose **Fit full run**, and use the
@@ -186,8 +189,9 @@ Stopping this watcher does not stop acquisition; the page then only reloads
 the last generated snapshot. For a static final report, stop the watcher and
 rerun without `--watch` after normal run finalization. Only `report.html` is
 replaced atomically. Reports are kept beside their source data in the numbered
-run folders and included in archive commits; all26 runs have generated HTML
-reports and rendered PNGs. Opening them does not restart acquisition or control heat.
+run folders and included in archive commits; all28 runs have generated HTML
+reports and56 rendered PNGs (36,798 saved sample rows across runs001–028).
+Opening them does not restart acquisition or control heat.
 
 For a supervised user service, without tying acquisition to a shell:
 

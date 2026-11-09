@@ -10,10 +10,11 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
 - [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
 - [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
-- [Experiment 5 / planned exp027](docs/exp2.md#exp5--exp027-timed-700c-program) — same first stages as EXP4, maximum-command boost to measured 700°C, 60-second final hold, then commanded heat OFF; required rear cutoff 120°C. Settings: [experiment5.toml](experiment5.toml).
+- [Experiment 5 / completed run028](docs/experiment5.md) — same first stages as EXP4, maximum-command boost to measured 700°C, measured completion of the 60-second final hold, then commanded heat OFF and cooldown; required rear cutoff 120°C. Settings: [experiment5.toml](experiment5.toml).
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
-- **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** Main results, separate from the remaining supporting recordings.
-- [All experimental runs, 001–026](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 33,538 sample rows.
+- **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** This original trio remains a historical navigation set, separate from the remaining supporting recordings.
+- **[Latest successful EXP5 / fourth actual test: run028](runs/README.md#successful-exp5--run028).** The operator said it went well; its events record completion of the measured 60-second target hold. [Raw data](runs/028/data.csv) · [Events](runs/028/events.csv) · [Notes](runs/028/notes.md) · [Settings](runs/028/experiment.toml) · [Applied settings](runs/028/experiment-applied.json) · [Metadata](runs/028/run-metadata.json) · [Rendered README](runs/028/README.md) · [Interactive report](runs/028/report.html).
+- [All experimental runs, 001–028](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 36,798 sample rows, 28 reports and 56 rendered PNGs.
 - [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
@@ -76,8 +77,10 @@ Its 100°C/NEXT/90-second-to-200°C stages match EXP4. Boost commands maximum
 heat until measured heater temperature reaches 700°C; the final hold lasts
 60 elapsed seconds from that crossing, then commands heat OFF and retains
 cooldown logging. The required rear cutoff is 120°C; EXP4 stays at 85°C with
-an indefinite final hold. EXP5 requires the updated firmware; no automatic
-upload or START occurs. The next recording is intended as exp027 (`runs/027`).
+an indefinite final hold. EXP5/run028 completed successfully by the operator's
+assessment: the saved events record the measured 60-second target hold finishing,
+followed by heat OFF and cooldown. Run027 is the prior supporting recording, not
+the EXP5 result. Both recordings and their original files are archived.
 Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
 or pass `--config /absolute/path/hub.toml` for another checkout.
 See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.
@@ -102,7 +105,7 @@ numbered folder and applies its settings; no heat starts on connection.
 | `provenance/hardware/` | USB identity and raw serial observation |
 | `provenance/source-manifest.json` | Original source paths, destinations, SHA-256 hashes; historical reconstructions have a separate index |
 | `docs/` | Current collection notes, uncertainties, wiring, verification/activity history |
-| `runs/` | Numbered original recordings 001–026; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
+| `runs/` | Numbered original recordings 001–028; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
 
 ## Status at collection
 
