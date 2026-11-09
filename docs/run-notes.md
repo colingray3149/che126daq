@@ -141,7 +141,7 @@ It includes separate blue TC1/heater and orange TC2/rear graphs, independent
 temperature axes, complete axis titles/units, optional linked time zoom, full-run
 reset, high-resolution PNG and SVG export, and a raw-CSV snapshot download.
 
-Every archived run001–028 now has `heater.png`, `rear.png` and a `README.md`
+Every archived run001–033 now has `heater.png`, `rear.png` and a `README.md`
 that embeds both images for direct GitHub viewing. These1400×700 PNGs were rendered
 from the report's actual Plotly graphs with the full x-axis range, not from a
 cropped screenshot. They contain every saved sample; missing values remain gaps.
@@ -189,8 +189,8 @@ Stopping this watcher does not stop acquisition; the page then only reloads
 the last generated snapshot. For a static final report, stop the watcher and
 rerun without `--watch` after normal run finalization. Only `report.html` is
 replaced atomically. Reports are kept beside their source data in the numbered
-run folders and included in archive commits; all28 runs have generated HTML
-reports and56 rendered PNGs (36,798 saved sample rows across runs001–028).
+run folders and included in archive commits; all33 runs have generated HTML
+reports and66 rendered PNGs (42,610 saved sample rows across runs001–033).
 Opening them does not restart acquisition or control heat.
 
 For a supervised user service, without tying acquisition to a shell:

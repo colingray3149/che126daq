@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-09 — Publish runs029–033 and latest EXP5 trip records
+
+- Published all five new recordings with their original raw CSV, event, notes and available settings/metadata records: run029 has96 samples, run030 has2,215, run031 has1,747, run032 has10 and run033 has1,744. The5,812 new rows bring the complete001–033 archive to42,610 samples, with33 interactive reports,33 rendered README graph pages and66 PNGs.
+- Kept completed EXP5/run028 as the fourth actual test and the original successful EXP5 result. Runs030 and033 are trip records, not successful completions: rear `TC2_LIMIT` occurred in `BOOST_FINAL` at20:06:42.606 UTC (heater peak483°C, rear139.5°C) and20:57:57.344 UTC (heater peak679.75°C, rear153.0°C), respectively; neither reached700°C or completed the timed hold. Runs029/031/032 retain EXP5/swapped-input/100V mapping metadata, but their own event logs have no applied configuration or EXP5 START and provide no heating proof.
+- Logged the run033 NEXT exchanges without claiming a forced action: the normal hub request was rejected with HTTP400 (`NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.`); the later spoofed-`HOLD_100` request was not implemented and the board validates its internal phase/temperature. No code, firmware, reset or STOP action resulted from those exchanges. The saved run033 events separately record a normal NEXT (ID6) acknowledged at20:53:03.506 UTC after `HOLD_100`, without attributing that later acknowledgement to the assistant.
+
 ## 2026-11-09 — Publish completed EXP5/run028 and supporting run027
 
 - Preserved both new recordings without altering their original raw CSV, event, notes, settings or metadata bytes: run027 has1,024 supporting samples; completed EXP5/run028 has2,236 samples plus its control configuration and applied-setting acknowledgement. The complete001–028 archive now contains36,798 sample rows.

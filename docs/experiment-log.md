@@ -323,3 +323,49 @@ chat history in notes rather than fabricating hardware events.
 Raw CSV SHA-256:
 `418b4d14dc1472e6b33ead8d47e343da8f84c76a903f46e4b8f285b3ae5b3017`.
 
+## 2026-11-09 — Runs029–033 closeout and run033 NEXT requests
+
+All five runs use the retained swapped mapping: logical heater/cartridge = raw
+`tc2_C`; logical rear/barrier = raw `tc1_C`. Saved100V is manual-preset metadata,
+not a measured or software-controlled voltage. Detailed source-linked closeouts
+are in [run029](../runs/029/notes.md), [run030](../runs/030/notes.md),
+[run031](../runs/031/notes.md), [run032](../runs/032/notes.md) and
+[run033](../runs/033/notes.md).
+
+| Run | Samples | Recorded outcome | Heater peak / final | Rear peak / final |
+|---|---:|---|---:|---:|
+| 029 | 96 | Supporting acquisition; finalized before EXP5 START | 28.0 / 27.75°C | 28.25 / 28.25°C |
+| 030 | 2215 | EXP5 `TC2_LIMIT` trip at20:06:42.606 UTC; stopped by command after cooldown | 483.0 / 90.75°C | 139.5 / 75.0°C |
+| 031 | 1747 | Supporting acquisition; restarted by command | 42.25 / 26.5°C | 40.5 / 25.5°C |
+| 032 | 10 | Short transition acquisition; finalized before EXP5 START | 26.5 / 26.5°C | 25.5 / 25.5°C |
+| 033 | 1744 | EXP5 `TC2_LIMIT` trip at20:57:57.344 UTC; stopped by command after cooldown | 679.75 / 376.5°C | 153.0 / 146.5°C |
+
+Runs029,031 and032 have no applied-experiment snapshot and no EXP5 START in
+their own event logs. Their `exp5`/swapped/100V metadata is retained session
+mapping, not proof that the heating sequence ran. In runs030 and033,
+`TC2_LIMIT` is the logical rear/raw-TC1 120°C cutoff during BOOST_FINAL. Neither
+run has a saved heater sample at or above700°C or a HOLD_FINAL/COMPLETE event;
+neither is labeled a successful final-target test. The earlier operator-reported
+successful EXP5/run028 (actual test4) remains a separate record.
+
+### Run033 force-next and spoof requests
+
+- During run033, the operator requested **force NEXT**. An API observation at
+  that point reported active `exp5 / HEAT_100`, raw TC1/rear **41.5°C**, raw
+  TC2/heater **156.25°C**, and commanded heat **false**. The installed EXP5
+  NEXT gate inherited EXP4's internal phase/temperature rule: an active
+  HOLD_100 report in the **95–105°C** band was required.
+- The operator initially selected a force-next deployment, then superseded it
+  with the instruction **“without interrupting run.”** The assistant tried the
+  normal hub `next` operation instead. The host returned **HTTP 400:
+  `NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.`**
+  That rejected host attempt sent no board command.
+- The operator then requested a spoofed HOLD_100 report. **No spoof was
+  implemented.** The installed board validates its own internal phase and
+  temperature rather than accepting a host-asserted HOLD_100 state.
+- Those exchanges involved no code/firmware change, board reset or STOP. The
+  later saved run033 events independently record HOLD_100 at20:53:01.702 UTC,
+  followed by normal NEXT request6 at20:53:03.412 UTC and acknowledgement at
+  **20:53:03.506 UTC**. This later successful NEXT is recorded as an event-log
+  fact and is not attributed to the assistant's earlier rejected attempt.
+

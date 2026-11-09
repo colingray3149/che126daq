@@ -1,17 +1,19 @@
 # Experimental run archive
 
-All 28 run folders are published here, directly under the repository's top-level
+All 33 run folders are published here, directly under the repository's top-level
 `runs/` directory. Original run numbers and files are preserved; runs are not
 renumbered, merged or moved into a miscellaneous/provenance folder.
 
-The complete archive now contains **36,798 CSV sample rows** across runs
-**001–028**, with **28 interactive reports**, **28 rendered graph pages** and
-**56 PNGs**. The initial full-archive publication contained **33,538 CSV sample
-rows** and **100 original files** across runs **001–026**; those historical
-initial-publication counts remain unchanged. Every run includes its raw
-`data.csv`, recorded `events.csv` and `notes.md`. Where originally saved, the
-folder also includes control configuration, applied-setting acknowledgements
-and role/voltage metadata. Each of the 28 folders now opens to a **rendered graph
+The complete archive now contains **42,610 CSV sample rows** across runs
+**001–033**, with **33 interactive reports**, **33 rendered graph pages** and
+**66 PNGs**. The earlier 2026-11-09 run027/028 publication contained **36,798
+CSV sample rows** across runs **001–028**, with **28 reports** and **56 PNGs**;
+the initial full-archive publication contained **33,538 CSV sample rows** and
+**100 original files** across runs **001–026**. Those dated historical
+publication counts remain unchanged. Every run includes its raw `data.csv`,
+recorded `events.csv` and `notes.md`. Where originally saved, the folder also
+includes control configuration, applied-setting acknowledgements and
+role/voltage metadata. Each of the 33 folders now opens to a **rendered graph
 page** with separate heater/rear PNGs and a full interactive HTML report.
 
 ## The three actual tests
@@ -54,6 +56,24 @@ and [current experiment log](../docs/experiment-log.md).
 Raw data, event logs, saved settings and folder numbers are unchanged. Graphs
 are regenerated derived views; the reports now include the current test labels.
 
+## Latest EXP5 recordings — runs029–033
+
+Runs029–033 add **5,812 sample rows** without changing run028's status as the
+completed EXP5 recording and fourth actual test. Run030 recorded **2,215 rows**
+and a rear `TC2_LIMIT` trip in `BOOST_FINAL` at **2026-11-09 20:06:42.606 UTC**;
+its heater peaked at **483°C** and its rear channel at **139.5°C**. Run033
+recorded **1,744 rows** and the same trip at **20:57:57.344 UTC**, with heater
+and rear peaks of **679.75°C** and **153.0°C**. Neither run reached 700°C or
+completed the timed final hold; neither is labeled a successful EXP5 test.
+
+Runs029, 031 and 032 contain **96**, **1,747** and **10 rows** respectively.
+Their retained EXP5/swapped-input/100V metadata describes recording mapping and
+manual-preset context, not proof of heating: their own event logs contain no
+applied configuration or EXP5 START. Run033's event log also records a normal
+NEXT (ID 6) acknowledgement at **20:53:03.506 UTC** after `HOLD_100`; no forced
+NEXT action is claimed for the earlier rejected request. See each run's original
+events and notes below, plus the [current experiment log](../docs/experiment-log.md).
+
 ## Browse runs
 
 Counts below are read from the CSV, not inferred from saved note headers.
@@ -90,6 +110,11 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 | **[026 — Actual test 3](026/)** | 2,079 | [CSV](026/data.csv) | [Events](026/events.csv) | [Notes](026/notes.md) | [Control config](026/experiment.toml) · [Applied settings](026/experiment-applied.json) · [Run metadata](026/run-metadata.json) | [Rendered graphs](026/README.md) · [Interactive HTML](026/report.html) |
 | [027 — Supporting recording](027/) | 1,024 | [CSV](027/data.csv) | [Events](027/events.csv) | [Notes](027/notes.md) | [Run metadata](027/run-metadata.json) | [Rendered graphs](027/README.md) · [Interactive HTML](027/report.html) |
 | **[028 — Actual test 4 / successful EXP5](028/)** | 2,236 | [CSV](028/data.csv) | [Events](028/events.csv) | [Notes](028/notes.md) | [Control config](028/experiment.toml) · [Applied settings](028/experiment-applied.json) · [Run metadata](028/run-metadata.json) | [Rendered graphs](028/README.md) · [Interactive HTML](028/report.html) |
+| [029 — EXP5-mapped supporting recording](029/) | 96 | [CSV](029/data.csv) | [Events](029/events.csv) | [Notes](029/notes.md) | [Run metadata](029/run-metadata.json) | [Rendered graphs](029/README.md) · [Interactive HTML](029/report.html) |
+| [030 — EXP5 rear-cutoff trip](030/) | 2,215 | [CSV](030/data.csv) | [Events](030/events.csv) | [Notes](030/notes.md) | [Control config](030/experiment.toml) · [Applied settings](030/experiment-applied.json) · [Run metadata](030/run-metadata.json) | [Rendered graphs](030/README.md) · [Interactive HTML](030/report.html) |
+| [031 — EXP5-mapped supporting recording](031/) | 1,747 | [CSV](031/data.csv) | [Events](031/events.csv) | [Notes](031/notes.md) | [Run metadata](031/run-metadata.json) | [Rendered graphs](031/README.md) · [Interactive HTML](031/report.html) |
+| [032 — EXP5-mapped supporting recording](032/) | 10 | [CSV](032/data.csv) | [Events](032/events.csv) | [Notes](032/notes.md) | [Run metadata](032/run-metadata.json) | [Rendered graphs](032/README.md) · [Interactive HTML](032/report.html) |
+| [033 — Latest saved EXP5 rear-cutoff trip](033/) | 1,744 | [CSV](033/data.csv) | [Events](033/events.csv) | [Notes](033/notes.md) | [Control config](033/experiment.toml) · [Applied settings](033/experiment-applied.json) · [Run metadata](033/run-metadata.json) | [Rendered graphs](033/README.md) · [Interactive HTML](033/report.html) |
 
 ## Interpretation and historical caveats
 
@@ -104,10 +129,10 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 - Missing/invalid readings, zeros, flags and reset epochs are retained. Inclusion
   in this archive does not imply sensor calibration, a valid thermal run or a
   successful outcome. Operator assessments remain separately attributed in logs.
-- The56 PNGs render directly on GitHub through each run folder's README. They use
+- The66 PNGs render directly on GitHub through each run folder's README. They use
   independent°C axes and the entire saved elapsed-time range. Missing values stay
   gaps; entirely nonfinite channels are explicitly labeled, never plotted as zeros.
-- All28 interactive reports are self-contained HTML snapshots. Download/open them
+- All33 interactive reports are self-contained HTML snapshots. Download/open them
   locally for zoom/hover; GitHub's source view does not execute JavaScript.
   Check the saved snapshot status and source hash rather than assuming a live view.
 - Runs are version-controlled but never automatically committed, pushed or deleted

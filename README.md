@@ -14,7 +14,8 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
 - **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** This original trio remains a historical navigation set, separate from the remaining supporting recordings.
 - **[Latest successful EXP5 / fourth actual test: run028](runs/README.md#successful-exp5--run028).** The operator said it went well; its events record completion of the measured 60-second target hold. [Raw data](runs/028/data.csv) · [Events](runs/028/events.csv) · [Notes](runs/028/notes.md) · [Settings](runs/028/experiment.toml) · [Applied settings](runs/028/experiment-applied.json) · [Metadata](runs/028/run-metadata.json) · [Rendered README](runs/028/README.md) · [Interactive report](runs/028/report.html).
-- [All experimental runs, 001–028](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 36,798 sample rows, 28 reports and 56 rendered PNGs.
+- **[Latest saved EXP5 data: runs029–033](runs/README.md#latest-exp5-recordings--runs029033).** Five additional recordings retain their raw data and event history; runs030 and033 ended on rear `TC2_LIMIT` trips during boost and did not reach the 700°C target or timed hold. Original successful EXP5/run028 remains the fourth actual test.
+- [All experimental runs, 001–033](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 42,610 sample rows, 33 reports and 66 rendered PNGs.
 - [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
 - [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
 - [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
@@ -105,7 +106,7 @@ numbered folder and applies its settings; no heat starts on connection.
 | `provenance/hardware/` | USB identity and raw serial observation |
 | `provenance/source-manifest.json` | Original source paths, destinations, SHA-256 hashes; historical reconstructions have a separate index |
 | `docs/` | Current collection notes, uncertainties, wiring, verification/activity history |
-| `runs/` | Numbered original recordings 001–028; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
+| `runs/` | Numbered original recordings 001–033; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
 
 ## Status at collection
 

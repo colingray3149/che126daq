@@ -1,5 +1,37 @@
 # Activity log
 
+## 2026-11-09 — Recordings029–033 and NEXT-request history
+
+- Operator requested all new data committed/pushed and the session logged.
+  New recordings:029 (96 rows),030 (2,215),031 (1,747),032 (10),033 (1,744):
+  5,812 additional samples. At publication the hub reported recording stopped,
+  last recording033 and last controller state TRIPPED. No stop/reset/reconnect
+  or firmware/control change was made for publication.
+- Runs030/033 contain acknowledged EXP5 START and normal NEXT, then
+  `TC2_LIMIT` during BOOST_FINAL and subsequent cooldown. Neither records
+  the700°C final hold or timed COMPLETE. Heater/rear peaks are483/139.5°C
+  for030 and679.75/153°C for033. The supporting029/031/032 folders retain
+  their original role/voltage metadata without inventing applied settings.
+- During033, the operator requested forced NEXT. Observed HEAT_100 with
+  heater156.25°C/rear41.5°C and commanded heat OFF. Explained that the inherited
+  EXP4/5 host and board rules require HOLD_100 and95–105°C. The operator initially
+  selected forced-NEXT deployment, then superseded it with a request to avoid
+  interrupting the run. No firmware deployment or new force command occurred.
+- Submitted one normal `next` through the hub API; HTTP400 returned
+  `NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.`
+  The later request to spoof HOLD_100 was not implemented. No board command,
+  fabricated telemetry, reset or forced transition resulted from those exchanges.
+  Run033's original events separately record a later normal NEXT request_id6
+  acknowledged at20:53:03.506 UTC after HOLD_100; its initiator is not inferred.
+- Published source recordings, appended attributed closeouts and matching
+  full-history HTML/PNG graph pages. Historical successful EXP5/run028 remains
+  separately labeled; no success assessment was invented for030/033.
+- Verified all ten rendered traces against every CSV x/y value, raw-channel role
+  and full elapsed range, and all PNGs at1400×700. Visually inspected033's heater
+  and rear graphs. All19 original non-note data/event/settings/metadata files
+  remained byte-identical; publication links resolve. Archive totals are33
+  recordings,42,610 samples,33 HTML reports and66 PNGs.
+
 ## 2026-11-09 — Publish successful EXP5/run028 with matching rendered graphs
 
 - Operator reported EXP5 “went well” and requested full GitHub publication in

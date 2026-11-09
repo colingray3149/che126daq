@@ -44,3 +44,23 @@ This change records the requested software behavior; it does not certify the
 assembly for700°C or guarantee actual power removal. Saved component-rating
 warnings and the NC relay's reset/power-loss fail-ON limitation still apply.
 Deployment/verification evidence is recorded in `activity-log.md`.
+
+## Latest session — runs029–033 (2026-11-09)
+
+- [Run029](../runs/029/notes.md): 96-sample supporting acquisition, finalized
+  before EXP5 START; no applied EXP5 configuration in its own record.
+- [Run030](../runs/030/notes.md): 2215-sample EXP5 acquisition; logical rear/raw
+  TC1 `TC2_LIMIT` at20:06:42.606 UTC. Heater peaked483.0°C; no700°C arrival or
+  final hold.
+- [Run031](../runs/031/notes.md): 1747-sample supporting/cooldown acquisition,
+  restarted by command; no EXP5 START in its own event log.
+- [Run032](../runs/032/notes.md): 10-sample transition acquisition, finalized
+  before EXP5 START; no applied EXP5 configuration in its own record.
+- [Run033](../runs/033/notes.md): 1744-sample EXP5 acquisition; logical rear/raw
+  TC1 `TC2_LIMIT` at20:57:57.344 UTC. Heater peaked679.75°C; no700°C arrival or
+  final hold.
+
+Runs030 and033 are trip-terminated records, not successful final-target tests.
+Run028 above remains the separate operator-reported successful actual test4.
+The force-next/spoof request chronology and the later normal NEXT recorded in
+run033 are documented in the [experiment log](experiment-log.md#run033-force-next-and-spoof-requests).
