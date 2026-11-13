@@ -23,7 +23,17 @@ Firmware with EXP6 was uploaded 2026-11-13.
 ## Barrier
 
 `experiment6.toml`'s `barrier` line names the stack under test. START copies it
-into the run's `run-metadata.json`, the `notes.md` header and the report. Current
-stack: 1 layer mica (85165K26), 2 layers ceramic fiber pipe insulation
+into the run's `run-metadata.json`, the `notes.md` header and the report. Next
+run's stack: 1 layer mica (85165K26), 3 layers ceramic fiber pipe insulation
 (87575K35), 1 thin aluminum sheet. Materials list:
 [2026-11-13 export](../references/orders/ChE%20126%20Materials%20Ordering%20-%20Materials%202026-11-13.pdf).
+
+## Runs
+
+| Run | Barrier | Result |
+|---|---|---|
+| [036](../runs/036/README.md) (actual test 5) | 1 mica / 2 fiberglass heat barrier strip (4234N12) / 1 aluminum | Complete: heater ≥700°C at 249.2 s, peak 714.0°C, 60 s hold then OFF; rear peak 80.25°C at 642.0 s (cooldown), 120°C never reached |
+
+Run036 started with the barrier line saying "2 layers ceramic fiber pipe
+insulation"; the operator corrected it to the fiberglass strip after the run,
+and its metadata, notes and settings snapshot were updated to match.

@@ -1,0 +1,10 @@
+utc,event
+2026-11-13T18:00:34.555+00:00,Recording /home/colin/Projects/che126daq/runs/034
+2026-11-13T18:00:36.927+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-13T18:00:36.939+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-13T18:00:38.392+00:00,Malformed serial row ('ascii' codec can't decode byte 0xc4 in position 0: ordinal not in range(128)): b'\xc4Zj\x16\x1b\xca\xb1\xf5\xe2f\x824\x96/\xc6_\xb2=9\x1e\xc3\xb1f<\x82:\xe7\xc4\x12\x1b\x13\x9a[\xdcE\x88\xd7\xec\x10[\xa8S\xb6\x02?\xa1\xb8\xa0z5$Z\x16\x12P\x93\xd7\xdb\r\xb3\xec\x83\x15R\x03\xb7\xef[t 9t\x88\xb8\xe7z\xa0\x9al\xdb\xd0H\xc0\x06\xdf\xec(\xb5\x00%\x1a\x1f\xf0\x1e\xc7\xb7\xb9~$\xc25\xc2[n\x96\xfd\xb2=\x82\x99e)1\xfa\xfcJ\x97}=\xe2q\x89\x12`=\xc9\x86\x8f\xc4Zj\x16\x1b\xca\xb1\xf5\xe2f\x824\x96/\xc6_\xb2=9\x1e\xc3\xb1f<\x82:\xe7\xc4\x12\x1b\x13\x9a'
+2026-11-13T18:00:52.730+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-13T18:00:52.740+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-13T18:00:54.194+00:00,CSV header received (startup/reset); controller freshness and pending commands cleared; no automatic START.
+2026-11-13T18:00:54.195+00:00,"Controller report unavailable -> IDLE/single/SINGLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-13T18:01:08.794+00:00,Restarted by command

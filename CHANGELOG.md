@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-13 — Publish EXP6/run036 and prep the 3× ceramic run
+
+- Published runs034–036 with data, events, notes, metadata, interactive reports, rendered READMEs and PNGs (2,027 new rows; archive 001–036 now 44,637 rows, 36 reports, 72 PNGs). Run036 is actual test 5: EXP6 complete, heater peak 714.0°C, 60 s hold, rear peak 80.25°C in cooldown.
+- Corrected run036's barrier to 1 mica / 2 fiberglass heat barrier strip / 1 aluminum (it was started labeled as ceramic fiber); raw CSV and events unchanged.
+- Set `experiment6.toml`'s barrier for the next run: 1 mica / 3 ceramic fiber pipe insulation / 1 aluminum.
+
 ## 2026-11-13 — EXP6: EXP5 with an ungated NEXT
 
 - Added `experiment6.toml`, `start exp6` and firmware program EXP6, a copy of EXP5 whose `next` is accepted anywhere in the 100°C stage (HEAT_100 or HOLD_100) regardless of heater temperature. Hub and firmware both dropped the 100°C ± hold_band requirement for EXP6; EXP4/EXP5 are unchanged.

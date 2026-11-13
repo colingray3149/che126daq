@@ -1,0 +1,6 @@
+{
+  "experiment": "exp6",
+  "swap_inputs": true,
+  "variac_voltage_V": 100.0,
+  "barrier": "1 layer mica (McMaster 85165K26, 0.032 in) / 2 layers fiberglass heat barrier strip (McMaster 4234N12, 0.045 in) / 1 thin aluminum sheet"
+}

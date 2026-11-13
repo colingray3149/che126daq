@@ -1,19 +1,20 @@
 # Experimental run archive
 
-All 33 run folders are published here, directly under the repository's top-level
+All 36 run folders are published here, directly under the repository's top-level
 `runs/` directory. Original run numbers and files are preserved; runs are not
 renumbered, merged or moved into a miscellaneous/provenance folder.
 
-The complete archive now contains **42,610 CSV sample rows** across runs
-**001–033**, with **33 interactive reports**, **33 rendered graph pages** and
-**66 PNGs**. The earlier 2026-11-09 run027/028 publication contained **36,798
+The complete archive now contains **44,637 CSV sample rows** across runs
+**001–036**, with **36 interactive reports**, **36 rendered graph pages** and
+**72 PNGs**. The 2026-11-09 run029–033 publication contained **42,610 rows**
+across runs **001–033**. The earlier 2026-11-09 run027/028 publication contained **36,798
 CSV sample rows** across runs **001–028**, with **28 reports** and **56 PNGs**;
 the initial full-archive publication contained **33,538 CSV sample rows** and
 **100 original files** across runs **001–026**. Those dated historical
 publication counts remain unchanged. Every run includes its raw `data.csv`,
 recorded `events.csv` and `notes.md`. Where originally saved, the folder also
 includes control configuration, applied-setting acknowledgements and
-role/voltage metadata. Each of the 33 folders now opens to a **rendered graph
+role/voltage metadata. Each of the 36 folders now opens to a **rendered graph
 page** with separate heater/rear PNGs and a full interactive HTML report.
 
 ## The three actual tests
@@ -55,6 +56,20 @@ and [current experiment log](../docs/experiment-log.md).
 
 Raw data, event logs, saved settings and folder numbers are unchanged. Graphs
 are regenerated derived views; the reports now include the current test labels.
+
+## EXP6 — run036 (actual test 5)
+
+**[Run036](036/) is the completed EXP6 recording and fifth actual test.**
+Barrier: **1 layer mica / 2 layers fiberglass heat barrier strip (McMaster 4234N12) / 1 thin aluminum sheet.**
+NEXT was sent from HEAT_100 at 18:02:44 UTC; the heater first measured ≥700°C at
+249.2 s (18:06:02), peaked at 714.0°C, and the 60-second hold completed at 18:07:02
+with heat OFF. The rear side peaked at 80.25°C at 642.0 s during cooldown; the
+120°C rear cutoff was not reached. Runs034 and035 (59 and 86 rows) are
+room-temperature idle acquisitions before EXP6 START.
+
+| Actual test | Saved run | Barrier | Records | Full graphs |
+|---|---|---|---|---|
+| **Test 5** | **[036](036/)** | 1 mica / 2 fiberglass strip / 1 aluminum | [Raw data](036/data.csv) · [Events](036/events.csv) · [Notes](036/notes.md) · [Settings](036/experiment.toml) · [Applied settings](036/experiment-applied.json) · [Metadata](036/run-metadata.json) | [Rendered README](036/README.md) · [Interactive report](036/report.html) |
 
 ## Latest EXP5 recordings — runs029–033
 
@@ -114,7 +129,10 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 | [030 — EXP5 rear-cutoff trip](030/) | 2,215 | [CSV](030/data.csv) | [Events](030/events.csv) | [Notes](030/notes.md) | [Control config](030/experiment.toml) · [Applied settings](030/experiment-applied.json) · [Run metadata](030/run-metadata.json) | [Rendered graphs](030/README.md) · [Interactive HTML](030/report.html) |
 | [031 — EXP5-mapped supporting recording](031/) | 1,747 | [CSV](031/data.csv) | [Events](031/events.csv) | [Notes](031/notes.md) | [Run metadata](031/run-metadata.json) | [Rendered graphs](031/README.md) · [Interactive HTML](031/report.html) |
 | [032 — EXP5-mapped supporting recording](032/) | 10 | [CSV](032/data.csv) | [Events](032/events.csv) | [Notes](032/notes.md) | [Run metadata](032/run-metadata.json) | [Rendered graphs](032/README.md) · [Interactive HTML](032/report.html) |
-| [033 — Latest saved EXP5 rear-cutoff trip](033/) | 1,744 | [CSV](033/data.csv) | [Events](033/events.csv) | [Notes](033/notes.md) | [Control config](033/experiment.toml) · [Applied settings](033/experiment-applied.json) · [Run metadata](033/run-metadata.json) | [Rendered graphs](033/README.md) · [Interactive HTML](033/report.html) |
+| [033 — EXP5 rear-cutoff trip](033/) | 1,744 | [CSV](033/data.csv) | [Events](033/events.csv) | [Notes](033/notes.md) | [Control config](033/experiment.toml) · [Applied settings](033/experiment-applied.json) · [Run metadata](033/run-metadata.json) | [Rendered graphs](033/README.md) · [Interactive HTML](033/report.html) |
+| [034 — Pre-EXP6 supporting recording](034/) | 59 | [CSV](034/data.csv) | [Events](034/events.csv) | [Notes](034/notes.md) | [Run metadata](034/run-metadata.json) | [Rendered graphs](034/README.md) · [Interactive HTML](034/report.html) |
+| [035 — Pre-EXP6 supporting recording](035/) | 86 | [CSV](035/data.csv) | [Events](035/events.csv) | [Notes](035/notes.md) | [Run metadata](035/run-metadata.json) | [Rendered graphs](035/README.md) · [Interactive HTML](035/report.html) |
+| **[036 — Actual test 5 / EXP6](036/)** | 1,882 | [CSV](036/data.csv) | [Events](036/events.csv) | [Notes](036/notes.md) | [Control config](036/experiment.toml) · [Applied settings](036/experiment-applied.json) · [Run metadata](036/run-metadata.json) | [Rendered graphs](036/README.md) · [Interactive HTML](036/report.html) |
 
 ## Interpretation and historical caveats
 
@@ -129,10 +147,10 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 - Missing/invalid readings, zeros, flags and reset epochs are retained. Inclusion
   in this archive does not imply sensor calibration, a valid thermal run or a
   successful outcome. Operator assessments remain separately attributed in logs.
-- The66 PNGs render directly on GitHub through each run folder's README. They use
+- The72 PNGs render directly on GitHub through each run folder's README. They use
   independent°C axes and the entire saved elapsed-time range. Missing values stay
   gaps; entirely nonfinite channels are explicitly labeled, never plotted as zeros.
-- All33 interactive reports are self-contained HTML snapshots. Download/open them
+- All36 interactive reports are self-contained HTML snapshots. Download/open them
   locally for zoom/hover; GitHub's source view does not execute JavaScript.
   Check the saved snapshot status and source hash rather than assuming a live view.
 - Runs are version-controlled but never automatically committed, pushed or deleted

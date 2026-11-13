@@ -30,4 +30,4 @@ swap_inputs = true
 variac_voltage_V = 100.0
 
 # Barrier under test, in stack order; recorded in each run's metadata and notes.
-barrier = "1 layer mica (McMaster 85165K26, 0.032 in) / 2 layers ceramic fiber pipe insulation (McMaster 87575K35, alumina, 1/32 in) / 1 thin aluminum sheet"
+barrier = "1 layer mica (McMaster 85165K26, 0.032 in) / 3 layers ceramic fiber pipe insulation (McMaster 87575K35, alumina, 1/32 in) / 1 thin aluminum sheet"

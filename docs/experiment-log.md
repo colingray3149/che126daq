@@ -369,3 +369,28 @@ successful EXP5/run028 (actual test4) remains a separate record.
   **20:53:03.506 UTC**. This later successful NEXT is recorded as an event-log
   fact and is not attributed to the assistant's earlier rejected attempt.
 
+## 2026-11-13 — EXP6 / run036 (actual test 5): mica / 2× fiberglass / aluminum
+
+EXP6 is EXP5 with `next` accepted anywhere in the 100°C stage. Mapping as before:
+heater = raw `tc2_C`, rear/barrier = raw `tc1_C`; 100 V manual preset.
+
+**Barrier: 1 layer mica (85165K26) / 2 layers fiberglass heat barrier strip
+(4234N12, 0.045 in) / 1 thin aluminum sheet.** The run was started with the
+barrier recorded as 2 layers of ceramic fiber pipe insulation; the operator
+corrected this after the run, and run036's `run-metadata.json`, `notes.md` and
+`experiment.toml` were corrected. `data.csv` and `events.csv` are unchanged.
+
+| Run | Samples | Outcome | Heater | Rear |
+|---|---:|---|---|---|
+| [034](../runs/034/README.md) | 59 | Idle pre-START, serial reconnect | ~24°C | ~25°C |
+| [035](../runs/035/README.md) | 86 | Idle pre-START | ~24°C | ~25°C |
+| **[036](../runs/036/README.md)** | 1,882 | **EXP6 COMPLETE** | first ≥700°C at 249.2 s, peak 714.0°C, 189.5°C at stop | peak 80.25°C at 642.0 s, 75.75°C at stop |
+
+Run036 timeline (UTC): START 18:01:53; NEXT from HEAT_100 18:02:44; BOOST_FINAL
+18:04:07; first ≥700°C 18:06:02; HOLD_COMPLETE, heat OFF 18:07:02; cooldown
+recorded until STOP at 18:17:33. The rear side kept rising after heat OFF and
+peaked about 5.5 minutes later; it never approached the 120°C cutoff.
+
+Next: same EXP6 program with 1 layer mica / 3 layers ceramic fiber pipe
+insulation (87575K35) / 1 thin aluminum sheet (`experiment6.toml`).
+

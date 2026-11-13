@@ -1,0 +1,33 @@
+# EXP6 STAGED CONTROL SETTINGS
+# Save this file, then type: start exp6
+# Same as EXP5, except next is accepted anywhere in the 100 C stage (HEAT_100
+# or HOLD_100) with no temperature requirement.
+# START reloads settings; edits alone do not change an active run.
+# The manual variac preset is metadata, not a software voltage command.
+# 700 C operation is not component-rating approval: saved basalt rating is
+# ~649 C, possible probe rating 500 C (identity unverified), heater exposure
+# limit 760 C and leads 449 C. Rear 120 C does not bound internal temperatures.
+# NC wiring can fail ON on reset/power loss; OFF means a relay command only.
+
+target_C = 700.0
+hysteresis_C = 3.0
+tc1_cutoff_C = 730.0
+
+# Logical rear/barrier cutoff: required in every active stage.
+tc2_cutoff_C = 120.0
+tc2_cutoff_enabled = true
+
+prediction_lead_s = 5.0
+min_off_s = 5.0
+hold_band_C = 5.0
+
+# 60 elapsed seconds from first measured heater >=700 C, not predicted arrival.
+# Temperature excursions do not reset this deadline. Safety trips stop sooner.
+hold_s = 60.0
+
+# Raw TC2 = heater/cartridge; raw TC1 = rear/barrier. CSV stays raw order.
+swap_inputs = true
+variac_voltage_V = 100.0
+
+# Barrier under test, in stack order; recorded in each run's metadata and notes.
+barrier = "1 layer mica (McMaster 85165K26, 0.032 in) / 2 layers fiberglass heat barrier strip (McMaster 4234N12, 0.045 in) / 1 thin aluminum sheet"
