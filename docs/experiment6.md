@@ -18,5 +18,12 @@ sensor/staleness/heartbeat/STOP protections and OFF dwell are unchanged.
 - `next`: leave the 100°C stage now and start the ramp.
 - `stop exp6` / `stop`: as for EXP5.
 
-EXP6 needs the updated firmware uploaded (heater power unplugged first, as
-for every upload): `arduino-cli upload --fqbn arduino:avr:megaADK --port /dev/ttyACM0 firmware/thermocouple_logger`.
+Firmware with EXP6 was uploaded 2026-11-13.
+
+## Barrier
+
+`experiment6.toml`'s `barrier` line names the stack under test. START copies it
+into the run's `run-metadata.json`, the `notes.md` header and the report. Current
+stack: 1 layer mica (85165K26), 2 layers ceramic fiber pipe insulation
+(87575K35), 1 thin aluminum sheet. Materials list:
+[2026-11-13 export](../references/orders/ChE%20126%20Materials%20Ordering%20-%20Materials%202026-11-13.pdf).

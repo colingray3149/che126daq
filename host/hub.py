@@ -107,6 +107,7 @@ class Run:
         self.rows = 0
         self.config = config
         self.device = device
+        self.barrier = run_metadata.get('barrier')
         with (self.path / 'run-metadata.json').open('x') as stream:
             json.dump(run_metadata, stream, indent=2)
             stream.write('\n')
@@ -134,6 +135,7 @@ class Run:
                 f'- Started UTC: {self.started}\n- Updated UTC: {utc()}\n'
                 f'- State / stop reason: {reason}\n- Samples: {self.rows}\n'
                 f'- Serial at start: {self.device}\n'
+                + (f'- Barrier: {self.barrier}\n' if self.barrier else '') +
                 '- Units: seconds, degrees Celsius; UTC is host wall time.\n'
                 '- host_elapsed_s: monotonic seconds since run start; board_time_s: original uptime.\n'
                 '- epoch increments on board time regression; flags preserve sensor faults and zero caveats.\n'
@@ -311,6 +313,9 @@ class Hub:
             if not isinstance(data, dict) or 'variac_voltage_V' not in data:
                 raise ValueError('variac_voltage_V host-only metadata is required')
             voltage = self.normalize_voltage(data.pop('variac_voltage_V'))
+            barrier = data.pop('barrier', None)
+            if barrier is not None and not isinstance(barrier, str):
+                raise ValueError('barrier must be a string')
             settings = self.normalize_experiment(data)
             if profile in STAGED_PROGRAMS:
                 self.validate_staged_settings(settings, profile)
@@ -318,6 +323,8 @@ class Hub:
             raise ValueError(f'Invalid experiment configuration {path}: {exc}') from exc
         metadata = {'experiment': profile, 'swap_inputs': settings['swap_inputs'],
                     'variac_voltage_V': float(voltage)}
+        if barrier:
+            metadata['barrier'] = barrier
         return source, text, settings, metadata
 
     @classmethod
@@ -332,8 +339,11 @@ class Hub:
         if type(data['swap_inputs']) is not bool:
             raise ValueError('run swap_inputs must be a boolean')
         voltage = cls.normalize_voltage(data['variac_voltage_V'])
-        return {'experiment': data['experiment'], 'swap_inputs': data['swap_inputs'],
-                'variac_voltage_V': voltage}
+        metadata = {'experiment': data['experiment'], 'swap_inputs': data['swap_inputs'],
+                    'variac_voltage_V': voltage}
+        if isinstance(data.get('barrier'), str) and data['barrier']:
+            metadata['barrier'] = data['barrier']
+        return metadata
 
     def display_metadata(self, run_path=None):
         path = run_path or (self.run.path if self.run else self.last_run)

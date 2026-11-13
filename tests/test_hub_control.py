@@ -421,6 +421,17 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         self.assertIn('EXP6/RAMP_200', result['message'])
         self.assertEqual(self.port.writes[-1], b'EXP6 NEXT 2\n')
 
+    async def test_barrier_is_recorded_in_run_metadata_and_notes(self):
+        self.experiment6_path.write_text(experiment_text(exp5_settings(), variac_voltage_V=100.0)
+                                         + 'barrier = "1 mica / 2 ceramic fiber / 1 aluminum"\n')
+        self.port.queue(exp5_settings(), program='exp6', phase='HEAT_100')
+        await self.hub.execute_command('start exp6')
+        metadata = json.loads((self.hub.run.path / 'run-metadata.json').read_text())
+        self.assertEqual(metadata['barrier'], '1 mica / 2 ceramic fiber / 1 aluminum')
+        self.assertIn('- Barrier: 1 mica / 2 ceramic fiber / 1 aluminum\n',
+                      (self.hub.run.path / 'notes.md').read_text())
+        self.assertEqual(self.hub.display_metadata()['barrier'], metadata['barrier'])
+
     async def test_invalid_exp5_envelope_preserves_run_and_serial(self):
         requested = experiment_settings()
         self.port.queue(requested)

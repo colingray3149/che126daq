@@ -151,6 +151,7 @@ summary {{cursor:pointer;font-weight:600;padding:12px 0}} pre {{white-space:pre-
 <p class="meta">First sample: {html.escape(rows[0]['utc'])}<br>Last sample: {html.escape(rows[-1]['utc'])}</p>
 <p class="meta">Independent temperature axes. Blue TC1 = heater / raw TC{raw_channels[0]}; orange TC2 = rear / raw TC{raw_channels[1]}.
 Manual preset {metadata['variac_voltage_V']:g} V (metadata, not measured); no voltage-based temperature scaling.</p>
+{f'<p class="meta">Barrier: {html.escape(metadata["barrier"])}</p>' if metadata.get('barrier') else ''}
 <div class="toolbar"><button id="reset">Fit full run</button>
 <label><input type="checkbox" id="link-time" checked> Link time-axis zoom</label>
 <button data-svg="tc1-graph">Heater SVG</button><button data-svg="tc2-graph">Rear SVG</button>
