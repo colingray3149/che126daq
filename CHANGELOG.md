@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-13 — Publish EXP6/run040 (3× ceramic fiber)
+
+- Published runs037–040 with data, events, notes, metadata, reports, rendered READMEs and PNGs (2,487 new rows; archive 001–040 now 47,124 rows, 40 reports, 80 PNGs). Run040 is actual test 6: 1 mica / 3 ceramic fiber / 1 aluminum, EXP6 complete, heater peak 709.5°C, rear peak 113.25°C in cooldown (run036 with 2× fiberglass: 80.25°C).
+- Plain recordings no longer inherit the previous run's barrier; only an explicit START records one. Removed the inherited fiberglass label from run037.
+- Set `experiment6.toml` for the next run: control with the thin aluminum sheet only.
+- Added `host/report.py --png` (kaleido) to write each run's heater/rear PNGs; used for runs037–040.
+
 ## 2026-11-13 — Publish EXP6/run036 and prep the 3× ceramic run
 
 - Published runs034–036 with data, events, notes, metadata, interactive reports, rendered READMEs and PNGs (2,027 new rows; archive 001–036 now 44,637 rows, 36 reports, 72 PNGs). Run036 is actual test 5: EXP6 complete, heater peak 714.0°C, 60 s hold, rear peak 80.25°C in cooldown.

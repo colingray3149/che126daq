@@ -394,3 +394,31 @@ peaked about 5.5 minutes later; it never approached the 120°C cutoff.
 Next: same EXP6 program with 1 layer mica / 3 layers ceramic fiber pipe
 insulation (87575K35) / 1 thin aluminum sheet (`experiment6.toml`).
 
+## 2026-11-13 — EXP6 / run040 (actual test 6): mica / 3× ceramic fiber / aluminum
+
+Same EXP6 program, settings and mapping as run036; only the barrier changed.
+
+**Barrier: 1 layer mica (85165K26) / 3 layers ceramic fiber pipe insulation
+(87575K35, alumina, 1/32 in) / 1 thin aluminum sheet.**
+
+| Run | Samples | Outcome | Heater | Rear |
+|---|---:|---|---|---|
+| [037](../runs/037/README.md) | 136 | Idle pre-START, serial reconnect | ~29°C | ~31°C |
+| [038](../runs/038/README.md) | 9 | EXP6 START stopped after 4 s (heat OFF) | ~29°C | ~31°C |
+| [039](../runs/039/README.md) | 36 | Idle pre-START, serial reconnect | ~29°C | ~31°C |
+| **[040](../runs/040/README.md)** | 2,306 | **EXP6 COMPLETE** | first ≥700°C at 347.7 s, peak 709.5°C, 196.25°C at stop | **peak 113.25°C at 568.5 s**, 89.25°C at stop |
+
+Run040 timeline (UTC): START 18:46:34; NEXT from HEAT_100 18:47:28; BOOST_FINAL
+18:48:53; first ≥700°C 18:52:21; HOLD_COMPLETE, heat OFF 18:53:21; rear peak
+18:56:02; STOP 19:05:46.
+
+Compared with run036 (2× fiberglass strip): the heater took 98 s longer to reach
+700°C (347.7 vs 249.2 s), and the rear side peaked 33°C higher (113.25 vs
+80.25°C), 7°C below the 120°C cutoff. In both runs the rear peak came after heat
+OFF.
+
+Run037's metadata had inherited run036's fiberglass barrier from the previous
+recording; the label was removed, and the hub now names a barrier only on an
+explicit START.
+
+Next: control run, same EXP6 program with only the thin aluminum sheet between heater and rear probe (`experiment6.toml`).

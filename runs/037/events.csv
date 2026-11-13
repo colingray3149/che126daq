@@ -1,0 +1,8 @@
+utc,event
+2026-11-13T18:44:48.787+00:00,Recording /home/colin/Projects/che126daq/runs/037
+2026-11-13T18:44:51.344+00:00,"Incomplete serial row at close discarded: b'#CTRL {""protocol"":""exp2-v5"",""program"":""exp6"",""phase"":""HOLD_FINAL"",""state"":""COMPLETE"",""reason"":""HOLD_COMPLETE"",""heater_on"":false,""setpoint_C"":700.000,""slope_C_pe'"
+2026-11-13T18:44:51.344+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-13T18:44:51.355+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-13T18:44:52.810+00:00,CSV header received (startup/reset); controller freshness and pending commands cleared; no automatic START.
+2026-11-13T18:44:52.810+00:00,"Controller report unavailable -> IDLE/single/SINGLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-13T18:45:57.456+00:00,Finalizing previous run before Experiment 6

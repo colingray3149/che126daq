@@ -1,0 +1,15 @@
+utc,event
+2026-11-13T19:32:20.901+00:00,Recording /home/colin/Projects/che126daq/runs/046
+2026-11-13T19:32:20.902+00:00,"Experiment 6 normalized requested settings: {""hold_band_C"": 5.0, ""hold_s"": 60.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 700.0, ""tc1_cutoff_C"": 730.0, ""tc2_cutoff_C"": 120.0, ""tc2_cutoff_enabled"": true}"
+2026-11-13T19:32:20.902+00:00,"Experiment 6 profile: TC2 required; missing/nonfinite rear temperature trips OFF; runtime cutoffs use the requested settings; NC active-HIGH relay; 100 V RMS manual preset assumed, not measured or set by software. Raw CSV channels remain physical inputs 1/2."
+2026-11-13T19:32:20.902+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-13T19:32:20.903+00:00,"Pre-START report: STOPPED/heater_on=False; reason=STOP; serial report only, not a start requirement."
+2026-11-13T19:32:20.904+00:00,Sending EXP6 START request_id=3; no output change is assumed.
+2026-11-13T19:32:21.124+00:00,"Controller report STOPPED/exp6/HEAT_100/heater_on=False -> RUNNING/exp6/HEAT_100/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-13T19:32:21.125+00:00,"EXP6 START request_id=3 acknowledgement: command_ok=True, state=RUNNING, program=exp6, phase=HEAT_100, heater_on=False; serial report, not physical proof."
+2026-11-13T19:32:21.125+00:00,"Experiment 6 board acknowledged settings: {""hold_band_C"": 5.0, ""hold_s"": 60.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""swap_inputs"": true, ""target_C"": 700.0, ""tc1_cutoff_C"": 730.0, ""tc2_cutoff_C"": 120.0, ""tc2_cutoff_enabled"": true}"
+2026-11-13T19:32:21.429+00:00,"Controller report RUNNING/exp6/HEAT_100/heater_on=False -> RUNNING/exp6/HEAT_100/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-13T19:32:50.341+00:00,Sending EXP2 STOP request_id=4; no output change is assumed.
+2026-11-13T19:32:50.423+00:00,"Controller report RUNNING/exp6/HEAT_100/heater_on=True -> STOPPED/exp6/HEAT_100/heater_on=False; reason=STOP; hold_s=0. Serial report, not physical proof."
+2026-11-13T19:32:50.424+00:00,"EXP2 STOP request_id=4 acknowledgement: command_ok=True, state=STOPPED, program=exp6, phase=HEAT_100, heater_on=False; serial report, not physical proof."
+2026-11-13T19:32:50.424+00:00,Stopped by command

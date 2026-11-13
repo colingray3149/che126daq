@@ -1,0 +1,27 @@
+{
+  "request_id": 11,
+  "requested": {
+    "target_C": 700.0,
+    "hysteresis_C": 3.0,
+    "tc1_cutoff_C": 730.0,
+    "tc2_cutoff_C": 120.0,
+    "tc2_cutoff_enabled": true,
+    "prediction_lead_s": 5.0,
+    "min_off_s": 5.0,
+    "hold_band_C": 5.0,
+    "hold_s": 60.0,
+    "swap_inputs": true
+  },
+  "applied": {
+    "target_C": 700.0,
+    "hysteresis_C": 3.0,
+    "tc1_cutoff_C": 730.0,
+    "tc2_cutoff_C": 120.0,
+    "tc2_cutoff_enabled": true,
+    "prediction_lead_s": 5.0,
+    "min_off_s": 5.0,
+    "hold_band_C": 5.0,
+    "hold_s": 60.0,
+    "swap_inputs": true
+  }
+}

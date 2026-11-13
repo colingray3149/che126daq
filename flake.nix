@@ -4,7 +4,7 @@
   outputs = { nixpkgs, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs { inherit system; };
-    python = pkgs.python3.withPackages (p: [ p.aiohttp p.pyserial p.plotly ]);
+    python = pkgs.python3.withPackages (p: [ p.aiohttp p.pyserial p.plotly p.kaleido ]);
     hub = pkgs.writeShellApplication {
       name = "che126daq";
       text = ''

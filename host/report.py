@@ -33,7 +33,7 @@ def temperature(value):
     return number if math.isfinite(number) else None
 
 
-def build_report(run_path, watch=False):
+def build_report(run_path, watch=False, figures=None):
     run_path = Path(run_path).resolve()
     source, partial_bytes = snapshot(run_path / 'data.csv')
     rows = list(csv.DictReader(io.StringIO(source.decode('utf-8'))))
@@ -109,6 +109,8 @@ def build_report(run_path, watch=False):
                                                         'filename': f'run-{run_path.name}-tc{i + 1}'},
                                 'modeBarButtonsToRemove': ['select2d', 'lasso2d']})
         panels.append(f'<section class="panel"><p>{html.escape(detail)}</p>{graph}</section>')
+        if figures is not None:
+            figures.append(fig)
         fmt = lambda v: '—' if v is None else f'{v:.2f}'
         summaries.append(f'<tr><th scope="row">{label}</th><td>{fmt(min(finite) if finite else None)}</td>'
                          f'<td>{fmt(max(finite) if finite else None)}</td><td>{fmt(values[-1])}</td>'
@@ -228,10 +230,13 @@ def main():
     parser.add_argument('run', type=Path, help='Saved run folder, e.g. runs/023')
     parser.add_argument('--watch', action='store_true',
                         help='Regenerate and refresh the report every 15 seconds; never control acquisition')
+    parser.add_argument('--png', action='store_true',
+                        help='Also write heater.png and rear.png (1400x700, needs kaleido)')
     args = parser.parse_args()
     while True:
         started = time.monotonic()
-        body, count, digest = build_report(args.run, watch=args.watch)
+        figures = []
+        body, count, digest = build_report(args.run, watch=args.watch, figures=figures)
         destination = args.run.resolve() / 'report.html'
         # The only written file is a derived report; input CSV/metadata are never changed.
         with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=destination.parent,
@@ -240,6 +245,10 @@ def main():
             stream.write(body)
         temporary.replace(destination)
         print(f'{destination}\n{count} complete samples; CSV SHA-256 {digest}', flush=True)
+        if args.png:
+            for name, fig in zip(('heater.png', 'rear.png'), figures):
+                fig.update_layout(height=None)
+                fig.write_image(destination.parent / name, width=1400, height=700, scale=1)
         if not args.watch:
             break
         time.sleep(max(0, 15 - (time.monotonic() - started)))

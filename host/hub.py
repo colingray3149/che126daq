@@ -379,7 +379,9 @@ class Hub:
             if run_metadata is None:
                 # Plain recording/restart preserves the latest known physical mapping.
                 # Explicit start exp2/exp3/exp4 replaces it from the selected profile.
-                run_metadata = self.display_metadata()
+                # The barrier is named only by an explicit START, never inherited.
+                run_metadata = dict(self.display_metadata())
+                run_metadata.pop('barrier', None)
             run_metadata = self.validate_run_metadata(run_metadata)
             self.run = Run(self.root, self.config, self.device, run_metadata)
             self.last_run = self.run.path

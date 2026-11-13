@@ -150,6 +150,8 @@ than fabricated as a zero trace; a lone finite sample is shown as a marker.
 The original three actual tests remain prominently labeled in the archive and run
 pages; successful EXP5/run028 is separately labeled as the fourth actual test.
 
+Regenerate a run's report and both PNGs with `python host/report.py --png runs/<run>`
+(in `nix develop`; kaleido writes the same 1400×700 figures). Earlier archive PNGs were browser exports.
 Static images are snapshots: regenerating HTML alone does not update the PNGs.
 For an updated image, open the new report, choose **Fit full run**, and use the
 camera export on each graph; save the results as `heater.png` and `rear.png`

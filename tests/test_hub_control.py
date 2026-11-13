@@ -431,6 +431,9 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         self.assertIn('- Barrier: 1 mica / 2 ceramic fiber / 1 aluminum\n',
                       (self.hub.run.path / 'notes.md').read_text())
         self.assertEqual(self.hub.display_metadata()['barrier'], metadata['barrier'])
+        self.hub.stop('Test')
+        self.hub.start()  # plain recording after the run must not inherit the barrier
+        self.assertNotIn('barrier', json.loads((self.hub.run.path / 'run-metadata.json').read_text()))
 
     async def test_invalid_exp5_envelope_preserves_run_and_serial(self):
         requested = experiment_settings()

@@ -1,0 +1,6 @@
+{
+  "experiment": "exp6",
+  "swap_inputs": true,
+  "variac_voltage_V": 100.0,
+  "barrier": "1 layer mica (McMaster 85165K26, 0.032 in) / 3 layers ceramic fiber pipe insulation (McMaster 87575K35, alumina, 1/32 in) / 1 thin aluminum sheet"
+}

@@ -1,0 +1,6 @@
+{
+  "experiment": "exp6",
+  "swap_inputs": true,
+  "variac_voltage_V": 100.0,
+  "barrier": "Control: 1 thin aluminum sheet only (no mica, no insulation)"
+}
