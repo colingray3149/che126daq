@@ -20,10 +20,10 @@ from serial.tools import list_ports
 FIELDS = ['utc', 'host_elapsed_s', 'board_time_s', 'epoch', 'tc1_C', 'tc2_C', 'flags']
 CONTROLLER_PROTOCOL = 'exp2-v5'
 CONTROLLER_STATES = {'IDLE', 'RUNNING', 'HOLD', 'TRIPPED', 'COMPLETE', 'STOPPED'}
-CONTROLLER_PROGRAMS = {'single', 'exp4', 'exp5'}
+CONTROLLER_PROGRAMS = {'single', 'exp4', 'exp5', 'exp6'}
 CONTROLLER_PHASES = {'SINGLE', 'HEAT_100', 'HOLD_100', 'RAMP_200', 'BOOST_FINAL', 'HOLD_FINAL'}
 STAGED_PHASES = CONTROLLER_PHASES - {'SINGLE'}
-STAGED_PROGRAMS = {'exp4', 'exp5'}
+STAGED_PROGRAMS = {'exp4', 'exp5', 'exp6'}
 ACTIVE_STATES = {'RUNNING', 'HOLD'}
 EXPERIMENT_KEYS = ('target_C', 'hysteresis_C', 'tc1_cutoff_C', 'tc2_cutoff_C',
                    'tc2_cutoff_enabled', 'prediction_lead_s', 'min_off_s',
@@ -33,6 +33,7 @@ EXPERIMENT_PROFILES = {
     'exp3': {'filename': 'experiment3.toml', 'title': 'Experiment 3'},
     'exp4': {'filename': 'experiment4.toml', 'title': 'Experiment 4'},
     'exp5': {'filename': 'experiment5.toml', 'title': 'Experiment 5'},
+    'exp6': {'filename': 'experiment6.toml', 'title': 'Experiment 6'},
 }
 TEMPERATURE_KEYS = ('target_C', 'tc1_cutoff_C', 'tc2_cutoff_C')
 NONNEGATIVE_C_KEYS = ('hysteresis_C', 'hold_band_C')
@@ -56,9 +57,10 @@ start exp2         Start Experiment 2 with experiment.toml; no sensor/reset pref
 start exp3         Start Experiment 3 with experiment3.toml; no sensor/reset preflight.
 start exp4         Start Experiment 4 with experiment4.toml; no sensor/reset preflight.
 start exp5         Start Experiment 5 with experiment5.toml; no sensor/reset preflight.
-next               Advance EXP4/EXP5 from HOLD_100 only; never queued or retried.
+start exp6         Start Experiment 6 with experiment6.toml (EXP5 with an ungated next).
+next               Advance EXP4/EXP5 from HOLD_100, EXP6 from anywhere in the 100 C stage.
 stop               STOP an active experiment, await acknowledgement, then finalize.
-stop exp2/exp3/exp4/exp5
+stop exp2/exp3/exp4/exp5/exp6
                    Request universal STOP and await acknowledgement; keep cooldown logging.
 restart            Finalize current run and start a fresh directory (not while active).
 save               Flush current files and report their location; keep recording.
@@ -72,9 +74,9 @@ status             Show connection, recording, controller freshness and faults.
 config / channels  Show hub and experiment settings; experiment edits apply on next START.
 reconnect          Close/reopen serial once; refused while an experiment is active.
 help               Show commands. Up/Down recalls command history.
-Experiment 2 assumes 30 V RMS, Experiment 3 assumes 65 V RMS, and Experiments 4/5
-assume 100 V RMS manual presets. EXP4/EXP5 hold at 100 C until explicit next;
-EXP5 then regulates at its final target for 60 seconds before COMPLETE.
+Experiment 2 assumes 30 V RMS, Experiment 3 assumes 65 V RMS, and Experiments 4/5/6
+assume 100 V RMS manual presets. EXP4/EXP5/EXP6 hold at 100 C until explicit next;
+EXP5/EXP6 then regulate at its final target for 60 seconds before COMPLETE.
 The variac is never set or measured by this software; voltage never rescales data.
 Raw CSV tc1_C/tc2_C always mean physical input channels 1/2, including swapped runs.
 The requested COM-NC, active-HIGH relay profile FAILS ON if Arduino power/reset
@@ -265,7 +267,7 @@ class Hub:
 
     @staticmethod
     def validate_staged_settings(settings, program):
-        """Validate EXP4/EXP5 staged-program envelopes on normalized settings."""
+        """Validate EXP4/EXP5/EXP6 staged-program envelopes on normalized settings."""
         label = program.upper()
         if not 200 < settings['target_C'] <= 700:
             raise ValueError(f'{label} target_C must be > 200 and <= 700')
@@ -278,8 +280,8 @@ class Hub:
         if settings['hold_s'] != required_hold:
             detail = 'final hold has no timer' if program == 'exp4' else 'final hold is timed'
             raise ValueError(f'{label} requires hold_s = {required_hold}; {detail}')
-        if program == 'exp5' and (settings['target_C'] != 700 or settings['tc1_cutoff_C'] != 730):
-            raise ValueError('EXP5 requires target_C = 700 and tc1_cutoff_C = 730')
+        if program != 'exp4' and (settings['target_C'] != 700 or settings['tc1_cutoff_C'] != 730):
+            raise ValueError(f'{label} requires target_C = 700 and tc1_cutoff_C = 730')
         if not 0 <= settings['hysteresis_C'] <= 5:
             raise ValueError(f'{label} hysteresis_C must be in [0, 5]')
         if not 0 <= settings['hold_band_C'] <= 5:
@@ -694,17 +696,22 @@ class Hub:
         controller = self.controller
         if not self.controller_available or controller is None:
             raise ControlError('NEXT requires fresh controller telemetry; no command sent.')
-        if (not self.active or controller['program'] not in STAGED_PROGRAMS
-                or controller['phase'] != 'HOLD_100'):
-            raise ControlError('NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.')
         program = controller['program']
-        label = program.upper()
-        if self.last_sample is None or time.monotonic() - self.last_sample > SAMPLE_FRESH_S:
-            raise ControlError('NEXT requires a fresh heater sample within the 100 C hold band; no command sent.')
-        settings = controller['settings']
-        heater = self.values[1 if settings['swap_inputs'] else 0]
-        if heater is None or abs(heater - 100.0) > settings['hold_band_C']:
-            raise ControlError('NEXT requires current heater temperature within 100 C +/- hold_band_C; no command sent.')
+        label = str(program).upper()
+        if program == 'exp6':
+            # EXP6 takes NEXT anywhere in the 100 C stage, at any temperature.
+            if not self.active or controller['phase'] not in {'HEAT_100', 'HOLD_100'}:
+                raise ControlError('NEXT requires an active EXP6 HEAT_100/HOLD_100 report; no command sent.')
+        else:
+            if (not self.active or program not in STAGED_PROGRAMS
+                    or controller['phase'] != 'HOLD_100'):
+                raise ControlError('NEXT requires an active EXP4/EXP5 HOLD_100 report; no command sent.')
+            if self.last_sample is None or time.monotonic() - self.last_sample > SAMPLE_FRESH_S:
+                raise ControlError('NEXT requires a fresh heater sample within the 100 C hold band; no command sent.')
+            settings = controller['settings']
+            heater = self.values[1 if settings['swap_inputs'] else 0]
+            if heater is None or abs(heater - 100.0) > settings['hold_band_C']:
+                raise ControlError('NEXT requires current heater temperature within 100 C +/- hold_band_C; no command sent.')
         self.control_uncertain = True
         try:
             acknowledgement = await self.request('NEXT', program=program)
@@ -990,7 +997,7 @@ class Hub:
         no_args = {'help', 'status', 'start', 'stop', 'next', 'restart', 'save', 'clear', 'list', 'live', 'config', 'channels', 'reconnect'}
         if cmd in no_args and args and not (cmd in {'start', 'stop'} and len(args) == 1
                                              and args[0] in EXPERIMENT_PROFILES):
-            raise ValueError(f'{cmd} takes no arguments (except exactly: {cmd} exp2, {cmd} exp3, {cmd} exp4 or {cmd} exp5)'
+            raise ValueError(f'{cmd} takes no arguments (except exactly: {cmd} exp2, {cmd} exp3, {cmd} exp4, {cmd} exp5 or {cmd} exp6)'
                              if cmd in {'start', 'stop'} else f'{cmd} takes no arguments')
         result = {}
         if cmd == 'help':
@@ -1013,7 +1020,7 @@ class Hub:
                 'hub_settings': self.config,
                 'hub_changes_apply': 'after server restart',
                 'experiments': profiles,
-                'experiment_changes_apply': 'on next start exp2, start exp3, start exp4 or start exp5; active settings do not change',
+                'experiment_changes_apply': 'on next start exp2, start exp3, start exp4, start exp5 or start exp6; active settings do not change',
                 'applied_controller_settings': applied,
                 'raw_csv_channels': 'tc1_C/tc2_C always remain physical input channels 1/2',
                 'variac_voltage_V': 'host-only manual preset metadata; never measured, set, or used to rescale data',
@@ -1027,7 +1034,7 @@ class Hub:
             message = await self.next_experiment()
         elif cmd == 'start':
             if self.active or self.last_active or self.control_uncertain:
-                raise ControlError('Refusing to replace recording while an experiment is active or unconfirmed; use stop exp2, stop exp3, stop exp4 or stop exp5 first.')
+                raise ControlError('Refusing to replace recording while an experiment is active or unconfirmed; use stop exp2, stop exp3, stop exp4, stop exp5 or stop exp6 first.')
             message = self.start()
             result['effect'] = 'live'
         elif cmd == 'stop':
@@ -1074,7 +1081,7 @@ class Hub:
             message = f'Plot window: {args[0]} (retained points only).'
         elif cmd == 'reconnect':
             if self.active or self.pending or (self.control_uncertain and self.port is not None):
-                raise ControlError('Refusing reconnect while an experiment is active or a command is unresolved; use stop exp2, stop exp3, stop exp4 or stop exp5 and await its acknowledgement.')
+                raise ControlError('Refusing reconnect while an experiment is active or a command is unresolved; use stop exp2, stop exp3, stop exp4, stop exp5 or stop exp6 and await its acknowledgement.')
             await self.connect()
             message = f'Connection: {self.device}. Opening serial may reset the board; no automatic START is sent.'
         else:

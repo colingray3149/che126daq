@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-11-13 — EXP6: EXP5 with an ungated NEXT
+
+- Added `experiment6.toml`, `start exp6` and firmware program EXP6, a copy of EXP5 whose `next` is accepted anywhere in the 100°C stage (HEAT_100 or HOLD_100) regardless of heater temperature. Hub and firmware both dropped the 100°C ± hold_band requirement for EXP6; EXP4/EXP5 are unchanged.
+- Kept EXP5's ramp, boost, 60-second timed final hold and all cutoffs/interlocks. Native and hub tests cover EXP6 NEXT from HEAT_100 and its rear trip; Mega ADK compile 19,392 bytes flash / 1,191 bytes static RAM. Not uploaded to the board.
+
 ## 2026-11-09 — Publish runs029–033 and latest EXP5 trip records
 
 - Published all five new recordings with their original raw CSV, event, notes and available settings/metadata records: run029 has96 samples, run030 has2,215, run031 has1,747, run032 has10 and run033 has1,744. The5,812 new rows bring the complete001–033 archive to42,610 samples, with33 interactive reports,33 rendered README graph pages and66 PNGs.

@@ -22,7 +22,7 @@ enum State : uint8_t {
   STOPPED
 };
 
-enum Program : uint8_t { PROGRAM_SINGLE, PROGRAM_EXP4, PROGRAM_EXP5 };
+enum Program : uint8_t { PROGRAM_SINGLE, PROGRAM_EXP4, PROGRAM_EXP5, PROGRAM_EXP6 };
 
 enum Phase : uint8_t {
   SINGLE,
@@ -240,6 +240,8 @@ public:
     static const char EXP5_START_PREFIX[] = "EXP5 START ";
     static const char EXP4_NEXT_PREFIX[] = "EXP4 NEXT ";
     static const char EXP5_NEXT_PREFIX[] = "EXP5 NEXT ";
+    static const char EXP6_START_PREFIX[] = "EXP6 START ";
+    static const char EXP6_NEXT_PREFIX[] = "EXP6 NEXT ";
     static const char STOP_PREFIX[] = "EXP2 STOP ";
     uint32_t id = 0;
 
@@ -286,6 +288,21 @@ public:
       return true;
     }
 
+    if (strncmp(line, EXP6_START_PREFIX, sizeof(EXP6_START_PREFIX) - 1) == 0) {
+      Settings candidate;
+      const bool valid =
+          parseStart(line + sizeof(EXP6_START_PREFIX) - 1, id, candidate) &&
+          validExp5Settings(candidate);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      start(id, candidate, PROGRAM_EXP6, now_ms);
+      return true;
+    }
+
     if (strncmp(line, EXP4_NEXT_PREFIX, sizeof(EXP4_NEXT_PREFIX) - 1) == 0) {
       const bool valid_id = parsePositiveId(line + sizeof(EXP4_NEXT_PREFIX) - 1, id);
       request_id_ = id;
@@ -307,6 +324,18 @@ public:
         return true;
       }
       next(id, PROGRAM_EXP5, now_ms);
+      return true;
+    }
+
+    if (strncmp(line, EXP6_NEXT_PREFIX, sizeof(EXP6_NEXT_PREFIX) - 1) == 0) {
+      const bool valid_id = parsePositiveId(line + sizeof(EXP6_NEXT_PREFIX) - 1, id);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid_id) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      next(id, PROGRAM_EXP6, now_ms);
       return true;
     }
 
@@ -356,6 +385,7 @@ public:
   static const char *programName(Program program) {
     if (program == PROGRAM_EXP4) return "exp4";
     if (program == PROGRAM_EXP5) return "exp5";
+    if (program == PROGRAM_EXP6) return "exp6";
     return "single";
   }
 
@@ -538,7 +568,13 @@ private:
   }
 
   bool stagedProgram() const {
-    return program_ == PROGRAM_EXP4 || program_ == PROGRAM_EXP5;
+    return program_ == PROGRAM_EXP4 || program_ == PROGRAM_EXP5 ||
+           program_ == PROGRAM_EXP6;
+  }
+
+  // EXP6 is EXP5 with NEXT accepted anywhere in the 100 C stage.
+  bool timedFinal() const {
+    return program_ == PROGRAM_EXP5 || program_ == PROGRAM_EXP6;
   }
 
   bool active() const { return state_ == RUNNING || state_ == HOLD; }
@@ -585,7 +621,10 @@ private:
   void next(uint32_t id, Program expected_program, uint32_t now_ms) {
     const bool in_band = tc1_c_ >= 100.0f - settings_.hold_band_c &&
                          tc1_c_ <= 100.0f + settings_.hold_band_c;
-    if (program_ != expected_program || !active() || phase_ != HOLD_100 || !in_band) {
+    const bool ready = program_ == PROGRAM_EXP6
+                           ? phase_ == HEAT_100 || phase_ == HOLD_100
+                           : phase_ == HOLD_100 && in_band;
+    if (program_ != expected_program || !active() || !ready) {
       reject("NEXT_NOT_READY");
       return;
     }
@@ -718,7 +757,7 @@ private:
       reason_ = "RUNNING";
       setpoint_c_ = settings_.target_c;
       hold_s_ = 0;
-      if (program_ == PROGRAM_EXP5) {
+      if (timedFinal()) {
         if (tc1_c_ < settings_.target_c) {
           // EXP5 boost ignores slope prediction: only the measured heater
           // temperature may end maximum commanded heat and start the final hold.
@@ -750,7 +789,7 @@ private:
       }
     }
 
-    if (program_ == PROGRAM_EXP5) {
+    if (timedFinal()) {
       // The final EXP5 hold is wall-clock time from the first measured target
       // crossing. Leaving the regulation band neither pauses nor resets it.
       phase_ = HOLD_FINAL;

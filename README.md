@@ -11,6 +11,7 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 - [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
 - [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
 - [Experiment 5 / completed run028](docs/experiment5.md) — same first stages as EXP4, maximum-command boost to measured 700°C, measured completion of the 60-second final hold, then commanded heat OFF and cooldown; required rear cutoff 120°C. Settings: [experiment5.toml](experiment5.toml).
+- [Experiment 6](docs/experiment6.md) — EXP5 with `next` accepted any time in the 100°C stage, at any temperature. Settings: [experiment6.toml](experiment6.toml).
 - [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
 - **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** This original trio remains a historical navigation set, separate from the remaining supporting recordings.
 - **[Latest successful EXP5 / fourth actual test: run028](runs/README.md#successful-exp5--run028).** The operator said it went well; its events record completion of the measured 60-second target hold. [Raw data](runs/028/data.csv) · [Events](runs/028/events.csv) · [Notes](runs/028/notes.md) · [Settings](runs/028/experiment.toml) · [Applied settings](runs/028/experiment-applied.json) · [Metadata](runs/028/run-metadata.json) · [Rendered README](runs/028/README.md) · [Interactive report](runs/028/report.html).
@@ -73,7 +74,7 @@ successful outcome; its measured record and retained rear-cutoff trip are archiv
 The v5 DAQ was launched with `--wait-for-start`; old v4 DAQ/report services
 were closed after saving run023. A completed thermal run does not independently
 establish calibration or component limits.
-EXP5 selects **[experiment5.toml](experiment5.toml)** with `start exp5`.
+EXP5 selects **[experiment5.toml](experiment5.toml)** with `start exp5`; EXP6 selects **[experiment6.toml](experiment6.toml)** with `start exp6`.
 Its 100°C/NEXT/90-second-to-200°C stages match EXP4. Boost commands maximum
 heat until measured heater temperature reaches 700°C; the final hold lasts
 60 elapsed seconds from that crossing, then commands heat OFF and retains

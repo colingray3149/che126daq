@@ -77,6 +77,13 @@ static void armExp5(Controller &c, uint32_t now) {
     assert(c.setpointC()==100.0f);
 }
 
+static void armExp6(Controller &c, uint32_t now) {
+    armLine(c,"EXP6 START 1 700 3 730 120 1 5000 0 5 60000 1",now);
+    assert(c.program()==che126_exp2::PROGRAM_EXP6);
+    assert(c.phase()==HEAT_100);
+    assert(c.tc2Required());
+}
+
 static uint32_t reachExp5Phase(Controller &c, Phase desired, uint32_t base=0) {
     uint32_t now=ready(c,base);
     armExp5(c,now);
@@ -989,5 +996,40 @@ int main() {
             expectSettings(c,expected);
         }
     }
-    puts("EXP2/EXP4/EXP5 passed: v5 atomic envelopes, explicit NEXT, staged ramp/boost/final hold, EXP5 measured-only 60 s completion, all-phase rear/STOP interlocks, staleness, mapping and millis rollover; legacy behavior preserved.");
+    {
+        // EXP6: NEXT leaves the 100 C stage from HEAT_100 at any temperature,
+        // then follows EXP5's ramp, boost and 60 s timed final hold.
+        Controller c; uint32_t now=ready(c); armExp6(c,now); now+=500;
+        assert(strcmp(Controller::programName(c.program()),"exp6")==0);
+        c.handleCommand("EXP5 NEXT 2",now);
+        assert(!c.commandOk());  // EXP5 and EXP6 NEXT envelopes are distinct.
+        c.handleCommand("EXP6 NEXT 2",now);
+        assert(c.commandOk());
+        assert(c.phase()==RAMP_200);
+        c.handleCommand("EXP6 NEXT 3",now);
+        assert(!c.commandOk());  // Only from the 100 C stage.
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,200);
+        now+=500;
+        assert(c.phase()==BOOST_FINAL);
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,25,700);
+        now+=500;
+        assert(c.phase()==HOLD_FINAL);
+        for (unsigned i=1; i<=60; ++i) {
+            c.handleCommand("EXP2 PING",now+i*1000);
+            c.onSample(now+i*1000,25,650);  // excursions do not extend the hold
+        }
+        assert(strcmp(Controller::stateName(c.state()),"COMPLETE")==0);
+        assert(!c.heaterOn());
+    }
+    {
+        // EXP6 still enforces the 120 C rear cutoff during the 100 C stage.
+        Controller c; uint32_t now=ready(c); armExp6(c,now);
+        c.handleCommand("EXP2 PING",now+500);
+        c.onSample(now+500,120,60);
+        assert(strcmp(Controller::stateName(c.state()),"TRIPPED")==0);
+        assert(!c.heaterOn());
+    }
+    puts("EXP2/EXP4/EXP5/EXP6 passed: v5 atomic envelopes, explicit NEXT, staged ramp/boost/final hold, EXP5 measured-only 60 s completion, all-phase rear/STOP interlocks, staleness, mapping and millis rollover; legacy behavior preserved.");
 }

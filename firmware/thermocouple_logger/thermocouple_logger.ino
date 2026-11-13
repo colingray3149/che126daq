@@ -1,4 +1,4 @@
-// CHE126 experiments 2/3/4/5: two MAX31855s plus an active-HIGH relay on D33.
+// CHE126 experiments 2/3/4/5/6: two MAX31855s plus an active-HIGH relay on D33.
 // TC1 CLK/DO/CS = D22/D24/D26; TC2 = D28/D30/D32. CSV remains raw physical
 // channels time_s,t1_C,t2_C at 115200 baud, with one #CTRL JSON line per sample.
 //

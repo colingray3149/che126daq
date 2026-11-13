@@ -56,7 +56,7 @@ def experiment_text(settings, variac_voltage_V=30.0):
 def controller_telemetry(request_id, settings, state='RUNNING', command_ok=True, heater_on=False,
                          program='single', phase=None, setpoint_C=None, slope_C_per_s=0.0):
     if phase is None:
-        phase = 'HEAT_100' if program in {'exp4', 'exp5'} else 'SINGLE'
+        phase = 'HEAT_100' if program in {'exp4', 'exp5', 'exp6'} else 'SINGLE'
     if setpoint_C is None:
         setpoint_C = {'HEAT_100': 100.0, 'HOLD_100': 100.0, 'RAMP_200': 100.0,
                       'BOOST_FINAL': 200.0, 'HOLD_FINAL': settings['target_C']}.get(
@@ -70,7 +70,7 @@ def controller_telemetry(request_id, settings, state='RUNNING', command_ok=True,
         'phase': phase,
         'setpoint_C': setpoint_C,
         'slope_C_per_s': slope_C_per_s,
-        'tc2_required': program in {'exp4', 'exp5'},
+        'tc2_required': program in {'exp4', 'exp5', 'exp6'},
         'relay_contact': 'NC',
         'active_high': True,
         'hold_s': 0,
@@ -101,7 +101,7 @@ class FakePort:
         parts = data.decode('ascii').strip().split()
         controlled = (len(parts) >= 3 and
                       ((parts[0] == 'EXP2' and parts[1] in {'START', 'STOP'})
-                       or (parts[0] in {'EXP4', 'EXP5'} and parts[1] in {'START', 'NEXT'})))
+                       or (parts[0] in {'EXP4', 'EXP5', 'EXP6'} and parts[1] in {'START', 'NEXT'})))
         if controlled:
             for i, (verb, details) in enumerate(self.acknowledgements):
                 if verb is None or verb == parts[1]:
@@ -213,6 +213,8 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         self.experiment4_path.write_text(experiment_text(exp4_settings(), variac_voltage_V=100.0))
         self.experiment5_path = self.config_path.parent / 'experiment5.toml'
         self.experiment5_path.write_text(experiment_text(exp5_settings(), variac_voltage_V=100.0))
+        self.experiment6_path = self.config_path.parent / 'experiment6.toml'
+        self.experiment6_path.write_text(experiment_text(exp5_settings(), variac_voltage_V=100.0))
         self.hub = hub_module.Hub({'plot_points': 10}, base / 'runs', self.config_path)
         self.port = FakePort(self.hub)
         self.hub.port = self.port
@@ -406,6 +408,18 @@ class ExperimentConfiguration(unittest.IsolatedAsyncioTestCase):
         help_text = (await self.hub.execute_command('help'))['message']
         self.assertIn('start exp5', help_text)
         self.assertIn('EXP4/EXP5', help_text)
+
+    async def test_exp6_next_sent_from_heat_100_at_any_temperature(self):
+        requested = exp5_settings()
+        self.port.queue(requested, program='exp6', phase='HEAT_100')
+        result = await self.hub.execute_command('start exp6')
+        self.assertEqual(result['effect'], 'live')
+        self.assertTrue(self.port.writes[-1].startswith(b'EXP6 START 1 700 3 730 120 1 '))
+        self.hub.consume(b'1.0,25,40')  # heater far below the 100 C band
+        self.port.queue(requested, program='exp6', phase='RAMP_200')
+        result = await self.hub.execute_command('next')
+        self.assertIn('EXP6/RAMP_200', result['message'])
+        self.assertEqual(self.port.writes[-1], b'EXP6 NEXT 2\n')
 
     async def test_invalid_exp5_envelope_preserves_run_and_serial(self):
         requested = experiment_settings()

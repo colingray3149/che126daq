@@ -64,10 +64,10 @@ function updateStatus(s) {
   if (c) {
     const heat = c.heater_on === true ? 'ON' : c.heater_on === false ? 'OFF' : 'UNKNOWN';
     const cfg = c.settings;
-    const staged = c.program === 'exp4' || c.program === 'exp5';
+    const staged = ['exp4', 'exp5', 'exp6'].includes(c.program);
     const setpoint = staged ? c.setpoint_C : cfg?.target_C;
     const hold = cfg && Number.isFinite(c.hold_s)
-      ? (c.program === 'exp5' && c.phase === 'HOLD_FINAL'
+      ? (['exp5', 'exp6'].includes(c.program) && c.phase === 'HOLD_FINAL'
          ? `${Math.floor(c.hold_s)} / ${cfg.hold_s} s since measured target`
          : cfg.hold_s > 0 ? `${Math.floor(c.hold_s)} / ${cfg.hold_s} s in band` : 'timed hold disabled')
       : 'hold unavailable';
@@ -106,7 +106,7 @@ function updateStatus(s) {
     ? `Required rear probe missing: ${(c.program || 'staged').toUpperCase()} commands heat OFF.`
     : `Optional cutoff probe missing: ${c?.settings?.tc2_cutoff_C ?? 'configured'}°C protection unavailable.`);
   if (liveSwapped !== controlSwapped) warnings.push('Display follows the reported probe placement; START must apply the matching input mapping.');
-  if (['exp4', 'exp5'].includes(c?.program)) warnings.push(`${c.program.toUpperCase()} high-temperature program is uncommissioned; software thresholds do not establish hardware suitability.`);
+  if (['exp4', 'exp5', 'exp6'].includes(c?.program)) warnings.push(`${c.program.toUpperCase()} high-temperature program is uncommissioned; software thresholds do not establish hardware suitability.`);
   if (c?.protocol !== 'exp2-v5') warnings.push('EXP4/EXP5 require the prepared v5 host and firmware; this board is not reporting v5.');
   $('channel-mapping').textContent = `Independent °C scales · ${displayedSwapped() ? 'swapped display: TC1 ← raw TC2; TC2 ← raw TC1' : 'display follows raw channel order'} · raw CSV unchanged; no voltage scaling.`;
   if (s.zero_count) warnings.push('All-zero stream is NOT proof of valid temperatures or working probes.');
@@ -173,7 +173,7 @@ $('command').addEventListener('keydown', event => {
   historyIndex = Math.max(0, Math.min(history.length, historyIndex + (event.key === 'ArrowUp' ? -1 : 1)));
   $('command').value = historyIndex === history.length ? draft : history[historyIndex];
 });
-log('DAQ hub · durable temperature recording.\nNo automatic heating. With --wait-for-start, no recording until explicit START.\nSplit plots use independent °C scales; raw CSV is unchanged.\nstart exp2 / start exp3 / start exp4 / start exp5 load their saved profiles (EXP4/EXP5 require v5).\nEXP4/EXP5: 100°C hold → explicit next → 90s ramp to 200°C → boost/final hold.\nEXP5 final hold is 60 seconds, then COMPLETE and heat OFF; EXP4 final hold is indefinite.\nstop exp2 / stop exp3 / stop exp4 / stop exp5: command heat OFF, keep cooldown logging.\nconfig: show edited and applied settings.\nNC wiring cannot fail OFF on Arduino power loss.\nType help for commands; ↑/↓ recalls history.');
+log('DAQ hub · durable temperature recording.\nNo automatic heating. With --wait-for-start, no recording until explicit START.\nSplit plots use independent °C scales; raw CSV is unchanged.\nstart exp2 / start exp3 / start exp4 / start exp5 / start exp6 load their saved profiles (EXP4–6 require v5).\nEXP4/EXP5: 100°C hold → explicit next → 90s ramp to 200°C → boost/final hold.\nEXP6 = EXP5, but next works anywhere in the 100°C stage.\nEXP5/EXP6 final hold is 60 seconds, then COMPLETE and heat OFF; EXP4 final hold is indefinite.\nstop exp2 / stop exp3 / stop exp4 / stop exp5 / stop exp6: command heat OFF, keep cooldown logging.\nconfig: show edited and applied settings.\nNC wiring cannot fail OFF on Arduino power loss.\nType help for commands; ↑/↓ recalls history.');
 async function initialize() {
   try {
     const response = await fetch('/static/run-mappings.json', {cache: 'no-store'});
