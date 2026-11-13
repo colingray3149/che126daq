@@ -466,7 +466,23 @@ temperature was not measured. The 730°C cutoff bounds only the probe reading.
 again after 033), and the two slow runs are the longest boosts, so a setup
 difference is as likely as degradation.
 
-**Before replacing:** a good cartridge reads about 48 Ω across its leads
-(120²/300); open circuit confirms the element failed. Two replacements of the
-same part cost about $125.
+**Confirmed open element.** The operator measured infinite resistance across
+the cartridge leads (a good cartridge reads about 48 Ω, 120²/300). The heating
+element is open; wiring, relay and variac were delivering ~108 V. Two
+replacements of the same part (McMaster 4877K305) cost about $125.
+
+**Sand as a contributor.** Fine dry sand likely has lower effective
+conductivity than the earlier semi-gravelly sand: more grain contacts per mm,
+and much less radiative transfer across pores, which scales with grain size and
+matters above ~700°C (roughly 0.4 W/m·K for ~2 mm grains vs 0.04 W/m·K for
+~0.2 mm near 1000 K, against ~0.25–0.35 W/m·K conduction). The sheath-to-probe
+difference scales as 1/k, so the same 700°C probe reading implies a hotter
+sheath, and the full-power boost lasts longer before the probe reaches 700°C.
+Only runs036 and040 used the fine sand and probe placement varies between runs,
+so the data cannot isolate the effect; likely a contributor on top of cumulative
+overheating, not the sole cause.
+
+**For the replacement cartridges:** measure the sheath (thermocouple clamped to
+it, or a cartridge with a built-in thermocouple), seat the cartridge in a snug
+metal sleeve/block, and replace the full-power boost with a regulated ramp.
 
