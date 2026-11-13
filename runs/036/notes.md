@@ -37,3 +37,5 @@
 
 - 2026-11-13 correction (operator): the barrier in this run was 2 layers of the fiberglass heat barrier strip, not the ceramic fiber pipe insulation. The barrier line above, run-metadata.json and experiment.toml were corrected after the run; data.csv and events.csv are unchanged.
 - Result: EXP6 completed. NEXT sent from HEAT_100 at 18:02:44 UTC; heater first measured >=700 C at 18:06:02 (249.2 s), peaked 714.0 C, 60 s hold completed at 18:07:02 (HOLD_COMPLETE, heat OFF). Rear peaked 80.25 C at 18:12:34 during cooldown (642.0 s); the 120 C rear cutoff was never reached. 1882 samples, no sensor faults.
+
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

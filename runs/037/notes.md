@@ -35,3 +35,5 @@
 ## Comments
 
 - Idle recording before EXP6 START (board IDLE after a serial reopen/reset; no heating). The hub had copied run036's fiberglass barrier into this run's metadata; that label was removed on 2026-11-13 because a plain recording does not identify the stack. Raw data/events unchanged.
+
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

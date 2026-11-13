@@ -34,3 +34,5 @@
 
 ## Comments
 
+- Idle/reconnect recording between control attempts; no heating.
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

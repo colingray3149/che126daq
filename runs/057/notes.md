@@ -35,3 +35,6 @@
 
 ## Comments
 
+- Control attempt, EXP6 START; heater commanded ON ~71 s with no rise; operator STOP. Dead cartridge.
+- Cartridge failure: after run040 the cartridge produced no heat. The heater was commanded ON and the heater reading did not rise; the operator measured about 108 V at the cartridge with no heating.
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

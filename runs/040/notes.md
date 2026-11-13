@@ -36,3 +36,7 @@
 ## Comments
 
 - Result: EXP6 completed (actual test 6). Barrier 1 mica / 3 layers ceramic fiber pipe insulation / 1 aluminum. NEXT from HEAT_100 at 18:47:28 UTC; BOOST_FINAL 18:48:53; heater first measured >=700 C at 18:52:21 (347.7 s), peaked 709.5 C; 60 s hold complete at 18:53:21 (HOLD_COMPLETE, heat OFF). Rear peaked 113.25 C at 18:56:02 (568.5 s), during cooldown; the 120 C rear cutoff was not reached. Cooldown recorded to STOP at 19:05:46. 2306 samples, no sensor faults.
+
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
+
+- Cartridge failed during this run: the heater was commanded back ON at 18:52:48 UTC (reading 695.75 C) and stayed ON 33 s until HOLD_COMPLETE, but the reading kept falling at -1.41 C/s, the same rate as after heat OFF (-1.46 C/s). In run036 the same re-heat gave +0.5 C/s. The cartridge last delivered heat at the end of the full-power boost, around the 709.5 C peak at 18:52:29-18:52:48.

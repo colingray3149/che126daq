@@ -36,3 +36,5 @@
 ## Comments
 
 - Aborted EXP6 START: START at 18:45:57 UTC, heater commanded ON at 18:45:58, operator STOP acknowledged at 18:46:02 (heat OFF). 9 samples; not a test.
+
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

@@ -36,3 +36,5 @@
 ## Comments
 
 - Idle recording before the run040 EXP6 START (serial reopen/reset; board IDLE, no heating).
+
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

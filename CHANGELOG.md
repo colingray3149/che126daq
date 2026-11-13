@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-11-13 — Cartridge failure analysis; publish runs041–059
+
+- Located the cartridge failure at the end of run040's full-power boost (re-heat at 18:52:48 UTC produced no rise) and logged the likely cause (sheath above its 760°C rating in sand while the beside-probe read ~700°C), exposure per run and the 48 Ω check.
+- Published runs041–059 (failed aluminum-only control attempts and idle recordings; 1,247 rows; archive 001–059 now 48,371 rows, 59 reports, 118 PNGs).
+- Recorded the switch to fine, less rocky sand from run034 on in every run's notes since then.
+
 ## 2026-11-13 — Publish EXP6/run040 (3× ceramic fiber)
 
 - Published runs037–040 with data, events, notes, metadata, reports, rendered READMEs and PNGs (2,487 new rows; archive 001–040 now 47,124 rows, 40 reports, 80 PNGs). Run040 is actual test 6: 1 mica / 3 ceramic fiber / 1 aluminum, EXP6 complete, heater peak 709.5°C, rear peak 113.25°C in cooldown (run036 with 2× fiberglass: 80.25°C).

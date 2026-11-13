@@ -1,12 +1,13 @@
 # Experimental run archive
 
-All 40 run folders are published here, directly under the repository's top-level
+All 59 run folders are published here, directly under the repository's top-level
 `runs/` directory. Original run numbers and files are preserved; runs are not
 renumbered, merged or moved into a miscellaneous/provenance folder.
 
-The complete archive now contains **47,124 CSV sample rows** across runs
-**001–040**, with **40 interactive reports**, **40 rendered graph pages** and
-**80 PNGs**. The run034–036 publication contained **44,637 rows** across
+The complete archive now contains **48,371 CSV sample rows** across runs
+**001–059**, with **59 interactive reports**, **59 rendered graph pages** and
+**118 PNGs**. The run037–040 publication contained **47,124 rows** across
+runs **001–040**. The run034–036 publication contained **44,637 rows** across
 runs **001–036**. The 2026-11-09 run029–033 publication contained **42,610 rows**
 across runs **001–033**. The earlier 2026-11-09 run027/028 publication contained **36,798
 CSV sample rows** across runs **001–028**, with **28 reports** and **56 PNGs**;
@@ -15,7 +16,7 @@ the initial full-archive publication contained **33,538 CSV sample rows** and
 publication counts remain unchanged. Every run includes its raw `data.csv`,
 recorded `events.csv` and `notes.md`. Where originally saved, the folder also
 includes control configuration, applied-setting acknowledgements and
-role/voltage metadata. Each of the 40 folders now opens to a **rendered graph
+role/voltage metadata. Each of the 59 folders now opens to a **rendered graph
 page** with separate heater/rear PNGs and a full interactive HTML report.
 
 ## The three actual tests
@@ -57,6 +58,20 @@ and [current experiment log](../docs/experiment-log.md).
 
 Raw data, event logs, saved settings and folder numbers are unchanged. Graphs
 are regenerated derived views; the reports now include the current test labels.
+
+## Cartridge failure — run040, and control attempts runs041–059
+
+The cartridge heater failed at the end of run040's full-power boost (peak
+709.5°C). The board re-energized it at 18:52:48 UTC for 33 s and the heater
+reading kept falling at −1.41°C/s, the same as after heat OFF (run036's re-heat
+gave +0.5°C/s). The aluminum-only control was attempted in runs044, 046, 048,
+050, 051, 054, 057 and059: about 4.5 min of commanded heat in total, no rise in
+the heater reading; the operator measured about 108 V at the cartridge with no
+heating. Runs048–054 also show the heater probe reading 0.0°C (SENSOR_FAULT /
+SENSOR_STALE trips). The remaining runs041–059 are idle/reconnect recordings.
+No control result exists yet. Analysis: [experiment log](../docs/experiment-log.md#2026-11-13--cartridge-failure-in-run040-and-failed-control-attempts).
+
+Runs034–059 used a fine, less rocky sand; earlier runs used a semi-gravelly sand.
 
 ## EXP6 barrier comparison — runs036 and040
 
@@ -156,6 +171,25 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 | [038 — Aborted EXP6 START](038/) | 9 | [CSV](038/data.csv) | [Events](038/events.csv) | [Notes](038/notes.md) | [Control config](038/experiment.toml) · [Applied settings](038/experiment-applied.json) · [Run metadata](038/run-metadata.json) | [Rendered graphs](038/README.md) · [Interactive HTML](038/report.html) |
 | [039 — Pre-EXP6 supporting recording](039/) | 36 | [CSV](039/data.csv) | [Events](039/events.csv) | [Notes](039/notes.md) | [Run metadata](039/run-metadata.json) | [Rendered graphs](039/README.md) · [Interactive HTML](039/report.html) |
 | **[040 — Actual test 6 / EXP6](040/)** | 2,306 | [CSV](040/data.csv) | [Events](040/events.csv) | [Notes](040/notes.md) | [Control config](040/experiment.toml) · [Applied settings](040/experiment-applied.json) · [Run metadata](040/run-metadata.json) | [Rendered graphs](040/README.md) · [Interactive HTML](040/report.html) |
+| [041 — Idle recording](041/) | 14 | [CSV](041/data.csv) | [Events](041/events.csv) | [Notes](041/notes.md) | [Run metadata](041/run-metadata.json) | [Rendered graphs](041/README.md) · [Interactive HTML](041/report.html) |
+| [042 — Idle recording](042/) | 169 | [CSV](042/data.csv) | [Events](042/events.csv) | [Notes](042/notes.md) | [Run metadata](042/run-metadata.json) | [Rendered graphs](042/README.md) · [Interactive HTML](042/report.html) |
+| [043 — Idle recording](043/) | 60 | [CSV](043/data.csv) | [Events](043/events.csv) | [Notes](043/notes.md) | [Run metadata](043/run-metadata.json) | [Rendered graphs](043/README.md) · [Interactive HTML](043/report.html) |
+| [044 — Control attempt, dead cartridge](044/) | 87 | [CSV](044/data.csv) | [Events](044/events.csv) | [Notes](044/notes.md) | [Control config](044/experiment.toml) · [Applied settings](044/experiment-applied.json) · [Run metadata](044/run-metadata.json) | [Rendered graphs](044/README.md) · [Interactive HTML](044/report.html) |
+| [045 — Idle recording](045/) | 20 | [CSV](045/data.csv) | [Events](045/events.csv) | [Notes](045/notes.md) | [Run metadata](045/run-metadata.json) | [Rendered graphs](045/README.md) · [Interactive HTML](045/report.html) |
+| [046 — Control attempt, dead cartridge](046/) | 59 | [CSV](046/data.csv) | [Events](046/events.csv) | [Notes](046/notes.md) | [Control config](046/experiment.toml) · [Applied settings](046/experiment-applied.json) · [Run metadata](046/run-metadata.json) | [Rendered graphs](046/README.md) · [Interactive HTML](046/report.html) |
+| [047 — Idle recording](047/) | 7 | [CSV](047/data.csv) | [Events](047/events.csv) | [Notes](047/notes.md) | [Run metadata](047/run-metadata.json) | [Rendered graphs](047/README.md) · [Interactive HTML](047/report.html) |
+| [048 — Control attempt, dead cartridge](048/) | 362 | [CSV](048/data.csv) | [Events](048/events.csv) | [Notes](048/notes.md) | [Control config](048/experiment.toml) · [Applied settings](048/experiment-applied.json) · [Run metadata](048/run-metadata.json) | [Rendered graphs](048/README.md) · [Interactive HTML](048/report.html) |
+| [049 — Idle recording](049/) | 6 | [CSV](049/data.csv) | [Events](049/events.csv) | [Notes](049/notes.md) | [Run metadata](049/run-metadata.json) | [Rendered graphs](049/README.md) · [Interactive HTML](049/report.html) |
+| [050 — Control attempt, dead cartridge](050/) | 22 | [CSV](050/data.csv) | [Events](050/events.csv) | [Notes](050/notes.md) | [Control config](050/experiment.toml) · [Applied settings](050/experiment-applied.json) · [Run metadata](050/run-metadata.json) | [Rendered graphs](050/README.md) · [Interactive HTML](050/report.html) |
+| [051 — Control attempt, dead cartridge](051/) | 20 | [CSV](051/data.csv) | [Events](051/events.csv) | [Notes](051/notes.md) | [Control config](051/experiment.toml) · [Applied settings](051/experiment-applied.json) · [Run metadata](051/run-metadata.json) | [Rendered graphs](051/README.md) · [Interactive HTML](051/report.html) |
+| [052 — Idle recording](052/) | 6 | [CSV](052/data.csv) | [Events](052/events.csv) | [Notes](052/notes.md) | [Run metadata](052/run-metadata.json) | [Rendered graphs](052/README.md) · [Interactive HTML](052/report.html) |
+| [053 — Idle recording](053/) | 11 | [CSV](053/data.csv) | [Events](053/events.csv) | [Notes](053/notes.md) | [Run metadata](053/run-metadata.json) | [Rendered graphs](053/README.md) · [Interactive HTML](053/report.html) |
+| [054 — Control attempt, dead cartridge](054/) | 50 | [CSV](054/data.csv) | [Events](054/events.csv) | [Notes](054/notes.md) | [Control config](054/experiment.toml) · [Applied settings](054/experiment-applied.json) · [Run metadata](054/run-metadata.json) | [Rendered graphs](054/README.md) · [Interactive HTML](054/report.html) |
+| [055 — Idle recording](055/) | 72 | [CSV](055/data.csv) | [Events](055/events.csv) | [Notes](055/notes.md) | [Run metadata](055/run-metadata.json) | [Rendered graphs](055/README.md) · [Interactive HTML](055/report.html) |
+| [056 — Idle recording](056/) | 74 | [CSV](056/data.csv) | [Events](056/events.csv) | [Notes](056/notes.md) | [Run metadata](056/run-metadata.json) | [Rendered graphs](056/README.md) · [Interactive HTML](056/report.html) |
+| [057 — Control attempt, dead cartridge](057/) | 144 | [CSV](057/data.csv) | [Events](057/events.csv) | [Notes](057/notes.md) | [Control config](057/experiment.toml) · [Applied settings](057/experiment-applied.json) · [Run metadata](057/run-metadata.json) | [Rendered graphs](057/README.md) · [Interactive HTML](057/report.html) |
+| [058 — Idle recording](058/) | 5 | [CSV](058/data.csv) | [Events](058/events.csv) | [Notes](058/notes.md) | [Run metadata](058/run-metadata.json) | [Rendered graphs](058/README.md) · [Interactive HTML](058/report.html) |
+| [059 — Control attempt, dead cartridge](059/) | 59 | [CSV](059/data.csv) | [Events](059/events.csv) | [Notes](059/notes.md) | [Control config](059/experiment.toml) · [Applied settings](059/experiment-applied.json) · [Run metadata](059/run-metadata.json) | [Rendered graphs](059/README.md) · [Interactive HTML](059/report.html) |
 
 ## Interpretation and historical caveats
 
@@ -170,10 +204,10 @@ present; none was fabricated. Every run now has rendered and interactive graphs.
 - Missing/invalid readings, zeros, flags and reset epochs are retained. Inclusion
   in this archive does not imply sensor calibration, a valid thermal run or a
   successful outcome. Operator assessments remain separately attributed in logs.
-- The80 PNGs render directly on GitHub through each run folder's README. They use
+- The118 PNGs render directly on GitHub through each run folder's README. They use
   independent°C axes and the entire saved elapsed-time range. Missing values stay
   gaps; entirely nonfinite channels are explicitly labeled, never plotted as zeros.
-- All40 interactive reports are self-contained HTML snapshots. Download/open them
+- All59 interactive reports are self-contained HTML snapshots. Download/open them
   locally for zoom/hover; GitHub's source view does not execute JavaScript.
   Check the saved snapshot status and source hash rather than assuming a live view.
 - Runs are version-controlled but never automatically committed, pushed or deleted

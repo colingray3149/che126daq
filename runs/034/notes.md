@@ -34,3 +34,4 @@
 
 ## Comments
 
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.

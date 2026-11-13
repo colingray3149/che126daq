@@ -1,0 +1,21 @@
+# Run 050 — control attempt, dead cartridge
+
+[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Selected settings](experiment.toml) · [Applied settings](experiment-applied.json) · [Interactive report](report.html)
+
+Control attempt, EXP6 START; heater probe reading 0.0 C, tripped SENSOR_FAULT/SENSOR_STALE immediately; heater never ON.
+
+Cartridge failure: after run040 the cartridge produced no heat. The heater was commanded ON and the heater reading did not rise; the operator measured about 108 V at the cartridge with no heating.
+
+**22 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+
+## TC1 — heater
+
+Saved-source interpretation: **TC1 · HEATER (raw TC2)**.
+
+![Run 050 full-history TC1 — heater graph](heater.png)
+
+## TC2 — rear
+
+Saved-source interpretation: **TC2 · REAR (raw TC1)**.
+
+![Run 050 full-history TC2 — rear graph](rear.png)

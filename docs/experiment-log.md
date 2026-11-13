@@ -421,4 +421,52 @@ Run037's metadata had inherited run036's fiberglass barrier from the previous
 recording; the label was removed, and the hub now names a barrier only on an
 explicit START.
 
-Next: control run, same EXP6 program with only the thin aluminum sheet between heater and rear probe (`experiment6.toml`).
+## 2026-11-13 — Cartridge failure in run040 and failed control attempts
+
+**Sand change:** from run034 on, the fixture uses a fine, less rocky sand; all
+earlier runs used a semi-gravelly sand.
+
+**Failure point.** In run040 the heater reading peaked at 709.5°C at 18:52:29 UTC
+at the end of a 208 s full-power boost (the longest of any run). The board
+re-energized the heater at 18:52:48 (reading 695.75°C) for 33 s; the reading
+fell at −1.41°C/s, matching the −1.46°C/s after heat OFF. In run036 the same
+re-heat gave +0.5°C/s. The cartridge delivered no heat after the end of the
+run040 boost.
+
+**After the failure.** Aluminum-only control attempts in runs044, 046, 048,
+057 and059 commanded the heater ON for about 4.5 min in total with no rise; the
+operator measured about 108 V at the cartridge with no heating. Runs048–054 also
+show the heater probe at 0.0°C (SENSOR_FAULT/SENSOR_STALE). Runs041–059 add
+1,247 rows; no control result was recorded.
+
+**Heater-probe exposure since run026** (probe wired beside the cartridge, in sand):
+
+| Run | Peak | ≥600°C | ≥650°C | ≥700°C | Full-power boost | 300→600°C rate |
+|---|---|---|---|---|---|---|
+| 026 | 706.8°C | 291 s | 255 s | 83 s | ~94 s | 5.4°C/s |
+| 028 | 707.8°C | 130 s | 93 s | 25 s | ~113 s | 4.6°C/s |
+| 033 | 679.8°C | 104 s | 49 s | 0 s | ~189 s (rear trip) | 2.6°C/s |
+| 036 | 714.0°C | 132 s | 97 s | 29 s | 115 s | 4.8°C/s |
+| 040 | 709.5°C | 147 s | 89 s | 24 s | 208 s | 2.7°C/s |
+
+About 17 min ≥600°C and 4 min ≥700°C in total. Runs009/014's 2047.8°C values
+are amplifier fault codes, not temperatures.
+
+**Likely cause: sheath overtemperature.** McMaster 4877K305 is rated 1,400°F
+(760°C) sheath exposure and 840°F (449°C) leads, and is meant for a reamed hole
+in metal. In sand, the sheath runs far hotter than a probe a few mm away: at
+108 V (~243 W over 63.5 mm, 3.8 kW/m) with dry sand k ≈ 0.25–0.35 W/m·K, the
+quasi-steady difference between the sheath (r = 6.35 mm) and a probe ~2 mm out
+is roughly 400–600°C once the near-field sand has warmed (~100 s). Even at half
+that, a 700°C probe reading implies a sheath above 760°C during every boost.
+Probe distance/contact was not recorded, so this is an estimate. Lead-exit
+temperature was not measured. The 730°C cutoff bounds only the probe reading.
+
+**Earlier signs.** Not clear. The 300→600°C rate is not monotonic (036 was fast
+again after 033), and the two slow runs are the longest boosts, so a setup
+difference is as likely as degradation.
+
+**Before replacing:** a good cartridge reads about 48 Ω across its leads
+(120²/300); open circuit confirms the element failed. Two replacements of the
+same part cost about $125.
+
