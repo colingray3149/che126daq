@@ -583,11 +583,8 @@ function renderEditor() {
 }
 $("#prog-name").addEventListener("input", e => { editing.program.name = e.target.value; });
 $("#btn-use-program").addEventListener("click", () => act(async () => {
-  const r = await api("/api/programs", editing.program);
-  if (editing.file && editing.file !== r.file) await api("/api/programs/delete", { file: editing.file });
-  editing.file = r.file;
-  await loadPrograms();
-  const idx = programs.findIndex(p => p.file === r.file);
+  const file = await saveEditing();
+  const idx = programs.findIndex(p => p.file === file);
   $("#start-program").value = String(idx);
   localStorage.setItem("startProgram", String(idx));
   showTab("live");
@@ -647,15 +644,19 @@ $("#btn-add-step").addEventListener("click", () => {
   renderEditor();
 });
 $("#btn-add-end").addEventListener("click", () => { editing.program.end_when.push({ tc: 2, op: ">=", temp: 85 }); renderEditor(); });
-$("#btn-save-program").addEventListener("click", () => act(async () => {
+// Saving under a new name makes a new program; the original stays (Delete removes it).
+async function saveEditing() {
+  const before = editing.file;
   const r = await api("/api/programs", editing.program);
-  if (editing.file && editing.file !== r.file) await api("/api/programs/delete", { file: editing.file });
   editing.file = r.file;
   await loadPrograms();
+  renderProgramListMarks();
   const msg = $("#prog-msg");
   msg.className = "small msg-ok";
-  msg.textContent = "Saved. It is in the Program list on the Live tab.";
-}));
+  msg.textContent = before && before !== r.file ? "Saved as a new program, “" + editing.program.name + "”. The original is unchanged." : "Saved.";
+  return r.file;
+}
+$("#btn-save-program").addEventListener("click", () => act(saveEditing));
 $("#btn-delete-program").addEventListener("click", () => act(async () => {
   if (!editing.file) { newProgram(); return; }
   if (!confirm("Delete program “" + editing.program.name + "”?")) return;
