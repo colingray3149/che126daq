@@ -74,7 +74,12 @@ class Bootloader:
         deadline = time.monotonic() + timeout
         state, buf, size = 0, bytearray(), 0
         while time.monotonic() < deadline:
-            c = self.ser.read(1)
+            try:
+                c = self.ser.read(1)
+            except serial.SerialException as e:
+                if "1460" in str(e):  # Windows: read timed out with no data
+                    continue
+                raise
             if not c:
                 continue
             b = c[0]

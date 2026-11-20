@@ -224,7 +224,12 @@ class BoardLink:
                 return
             try:
                 chunk = ser.read(getattr(ser, "in_waiting", 0) or 1)
-            except (serial.SerialException, OSError, TypeError, AttributeError, ValueError) as e:
+            except serial.SerialException as e:
+                if _is_timeout(e):
+                    continue  # Windows error 1460: the read timed out with no data
+                self._close(_short(e) or "read failed")
+                return
+            except (OSError, TypeError, AttributeError, ValueError) as e:
                 self._close(_short(e) or "read failed")
                 return
             if not chunk:
@@ -311,6 +316,12 @@ class BoardLink:
                 ser.close()
             except Exception:
                 pass
+
+
+def _is_timeout(e):
+    """Some Windows serial drivers (and Wine) report a read that simply timed out as
+    ERROR_TIMEOUT (1460) instead of returning no bytes."""
+    return "1460" in str(e) or "Timeout" in str(e) and "GetOverlappedResult" in str(e)
 
 
 def _short(e):
