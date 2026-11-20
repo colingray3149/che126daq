@@ -40,8 +40,8 @@ holds a temperature without a program. Grey dashes on the charts are the predict
 shaded bands are heater on.
 
 **Runs tab:** every run with its plots, numbers (hover a label for how it is calculated), notes
-and files. Tick runs and press *Compare* to overlay them. **Findings** is the analysis of runs
-001–068 and what to test next.
+and files. Tick runs and press *Compare* to overlay them. **Findings** has the analysis of runs
+001–068 and what to test next, the history of the rig, and the hardware notes.
 
 ## Where things are
 
@@ -51,6 +51,7 @@ and files. Tick runs and press *Compare* to overlay them. **Findings** is the an
 | `programs/` | saved programs (JSON, editable in the Program tab) |
 | `analysis/` | findings across runs, figures, `analyze.py` |
 | `docs/hardware.md` | wiring, the TC513, safety; `docs/datasheets/` |
+| `docs/history.md` | what was built, run and changed, day by day |
 | `settings.json` | your settings (created when you save the Settings tab) |
 | `firmware/` | Arduino firmware; upload it from Settings → Board → *Upload firmware* |
 | `che126/`, `web/` | the program itself; `AGENTS.md` explains it for an AI assistant |

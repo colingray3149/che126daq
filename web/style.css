@@ -251,3 +251,5 @@ code { background: var(--bg); padding: 1px 5px; border-radius: 4px; font-size: 1
   .chart { min-height: 220px; }
   .pick.runs { max-height: 40vh; overflow-y: auto; }
 }
+.doc-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 10px; flex: 1; min-height: 0; width: 100%; }
+.doc-wrap .doc { width: 100%; flex: 1; }

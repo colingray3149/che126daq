@@ -898,16 +898,21 @@ $("#btn-compare").addEventListener("click", () => act(async () => {
 
 // ------------------------------------------------------------------ findings
 // analysis/README.md rendered with a small Markdown subset (headings, lists, tables, images, bold, code, links).
-async function loadFindings() {
+let docShown = null;
+async function loadFindings(path) {
+  path = path || docShown || "/analysis/README.md";
   const box = $("#findings");
-  if (box.dataset.loaded) return;
-  const r = await fetch("/analysis/README.md");
-  if (!r.ok) { box.textContent = "analysis/README.md not found"; return; }
-  box.innerHTML = renderMarkdown(await r.text(), "/analysis/");
+  if (docShown === path && box.childElementCount) return;
+  docShown = path;
+  $$("#doc-seg button").forEach(b => b.classList.toggle("on", b.dataset.doc === path));
+  const r = await fetch(path);
+  if (!r.ok) { box.textContent = path + " not found"; return; }
+  const base = path.slice(0, path.lastIndexOf("/") + 1);
+  box.innerHTML = renderMarkdown(await r.text(), base);
   box.querySelectorAll("img").forEach(img => img.addEventListener("click", () => openLightbox(img.src)));
-  box.querySelectorAll("a[href^='runs/'], a[href^='../runs/']").forEach(a => a.addEventListener("click", e => { e.preventDefault(); }));
-  box.dataset.loaded = "1";
+  box.scrollTop = 0;
 }
+$$("#doc-seg button").forEach(b => b.addEventListener("click", () => loadFindings(b.dataset.doc)));
 function inlineMd(t, base) {
   t = escapeHtml(t);
   t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => '<img alt="' + alt + '" src="' + (src.startsWith("http") ? src : base + src) + '">');
@@ -959,7 +964,7 @@ function renderSettings() {
   const powerLine = el("div", { class: "hint" });
   function refreshPower() {
     const w = s.heater_W * Math.pow(s.variac_V / s.heater_rated_V, 2);
-    powerLine.textContent = "Full power = " + s.heater_W + " W × (" + s.variac_V + " V / " + s.heater_rated_V + " V)² = " + Math.round(w) + " W. Saved settings: heater side can reach about " + (S ? S.max_surface_C : "?") + " °C at full power.";
+    powerLine.textContent = "Full power = " + s.heater_W + " W × (" + s.variac_V + " V ÷ " + s.heater_rated_V + " V)² = " + Math.round(w) + " W." + (S ? " At the saved voltage, full power would eventually take the heater side to about " + S.max_surface_C + " °C (model)." : "");
   }
   refreshPower();
 

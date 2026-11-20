@@ -130,11 +130,12 @@ def make_handler(app, web_dir):
                 if rel.startswith("..") or os.path.isabs(rel):
                     return self._error("not found", 404)
                 return self._file(os.path.join(web_dir, rel))
-            if path.startswith("/analysis/"):
-                rel = os.path.normpath(path[len("/analysis/"):])
-                if rel.startswith("..") or os.path.isabs(rel):
-                    return self._error("not found", 404)
-                return self._file(os.path.join(app.root, "analysis", rel))
+            for top in ("analysis", "docs"):
+                if path.startswith("/%s/" % top):
+                    rel = os.path.normpath(path[len(top) + 2:])
+                    if rel.startswith("..") or os.path.isabs(rel):
+                        return self._error("not found", 404)
+                    return self._file(os.path.join(app.root, top, rel))
             if path == "/api/ping":
                 return self._json({"app": "che126daq"})
             if path == "/api/state":
