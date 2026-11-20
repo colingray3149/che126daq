@@ -65,9 +65,32 @@ def make_handler(app, web_dir):
             self.send_response(200)
             self.send_header("Content-Type", CTYPES.get(ext, "application/octet-stream"))
             self.send_header("Content-Length", str(len(data)))
-            self.send_header("Cache-Control", "no-cache")
+            self.send_header("Cache-Control", "no-store")
             if download:
                 self.send_header("Content-Disposition", 'attachment; filename="%s"' % os.path.basename(path))
+            self.end_headers()
+            self.wfile.write(data)
+
+        def _index(self):
+            # Stamp asset URLs with their modification time so a browser never runs
+            # an old cached app.js against new HTML (it happened with the old hub's tab).
+            with open(os.path.join(web_dir, "index.html"), encoding="utf-8") as f:
+                html = f.read()
+
+            def stamp(m):
+                rel = m.group(2)
+                try:
+                    v = int(os.path.getmtime(os.path.join(web_dir, rel)))
+                except OSError:
+                    v = 0
+                return '%s="/web/%s?v=%d"' % (m.group(1), rel, v)
+
+            html = re.sub(r'(src|href)="/web/([^"?]+)"', stamp, html)
+            data = html.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store")
             self.end_headers()
             self.wfile.write(data)
 
@@ -101,7 +124,7 @@ def make_handler(app, web_dir):
             path = unquote(url.path)
             q = parse_qs(url.query)
             if path in ("/", "/index.html"):
-                return self._file(os.path.join(web_dir, "index.html"))
+                return self._index()
             if path.startswith("/web/"):
                 rel = os.path.normpath(path[5:])
                 if rel.startswith("..") or os.path.isabs(rel):

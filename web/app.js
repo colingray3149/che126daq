@@ -99,6 +99,14 @@ function heatBandsPlugin(getHeat) {
   };
 }
 
+function fmtMin(v) {
+  if (v === null || v === undefined) return "";
+  const neg = v < 0;
+  const t = Math.round(Math.abs(v) * 60);
+  const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), sec = t % 60;
+  return (neg ? "−" : "") + (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(sec).padStart(2, "0");
+}
+
 function minSpan(lo, hi) {
   if (lo === null || hi === null) return [0, 50];
   const span = hi - lo;
@@ -115,7 +123,7 @@ function makeChart(host, title, color, getHeat, extraSeries, opts2) {
   box.append(plot);
   host.append(box);
   const series = [
-    { label: "min", value: (u, v) => v === null ? "—" : v.toFixed(2) },
+    { label: "time", value: (u, v) => v === null ? "—" : fmtMin(v) },
     ...(extraSeries || [
       { label: "°C", stroke: color, width: 2, spanGaps: false, points: { show: false }, value: (u, v) => v === null ? "—" : v.toFixed(1) },
       { label: "setpoint", stroke: color, dash: [6, 5], width: 1.5, points: { show: false }, value: (u, v) => v === null ? "—" : v.toFixed(1) },
@@ -128,7 +136,9 @@ function makeChart(host, title, color, getHeat, extraSeries, opts2) {
     series,
     scales: { x: { time: false }, y: { range: (u, lo, hi) => minSpan(lo, hi) } },
     axes: [
-      { label: "minutes", size: 34, labelSize: 14, grid: { stroke: "#eef0f3" } },
+      { label: opts2.xLabel || "time since start (m:ss)", size: 34, labelSize: 14, grid: { stroke: "#eef0f3" },
+        incrs: [1 / 60, 5 / 60, 10 / 60, 15 / 60, 30 / 60, 1, 2, 5, 10, 15, 30, 60, 120],
+        values: (u, vals) => vals.map(v => fmtMin(v)) },
       { label: "°C", size: 52, labelSize: 14, grid: { stroke: "#eef0f3" } },
     ],
     cursor: { drag: { x: true, y: false }, sync: { key: "sync-" + host.id } },
@@ -211,7 +221,7 @@ function drawLive(force) {
       const last = ys.length ? ys[ys.length - 1] : null;
       u._box.querySelector(".now").textContent = last === null || last === undefined ? "" : last.toFixed(1) + " °C";
     }
-    $("#chart-caption").textContent = live.runId ? "Run " + live.runId + " · minutes since start" + (pred ? " · grey dashes: predicted run" : "") + " · shaded: heater on" : "Not recording · shaded: heater on";
+    $("#chart-caption").textContent = live.runId ? "Run " + live.runId + (pred ? " · grey dashes: predicted run" : "") + " · shaded: heater on" : "Not recording · shaded: heater on";
   });
 }
 
@@ -620,7 +630,7 @@ async function runPreview() {
     { label: "core (model)", stroke: "#adb5bd", width: 1.5, dash: [3, 4] },
     { label: "setpoint", stroke: COLORS[0], width: 1.2, dash: [6, 5] },
   ].map(x => Object.assign(x, { value: (u, v) => v === null ? "—" : v.toFixed(0) }));
-  pvChart = makeChart(host, "Predicted · minutes from start", "#495057", () => pv.heat, series, { legend: true });
+  pvChart = makeChart(host, "Predicted", "#495057", () => pv.heat, series, { legend: true });
   pvChart._box.style.flex = "none"; pvChart._box.style.height = "320px";
   pvChart.setData([pv.t.map(t => t / 60), pv.tc1, pv.tc2, pv.core, pv.sp]);
   // Step boundaries as labels under the chart.
@@ -873,7 +883,7 @@ $("#btn-compare").addEventListener("click", () => act(async () => {
       const xsAll = new Set();
       const maps = datas.map((d, k) => { const m = new Map(); d.t.forEach((t, j) => { const x = Math.round((t - offsets[k]) / 60 * 200) / 200; m.set(x, d["tc" + (i + 1)][j]); xsAll.add(x); }); return m; });
       const xs = [...xsAll].sort((a, b) => a - b);
-      const u = makeChart(host, "TC" + (i + 1) + " · " + (i === 0 ? "heater side" : "barrier rear"), COLORS[i], null, series, { legend: true });
+      const u = makeChart(host, "TC" + (i + 1) + " · " + (i === 0 ? "heater side" : "barrier rear"), COLORS[i], null, series, { legend: true, xLabel: "time from the alignment point (m:ss)" });
       u._box.style.flex = "none"; u._box.style.height = "300px";
       u.setData([xs, ...maps.map(m => xs.map(x => (m.has(x) ? m.get(x) : null)))]);
       runCharts.push(u);
