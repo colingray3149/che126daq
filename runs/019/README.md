@@ -1,6 +1,6 @@
 # Run 019 — EXP3 short start/stop
 
-2026-11-06 18:03 UTC · 65 V · 16:44 long · partial
+2026-11-06 10:03 PST · 65 V · 16:44 long · partial
 
 **Setup:** 1 mica / 2 basalt / 1 Al, semi-gravelly sand. Variac preset 65 V.
 

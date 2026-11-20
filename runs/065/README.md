@@ -1,6 +1,6 @@
 # Run 065 — Idle recording (no heating)
 
-2026-11-16 18:50 UTC · 85:12 long · idle
+2026-11-16 10:50 PST · 85:12 long · idle
 
 85 minutes idle during the internal-TC troubleshooting (TC3 faults, then exact zeros).
 

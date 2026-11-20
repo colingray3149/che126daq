@@ -1,6 +1,6 @@
 # Run 064 — EXP7: internal TC on MAX31855 faulted at heat-on
 
-2026-11-16 18:29 UTC · 100 V · 0:13 long · setup
+2026-11-16 10:29 PST · 100 V · 0:13 long · setup
 
 **Setup:** New cartridge with internal grounded K TC on amplifier 3. Control stack: 1 aluminum sheet. McMaster 8440T32 cartridge, 500 W at 120 V, internal grounded K TC.
 

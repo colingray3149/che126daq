@@ -1,6 +1,6 @@
 # Run 013 — Idle recording (no heating)
 
-2026-11-02 20:14 UTC · 0:08 long · idle
+2026-11-02 12:14 PST · 0:08 long · idle
 
 Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 

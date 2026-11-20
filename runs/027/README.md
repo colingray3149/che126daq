@@ -1,6 +1,6 @@
 # Run 027 — Idle recording (no heating)
 
-2026-11-09 18:19 UTC · 8:31 long · idle
+2026-11-09 10:19 PST · 8:31 long · idle
 
 Recorded before EXP5 started. The heater-side TC rose from 50 to 73 °C at about 1:30 without a START; cause not recorded.
 

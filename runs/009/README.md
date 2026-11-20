@@ -1,6 +1,6 @@
 # Run 009 — First relay control attempt (EXP2, 30 V)
 
-2026-11-02 18:55 UTC · 30 V · 20:31 long · setup
+2026-11-02 10:55 PST · 30 V · 20:31 long · setup
 
 EXP2 started; within 4.5 s raw TC2 jumped past the 140 °C rear limit and tripped. Raw TC2 was on the heater side, i.e. the probes were already the other way round from the plan. Garbage frames (2047.75 °C) follow.
 

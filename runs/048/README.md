@@ -1,6 +1,6 @@
 # Run 048 — Dead cartridge: heat commanded, no rise
 
-2026-11-13 19:34 UTC · 100 V · 3:00 long · failure
+2026-11-13 11:34 PST · 100 V · 3:00 long · failure
 
 **Setup:** Control stack: 1 aluminum sheet only.
 

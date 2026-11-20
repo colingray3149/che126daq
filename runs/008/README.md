@@ -1,6 +1,6 @@
 # Run 008 — Idle recording (no heating)
 
-2026-11-02 18:39 UTC · 15:55 long · idle
+2026-11-02 10:39 PST · 15:55 long · idle
 
 Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness. TC2 shows unexplained spikes (to 261 °C) and TC1 to 83 °C.
 

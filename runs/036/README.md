@@ -1,6 +1,6 @@
 # Run 036 — Test 5: 1 mica / 2 fiberglass / 1 Al, 700 °C 60 s
 
-2026-11-13 18:01 UTC · 100 V · 15:40 long · test
+2026-11-13 10:01 PST · 100 V · 15:40 long · test
 
 **Setup:** 1 mica (0.032 in) / 2 fiberglass heat-barrier strip (McMaster 4234N12, 0.045 in) / 1 aluminum. Fine, less rocky sand (from run 034). McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 

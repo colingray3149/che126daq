@@ -1,6 +1,6 @@
 # Run 068 — EXP8: TC513 on internal TC, 650 °C; did not hold
 
-2026-11-16 20:41 UTC · 100 V · 16:28 long · test
+2026-11-16 12:41 PST · 100 V · 16:28 long · test
 
 **Setup:** Barrier not recorded. McMaster 8440T32 cartridge, 500 W at 120 V, internal grounded K TC at 100 V (about 347 W). The Selec TC513 reads the internal TC with setpoint 650 °C; the DAQ relay feeds both the TC513 and the heater.
 

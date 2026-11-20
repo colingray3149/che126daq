@@ -1,6 +1,6 @@
 # Run 057 — Dead cartridge: heat commanded, no rise
 
-2026-11-13 19:41 UTC · 100 V · 1:12 long · failure
+2026-11-13 11:41 PST · 100 V · 1:12 long · failure
 
 **Setup:** Control stack: 1 aluminum sheet only.
 

@@ -1,6 +1,6 @@
 # Run 006 — First heat: mica only, leaned on block
 
-2026-10-30 18:07 UTC · 6:49 long · partial
+2026-10-30 11:07 PDT · 6:49 long · partial
 
 **Setup:** 1 mica sheet; heater-side TC wired beside the cartridge, rear TC wired to the far face; leaned against the cinder block (no sand). Variac voltage not recorded. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC).
 

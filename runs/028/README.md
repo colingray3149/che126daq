@@ -1,6 +1,6 @@
 # Run 028 — Test 4: EXP5 700 °C, 60 s hold (completed)
 
-2026-11-09 18:27 UTC · 100 V · 18:37 long · test
+2026-11-09 10:27 PST · 100 V · 18:37 long · test
 
 **Setup:** Barrier not recorded (same session as 030/033). Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 

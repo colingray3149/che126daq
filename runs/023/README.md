@@ -1,6 +1,6 @@
 # Run 023 — Test 2: hold 300 °C, ~70 V, 1 mica / 2 basalt / 1 Al
 
-2026-11-06 18:26 UTC · 70 V · 27:35 long · test
+2026-11-06 10:26 PST · 70 V · 27:35 long · test
 
 **Setup:** 1 mica / 2 basalt fabric / 1 aluminum. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC) at about 70 V (operator; 65 V preset).
 

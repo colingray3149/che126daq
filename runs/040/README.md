@@ -1,6 +1,6 @@
 # Run 040 — Test 6: 1 mica / 3 ceramic fiber / 1 Al; cartridge died
 
-2026-11-13 18:46 UTC · 100 V · 19:12 long · test
+2026-11-13 10:46 PST · 100 V · 19:12 long · test
 
 **Setup:** 1 mica (0.032 in) / 3 ceramic fiber pipe insulation (alumina, McMaster 87575K35, 1/32 in) / 1 aluminum. Fine sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 

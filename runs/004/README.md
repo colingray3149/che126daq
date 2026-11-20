@@ -1,6 +1,6 @@
 # Run 004 — Commissioning, no valid readings
 
-2026-10-30 17:28 UTC · 0:15 long · setup
+2026-10-30 10:28 PDT · 0:15 long · setup
 
 First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating.
 

@@ -1,6 +1,6 @@
 # Run 030 — EXP5 repeat: rear cutoff 120 °C tripped
 
-2026-11-09 20:03 UTC · 100 V · 18:26 long · partial
+2026-11-09 12:03 PST · 100 V · 18:26 long · partial
 
 **Setup:** Barrier not recorded. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 

@@ -1,6 +1,6 @@
 # Run 038 — EXP6 start aborted after 4 s
 
-2026-11-13 18:45 UTC · 100 V · 0:04 long · partial
+2026-11-13 10:45 PST · 100 V · 0:04 long · partial
 
 **Setup:** 1 mica / 3 ceramic fiber / 1 Al.
 

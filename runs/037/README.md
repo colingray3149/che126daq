@@ -1,6 +1,6 @@
 # Run 037 — Idle recording (no heating)
 
-2026-11-13 18:44 UTC · 1:08 long · idle
+2026-11-13 10:44 PST · 1:08 long · idle
 
 Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 

@@ -1,6 +1,6 @@
 # Run 026 — Test 3: EXP4 to 700 °C, rear cutoff 85 °C
 
-2026-11-06 20:48 UTC · 100 V · 17:19 long · test
+2026-11-06 12:48 PST · 100 V · 17:19 long · test
 
 **Setup:** Barrier not recorded (probably the 1 mica / 2 basalt / 1 Al stack still in place). Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 

@@ -1,6 +1,6 @@
 # Run 017 — Test 1: 1 mica / 2 basalt / 1 Al, rear cutoff 85 °C
 
-2026-11-06 17:33 UTC · 20:51 long · test
+2026-11-06 09:33 PST · 20:51 long · test
 
 **Setup:** 1 mica (85165K26, 0.032 in) / 2 basalt fabric (3/64 in) / 1 aluminum sheet. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC). Variac voltage not recorded (30 V preset in config).
 
