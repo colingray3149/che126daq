@@ -1,0 +1,40 @@
+{
+  "name": "Hold 300 C for 30 min",
+  "steps": [
+    {
+      "type": "full",
+      "tc": 1,
+      "temp": 280.0,
+      "time": null,
+      "wait": false
+    },
+    {
+      "type": "ramp",
+      "tc": 1,
+      "temp": 300.0,
+      "time": 30.0,
+      "wait": false
+    },
+    {
+      "type": "hold",
+      "tc": 1,
+      "temp": 300.0,
+      "time": 1800.0,
+      "wait": false
+    },
+    {
+      "type": "off",
+      "tc": 1,
+      "temp": 50.0,
+      "time": null,
+      "wait": false
+    }
+  ],
+  "end_when": [],
+  "cutoffs": {
+    "1": 400.0,
+    "2": 120.0,
+    "3": null
+  },
+  "end_run": true
+}

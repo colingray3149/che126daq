@@ -1,21 +1,26 @@
-# Run 044 — control attempt, dead cartridge
+# Run 044 — Dead cartridge: heat commanded, no rise
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Selected settings](experiment.toml) · [Applied settings](experiment-applied.json) · [Interactive report](report.html)
+2026-11-13 19:30 UTC · 100 V · 0:43 long · failure
 
-Control attempt (aluminum only), EXP6 START; heater commanded ON ~43 s with no temperature rise; operator STOP. Dead cartridge.
+**Setup:** Control stack: 1 aluminum sheet only.
 
-Cartridge failure: after run040 the cartridge produced no heat. The heater was commanded ON and the heater reading did not rise; the operator measured about 108 V at the cartridge with no heating.
+After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault).
 
-**87 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+| | |
+|---|---|
+| TC1 Heater side peak | 34.5 °C at 0:40 |
+| TC2 Barrier rear peak | 35.2 °C at 0:43 |
+| TC2 rise | 0.0 °C |
+| Relay on | 0:42 |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**.
+![rear.png](rear.png)
 
-![Run 044 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+- Control attempt (aluminum only), EXP6 START; heater commanded ON ~43 s with no temperature rise; operator STOP. Dead cartridge.
+- Cartridge failure: after run040 the cartridge produced no heat. The heater was commanded ON and the heater reading did not rise; the operator measured about 108 V at the cartridge with no heating.
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**.
-
-![Run 044 full-history TC2 — rear graph](rear.png)
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [experiment-applied.json](experiment-applied.json) · [experiment.toml](experiment.toml) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

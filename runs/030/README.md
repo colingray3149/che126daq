@@ -1,27 +1,58 @@
-# Run 030 — EXP5 rear-limit trip and cooldown
+# Run 030 — EXP5 repeat: rear cutoff 120 °C tripped
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Selected settings](experiment.toml) · [Applied settings](experiment-applied.json) · [Interactive report](report.html)
+2026-11-09 20:03 UTC · 100 V · 18:26 long · partial
 
-EXP5 START and normal NEXT are acknowledged in the saved events; the board later tripped `TC2_LIMIT` during BOOST_FINAL. No700°C final hold/completion is recorded.
+**Setup:** Barrier not recorded. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.
 
-**2,215 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis. See [run notes](notes.md) for the dated closeout.
+Same program as 028, run straight after. The rear rose much faster (fitted rear gain 0.43 vs 0.20) and tripped the 120 °C cutoff at 3:38 with the heater side only at 483 °C. Something in the stack or the rear TC's contact changed between 028 and 030; not recorded.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 483.0 °C at 3:45 |
+| TC2 Barrier rear peak | 139.5 °C at 4:50 |
+| TC1 reached 100 °C after heat on | 0:27 |
+| TC1 reached 200 °C after heat on | 2:06 |
+| TC1 reached 400 °C after heat on | 3:08 |
+| TC2 rise | 111.2 °C |
+| Fitted rear gain | 0.42 (±10.1 °C) |
+| Relay on | 2:29 |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 2,215 finite readings out of 2,215 saved rows.
+![heater.png](heater.png)
 
-![Run 030 full-history TC1 — heater graph](heater.png)
+![rear.png](rear.png)
 
-## TC2 — rear
+## Comments
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 2,215 finite readings out of 2,215 saved rows.
+**2026-11-09 closeout — EXP5 rear-cutoff trip; no completed 700°C/60s hold.**
+Logical heater/cartridge = raw `tc2_C`; logical rear/barrier = raw `tc1_C`.
+The CSV columns remain in raw physical-channel order. Board-applied settings
+were final target700°C, heater cutoff730°C, rear cutoff120°C enabled/required,
+hysteresis3°C, prediction lead5s, minimum OFF5s, hold band±5°C and60s elapsed
+final hold. Saved100V is manual-preset metadata, not a measured or
+software-controlled voltage.
 
-![Run 030 full-history TC2 — rear graph](rear.png)
+EXP5 START request3 was acknowledged at20:03:04.220 UTC; NEXT request4 at
+20:03:32.317 UTC; BOOST_FINAL was reported at20:05:11.654 UTC. At
+**20:06:42.606 UTC**, the controller reported **TRIPPED / BOOST_FINAL /
+TC2_LIMIT / heater_on=false**. This was the logical rear (raw TC1) cutoff, not
+an assistant-issued STOP; commanded OFF is telemetry, not independent proof of
+power removal. Recording continued until stopped by command at20:21:31.018 UTC.
 
-## Source and interactive viewing
+| Quantity | Result |
+|---|---:|
+| Saved samples | 2215 |
+| First→last sample span | 1106.446s (18m26.446s) |
+| First / last sample UTC | 20:03:04.417 / 20:21:30.863 |
+| Initial heater/rear | 28.0 / 28.25°C |
+| Maximum heater, UTC20:06:48.300 | 483.0°C |
+| Maximum rear, UTC20:07:39.775 | 139.5°C |
+| Trip→last saved sample | 888.257s (14m48.257s) |
+| Final saved heater/rear | 90.75 / 75.0°C |
 
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/030`; static PNGs are snapshots, not live views.
+No saved heater sample reached700°C, and the events contain neither HOLD_FINAL
+nor COMPLETE. This run is therefore not recorded as a successful final-target
+test. All saved temperatures are finite, flags are empty and all samples belong
+to epoch4. Raw CSV, events and original configuration/metadata snapshots are
+unchanged; only this closeout was appended.
 
-CSV SHA-256: `c08cd376ab4fd3209a42570b62df5f0eb4980d1e5f9604013291908a61fa4785`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, settings and role metadata are unchanged by rendering. The dated publication closeout is appended below the original notes' Comments heading.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [experiment-applied.json](experiment-applied.json) · [experiment.toml](experiment.toml) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

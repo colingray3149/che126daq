@@ -1,0 +1,40 @@
+{
+  "name": "700 C, 60 s hold (EXP5-6 style)",
+  "steps": [
+    {
+      "type": "full",
+      "tc": 1,
+      "temp": 100.0,
+      "time": null,
+      "wait": true
+    },
+    {
+      "type": "ramp",
+      "tc": 1,
+      "temp": 200.0,
+      "time": 90.0,
+      "wait": false
+    },
+    {
+      "type": "hold",
+      "tc": 1,
+      "temp": 700.0,
+      "time": 60.0,
+      "wait": false
+    },
+    {
+      "type": "off",
+      "tc": 1,
+      "temp": 80.0,
+      "time": null,
+      "wait": false
+    }
+  ],
+  "end_when": [],
+  "cutoffs": {
+    "1": 730.0,
+    "2": 120.0,
+    "3": null
+  },
+  "end_run": false
+}

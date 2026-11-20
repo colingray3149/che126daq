@@ -1,29 +1,24 @@
-# Run 009 — Supporting recording
+# Run 009 — First relay control attempt (EXP2, 30 V)
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-02 18:55 UTC · 30 V · 20:31 long · setup
 
-**2,464 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+EXP2 started; within 4.5 s raw TC2 jumped past the 140 °C rear limit and tripped. Raw TC2 was on the heater side, i.e. the probes were already the other way round from the plan. Garbage frames (2047.75 °C) follow.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 1235.0 °C at 3:06 |
+| TC2 Barrier rear peak | 1249.2 °C at 6:39 |
+| TC1 reached 100 °C after heat on | 0:03 |
+| TC1 reached 200 °C after heat on | 2:46 |
+| TC1 reached 400 °C after heat on | 2:46 |
+| TC1 reached 600 °C after heat on | 2:46 |
+| TC1 reached 700 °C after heat on | 3:05 |
+| TC2 rise | 1226.8 °C |
+| Fitted rear gain | 0.13 (±6.3 °C) |
+| Relay on | 0:04 |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC1)**. 2,190 finite readings out of 2,464 saved rows.
+![heater.png](heater.png)
 
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
+![rear.png](rear.png)
 
-![Run 009 full-history TC1 — heater graph](heater.png)
-
-## TC2 — rear
-
-Saved-source interpretation: **TC2 · REAR (raw TC2)**. 541 finite readings out of 2,464 saved rows.
-
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
-
-![Run 009 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/009`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `5d3f9e838b5a89d91b7d39c1397ded948db7c98b820c2a97e212892fc270a273`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png)

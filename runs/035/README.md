@@ -1,19 +1,21 @@
-# Run 035 — pre-EXP6 supporting recording
+# Run 035 — Idle recording (no heating)
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Interactive report](report.html)
+2026-11-13 18:01 UTC · 0:44 long · idle
 
-Room-temperature idle acquisition before EXP6 START (board IDLE, no heating); retained as supporting history.
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-**86 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+| | |
+|---|---|
+| TC1 Heater side peak | 24.5 °C at 0:44 |
+| TC2 Barrier rear peak | 25.0 °C at 0:44 |
+| TC2 rise | 0.0 °C |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 86 finite readings out of 86 saved rows.
+![rear.png](rear.png)
 
-![Run 035 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 86 finite readings out of 86 saved rows.
-
-![Run 035 full-history TC2 — rear graph](rear.png)
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

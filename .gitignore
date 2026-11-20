@@ -1,11 +1,10 @@
 __pycache__/
 *.py[cod]
+*.tmp
+settings.json
 .venv/
-.env
-.env.*
-!.env.example
-.direnv/
 build/
 *.kate-swp
 *.swp
 *~
+.DS_Store

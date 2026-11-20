@@ -1,29 +1,23 @@
-# Run 012 — Supporting recording
+# Run 012 — Idle recording (no heating)
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-02 19:54 UTC · 19:59 long · idle
 
-**2,400 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 1315.8 °C at 17:10 |
+| TC2 Barrier rear peak | 662.5 °C at 13:12 |
+| TC1 reached 100 °C after heat on | 13:58 |
+| TC1 reached 200 °C after heat on | 13:58 |
+| TC1 reached 400 °C after heat on | 13:58 |
+| TC1 reached 600 °C after heat on | 16:47 |
+| TC1 reached 700 °C after heat on | 17:09 |
+| TC2 rise | 639.5 °C |
+| Fitted rear gain | 0.02 (±1.4 °C) |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC1)**. 1,791 finite readings out of 2,400 saved rows.
+![heater.png](heater.png)
 
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
+![rear.png](rear.png)
 
-![Run 012 full-history TC1 — heater graph](heater.png)
-
-## TC2 — rear
-
-Saved-source interpretation: **TC2 · REAR (raw TC2)**. 143 finite readings out of 2,400 saved rows.
-
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
-
-![Run 012 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/012`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `8dd35e6d788f18bbb6d0456cab0bbb8921c76059f7d1c96cc8fd4fd3871e7dd9`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png)

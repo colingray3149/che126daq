@@ -1,27 +1,25 @@
-# Run 027 — Supporting recording before EXP5
+# Run 027 — Idle recording (no heating)
 
-[All runs](../README.md) · [Successful EXP5](../README.md#successful-exp5--run028) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-09 18:19 UTC · 8:31 long · idle
 
-Supporting acquisition finalized when EXP5 started in [run028](../028/). No applied heater-control settings were saved for this recording; retained exp4 role/voltage metadata is not evidence of an EXP4 START.
+Recorded before EXP5 started. The heater-side TC rose from 50 to 73 °C at about 1:30 without a START; cause not recorded.
 
-**1,024 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+| | |
+|---|---|
+| TC1 Heater side peak | 73.0 °C at 1:57 |
+| TC2 Barrier rear peak | 26.8 °C at 8:32 |
+| TC2 rise | 2.8 °C |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 1,016 finite readings out of 1,024 saved rows.
+![rear.png](rear.png)
 
-![Run 027 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+Supporting acquisition immediately before EXP5:1024 saved samples, with no
+EXP5 applied-settings snapshot. This intended exp027 recording was finalized at
+18:27:43.477 UTC when EXP5 START allocated the actual experiment recording,
+[run028](../028/notes.md). The event log contains one rawTC2 NaN fault at
+18:23:22.763 UTC; no completed EXP5 sequence is attributed to this run.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 1,024 finite readings out of 1,024 saved rows.
-
-![Run 027 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/027`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `3ef3fde8856738ce279e09a601f59c78336167e0ae1351af21a727b0972cf791`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, settings and role metadata are unchanged by rendering. The dated publication closeout is appended below the original notes' Comments heading.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

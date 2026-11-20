@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CHE 126 DAQ</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='%23e8590c'/></svg>">
+<link rel="stylesheet" href="/web/vendor/uPlot.min.css">
+<link rel="stylesheet" href="/web/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">CHE 126 DAQ</div>
+  <nav>
+    <button data-tab="live" class="on">Live</button>
+    <button data-tab="program">Program</button>
+    <button data-tab="runs">Runs</button>
+    <button data-tab="findings">Findings</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+  <div class="status">
+    <span id="rec" class="pill hidden"></span>
+    <span id="conn" class="pill"></span>
+    <button id="btn-reconnect" class="ghost" title="Close and reopen the serial port">Reconnect</button>
+    <button id="btn-restart" class="ghost" title="Reload settings and reconnect">Restart</button>
+  </div>
+</header>
+
+<div id="banner" class="banner hidden"></div>
+<div id="offline" class="banner warn hidden">Lost contact with daq.py. Is it still running? Retrying…</div>
+
+<main>
+<!-- LIVE -->
+<section id="tab-live" class="tab on">
+  <aside class="side">
+    <div id="readouts" class="readouts"></div>
+
+    <div class="card heater">
+      <div class="row between">
+        <span class="label">Heater</span>
+        <span id="heat" class="heatpill off">OFF</span>
+      </div>
+      <div class="duty" title="Share of the last 30 s the heater was on"><div id="duty-bar"></div></div>
+      <div class="row between small muted">
+        <span id="power"></span>
+        <span id="setpoint"></span>
+      </div>
+      <div class="row between small muted">
+        <span title="Model estimate of the inside of the cartridge (not measured). See Settings › Thermal model.">Cartridge core (model)</span>
+        <span id="core"></span>
+      </div>
+    </div>
+
+    <div id="start-card" class="card">
+      <div class="label">New run</div>
+      <label>Program <select id="start-program"></select></label>
+      <div class="row gap">
+        <label class="grow">Variac <span class="unit-input"><input id="start-volts" type="number" step="1" min="1" max="300"><i>V</i></span></label>
+        <label class="grow">Title <input id="start-title" type="text" placeholder="optional"></label>
+      </div>
+      <label>Setup <textarea id="start-setup" rows="2" placeholder="Barrier stack, sand, anything to remember"></textarea></label>
+      <button id="btn-start" class="primary wide">Start run</button>
+    </div>
+
+    <div id="run-card" class="card hidden">
+      <div class="row between">
+        <span class="label" id="run-title"></span>
+        <span class="small muted" id="run-clock"></span>
+      </div>
+      <ol id="steps" class="steps"></ol>
+      <div id="step-status" class="small muted"></div>
+      <button id="btn-next" class="next wide">NEXT</button>
+      <div class="row gap">
+        <button id="btn-stop" class="danger grow">Stop heat</button>
+        <button id="btn-end" class="grow">End run</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="label">Manual</div>
+      <div class="row gap">
+        <button id="btn-on" class="grow">Heat on</button>
+        <button id="btn-off" class="grow">Heat off</button>
+      </div>
+      <div class="row gap hold">
+        <span>Hold</span>
+        <select id="hold-tc"></select>
+        <span class="unit-input"><input id="hold-temp" type="number" step="1" placeholder="°C"><i>°C</i></span>
+        <button id="btn-hold">Hold</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row gap">
+        <input id="note" class="grow" type="text" placeholder="Note for this run…">
+        <button id="btn-note">Add</button>
+      </div>
+      <ul id="events" class="events"></ul>
+    </div>
+  </aside>
+
+  <div class="charts-col">
+    <div class="chart-tools">
+      <span class="muted small" id="chart-caption"></span>
+      <div class="seg" id="window">
+        <button data-min="5">5 m</button>
+        <button data-min="15">15 m</button>
+        <button data-min="30">30 m</button>
+        <button data-min="60">1 h</button>
+        <button data-min="0">All</button>
+      </div>
+    </div>
+    <div id="live-charts" class="charts"></div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section id="tab-program" class="tab">
+  <aside class="side list-side">
+    <div class="row between"><span class="label">Programs</span><button id="btn-new-program" class="ghost">New</button></div>
+    <ul id="program-list" class="pick"></ul>
+  </aside>
+  <div class="editor">
+    <div class="editor-main">
+      <div class="row gap">
+        <input id="prog-name" class="title-input grow" type="text" placeholder="Program name">
+        <button id="btn-save-program" class="primary">Save</button>
+        <button id="btn-use-program" title="Save, then pick it on the Live tab">Use on Live</button>
+        <button id="btn-delete-program" class="ghost">Delete</button>
+      </div>
+      <div id="prog-msg" class="small"></div>
+      <table class="steps-table">
+        <colgroup><col style="width:28px"><col style="width:116px"><col style="width:68px"><col style="width:96px"><col style="width:96px"><col style="width:58px"><col style="width:132px"></colgroup>
+        <thead><tr><th>#</th><th>Action</th><th>TC</th><th>Temp</th><th>Time</th><th title="When the step is done, keep its last action until you press NEXT">Wait for NEXT</th><th></th></tr></thead>
+        <tbody id="step-rows"></tbody>
+      </table>
+      <button id="btn-add-step" class="ghost">+ Step</button>
+      <div class="cols">
+        <div class="card">
+          <div class="label">Cutoffs <span class="muted small">the board turns heat off and stops the program</span></div>
+          <div id="cutoffs" class="row gap"></div>
+        </div>
+        <div class="card">
+          <div class="label">Finish early when</div>
+          <div id="end-rows"></div>
+          <button id="btn-add-end" class="ghost">+ Condition</button>
+        </div>
+      </div>
+      <label class="check"><input id="prog-end-run" type="checkbox"> End the run when the program finishes</label>
+      <div class="card help small muted">
+        <b>Full power</b>: heater on until the TC reaches the temperature (or for the time; both blank: until NEXT).
+        <b>Ramp</b>: setpoint moves from the TC's reading to the temperature over the time.
+        <b>Hold</b>: regulate at the temperature for the time (blank: until NEXT).
+        <b>Off</b>: heater off until the TC cools to the temperature (or for the time).
+        <b>Wait for NEXT</b>: after the step finishes, keep doing it until you press NEXT.
+        NEXT always jumps to the next step, at any time.
+      </div>
+    </div>
+    <div class="editor-side">
+      <div class="card">
+        <div class="row between">
+          <span class="label">Predicted run</span>
+          <span class="small muted" id="pv-volts"></span>
+        </div>
+        <div class="row gap small muted">Assume NEXT is pressed
+          <span class="unit-input" style="width:80px"><input id="pv-next" type="number" value="30" min="0"><i>s</i></span> after a step starts waiting</div>
+        <div id="pv-stats" class="stats"></div>
+        <ul id="pv-warn" class="warnings"></ul>
+        <div id="pv-chart" class="charts"></div>
+        <div class="small muted">Simulated with the thermal model and the same control rules as a real run (Settings › Thermal model). Shaded: heater on. Core: the model's estimate of the inside of the cartridge. A guide, not a measurement.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RUNS -->
+<section id="tab-runs" class="tab">
+  <aside class="side list-side">
+    <div class="row gap">
+      <input id="run-search" class="grow" type="text" placeholder="Search">
+      <select id="run-filter"><option value="key">Tests</option><option value="all">All runs</option></select>
+    </div>
+    <div class="row between small muted"><span>Tick runs to compare</span><button id="btn-compare" class="ghost small">Compare</button></div>
+    <ul id="run-list" class="pick runs"></ul>
+  </aside>
+  <div class="run-view" id="run-view">
+    <div class="empty muted">Pick a run.</div>
+  </div>
+</section>
+
+<!-- FINDINGS -->
+<section id="tab-findings" class="tab">
+  <article id="findings" class="doc"></article>
+</section>
+
+<!-- SETTINGS -->
+<section id="tab-settings" class="tab">
+  <div class="settings" id="settings-form"></div>
+</section>
+</main>
+
+<div id="lightbox" class="lightbox hidden"><img alt=""></div>
+
+<script src="/web/vendor/uPlot.iife.min.js"></script>
+<script src="/web/app.js"></script>
+</body>
+</html>

@@ -1,19 +1,23 @@
-# Run 037 — pre-EXP6 supporting recording
+# Run 037 — Idle recording (no heating)
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Interactive report](report.html)
+2026-11-13 18:44 UTC · 1:08 long · idle
 
-Idle acquisition before EXP6 START after a serial reopen/reset (board IDLE, no heating).
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-**136 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+| | |
+|---|---|
+| TC1 Heater side peak | 29.2 °C at 1:03 |
+| TC2 Barrier rear peak | 31.5 °C at 1:08 |
+| TC2 rise | 1.0 °C |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 136 finite readings out of 136 saved rows.
+![rear.png](rear.png)
 
-![Run 037 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+- Idle recording before EXP6 START (board IDLE after a serial reopen/reset; no heating). The hub had copied run036's fiberglass barrier into this run's metadata; that label was removed on 2026-11-13 because a plain recording does not identify the stack. Raw data/events unchanged.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 136 finite readings out of 136 saved rows.
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
 
-![Run 037 full-history TC2 — rear graph](rear.png)
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

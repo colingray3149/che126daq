@@ -1,19 +1,26 @@
-# Run 038 — aborted EXP6 START
+# Run 038 — EXP6 start aborted after 4 s
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Selected settings](experiment.toml) · [Applied settings](experiment-applied.json) · [Interactive report](report.html)
+2026-11-13 18:45 UTC · 100 V · 0:04 long · partial
 
-EXP6 START at 18:45:57 UTC, stopped by the operator 4 s later (heat OFF). Not a test.
+**Setup:** 1 mica / 3 ceramic fiber / 1 Al.
 
-**9 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+Started and stopped after 4 s; not a test.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 29.2 °C at 0:03 |
+| TC2 Barrier rear peak | 31.5 °C at 0:04 |
+| TC2 rise | 0.0 °C |
+| Relay on | 0:04 |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 9 finite readings out of 9 saved rows.
+![heater.png](heater.png)
 
-![Run 038 full-history TC1 — heater graph](heater.png)
+![rear.png](rear.png)
 
-## TC2 — rear
+## Comments
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 9 finite readings out of 9 saved rows.
+- Aborted EXP6 START: START at 18:45:57 UTC, heater commanded ON at 18:45:58, operator STOP acknowledged at 18:46:02 (heat OFF). 9 samples; not a test.
 
-![Run 038 full-history TC2 — rear graph](rear.png)
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
+
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [experiment-applied.json](experiment-applied.json) · [experiment.toml](experiment.toml) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

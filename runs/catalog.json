@@ -1,0 +1,772 @@
+{
+ "about": "Labels for runs recorded before daq.py (runs 001-068). category: test (key experiment), partial (heated, incomplete or tripped), setup (commissioning/sensor checks), failure (dead cartridge), idle (no heating). map: which raw data column (amplifier) is TC1 heater side, TC2 barrier rear, TC3. All heated runs had amplifier 2 on the heater side.",
+ "runs": {
+  "001": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Commissioning, no valid readings",
+   "review": "First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating."
+  },
+  "002": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Commissioning, no valid readings",
+   "review": "First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating."
+  },
+  "003": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Commissioning, no valid readings",
+   "review": "First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating."
+  },
+  "004": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Commissioning, no valid readings",
+   "review": "First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating."
+  },
+  "005": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Commissioning, no valid readings",
+   "review": "First day. Amplifiers connected, no thermocouple readings (NaN) or only a few. No heating."
+  },
+  "006": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "First heat: mica only, leaned on block",
+   "voltage": null,
+   "heater_W": 300,
+   "setup": "1 mica sheet; heater-side TC wired beside the cartridge, rear TC wired to the far face; leaned against the cinder block (no sand). Variac voltage not recorded. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC).",
+   "review": "Heater driven by hand from the variac (no relay control yet). Hotter TC peaked 261 °C at 1:18; the other 220 °C at 1:28, so one mica layer barely slowed the heat. Which raw channel was on the heater side is not recorded: assumed raw 2, which is hotter and leads, as in every later run. About 60 fault rows per channel."
+  },
+  "007": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "008": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness. TC2 shows unexplained spikes (to 261 °C) and TC1 to 83 °C."
+  },
+  "010": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "012": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "013": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "014": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "015": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "016": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "018": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "020": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "022": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "024": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "025": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "027": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Recorded before EXP5 started. The heater-side TC rose from 50 to 73 °C at about 1:30 without a START; cause not recorded."
+  },
+  "029": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "031": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "032": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "034": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "035": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "037": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "039": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "041": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "042": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "043": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "045": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "047": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "049": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "052": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "053": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "055": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "056": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "058": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "060": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "061": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "062": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "063": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "065": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "85 minutes idle during the internal-TC troubleshooting (TC3 faults, then exact zeros)."
+  },
+  "066": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "067": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "idle",
+   "title": "Idle recording (no heating)",
+   "review": "Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness."
+  },
+  "009": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "First relay control attempt (EXP2, 30 V)",
+   "voltage": 30,
+   "heater_W": 300,
+   "review": "EXP2 started; within 4.5 s raw TC2 jumped past the 140 °C rear limit and tripped. Raw TC2 was on the heater side, i.e. the probes were already the other way round from the plan. Garbage frames (2047.75 °C) follow."
+  },
+  "011": {
+   "map": {
+    "tc1": 1,
+    "tc2": 2,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "Control check with one TC (heat gun)",
+   "voltage": 30,
+   "heater_W": 300,
+   "review": "Single-thermocouple check of the EXP2 hold-at-300 °C logic while TC2 was unplugged; the operator had planned to test it with a heat gun. TC1 jumped 156 → 302 °C in 5 s, too fast for the cartridge. Not a barrier test."
+  },
+  "017": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 1: 1 mica / 2 basalt / 1 Al, rear cutoff 85 °C",
+   "voltage": null,
+   "heater_W": 300,
+   "setup": "1 mica (85165K26, 0.032 in) / 2 basalt fabric (3/64 in) / 1 aluminum sheet. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC). Variac voltage not recorded (30 V preset in config).",
+   "result": "Heater side reached 86 °C; rear cutoff (85 °C, wrongly on the heater-side channel) stopped it.",
+   "review": "Operator: \"first successful run\". EXP2 hold-at-300 °C program, but the probes were swapped relative to the software, so the 85 °C rear cutoff watched the heater side and ended heating at 3:10 with the heater side at 85.75 °C. The rear rose only 5 °C. Useful as a working end-to-end check, not as barrier data."
+  },
+  "019": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "EXP3 short start/stop",
+   "voltage": 65,
+   "heater_W": 300,
+   "setup": "1 mica / 2 basalt / 1 Al, semi-gravelly sand. Variac preset 65 V.",
+   "review": "Brief EXP3 starts used to check that stop cuts the heat. 019: heater on 32 s, heater side coasted to 113.5 °C after stop. 021: 5 s, no response in the data."
+  },
+  "021": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "EXP3 short start/stop",
+   "voltage": 65,
+   "heater_W": 300,
+   "setup": "1 mica / 2 basalt / 1 Al, semi-gravelly sand. Variac preset 65 V.",
+   "review": "Brief EXP3 starts used to check that stop cuts the heat. 019: heater on 32 s, heater side coasted to 113.5 °C after stop. 021: 5 s, no response in the data."
+  },
+  "023": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 2: hold 300 °C, ~70 V, 1 mica / 2 basalt / 1 Al",
+   "voltage": 70,
+   "heater_W": 300,
+   "setup": "1 mica / 2 basalt fabric / 1 aluminum. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC) at about 70 V (operator; 65 V preset).",
+   "result": "Held near 300 °C for 20 min; rear reached 84 °C and was still rising.",
+   "review": "Operator: \"great\", \"successful\". EXP3 held the heater side at 300 °C (on/off with prediction): 299.0 ± 2.4 °C, range 294.5–303 °C, for about 20 minutes. Reached 100 °C at 0:32 and 200 °C at 1:14, then held for about 20 minutes (stopped at 1,218 s of a planned 1,800 s hold). The rear climbed steadily to 83.75 °C and had not levelled off when the run was stopped, so this barrier does not keep the rear under 85 °C for 30 min at 300 °C. Fitted rear gain 0.21 (±0.7 °C)."
+  },
+  "026": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 3: EXP4 to 700 °C, rear cutoff 85 °C",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Barrier not recorded (probably the 1 mica / 2 basalt / 1 Al stack still in place). Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "result": "Heater side 707 °C; rear hit its 85 °C cutoff at 9:18, peaked 110.5 °C four minutes after heat off.",
+   "review": "Operator: \"it went fine\". 100 °C hold, NEXT, 90 s ramp to 200 °C, full power to 700 °C, then hold. 700 °C reached 6:10 after heat start. The 85 °C rear cutoff tripped at 9:18 and the rear kept rising for 4 more minutes to 110.5 °C: the barrier releases stored heat long after the heater stops. Fitted rear gain 0.21."
+  },
+  "028": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 4: EXP5 700 °C, 60 s hold (completed)",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Barrier not recorded (same session as 030/033). Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "result": "Completed: 700 °C at 4:28, 60 s hold, heat off. Heater peak 708 °C, rear peak 83.5 °C at 11:52.",
+   "review": "Operator: \"it went well\". The cleanest full profile: 100 °C hold, NEXT, ramp to 200 °C, full power to 700 °C (reached 4:28 after heat start), 60 s hold, heat off. Rear peaked 83.5 °C 7 minutes after the heater-side peak. Fitted rear gain 0.20. Reference run for the old 300 W cartridge at 100 V."
+  },
+  "030": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "EXP5 repeat: rear cutoff 120 °C tripped",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Barrier not recorded. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "review": "Same program as 028, run straight after. The rear rose much faster (fitted rear gain 0.43 vs 0.20) and tripped the 120 °C cutoff at 3:38 with the heater side only at 483 °C. Something in the stack or the rear TC's contact changed between 028 and 030; not recorded."
+  },
+  "033": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "EXP5 repeat: rear cutoff 120 °C tripped",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Barrier not recorded. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "review": "Third EXP5 that afternoon. NEXT was refused for minutes by the old software's 95-105 °C window while the heater side sat at 156 °C (the operator's complaint). After the ramp, the rear tripped 120 °C at 10:10 with the heater side at 680 °C; rear peaked 153 °C. Fitted rear gain 0.28."
+  },
+  "036": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 5: 1 mica / 2 fiberglass / 1 Al, 700 °C 60 s",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "1 mica (0.032 in) / 2 fiberglass heat-barrier strip (McMaster 4234N12, 0.045 in) / 1 aluminum. Fine, less rocky sand (from run 034). McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "result": "700 °C at 4:08, peak 714 °C, hold done. Rear peak 80.25 °C at 11:40 (cooldown).",
+   "review": "EXP6 (EXP5 with NEXT allowed any time). Completed the 60 s hold at 700 °C. Heater on 176 s in total. Rear rose 55.5 °C and peaked 7.4 minutes after the heater-side peak, during cooldown. Fitted rear gain 0.20 (±1.1 °C). Compare with run 040."
+  },
+  "038": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "partial",
+   "title": "EXP6 start aborted after 4 s",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "1 mica / 3 ceramic fiber / 1 Al.",
+   "review": "Started and stopped after 4 s; not a test."
+  },
+  "040": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "Test 6: 1 mica / 3 ceramic fiber / 1 Al; cartridge died",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "1 mica (0.032 in) / 3 ceramic fiber pipe insulation (alumina, McMaster 87575K35, 1/32 in) / 1 aluminum. Fine sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC), 100 V preset.",
+   "result": "700 °C at 5:47, peak 709.5 °C, hold done; rear peak 113 °C. Cartridge failed open at the end.",
+   "review": "Same program as 036, different barrier. Reached 700 °C 1.7 min later than 036 and needed 294 s of heating (036: 176 s), so more energy went in; the rear rose 82 °C (036: 55.5 °C). Fitted rear gain is the same as 036 (0.20), so most of the difference is the extra heat input, not the barrier. A re-heat during the hold at 18:52:48 produced no rise: the cartridge had failed (measured open circuit afterwards). Likely cause: the inside of the cartridge ran far hotter than the external TC's ~700 °C (the thermal model puts the core hundreds of degrees above the surface during fast heating), past its 760 °C rating, in sand that sheds heat poorly."
+  },
+  "044": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "046": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "048": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "050": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "051": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "054": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "057": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "059": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "failure",
+   "title": "Dead cartridge: heat commanded, no rise",
+   "voltage": 100,
+   "heater_W": 300,
+   "setup": "Control stack: 1 aluminum sheet only.",
+   "review": "After run 040's cartridge failure: about 4.5 minutes of heat in total across these runs and no temperature rise. 108 V measured at the cartridge, open circuit across it. Several also show the heater-side TC reading 0.00 (wiring fault)."
+  },
+  "064": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "setup",
+   "title": "EXP7: internal TC on MAX31855 faulted at heat-on",
+   "voltage": 100,
+   "heater_W": 500,
+   "tc_names": [
+    "Heater side",
+    "Barrier rear",
+    "Cartridge internal"
+   ],
+   "setup": "New cartridge with internal grounded K TC on amplifier 3. Control stack: 1 aluminum sheet. McMaster 8440T32 cartridge, 500 W at 120 V, internal grounded K TC.",
+   "review": "EXP7 controlled on the cartridge's internal TC. The internal TC (grounded junction) read NaN 0.7 s after heat-on and the sensor-fault trip ended the run after 1 s. The MAX31855 needs an isolated (ungrounded) junction; this cartridge's TC is grounded to its sheath, and the readings got worse whenever the heater circuit was powered. A 47 kΩ resistor from TC− to ground did not help. Led to the TC513 approach (run 068)."
+  },
+  "068": {
+   "map": {
+    "tc1": 2,
+    "tc2": 1,
+    "tc3": 3
+   },
+   "category": "test",
+   "title": "EXP8: TC513 on internal TC, 650 °C; did not hold",
+   "voltage": 100,
+   "heater_W": 500,
+   "tc_names": [
+    "Heater side (external)",
+    "Barrier rear",
+    "TC3 (unused)"
+   ],
+   "setup": "Barrier not recorded. McMaster 8440T32 cartridge, 500 W at 120 V, internal grounded K TC at 100 V (about 347 W). The Selec TC513 reads the internal TC with setpoint 650 °C; the DAQ relay feeds both the TC513 and the heater.",
+   "result": "Heater side peaked 419 °C, then fell steadily to 167 °C over 10 min with the DAQ relay on. Rear peaked 110 °C.",
+   "review": "Full power to 100 °C, cut at 0:36; the heater side kept climbing to 187 °C on stored heat. The first NEXT started the ramp, but the old ramp began its setpoint at 100 °C while the reading was ~170 °C, so nothing heated for 55 s; a second NEXT was swallowed. After 200 °C the relay stayed on (TC513 in charge). The external TC peaked 419 °C at 5:45 and then cooled exactly as with the heater off: the thermal model fits the rest of the run within 11 °C if heater power stopped for good at 5:02. So the TC513 switched the heater off once (its internal TC near 650 °C) and never switched it back on; the operator reports the TC513 was configured wrong. The 90 s hold was never started."
+  }
+ }
+}

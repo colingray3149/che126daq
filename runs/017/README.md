@@ -1,25 +1,33 @@
-# Run 017 — Actual test 1 of 3
+# Run 017 — Test 1: 1 mica / 2 basalt / 1 Al, rear cutoff 85 °C
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-06 17:33 UTC · 20:51 long · test
 
-**2,504 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+**Setup:** 1 mica (85165K26, 0.032 in) / 2 basalt fabric (3/64 in) / 1 aluminum sheet. Semi-gravelly sand. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC). Variac voltage not recorded (30 V preset in config).
 
-## TC1 — heater
+Operator: "first successful run". EXP2 hold-at-300 °C program, but the probes were swapped relative to the software, so the 85 °C rear cutoff watched the heater side and ended heating at 3:10 with the heater side at 85.75 °C. The rear rose only 5 °C. Useful as a working end-to-end check, not as barrier data.
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 2,504 finite readings out of 2,504 saved rows.
+| | |
+|---|---|
+| TC1 Heater side peak | 85.8 °C at 3:16 |
+| TC2 Barrier rear peak | 29.2 °C at 16:54 |
+| TC2 rise | 5.0 °C |
+| Relay on | 3:09 |
 
-![Run 017 full-history TC1 — heater graph](heater.png)
+![heater.png](heater.png)
 
-## TC2 — rear
+![rear.png](rear.png)
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 2,504 finite readings out of 2,504 saved rows.
+## Comments
 
-![Run 017 full-history TC2 — rear graph](rear.png)
+**Actual test 1 of 3:** the operator's first successful test, with the reported
+1 mica / 2 basalt-fabric / 1 aluminum layer stack. This is run017, not the
+subsequent planned run018. See [the three actual tests](../README.md#the-three-actual-tests).
+The original reversed-probe and cutoff qualifications below remain applicable;
+raw data, event logs and settings are unchanged.
 
-## Source and interactive viewing
 
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/017`; static PNGs are snapshots, not live views.
+- 2026-11-06T17:39:38.731+00:00 — Operator correction: probes were reversed during this run. Raw tc1_C is opposite-barrier temperature; raw tc2_C is heater temperature. Preserve raw CSV columns. The TC2_LIMIT event therefore acted on the heater probe, not the intended barrier probe. Operator requests 65 V RMS preset for EXP3; earlier automatic 30 V note is an assumption, not a measured voltage. Actual voltage history of this run is not established.
 
-CSV SHA-256: `7f9ec68ea1b0e2080c27f32a56d7792eaaeba3b0d8d9f7986ddc636bb00ba6ed`.
+- 2026-11-06T17:53:55.929+00:00 — Operator assessment at closeout: first successful test. Reported assembly: one layer mica, two layers basalt fabric, one layer aluminum. Layer counts are operator-reported; hot-to-cold order, thicknesses, sand condition and actual voltage history were not supplied in this closeout. Probes were reversed: raw TC1=rear, raw TC2=heater; TC2_LIMIT was the 85 C cutoff acting on the heater probe. This successful-test assessment does not establish a completed 300 C/30 minute hold. Next planned experiment: EXP3 with corrected software input mapping and 65 V manual preset, intended run 018.
 
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [experiment-applied.json](experiment-applied.json) · [experiment.toml](experiment.toml) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png)

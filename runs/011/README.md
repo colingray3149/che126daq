@@ -1,27 +1,18 @@
-# Run 011 — Supporting recording
+# Run 011 — Control check with one TC (heat gun)
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-02 19:18 UTC · 30 V · 35:50 long · setup
 
-**4,302 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+Single-thermocouple check of the EXP2 hold-at-300 °C logic while TC2 was unplugged; the operator had planned to test it with a heat gun. TC1 jumped 156 → 302 °C in 5 s, too fast for the cartridge. Not a barrier test.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 302.0 °C at 0:44 |
+| TC1 reached 100 °C after heat on | 0:20 |
+| TC1 reached 200 °C after heat on | 0:22 |
+| Relay on | 1:16 |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC1)**. 4,302 finite readings out of 4,302 saved rows.
+![heater.png](heater.png)
 
-![Run 011 full-history TC1 — heater graph](heater.png)
+![rear.png](rear.png)
 
-## TC2 — rear
-
-Saved-source interpretation: **TC2 · REAR (raw TC2)**. 0 finite readings out of 4,302 saved rows.
-
-**No finite temperature readings were recorded for this channel.** The image intentionally has no trace; missing readings are not zero.
-
-![Run 011 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/011`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `b0f43080a7c8627a7d4ef5e1bc7517566a64dba86e3baa358421c3d302a2af44`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png)

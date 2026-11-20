@@ -1,25 +1,25 @@
-# Run 019 — Supporting recording
+# Run 019 — EXP3 short start/stop
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-06 18:03 UTC · 65 V · 16:44 long · partial
 
-**2,008 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+**Setup:** 1 mica / 2 basalt / 1 Al, semi-gravelly sand. Variac preset 65 V.
 
-## TC1 — heater
+Brief EXP3 starts used to check that stop cuts the heat. 019: heater on 32 s, heater side coasted to 113.5 °C after stop. 021: 5 s, no response in the data.
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 2,008 finite readings out of 2,008 saved rows.
+| | |
+|---|---|
+| TC1 Heater side peak | 113.5 °C at 0:47 |
+| TC2 Barrier rear peak | 30.2 °C at 10:13 |
+| TC1 reached 100 °C after heat on | 0:32 |
+| TC2 rise | 4.0 °C |
+| Relay on | 0:32 |
 
-![Run 019 full-history TC1 — heater graph](heater.png)
+![heater.png](heater.png)
 
-## TC2 — rear
+![rear.png](rear.png)
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 2,008 finite readings out of 2,008 saved rows.
+## Comments
 
-![Run 019 full-history TC2 — rear graph](rear.png)
+- 2026-11-06T18:10:18.078+00:00 — Operator reports graphs still combined and rising heater trace labeled TC2, and requests assurance that stop exp3 cuts heat. At inspection controller reports swap_inputs=true, rear cutoff 85C, STOPPED/heater_on=false with STOP request 2 acknowledged at 18:04:26.840Z; raw TC2 is the heater and raw TC1 the rear. Physical power removal is not verified by serial telemetry. Correcting browser presentation without restarting acquisition.
 
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/019`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `65c808da282f02816d9a7e977f20941665c81ad0a345bc1582c6873d9da995c4`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [experiment-applied.json](experiment-applied.json) · [experiment.toml](experiment.toml) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

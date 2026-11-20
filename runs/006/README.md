@@ -1,31 +1,22 @@
-# Run 006 — Supporting recording
+# Run 006 — First heat: mica only, leaned on block
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-10-30 18:07 UTC · 6:49 long · partial
 
-**819 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+**Setup:** 1 mica sheet; heater-side TC wired beside the cartridge, rear TC wired to the far face; leaned against the cinder block (no sand). Variac voltage not recorded. McMaster 4877K305 cartridge, 300 W at 120 V (no internal TC).
 
-**Historical metadata warning:** original notes still say `recording`/0 samples; this archived CSV actually has819 rows. That header does not establish a live acquisition.
+Heater driven by hand from the variac (no relay control yet). Hotter TC peaked 261 °C at 1:18; the other 220 °C at 1:28, so one mica layer barely slowed the heat. Which raw channel was on the heater side is not recorded: assumed raw 2, which is hotter and leads, as in every later run. About 60 fault rows per channel.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 261.0 °C at 1:19 |
+| TC2 Barrier rear peak | 219.8 °C at 1:29 |
+| TC1 reached 100 °C after heat on | 0:33 |
+| TC1 reached 200 °C after heat on | 1:00 |
+| TC2 rise | 195.2 °C |
+| Fitted rear gain | 0.82 (±13.0 °C) |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC1)**. 759 finite readings out of 819 saved rows.
+![heater.png](heater.png)
 
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
+![rear.png](rear.png)
 
-![Run 006 full-history TC1 — heater graph](heater.png)
-
-## TC2 — rear
-
-Saved-source interpretation: **TC2 · REAR (raw TC2)**. 760 finite readings out of 819 saved rows.
-
-Missing/nonfinite readings remain gaps; they are not interpolated or replaced with zero.
-
-![Run 006 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/006`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `5c314843f42165eaca16269fc6bbcec54d6ac88b31e2103b1b7e134198bbaf82`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png)

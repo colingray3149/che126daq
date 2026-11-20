@@ -1,25 +1,17 @@
-# Run 020 — Supporting recording
+# Run 020 — Idle recording (no heating)
 
-[All runs](../README.md) · [Three actual tests](../README.md#the-three-actual-tests) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Interactive report](report.html)
+2026-11-06 18:20 UTC · 5:37 long · idle
 
-**675 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-## TC1 — heater
+| | |
+|---|---|
+| TC1 Heater side peak | 35.2 °C at 0:03 |
+| TC2 Barrier rear peak | 29.0 °C at 1:09 |
+| TC2 rise | 0.0 °C |
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 675 finite readings out of 675 saved rows.
+![heater.png](heater.png)
 
-![Run 020 full-history TC1 — heater graph](heater.png)
+![rear.png](rear.png)
 
-## TC2 — rear
-
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 675 finite readings out of 675 saved rows.
-
-![Run 020 full-history TC2 — rear graph](rear.png)
-
-## Source and interactive viewing
-
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/020`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `9c2abb3f772510ea5d291fac8e75fa1277be228eaccb836e9297fe5db426abf0`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, notes and settings are unchanged by rendering.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

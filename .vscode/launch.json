@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DAQ",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/daq.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Practice (simulated rig)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/daq.py",
+      "args": ["--sim"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

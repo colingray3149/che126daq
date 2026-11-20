@@ -1,147 +1,71 @@
-# che126daq
+# CHE 126 thermal-barrier DAQ
 
-Private ChE 126 working collection: Arduino DAQ code, experimental design history, procurement, datasheets, and the shared thermal-model conversation. Imported code and source documents are preserved, not silently standardized. Original files remain in their original locations.
+Runs the heater experiments: reads the thermocouples, switches the heater relay, runs
+step programs (heat to, ramp, hold, off), records every run, and shows past runs.
 
-## Start here
+## Start it
 
-**Current: [EXP8 TC2 sequencing + Selec TC513 internal control](docs/experiment8.md)**,
-configured in [experiment8.toml](experiment8.toml). Raw **external TC2** controls
-continuous heat to 100°C and the 90-second ramp to 200°C; the **TC513** then
-independently regulates the cartridge's grounded internal K thermocouple at its
-manual 650°C setpoint while D33 permission stays continuously ON. Raw **TC1**
-remains rear protection. The internal probe connects only to TC513 terminals
-6/7, not a MAX31855; former TC3 (34/36/38) is unused/unplugged. Firmware protocol
-**exp2-v6** retains three raw CSV columns for compatibility, while the EXP8 UI
-hides unused TC3. EXP2–7 retain their original source selections and runs.
+1. **Python 3.8 or newer.** Windows: install from python.org and tick *Add python.exe to PATH*.
+   Mac: install from python.org. Nothing else to install; everything else is in this folder.
+2. **Get the folder:** on GitHub, *Code → Download ZIP*, unzip it (or `git clone`).
+3. **Run `daq.py`:** open the folder in VS Code (or Zed), open `daq.py`, press **Run**.
+   In a terminal: `python daq.py` (Windows) or `python3 daq.py` (Mac).
+4. The page opens at **http://127.0.0.1:8765**. Keep the terminal open: closing it stops
+   the DAQ and turns the heater off.
 
-Use `start exp8`, `next`, and `stop exp8`. START reloads the entire configuration;
-editing alone never changes an active run. The first NEXT enters the ramp early or
-from the latched 100°C wait. After TC2 reaches 200°C, BOOST_FINAL waits for the
-operator to observe **TC513 PV =650°C**; the **second NEXT** starts the 90-elapsed-
-second final hold. Every NEXT is acknowledged; later NEXT commands are no-ops and
-never reset the timer. TC2's 730°C cutoff is external-only, not an internal DAQ
-limit. The requested common-OFF wiring removes both TC513 and heater power at
-final OFF; [the guide](docs/experiment8.md) also documents fixed-controller-power
-wiring, exact variant-dependent terminals, tuning with the available commands,
-and the run064 grounding/fault lessons.
+**Practice first:** `python daq.py --sim` (VS Code: Run and Debug → *Practice (simulated rig)*)
+runs everything against a simulated rig that heats like the real one. The header says
+*PRACTICE* in yellow.
 
-- [Quick wiring diagram](WIRING-QUICK.md) — plain text, also opened in Kate.
-- **[EXP8 hardware, TC513 tuning, and operating guide](docs/experiment8.md)** — conditional manufacturer terminal maps, requested common-OFF and fixed-supply wiring, manual second NEXT, auto-tune procedure, exact 8440T32 ratings, and failed internal-MAX lessons.
-- [EXP8 settings](experiment8.toml) — external TC2/rear TC1 mapping, manual 650°C TC513 metadata, 100 V preset, 730°C external cutoff, and 90-second ramp/hold.
-- [Wiring and safe connection order](docs/wiring.md) — current saved pin map and hardware caveats.
-- [Editable experiment settings](experiment.toml) — target, cutoffs, hysteresis and timing; save, then `start exp2` reloads them without a server restart or another firmware upload.
-- [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
-- [Experiment 3 settings](experiment3.toml) — reversed-probe control mapping and 65V manual preset; `start exp3` uses the deployed v5 single-target program.
-- [Experiment 4 staged program](docs/exp2.md#exp4-staged-100-v-program) — `experiment4.toml`, 100°C hold → explicit `next` → 90s ramp to 200°C → boost/700°C hold; deployed v5.
-- [Experiment 5 / completed run028](docs/experiment5.md) — same first stages as EXP4, maximum-command boost to measured 700°C, measured completion of the 60-second final hold, then commanded heat OFF and cooldown; required rear cutoff 120°C. Settings: [experiment5.toml](experiment5.toml).
-- [Experiment 6](docs/experiment6.md) — EXP5 with `next` accepted any time in the 100°C stage, at any temperature. Settings: [experiment6.toml](experiment6.toml).
-- [Current experiment log](docs/experiment-log.md) — today's reported fixture and decisions, separate from older drafts.
-- **[The three actual tests](runs/README.md#the-three-actual-tests): [Test 1 / run017](runs/017/notes.md), [Test 2 / run023](runs/023/notes.md), [Test 3 / run026](runs/026/notes.md).** This original trio remains a historical navigation set, separate from the remaining supporting recordings.
-- **[Cartridge failed in run040](docs/experiment-log.md#2026-11-13--cartridge-failure-in-run040-and-failed-control-attempts).** Died at the end of run040's boost; control attempts runs041–059 produced no heat. Likely sheath overtemperature in sand. Replacement cartridges needed.
-- **[Latest: EXP6 barrier comparison, runs036 and040](runs/README.md#exp6-barrier-comparison--runs036-and040).** Test 6 / run040: 1 mica / 3 ceramic fiber / 1 aluminum, rear peak 113.25°C; test 5 / run036: 1 mica / 2 fiberglass / 1 aluminum, rear peak 80.25°C. Both completed the 60 s hold at 700°C. [Run040 page](runs/040/README.md) · [Run040 data](runs/040/data.csv).
-- **[EXP6 / fifth actual test: run036](runs/README.md#exp6--run036-actual-test-5).** Barrier 1 mica / 2 fiberglass heat barrier strip / 1 aluminum; completed the 60 s hold at 700°C (peak 714.0°C); rear peaked 80.25°C in cooldown. [Raw data](runs/036/data.csv) · [Events](runs/036/events.csv) · [Notes](runs/036/notes.md) · [Rendered README](runs/036/README.md) · [Interactive report](runs/036/report.html).
-- **[Latest successful EXP5 / fourth actual test: run028](runs/README.md#successful-exp5--run028).** The operator said it went well; its events record completion of the measured 60-second target hold. [Raw data](runs/028/data.csv) · [Events](runs/028/events.csv) · [Notes](runs/028/notes.md) · [Settings](runs/028/experiment.toml) · [Applied settings](runs/028/experiment-applied.json) · [Metadata](runs/028/run-metadata.json) · [Rendered README](runs/028/README.md) · [Interactive report](runs/028/report.html).
-- **[Latest saved EXP5 data: runs029–033](runs/README.md#latest-exp5-recordings--runs029033).** Five additional recordings retain their raw data and event history; runs030 and033 ended on rear `TC2_LIMIT` trips during boost and did not reach the 700°C target or timed hold. Original successful EXP5/run028 remains the fourth actual test.
-- [All experimental runs, 001–033](runs/README.md) — top-level archive with each run's raw data, event log, notes and available settings/reports; 42,610 sample rows, 33 reports and 66 rendered PNGs.
-- [Completed EXP4/run026 archive](runs/026/notes.md) — operator reported it went fine; raw data, events, settings, measured closeout and assistant refusals. [Full interactive report](runs/026/report.html): download/open locally or open it from a clone.
-- [Quick suggested checks](docs/quick-checks.md) — what two thermocouples can and cannot establish.
-- [Executed mica-check calculations](models/mica-check/results.md) — cited inputs, conditional plots, reproducible Python.
-- [100 V timing calculation](models/heater-timing/results.md) and [minimal control-identification plan](docs/heater-control-plan.md) — explicit sensitivities and a two-to-three-run workflow, not a fabricated warm-up time.
-- [Measured run 006 + relay/sand research](docs/relay-sand-control.md) — earlier 500°C/30-minute draft criterion, actual trace/faults, wet-sand sensitivities and runnable calculations; superseded for operating targets by experiment 2.
-- [Setup source index](docs/setup-source-index.md) — where the useful setup material is, and which drafts conflict.
-- [Activity log](docs/activity-log.md) — what was actually done and observed.
-- [Run notes](docs/run-notes.md) — commands, dependencies, and imported-code limitations.
-- [Rendered graphs for every run](runs/README.md#browse-runs) — two full-history PNGs displayed directly in each run folder, plus interactive HTML reports with all samples, complete axes, linked zoom and exports. [Generation instructions](docs/run-notes.md#full-run-interactive-reports).
+## Before heating
 
-## DAQ hub
+* USB plugged in, page header shows the board's port in green.
+* Thermocouple readings look right (room temperature, no "no reading").
+* **Variac voltage** typed in the New run box (it sets the power the controller expects).
+* Setup box filled in: barrier layers in order, sand, anything you changed.
+* The relay is wired COM–NC: **the heater is powered whenever the Arduino is unpowered or
+  resetting.** Turn the variac on only after the page shows the board connected; turn it off
+  before unplugging USB or closing the laptop.
 
-```sh
-nix run path:/home/colin/Projects/che126daq
-```
+## Running an experiment
 
-Open **http://127.0.0.1:8765**. The left terminal accepts `help`, `status`,
-`start`, `start exp2` / `exp3` / `exp4` / `exp5` / `exp6` / `exp7` / `exp8`,
-`stop exp2` / `exp3` / `exp4` / `exp5` / `exp6` / `exp7` / `exp8`,
-`next`, `stop`, `restart`, `save`, `clear`, `list`, `view 001`, `live`,
-`note your comment`, `window 120`, `config`, and `reconnect`;
-↑/↓ recalls history. The first matching USB connection **starts logging, never heating**.
-`start exp2` creates a fresh saved run and explicitly re-arms without sensor,
-temperature, IDLE-state or physical-reset preflight requirements. TC2 is optional
-for EXP2/3 and required for EXP4/5; runtime cutoffs come from the selected file.
-`stop exp2` cuts commanded heat but keeps cooldown logging; another START needs no board reset.
-Plain `stop` must stop heat before finalizing a run.
-`clear` changes only this browser's plot/console; `save` flushes without stopping.
-Historical views are labeled and do not interrupt the active recording.
+**Program tab:** build the steps (Full power until, Ramp, Hold, Off), cutoffs and finish
+conditions. The *Predicted run* beside it simulates the program before you heat: expected
+TC1/TC2 curves, heater on/off, overshoot, cutoff trips. Save, then *Use on Live*.
 
-Each run has a short, never-overwritten directory: `runs/001/`, `runs/002/`, …
-`data.csv` is flushed per row; `events.csv` records serial/reset/errors;
-`notes.md` records metadata and preserves user edits below `## Comments`.
-All run folders are version-controlled directly under **[runs/](runs/README.md)**,
-including raw data, event logs, notes and every available settings/report file.
-The DAQ never automatically commits, pushes or deletes recordings.
-No synthetic acquisition mode exists. EXP2 control is explicit;
-NC contact wiring cannot fail OFF on loss of Arduino power. See the operating guide.
-NaNs plot as gaps; all-zero streams carry a warning, not a claim of valid sensors.
+**Live tab:** pick the program, type the variac voltage and setup, **Start run**.
+**NEXT** jumps to the next step at any time (also the N key). **Stop heat** turns the heater
+off and keeps recording the cool-down. **End run** closes the recording. *Manual* heats or
+holds a temperature without a program. Grey dashes on the charts are the predicted run;
+shaded bands are heater on.
 
-Edit **[hub.toml](hub.toml)** for USB identity/explicit port, baud, storage, retained
-plot points and HTTP port. Relative storage resolves beside that file.
-Edit **[experiment.toml](experiment.toml)** for heater control. Each `start exp2`
-reloads it and sends all settings atomically; editing alone leaves an active
-run unchanged. `config` shows edited versus board-applied values. Each run saves
-the exact config source and acknowledged settings for reproducibility.
-EXP3 selects **[experiment3.toml](experiment3.toml)** with `start exp3`;
-`feedback_channel` and `rear_channel` select board control roles, while
-`variac_voltage_V` is recorded manual-preset metadata, not a power command or
-temperature scaling factor. Plots show feedback, rear and diagnostic channels.
-Run 017's reported reversal is annotated without modifying its raw CSV.
-EXP4 selects **[experiment4.toml](experiment4.toml)** with the current
-v6 host/firmware pair. `next` advances only an in-band 100°C hold; it never
-allocates a new recording. EXP4/run026 completed with an operator-reported
-successful outcome; its measured record and retained rear-cutoff trip are archived.
-The v5 DAQ was launched with `--wait-for-start`; old v4 DAQ/report services
-were closed after saving run023. A completed thermal run does not independently
-establish calibration or component limits.
-EXP5 selects **[experiment5.toml](experiment5.toml)** with `start exp5`; EXP6 selects **[experiment6.toml](experiment6.toml)** with `start exp6`.
-Its 100°C/NEXT/90-second-to-200°C stages match EXP4. Boost commands maximum
-heat until measured heater temperature reaches 700°C; the final hold lasts
-60 elapsed seconds from that crossing, then commands heat OFF and retains
-cooldown logging. The required rear cutoff is 120°C; EXP4 stays at 85°C with
-an indefinite final hold. EXP5/run028 completed successfully by the operator's
-assessment: the saved events record the measured 60-second target hold finishing,
-followed by heat OFF and cooldown. Run027 is the prior supporting recording, not
-the EXP5 result. Both recordings and their original files are archived.
-Nix uses `$HOME/Projects/che126daq/hub.toml` by default; set `CHE126DAQ_CONFIG`
-or pass `--config /absolute/path/hub.toml` for another checkout.
-See [run notes](docs/run-notes.md#daq-hub-primary-interface) for launch/service details.
-Launch with `--wait-for-start` to connect and display sensor status without
-automatically allocating a run. An explicit `start exp3` then allocates the next
-numbered folder and applies its settings; no heat starts on connection.
+**Runs tab:** every run with its plots, numbers (hover a label for how it is calculated), notes
+and files. Tick runs and press *Compare* to overlay them. **Findings** is the analysis of runs
+001–068 and what to test next.
 
+## Where things are
 
-## Layout
-
-| Directory | Contents |
+| | |
 |---|---|
-| `firmware/thermocouple_logger/` | Three-channel MAX31855 logger + board-local EXP2–8 controller; 115200 baud CSV/control telemetry; nominal 2 Hz |
-| `firmware/tc_fault/` | Fault/cold-junction diagnostic using the same pin map |
-| `firmware/tc_diag/` | Older shared-clock raw-frame diagnostic; DIFFERENT wiring |
-| `host/hub.py`, `host/web/`, `hub.toml` | Primary command-first durable DAQ hub; local aiohttp/pyserial/Plotly |
-| `host/plot.py` | Superseded original plotter, retained unchanged for provenance; no saving, stale A1/A2 labels |
-| `models/thermal-stack/` | Extracted ChatGPT model, five figures, predictions, blank measurement template, original model notes |
-| `references/` | Original design PDF, order XLSX, datasheets, course notes, export ZIP; searchable PDF text and spreadsheet CSV views |
-| `provenance/claude/` | Readable old session, relevant code-changing calls, historical source snapshots, prior flash backups |
-| `provenance/chatgpt/` | Full shared answer, public HTML, structured messages, source URLs, attachment index |
-| `provenance/hardware/` | USB identity and raw serial observation |
-| `provenance/source-manifest.json` | Original source paths, destinations, SHA-256 hashes; historical reconstructions have a separate index |
-| `docs/` | Current collection notes, uncertainties, wiring, verification/activity history |
-| `runs/` | Numbered original recordings 001–033; browsable index, raw CSVs, event logs, per-run notes and available settings/reports |
+| `runs/NNN/` | one folder per run: `data.csv`, `events.csv`, `notes.md` (your comments), `run.json`, `plot.png` |
+| `programs/` | saved programs (JSON, editable in the Program tab) |
+| `analysis/` | findings across runs, figures, `analyze.py` |
+| `docs/hardware.md` | wiring, the TC513, safety; `docs/datasheets/` |
+| `settings.json` | your settings (created when you save the Settings tab) |
+| `firmware/` | Arduino firmware; upload it from Settings → Board → *Upload firmware* |
+| `che126/`, `web/` | the program itself; `AGENTS.md` explains it for an AI assistant |
+| `archive/` | the earlier EXP2–EXP8 software and notes, kept for reference |
 
-## Status at collection
+## If something goes wrong
 
-Arduino Mega ADK detected on `/dev/ttyACM0`. User reports no thermocouples connected. Existing firmware emitted the three-column CSV header and repeated zeros; **not verified temperatures or working amplifier connections**. No firmware uploaded and no heater energized during collection.
+| You see | Do |
+|---|---|
+| *No board* | Plug in USB; pick the port in Settings → Board; press Reconnect. |
+| *Old firmware on board* or *Board not answering* | Settings → Board → Upload firmware (about 10 s). |
+| *Cutoff: TC2 reached its limit* | The board turned the heater off. Fix the cause, then *Clear cutoff*. |
+| *Lost contact with daq.py* | The terminal was closed or crashed. Run `daq.py` again; the page reconnects. |
+| A TC shows "no reading" / "open TC" | Thermocouple unplugged or broken; check its amplifier wiring. |
+| Wrong TC on top | Settings → Thermocouples: set which amplifier each TC is wired to. |
+| Port 8765 busy | `python daq.py --http-port 8766`. |
 
-Current logger: TC1 CLK/DO/CS **22/24/26**; TC2 **28/30/32**; TC3 **34/36/38**. The original collection status above is historical. See the wiring guide for module compatibility and connection details.
-
-The design PDF is a mixed working document, not an approved operating procedure. Battery state of charge, high-temperature fixture safety, heater geometry/power/control, sensor placement, and final experiment remain for user confirmation. ChatGPT model assumptions are not apparatus measurements.
-
-Collection excludes unrelated resumes, portfolios, unrelated chat archives, credentials, and lab-locker-code fixture notes. No relevant DOCX or separate full-account ChatGPT export ZIP was found in Downloads; the actual recent setup source is `ChE 126 Design.pdf`. The model ZIP covers every generated sandbox file linked in the supplied share.
+Tests: `python -m unittest discover tests`.

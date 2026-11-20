@@ -1,19 +1,20 @@
-# Run 049 — idle recording (no heating)
+# Run 049 — Idle recording (no heating)
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Interactive report](report.html)
+2026-11-13 19:37 UTC · 0:02 long · idle
 
-Idle/reconnect recording between control attempts; board not heating. Cartridge failure: after run040 the cartridge produced no heat. The heater was commanded ON and the heater reading did not rise; the operator measured about 108 V at the cartridge with no heating.
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-**6 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis.
+| | |
+|---|---|
+| TC2 Barrier rear peak | 34.0 °C at 0:03 |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**.
+![rear.png](rear.png)
 
-![Run 049 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+- Idle/reconnect recording between control attempts; no heating.
+- Sand: fine, less rocky sand used from run034 onward (2026-11-13); earlier runs used a semi-gravelly sand.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**.
-
-![Run 049 full-history TC2 — rear graph](rear.png)
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)

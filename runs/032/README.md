@@ -1,27 +1,43 @@
-# Run 032 — Supporting acquisition
+# Run 032 — Idle recording (no heating)
 
-[All runs](../README.md) · [Raw CSV](data.csv) · [Event log](events.csv) · [Run notes](notes.md) · [Run metadata](run-metadata.json) · [Interactive report](report.html)
+2026-11-09 20:47 UTC · 0:04 long · idle
 
-Supporting acquisition with retained EXP5 role/voltage metadata. No EXP5 START or applied-settings snapshot is recorded in this folder; metadata alone does not establish active heating.
+Logging only: the DAQ recorded while the rig sat idle, between starts, or while wiring. Kept for completeness.
 
-**10 saved sample rows.** Full elapsed-time range; no smoothing, downsampling or voltage scaling. Each graph has its own temperature axis. See [run notes](notes.md) for the dated closeout.
+| | |
+|---|---|
+| TC1 Heater side peak | 26.5 °C at 0:05 |
+| TC2 Barrier rear peak | 25.5 °C at 0:05 |
+| TC2 rise | 0.0 °C |
 
-## TC1 — heater
+![heater.png](heater.png)
 
-Saved-source interpretation: **TC1 · HEATER (raw TC2)**. 10 finite readings out of 10 saved rows.
+![rear.png](rear.png)
 
-![Run 032 full-history TC1 — heater graph](heater.png)
+## Comments
 
-## TC2 — rear
+**2026-11-09 closeout — short transition acquisition, not an EXP5 heating test.**
+Logical heater/cartridge = raw `tc2_C`; logical rear/barrier = raw `tc1_C`.
+The CSV columns remain in raw physical-channel order. Retained `exp5`,
+`swap_inputs=true` and 100V metadata describe the session mapping/manual preset,
+not applied heating settings or a measured voltage. This run has no applied
+experiment snapshot and no EXP5 START in its own event log.
 
-Saved-source interpretation: **TC2 · REAR (raw TC1)**. 10 finite readings out of 10 saved rows.
+The recording was finalized before Experiment 5 at **20:47:47.604 UTC**; run033
+then received the EXP5 START. Run032 contains only the short interval between
+the run031 restart and that new controlled recording.
 
-![Run 032 full-history TC2 — rear graph](rear.png)
+| Quantity | Result |
+|---|---:|
+| Saved samples | 10 |
+| First→last sample span | 4.501s |
+| First / last sample UTC | 20:47:42.864 / 20:47:47.365 |
+| Initial heater/rear | 26.5 / 25.5°C |
+| Maximum heater/rear | 26.5 / 25.5°C |
+| Final saved heater/rear | 26.5 / 25.5°C |
 
-## Source and interactive viewing
+All saved temperatures are finite, flags are empty and all samples belong to
+epoch5. Raw CSV, events and metadata are unchanged; only this closeout was
+appended.
 
-The PNGs are1400×700 renders of the full-data Plotly traces in `report.html` and display directly on GitHub. Download/open the HTML locally for zoom, hover and export; GitHub does not execute its JavaScript. Regenerate HTML with `python host/report.py runs/032`; static PNGs are snapshots, not live views.
-
-CSV SHA-256: `553e5cd35275020c11acf39b36cc01fb297afe8fb1a74216a679c678dff0d766`.
-
-Role labels follow saved/legacy mapping rules; consult the run notes for probe-placement corrections and validity limitations. Original CSV, event log, settings and role metadata are unchanged by rendering. The dated publication closeout is appended below the original notes' Comments heading.
+Files: [data.csv](data.csv) · [events.csv](events.csv) · [heater.png](heater.png) · [notes.md](notes.md) · [rear.png](rear.png) · [run-metadata.json](run-metadata.json)
