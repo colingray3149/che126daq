@@ -705,6 +705,7 @@ function statBox(label, value, help) {
 
 async function openRun(id) {
   currentRun = id;
+  if (window.innerWidth <= 700) $("#run-view").scrollIntoView({ behavior: "smooth" });
   $$("#run-list li").forEach(li => li.classList.toggle("on", li.dataset.id === id));
   const view = $("#run-view");
   view.innerHTML = "";
