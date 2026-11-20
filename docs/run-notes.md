@@ -1,6 +1,68 @@
 # Running the DAQ hub and imported code
 
-The hub is the primary interface. Firmware and the historical plotter remain unchanged.
+The hub is the primary interface. Current firmware/host use exp2-v6 and three raw MAX31855 channels; the original plotter and provenance snapshots remain historical.
+
+## Current EXP8 operation
+
+`experiment8.toml` selects external/cartridge-side TC2 (28/30/32) for continuous
+heat to 100°C and the 90-second reference ramp to 200°C, and rear TC1 (22/24/26)
+for the 120°C rear cutoff. `external_channel = feedback_channel = 2` is an
+intentional EXP8-only alias; TC2's 730°C cutoff is external-only. Former TC3
+(34/36/38) is unused/unplugged. A Selec TC513 directly reads the grounded internal
+K probe and independently regulates at its manually entered 650°C setpoint. The
+DAQ neither measures internal PV nor applies an internal software high limit.
+See the [complete EXP8 hardware, wiring, and tuning guide](experiment8.md).
+
+Use `start exp8`, `next`, and `stop exp8`; all settings are reread on START.
+The first NEXT advances HEAT_100/HOLD_100 immediately at any temperature. Measured
+TC2 ≥200°C enters BOOST_FINAL with continuous permission and reason
+`WAIT_TC513_CONFIRM`. When the operator observes **TC513 PV =650°C**, the
+**second NEXT** enters HOLD_FINAL/`TC513_TIMED_HOLD` and starts 90 elapsed seconds.
+Every NEXT is acknowledged; a duplicate/later NEXT is a no-op and never resets the
+timer. Expiry commands COMPLETE/OFF and retains cooldown logging. Existing TC2
+fault/stale/heartbeat/STOP protection remains.
+
+The explicitly requested power topology puts D33 COM–NC permission before both the
+TC513 supply and the separate fused heater-load branch, so final OFF removes both.
+TC2 lower-stage pulses can reboot the controller. The guide also gives the preferred
+fixed-controller-supply/heater-only-permission alternative, conditional A/AX/SSR
+terminal maps, and the manual-required interposer/separate-load-branch details.
+COM–NC can fail permission ON on reset or power loss.
+
+Auto-tune is optional. The operator chose to use the TC513's existing PID
+coefficients; their suitability for the replacement cartridge is not established.
+Set the actual SV to 650°C, not merely the `S.P.H` upper limit, and return to the
+normal temperature display. No tuning screen is required for operation.
+
+For PID tuning with the actual available commands, use START and the first NEXT to
+reach uninterrupted BOOST_FINAL permission, then enable `tUn`; **do not press the
+second NEXT during auto-tune**. Let the manual's 3–4 cycles finish (not 90 seconds),
+record P/I/D/ARW/CY.t, turn `tUn` off, and stop before starting a fresh actual run.
+The guide documents the exact ■/▼/▲ keys, reverse heating, K/°C menus, mechanical
+relay cycle-time limitation, and on/off alternative without invented PID values.
+
+Current saved CSV still includes **tc1_C, tc2_C, tc3_C** in physical order. EXP8
+ignores/hides TC3 in its UI but retains the raw column for schema compatibility;
+older recordings and EXP7's distinct TC2/TC3/TC1 mapping remain unchanged.
+Run064's internal-MAX lessons are preserved in the guide: 10/27 TC3 NaN (37.0%),
+first NaN about 0.711 seconds after heat ON, stable finite TC1/TC2, a failed 47 kΩ
+negative-ground attempt, confirmed grounded 8440T32 construction, and no raw fault
+bits from which to claim a root cause.
+
+Integration verification passed native controller checks, 33 Python host checks,
+actual sketch/hub PTY operation (including ignored TC3 NaN, TC2 latch/handoff,
+650°C manual wait, exact 90,000 ms second-NEXT hold and duplicate-NEXT no-op),
+browser UI, offline reports, Mega ADK compilation (22,894 bytes flash/1,380 bytes
+RAM), and the Nix launcher build. That initial verification did not upload
+firmware, restart the live DAQ, or validate real TC513 tuning/PV or heater action.
+
+Subsequently, at the operator's request, the EXP8 image was uploaded successfully
+to the Mega ADK at `/dev/ttyACM0` and `che126daq-exp8-live.service` launched with
+`--wait-for-start`. Real telemetry showed fresh IDLE/commanded OFF and finite
+TC1/TC2 samples. An EXP8 NEXT was acknowledged as an IDLE no-op; no heating START
+was sent. A display-only fix selects the two-channel EXP8 layout before START,
+including while a plain recording carries legacy metadata; no recording restart
+is needed to load that UI correction.
 
 ## Arduino
 
@@ -60,15 +122,15 @@ acknowledgements and controller transitions are shown/logged; an unavailable
 link means the physical heater state is unknown, not guaranteed OFF.
 
 `start exp3` / `stop exp3` have the same lifecycle using `experiment3.toml`,
-with reversed probes: raw TC2 is logical TC1/heater, raw TC1 is logical TC2/rear.
-Both settings files include the host-only manual `variac_voltage_V` record;
+with explicit sources `feedback_channel = 2`, `rear_channel = 1`.
+All profiles include host-only manual `variac_voltage_V` metadata;
 software does not set or measure that voltage. The idle board's boot defaults
 are not the selected experiment's settings; explicit START applies that file.
 
 EXP4 uses `start exp4`, `next` and `stop exp4` with `experiment4.toml` and the
-deployed v5 host/firmware pair. Its fixed first phases hold 100°C, await explicit
+current v6 host/firmware pair. Its fixed first phases hold 100°C, await explicit
 NEXT, then track a 90-second reference to 200°C before measured-crossing boost
-and final hold. Both probes are required and rear cutoff is fixed at 85°C.
+and final hold. Feedback/rear are required; rear cutoff defaults to 85°C.
 See [EXP4 policies and limits](exp2.md#exp4-staged-100-v-program).
 The v5 host/firmware pair is deployed with `--wait-for-start` after confirmed
 heater mains isolation. EXP4/run026 has since completed and is publicly archived.
@@ -99,7 +161,7 @@ Runs allocate numeric directories by atomic mkdir, increasing beyond existing
 numeric entries, never overwriting previous directories. Files:
 
 - `data.csv`: host UTC, independent monotonic host elapsed seconds, original
-  board uptime, reset epoch, TC1/TC2 °C, fault/reset/all-zero flags; flushed each row.
+  board uptime, reset epoch, raw TC1/TC2/TC3 °C, fault/reset/all-zero flags; flushed each row.
 - `events.csv`: timestamped startup/header, malformed/oversized rows, disconnect,
   regression and command-stop events. Partial lines wait for newline; oversized
   partial buffers are discarded visibly. Missing/NaN temperatures remain gaps;
@@ -137,9 +199,9 @@ xdg-open runs/023/report.html
 
 Choose the actual run folder. The output is a self-contained, offline HTML file
 with embedded Plotly: no CDN, serial connection, DAQ restart or heater controls.
-It includes separate blue TC1/heater and orange TC2/rear graphs, independent
-temperature axes, complete axis titles/units, optional linked time zoom, full-run
-reset, high-resolution PNG and SVG export, and a raw-CSV snapshot download.
+It includes separate feedback, rear and (for three-channel data) diagnostic
+graphs, independent temperature axes, complete axis titles/units, optional linked
+time zoom, full-run reset, PNG/SVG export and raw-CSV snapshot download.
 
 Every archived run001–033 now has `heater.png`, `rear.png` and a `README.md`
 that embeds both images for direct GitHub viewing. These1400×700 PNGs were rendered

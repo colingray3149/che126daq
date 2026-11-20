@@ -1,30 +1,39 @@
 # EXP5 STAGED CONTROL SETTINGS — intended next recording: exp027 / runs/027
 # Save this file, then type: start exp5
-# Same settings/stages as EXP4 except the measured-target timed final stage
-# and required 120 C rear/barrier cutoff. EXP4 itself remains unchanged.
+# Same fixed trajectory as EXP4, with a configurable timed final stage.
 # START reloads settings; edits alone do not change an active run.
+# Fixed stages: heat feedback to 100 C; HOLD_100 awaits NEXT within hold_band_C;
+# ramp from 100 to 200 C over 90 s; boost to target; timed final hold.
 # The manual variac preset is metadata, not a software voltage command.
-# 700 C operation is not component-rating approval: saved basalt rating is
-# ~649 C, possible probe rating 500 C (identity unverified), heater exposure
-# limit 760 C and leads 449 C. Rear 120 C does not bound internal temperatures.
+# Default 700 C operation is not component-rating approval: saved basalt rating
+# is ~649 C, possible probe rating 500 C (identity unverified), heater exposure
+# limit 760 C and leads 449 C. Rear limits do not bound internal temperatures.
 # NC wiring can fail ON on reset/power loss; OFF means a relay command only.
 
+# Editable final feedback target: 200 < target_C <= 700.
 target_C = 700.0
 hysteresis_C = 3.0
-tc1_cutoff_C = 730.0
 
-# Logical rear/barrier cutoff: required in every active stage.
-tc2_cutoff_C = 120.0
-tc2_cutoff_enabled = true
+# Editable feedback emergency cutoff: target_C < cutoff <= 730.
+feedback_cutoff_C = 730.0
+
+# Required independent rear cutoff, editable within 0 < cutoff <= 120.
+rear_cutoff_C = 120.0
+rear_cutoff_enabled = true
 
 prediction_lead_s = 5.0
 min_off_s = 5.0
 hold_band_C = 5.0
 
-# 60 elapsed seconds from first measured heater >=700 C, not predicted arrival.
-# Temperature excursions do not reset this deadline. Safety trips stop sooner.
+# Default 60 elapsed seconds from first measured feedback >= target_C, not
+# predicted arrival. Editable >0 (integer milliseconds on START); excursions do
+# not reset this deadline. Safety trips stop sooner.
 hold_s = 60.0
 
-# Raw TC2 = heater/cartridge; raw TC1 = rear/barrier. CSV stays raw order.
-swap_inputs = true
+# Distinct raw channels 1..3. EXP5 preserves its historical mapping: TC2 feedback,
+# TC1 required rear protection, TC3 internal cartridge diagnostic. Invalid
+# feedback trips OFF without substitution.
+feedback_channel = 2
+rear_channel = 1
+
 variac_voltage_V = 100.0

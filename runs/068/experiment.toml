@@ -1,0 +1,52 @@
+# EXP8 STAGED CONTROL SETTINGS — external TC2 control, independent manual TC513 final setpoint
+# Save this file, then type: start exp8
+# START reloads settings; edits alone do not change an active run.
+# TC2 heats continuously to preheat_target_C, then the Arduino heater permission
+# latches OFF in HOLD_100. NEXT may enter RAMP_200 early at any temperature.
+# TC2 follows ramp_target_C over ramp_s. Measured TC2 >= ramp_target_C enters
+# BOOST_FINAL with continuous heater permission while the TC513 regulates its
+# own internal K thermocouple to the manual target_C setpoint.
+# A SECOND NEXT in BOOST_FINAL enters HOLD_FINAL and starts hold_s elapsed seconds.
+# NEXT in HOLD_FINAL is acknowledged without resetting that timer; expiry is COMPLETE/OFF.
+# target_C is manual TC513 metadata only: the Arduino neither measures the TC513's
+# internal thermocouple nor automatically detects or regulates a 650 C temperature.
+# feedback_cutoff_C is the external TC2 high limit, NOT an internal TC513 cutoff.
+# TC1 rear protection remains independent. The manual variac preset is metadata,
+# not a software voltage command. NC wiring can fail ON on reset/power loss;
+# OFF means a relay command only, not proof of physical power removal.
+
+# Independent manual TC513 setpoint metadata: 200 < target_C <= 700.
+target_C = 650.0
+hysteresis_C = 3.0
+
+# External TC2 emergency cutoff, applied independently in every stage:
+# ramp_target_C < cutoff <= 730, independently of the manual target_C.
+# This does not bound the TC513 internal temperature.
+feedback_cutoff_C = 730.0
+
+# Required independent rear cutoff, editable within 0 < cutoff <= 120.
+rear_cutoff_C = 120.0
+rear_cutoff_enabled = true
+
+prediction_lead_s = 5.0
+min_off_s = 5.0
+hold_band_C = 5.0
+
+# Elapsed seconds started only by the second NEXT from BOOST_FINAL. Later NEXT
+# commands and temperature excursions do not reset this deadline.
+hold_s = 90.0
+
+# EXP8 intentionally aliases feedback and external control on raw TC2. TC1 is
+# required rear protection. TC3 is retained in raw CSV but is not an EXP8 control
+# requirement. EXP7 still requires three distinct channels.
+feedback_channel = 2
+rear_channel = 1
+external_channel = 2
+
+# External-controlled stage thresholds and ramp duration. Values must satisfy
+# 0 < preheat_target_C < ramp_target_C < target_C; ramp_s may be zero.
+preheat_target_C = 100.0
+ramp_target_C = 200.0
+ramp_s = 90.0
+
+variac_voltage_V = 100.0

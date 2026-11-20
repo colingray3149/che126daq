@@ -1,4 +1,94 @@
-# Experiments 2, 3, 4 and 5: operator-controlled START
+# Experiments 2–7: operator-controlled START
+
+> **Current EXP8** uses external TC2 sequencing plus independent Selec TC513
+> internal-temperature control. See the [EXP8 hardware and operating guide](experiment8.md).
+> The EXP7 policy below remains the historical distinct-three-channel profile.
+
+## EXP7: mixed-source control
+
+Current host/firmware protocol is **exp2-v6**. Use **`start exp7`**, **`next`**,
+and **`stop exp7`** with **[`experiment7.toml`](../experiment7.toml)**. Raw
+external/cartridge-side **TC2** controls entry and ramp; raw internal **TC3**
+controls boost/final hold and the all-stage internal high cutoff; raw **TC1**
+remains independent rear protection.
+
+### Sources and editable policy
+
+| Setting | Meaning / EXP7 default |
+|---|---|
+| `external_channel` | **2**, external entry/ramp feedback; strict integer 1–3 |
+| `feedback_channel` | **3**, internal boost/final feedback and high cutoff |
+| `rear_channel` | **1**, independent rear protection; all three mappings distinct |
+| `preheat_target_C` / `ramp_target_C` / `ramp_s` | **100°C / 200°C / 90s**, external phase recipe |
+| `target_C` | **650°C**, final internal-feedback target |
+| `feedback_cutoff_C` | **730°C**, internal high trip in every stage |
+| `rear_cutoff_C` / `rear_cutoff_enabled` | **120°C / true**, independent rear trip |
+| `hysteresis_C` / `hold_band_C` | **3°C / 5°C**, regulation hysteresis / band |
+| `prediction_lead_s` / `min_off_s` | **5s / 5s**, predictive look-ahead / OFF dwell |
+| `hold_s` | **90s**, elapsed final hold from measured internal target crossing |
+
+Every START reloads and atomically applies the complete file, including the four
+EXP7 phase settings, saving requested/applied settings and source mappings.
+Editing alone does not change active settings; `config` shows edited versus
+applied values.
+
+1. **HEAT_100:** continuous commanded ON (retaining minimum OFF dwell) until raw
+   external TC2 reaches `preheat_target_C`.
+2. **HOLD_100:** commanded OFF is latched. Cooling never reheats. NEXT may enter
+   the second stage early at any temperature.
+3. **RAMP_200:** the existing on/off/reference-ramp algorithm uses external TC2,
+   from `preheat_target_C` to `ramp_target_C` over `ramp_s`. Measured external
+   crossing of `ramp_target_C`, not internal temperature or a timer, enters boost.
+4. **BOOST_FINAL:** continuous commanded ON until raw internal TC3 reaches
+   `target_C`.
+5. **HOLD_FINAL:** internal on/off hysteresis at `target_C` for `hold_s` elapsed
+   from the measured crossing. Excursions do not extend/reset the deadline; then
+   COMPLETE commands OFF and cooldown logging continues.
+
+**NEXT is always acknowledged.** In active HEAT_100/HOLD_100 it enters RAMP_200;
+in every later phase, terminal state, or idle it is an idempotent acknowledged
+no-op. It never skips boost/hold, resets a timer, bypasses a trip, or implicitly
+starts/re-arms. The host sends EXP7 NEXT without telemetry, temperature, phase,
+state, or freshness preflight gates; actual disconnected/write failures are still
+reported normally. EXP4–6 NEXT behavior is unchanged.
+
+A failed required phase source never falls back to another probe. External TC2
+fault stops external-controlled phases and is diagnostic only after the boost
+switch. Internal high cutoff uses raw TC3 independently of phase feedback in
+every stage. Rear/stale-sample/heartbeat/STOP protections are unchanged, with
+rear trips retaining priority. All three raw channels remain visible; telemetry
+`phase_feedback_channel` and the UI identify the active controller source.
+
+### Protocol and historical data
+
+CSV is **`time_s,t1_C,t2_C,t3_C`**, always raw physical order. Host CSV adds
+`tc3_C`; plots/reports retain every raw source with independent axes. Channel
+pins are **22/24/26**, **28/30/32**, **34/36/38** (CLK/DO/CS); relay stays D33.
+See [wiring](wiring.md). START appends `external_channel`, `preheat_target_C`,
+`ramp_target_C`, and `ramp_duration_ms` only for EXP7; other programs retain
+their base-only payload and telemetry. EXP7 telemetry includes the four extra
+settings and top-level `phase_feedback_channel`.
+
+EXP2 retains feedback/rear 1/2; EXP3–6 retain 2/1. Archived two-channel CSVs,
+old settings/events and `swap_inputs` metadata remain unchanged and readable.
+Historic pre-clarification EXP7 reports may use the archived fixed 100°C/200°C/
+90-second values when the new fields are absent; this fallback is not accepted
+for a new EXP7 START. Absent historical TC3 is a gap. The v3–v5 accounts below
+are historical; their old field names are not current config aliases.
+
+### Verification and operation
+
+Native controller and host behavior suites passed. Isolated actual-sketch/host
+PTY smoke passed external 100°C latch-OFF without reheating, external 200°C source
+switch, internal 650°C regulation and 90-second completion, early/duplicate/idle/
+stopped/complete NEXT acknowledgements, and no mid-hold timer reset. Mega firmware
+upload succeeded. No real heating START was sent by the assistant.
+
+Editable staged limits remain software envelopes, not cartridge ratings. The
+replacement model, internal-junction isolation and rated limits are not recorded.
+The documented MAX31855 requires an **ungrounded K-type** thermocouple. The NC
+relay can close during reset/power loss; software acknowledgements do not prove
+physical power removal.
 
 ## EXP4: staged 100 V program
 
@@ -126,8 +216,8 @@ Edit [`../experiment3.toml`](../experiment3.toml), save, and use
 EXP2 continues to select `experiment.toml` and its original input mapping.
 
 For EXP3, **logical TC1 = heater = raw channel 2 (28/30/32)** and
-**logical TC2 = rear = raw channel 1 (22/24/26)**. `swap_inputs = true`
-selects this mapping for regulation and runtime cutoffs, not just the graph.
+**logical rear = raw channel 1 (22/24/26)**. Current settings
+`feedback_channel = 2`, `rear_channel = 1` select regulation and runtime cutoffs.
 Raw CSV columns remain the physical channel order for every profile.
 The initial EXP3 file retains target 300°C, hysteresis 3°C, heater cutoff 320°C,
 enabled rear cutoff 85°C, prediction lead/minimum OFF time 5s each,
@@ -183,15 +273,16 @@ change an active run. The live display shows the board-applied values;
 
 | Key | Meaning |
 |---|---|
-| `target_C` | Desired TC1 heater temperature; normal OFF threshold |
+| `target_C` | Desired feedback temperature; normal OFF threshold |
 | `hysteresis_C` | ON threshold = target minus this amount |
-| `tc1_cutoff_C` | Runtime TC1 high-temperature trip |
-| `tc2_cutoff_C` | Runtime rear-side trip when enabled and TC2 is readable |
-| `tc2_cutoff_enabled` | `false` disables TC2's temperature trip; TC2 remains optional |
+| `feedback_cutoff_C` | Runtime feedback high-temperature trip |
+| `rear_cutoff_C` | Runtime rear-side trip when enabled/readable |
+| `rear_cutoff_enabled` | `false` disables the optional single-target rear trip; staged programs require true |
 | `prediction_lead_s` | Predictive OFF look-ahead; 0 disables prediction |
 | `min_off_s` | Minimum OFF time before another ON command |
 | `hold_band_C` | Continuous hold band is target ± this amount |
 | `hold_s` | Continuous seconds in band before completion; 0 disables timed completion |
+| `feedback_channel` / `rear_channel` | Distinct raw input indexes 1–3; applied on START |
 
 Times normalize to whole milliseconds and temperature parameters to six
 significant digits for the board codec. Invalid/missing/malformed config is
@@ -223,11 +314,12 @@ Commands heat OFF and retains cooldown logging in the same folder. Plain `stop` 
 
 ## Single-thermocouple testing
 
-**TC1 controls toward `target_C` (initially 300°C). TC2 is optional.** A missing/faulty TC2 does not block START or trip a TC1-only test. If `tc2_cutoff_enabled` is true and TC2 provides a finite reading **≥`tc2_cutoff_C`** (initially 140°C), the runtime cutoff commands heat OFF until another explicit START.
-
-**Rear-side protection is unavailable while TC2 is disconnected/invalid or its cutoff is disabled.** The live UI says so. Do not mistake a missing TC2 for a protected barrier experiment.
-
-Runtime protections are separate from START acceptance: invalid/nonpositive TC1, stale TC1 acquisition (1500ms), lost host heartbeat (2500ms), or TC1 ≥`tc1_cutoff_C` (initially 320°C) command heat OFF. A START with no usable TC1 is accepted, but the runtime feedback interlock will keep/cut heat OFF. A high valid/enabled TC2 reading is handled before a TC1 fault. No sensor, temperature, three-good-samples, IDLE-state or physical-reset preflight gate has been reintroduced.
+**Selected feedback controls toward `target_C`; rear is optional only for
+single-target EXP2/3.** A finite enabled rear reading at/above
+`rear_cutoff_C` trips OFF. A missing optional rear probe leaves that protection
+unavailable; it is mandatory for EXP4–7. Invalid/nonpositive feedback, stale
+acquisition, lost heartbeat and `feedback_cutoff_C` command heat OFF. START
+acceptance is not a sensor-validity preflight; runtime interlocks still apply.
 
 ## Wiring
 

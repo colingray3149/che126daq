@@ -1,0 +1,7 @@
+{
+  "experiment": "exp7",
+  "feedback_channel": 3,
+  "rear_channel": 1,
+  "variac_voltage_V": 100.0,
+  "external_channel": 2
+}

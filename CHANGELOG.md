@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-11-16 — EXP8 external TC2 sequencing with independent TC513 internal control
+
+- Added EXP8 on protocol exp2-v6: external TC2 continuous heat to 100°C/latched OFF, ungated first NEXT into the existing 90-second ramp to 200°C, continuous BOOST_FINAL permission, and an independent Selec TC513 manually set to 650°C. The explicitly confirmed second NEXT at observed TC513 PV=650 starts a 90-elapsed-second hold; every NEXT is acknowledged and later commands never reset the timer.
+- EXP8 intentionally aliases external/feedback channel 2, retains rear TC1/120°C and external TC2/730°C protection, ignores TC3 NaN, removes the internal DAQ high limit, and preserves three raw CSV columns while hiding unused TC3 in the UI. EXP7's distinct TC2/TC3/TC1 mapping remains unchanged.
+- Added the complete [EXP8 hardware/tuning guide](docs/experiment8.md): requested common-OFF wiring that removes both TC513 and heater power, fixed-controller-supply alternative, two-permission truth table, separate fused load path, exact variant-dependent A/AX/SSR terminals, mechanical-relay cycle-time guidance, and on/off alternative. The manual-required interposer and the direct-contact deviation are distinguished rather than claiming manufacturer approval.
+- Documented practical auto-tune using START/first NEXT to obtain uninterrupted BOOST_FINAL permission: never use the second NEXT during tuning, allow the manual's 3–4 thermal cycles rather than 90 seconds, record P/I/D/ARW/CY.t, turn tuning off, and stop before a fresh run. No universal PID coefficients were invented.
+- Archived Selec OP292-V04/V05 and manufacturer-linked TC513AX manuals/datasheet under `references/datasheets/`; verified terminal maps and key icons from rendered PDF images. Archived the exact McMaster 8440T32 print confirming grounded K construction, yellow+/red−, 760°C sheath and **249°C (480°F)** wire leads; corrected EXP7's stale 449°C lead comment.
+- Recorded lessons from run064: failed 47 kΩ negative-to-ground attempt, 10/27 TC3 NaN (37.0%), first fault about 0.711 seconds after heat ON with finite/stable TC1/TC2, and no raw MAX fault bits to establish root cause. EXP8 routes the internal probe only to TC513 without claiming grounded-input compatibility, isolation, or a leakage fix.
+- Verification passed native controller checks, 33 Python host checks, actual sketch/hub PTY behavior (including a 100-second BOOST wait, exact 90,000 ms second-NEXT hold and duplicate-NEXT no-op), browser UI, offline reports, Mega ADK compilation (22,894 bytes flash/1,380 bytes RAM), and the Nix launcher build. No firmware upload, live DAQ restart, physical relay/heater action, or real TC513 PV/tuning validation was performed.
+- Subsequent operator-requested deployment uploaded EXP8 to the Mega ADK and launched `che126daq-exp8-live` waiting for explicit START. Real IDLE/OFF telemetry and an EXP8 NEXT no-op acknowledgement were observed without sending a heating START. Fixed the idle/live view selecting legacy three-panel metadata before START; EXP8 now displays TC2/TC1 only in that state while historical mappings remain intact. Documented optional auto-tune and the distinction between the `S.P.H` ceiling and actual SV=650°C.
+
+## 2026-11-16 — Clarified EXP7 external/internal phase policy
+
+- Corrected EXP7: external TC2 continuous heat to measured 100°C, latched OFF without reheating, operator NEXT at any temperature, external-TC controlled ramp until measured 200°C, then internal TC3 continuous boost to 650°C and on/off regulation for 90 elapsed seconds before COMPLETE/OFF.
+- EXP7 NEXT is always acknowledged without temperature, freshness, state or phase rejection gates. Entry/wait advances; later/terminal/idle commands are no-ops, never resetting the final timer, skipping phases or re-arming.
+- Added declarative `external_channel`, `preheat_target_C`, `ramp_target_C`, and `ramp_s` to the atomic EXP7 settings payload/snapshot. Internal high cutoff stays active throughout; rear/sample/heartbeat protection remains unchanged.
+- Native regressions passed the full 90-second hold and editable thresholds; 27 retained host behavior checks passed. Actual sketch/host PTY smoke measured 90,000 ms final hold, external 100°C latch-OFF, external 200°C source switching, internal on/off regulation and unrestricted/no-op NEXT behavior. No real heating START was sent.
+- Corrected Mega image compiled/uploaded: 22,012 bytes flash / 1,320 bytes static RAM. Finalized recording060 at 1,957 rows and relaunched `che126daq-exp7-live` idle with the corrected config ready for `start exp7`.
+
+
+## 2026-11-16 — EXP7 internal-cartridge thermocouple control
+
+- Added raw TC3 MAX31855 on CLK/DO/CS 34/36/38, retaining TC1 22/24/26, TC2 28/30/32 and relay D33. Updated current fault diagnostic, wiring guides and three-channel plots/reports.
+- Added `experiment7.toml`, `start exp7`, `next` and `stop exp7`: EXP6-style ungated NEXT and timed final hold, with internal TC3 feedback and independent TC1 rear protection. External TC2 is diagnostic only; internal failure never falls back.
+- Clean exp2-v6 cutover: four-column serial CSV, three raw host temperature columns, explicit distinct integer source mappings, role-named cutoffs, acknowledged atomic settings, cached raw remapping with original freshness, and rear-priority trips. EXP2–6 retain original source selections. Historical two-channel data/old metadata remain readable without rewriting recordings.
+- Made staged final target, feedback/rear cutoffs and timed hold editable within existing upper envelopes; retained recipe defaults and fixed 100°C/90-second-to-200°C stages. Replacement cartridge identity/rating/junction isolation remains unrecorded.
+- Native controller checks and 23 host behavior checks passed (corrected fixture-only failures before rerunning affected checks). Actual sketch/host PTY smoke passed internal regulation/crossings, editable target/cutoff/hold, raw storage, no fallback and rear priority; actual browser START/NEXT/STOP and source labels passed on the isolated runtime. Three-channel offline report generation passed.
+- Compiled and uploaded Mega firmware: 20,260 bytes flash / 1,303 bytes static RAM. Rebuilt the launcher and started `che126daq-exp7-live` with `--wait-for-start`. Actual board reported fresh v6 IDLE/commanded OFF; no real heating START was sent by the assistant. Initial TC3 `nan` matched the operator-reported unplugged probe.
+- Recorded the operator's standing request to execute requested code/deployment operations without disconnected/ready confirmation prompts; retained runtime interlocks and explicit reports of observed outcomes.
+
+
 ## 2026-11-13 — Cartridge failure analysis; publish runs041–059
 
 - Located the cartridge failure at the end of run040's full-power boost (re-heat at 18:52:48 UTC produced no rise) and logged the likely cause (sheath above its 760°C rating in sand while the beside-probe read ~700°C), exposure per run and the 48 Ω check.

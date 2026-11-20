@@ -1,0 +1,50 @@
+# EXP7 STAGED CONTROL SETTINGS — external TC2 entry/ramp, internal TC3 final control
+# Save this file, then type: start exp7
+# START reloads settings; edits alone do not change an active run.
+# External feedback heats continuously to preheat_target_C, then latches OFF in
+# HOLD_100. NEXT may enter RAMP_200 early at any temperature. The external ramp
+# reaches ramp_target_C over ramp_s, then internal feedback boosts to target_C
+# and regulates there for hold_s. Internal/rear protection remains independent.
+# The manual variac preset is metadata, not a software voltage command.
+# Default 650 C operation is not component-rating approval: saved basalt rating
+# is ~649 C, possible probe rating 500 C (identity unverified), heater exposure
+# limit 760 C and leads 249 C. Rear limits do not bound internal temperatures.
+# NC wiring can fail ON on reset/power loss; OFF means a relay command only.
+
+# Editable final internal-feedback target: 200 < target_C <= 700.
+target_C = 650.0
+hysteresis_C = 3.0
+
+# Editable internal emergency cutoff, applied independently in every stage:
+# target_C < cutoff <= 730.
+feedback_cutoff_C = 730.0
+
+# Required independent rear cutoff, editable within 0 < cutoff <= 120.
+rear_cutoff_C = 120.0
+rear_cutoff_enabled = true
+
+prediction_lead_s = 5.0
+min_off_s = 5.0
+hold_band_C = 5.0
+
+# Elapsed seconds from first measured internal feedback >= target_C, not
+# predicted arrival. Editable >0; excursions do not reset this deadline.
+hold_s = 90.0
+
+# Distinct raw channels 1..3: TC2 is external control for entry/wait/ramp, TC3
+# is internal control for boost/final hold and the independent high cutoff,
+# and TC1 is required rear protection. Failed required sources never fall back.
+feedback_channel = 3
+rear_channel = 1
+external_channel = 2
+
+# External-controlled stage thresholds and ramp duration. Values must satisfy
+# 0 < preheat_target_C < ramp_target_C < target_C; ramp_s may be zero.
+preheat_target_C = 100.0
+ramp_target_C = 200.0
+ramp_s = 90.0
+
+variac_voltage_V = 100.0
+
+# Barrier under test, in stack order; recorded in each run's metadata and notes.
+barrier = "Control: 1 thin aluminum sheet only (no mica, no insulation)"

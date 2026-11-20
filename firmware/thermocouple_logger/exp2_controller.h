@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-// CHE126 experiments 2/3/4/5, protocol "exp2-v5"; START is explicit manual re-arming.
+// CHE126 experiments 2/3/4/5/6/7/8, protocol "exp2-v6"; START explicitly re-arms.
 // All times are uint32_t milliseconds from the same wrapping clock. This
 // class only decides the requested heater level; the sketch owns the relay.
 // NC wiring is NOT power-independent fail-safe: this active-HIGH module must
@@ -22,7 +22,14 @@ enum State : uint8_t {
   STOPPED
 };
 
-enum Program : uint8_t { PROGRAM_SINGLE, PROGRAM_EXP4, PROGRAM_EXP5, PROGRAM_EXP6 };
+enum Program : uint8_t {
+  PROGRAM_SINGLE,
+  PROGRAM_EXP4,
+  PROGRAM_EXP5,
+  PROGRAM_EXP6,
+  PROGRAM_EXP7,
+  PROGRAM_EXP8
+};
 
 enum Phase : uint8_t {
   SINGLE,
@@ -36,14 +43,19 @@ enum Phase : uint8_t {
 struct Settings {
   float target_c;
   float hysteresis_c;
-  float tc1_cutoff_c;
-  float tc2_cutoff_c;
-  bool tc2_cutoff_enabled;
+  float feedback_cutoff_c;
+  float rear_cutoff_c;
+  bool rear_cutoff_enabled;
   uint32_t prediction_lead_ms;
   uint32_t min_off_ms;
   float hold_band_c;
   uint32_t hold_duration_ms;
-  bool swap_inputs;
+  uint8_t feedback_channel;
+  uint8_t rear_channel;
+  uint8_t external_channel;
+  float preheat_target_c;
+  float ramp_target_c;
+  uint32_t ramp_duration_ms;
 };
 
 class Controller {
@@ -54,35 +66,41 @@ public:
     Settings settings;
     settings.target_c = 300.0f;
     settings.hysteresis_c = 3.0f;
-    settings.tc1_cutoff_c = 320.0f;
-    settings.tc2_cutoff_c = 140.0f;
-    settings.tc2_cutoff_enabled = true;
+    settings.feedback_cutoff_c = 320.0f;
+    settings.rear_cutoff_c = 140.0f;
+    settings.rear_cutoff_enabled = true;
     settings.prediction_lead_ms = 5000UL;
     settings.min_off_ms = 5000UL;
     settings.hold_band_c = 5.0f;
     settings.hold_duration_ms = 1800000UL;
-    settings.swap_inputs = false;
+    settings.feedback_channel = 2;
+    settings.rear_channel = 1;
+    settings.external_channel = 2;
+    settings.preheat_target_c = 100.0f;
+    settings.ramp_target_c = 200.0f;
+    settings.ramp_duration_ms = 90000UL;
     return settings;
   }
 
   static Settings defaultExp4Settings() {
-    Settings settings;
+    Settings settings = defaultSettings();
     settings.target_c = 700.0f;
     settings.hysteresis_c = 3.0f;
-    settings.tc1_cutoff_c = 730.0f;
-    settings.tc2_cutoff_c = 85.0f;
-    settings.tc2_cutoff_enabled = true;
+    settings.feedback_cutoff_c = 730.0f;
+    settings.rear_cutoff_c = 85.0f;
+    settings.rear_cutoff_enabled = true;
     settings.prediction_lead_ms = 5000UL;
     settings.min_off_ms = 5000UL;
     settings.hold_band_c = 5.0f;
     settings.hold_duration_ms = 0;
-    settings.swap_inputs = true;
+    settings.feedback_channel = 3;
+    settings.rear_channel = 1;
     return settings;
   }
 
   static Settings defaultExp5Settings() {
     Settings settings = defaultExp4Settings();
-    settings.tc2_cutoff_c = 120.0f;
+    settings.rear_cutoff_c = 120.0f;
     settings.hold_duration_ms = 60000UL;
     return settings;
   }
@@ -114,8 +132,12 @@ public:
     sample_valid_ = false;
     last_sample_ms_ = now_ms;
     last_raw_sample_ms_ = now_ms;
-    tc1_c_ = 0.0f;
-    tc2_c_ = 0.0f;
+    raw_sample_seen_ = false;
+    raw_tc_c_[0] = 0.0f;
+    raw_tc_c_[1] = 0.0f;
+    raw_tc_c_[2] = 0.0f;
+    feedback_c_ = 0.0f;
+    rear_c_ = 0.0f;
     slope_c_per_s_ = 0.0f;
     history_count_ = 0;
     history_next_ = 0;
@@ -127,21 +149,26 @@ public:
 
   // Supply each acquisition exactly once. Invalid samples are never entered
   // into the slope history. This method also evaluates all interlocks/control.
-  void onSample(uint32_t now_ms, float raw_tc1_c, float raw_tc2_c) {
+  void onSample(uint32_t now_ms, float raw_tc1_c, float raw_tc2_c,
+                float raw_tc3_c) {
+    raw_tc_c_[0] = raw_tc1_c;
+    raw_tc_c_[1] = raw_tc2_c;
+    raw_tc_c_[2] = raw_tc3_c;
+    raw_sample_seen_ = true;
     last_raw_sample_ms_ = now_ms;
-    tc1_c_ = settings_.swap_inputs ? raw_tc2_c : raw_tc1_c;
-    tc2_c_ = settings_.swap_inputs ? raw_tc1_c : raw_tc2_c;
+    selectCachedChannels();
 
-    // Logical TC1 supplies heater feedback. Logical TC2 is optional for
-    // single-probe testing; its trip applies only for a finite enabled high.
-    const bool finite1 = finite(tc1_c_);
-    const bool finite2 = finite(tc2_c_);
-    const bool checked = finite1 && tc1_c_ > 0.0f;
+    // EXP7 uses external feedback before boost, internal feedback afterward.
+    // Internal high-limit/fault protection remains active throughout EXP7.
+    const float high_limit_c = raw_tc_c_[settings_.feedback_channel - 1];
+    const bool finite_feedback = finite(high_limit_c);
+    const bool finite_rear = finite(rear_c_);
+    const bool checked = validFeedback();
 
     if (checked) {
       sample_valid_ = true;
       last_sample_ms_ = now_ms;
-      recordSlopeSample(now_ms, tc1_c_);
+      recordSlopeSample(now_ms, feedback_c_);
     } else {
       sample_valid_ = false;
       slope_c_per_s_ = 0.0f;
@@ -150,22 +177,22 @@ public:
     }
 
     if (active()) {
-      // Logical TC2 has explicit priority, including when heater feedback is bad.
-      if (settings_.tc2_cutoff_enabled && finite2 &&
-        tc2_c_ >= settings_.tc2_cutoff_c) {
-        trip("TC2_LIMIT", now_ms);
-      } else if (stagedProgram() && !finite2) {
-        trip("TC2_FAULT", now_ms);
-      } else if (finite1 && tc1_c_ >= settings_.tc1_cutoff_c) {
+      // Rear protection has explicit priority, including bad feedback.
+      if (settings_.rear_cutoff_enabled && finite_rear &&
+          rear_c_ >= settings_.rear_cutoff_c) {
+        trip("REAR_LIMIT", now_ms);
+      } else if (stagedProgram() && !finite_rear) {
+        trip("REAR_FAULT", now_ms);
+      } else if (finite_feedback && high_limit_c >= settings_.feedback_cutoff_c) {
         trip("HOT_LIMIT", now_ms);
       } else if (!checked) {
         trip("SENSOR_FAULT", now_ms);
       }
     } else if (state_ == IDLE) {
-      if (settings_.tc2_cutoff_enabled && finite2 &&
-        tc2_c_ >= settings_.tc2_cutoff_c) {
-        reason_ = "TC2_LIMIT";
-      } else if (finite1 && tc1_c_ >= settings_.tc1_cutoff_c) {
+      if (settings_.rear_cutoff_enabled && finite_rear &&
+          rear_c_ >= settings_.rear_cutoff_c) {
+        reason_ = "REAR_LIMIT";
+      } else if (finite_feedback && high_limit_c >= settings_.feedback_cutoff_c) {
         reason_ = "HOT_LIMIT";
       } else if (!checked) {
         reason_ = "SENSOR_FAULT";
@@ -182,16 +209,17 @@ public:
     if (!active()) return;
     // Runtime limits also apply immediately after an unconditional START,
     // before the next acquisition; they are not pre-start requirements.
-    if (settings_.tc2_cutoff_enabled && finite(tc2_c_) &&
-        tc2_c_ >= settings_.tc2_cutoff_c) {
-      trip("TC2_LIMIT", now_ms);
+    if (settings_.rear_cutoff_enabled && finite(rear_c_) &&
+        rear_c_ >= settings_.rear_cutoff_c) {
+      trip("REAR_LIMIT", now_ms);
       return;
     }
-    if (stagedProgram() && !finite(tc2_c_)) {
-      trip("TC2_FAULT", now_ms);
+    if (stagedProgram() && !finite(rear_c_)) {
+      trip("REAR_FAULT", now_ms);
       return;
     }
-    if (finite(tc1_c_) && tc1_c_ >= settings_.tc1_cutoff_c) {
+    if (finite(raw_tc_c_[settings_.feedback_channel - 1]) &&
+        raw_tc_c_[settings_.feedback_channel - 1] >= settings_.feedback_cutoff_c) {
       trip("HOT_LIMIT", now_ms);
       return;
     }
@@ -206,6 +234,10 @@ public:
       return;
     }
 
+    if (program_ == PROGRAM_EXP7 || program_ == PROGRAM_EXP8) {
+      updateExp7(now_ms);
+      return;
+    }
     if (stagedProgram()) {
       updateStaged(now_ms);
       return;
@@ -242,6 +274,10 @@ public:
     static const char EXP5_NEXT_PREFIX[] = "EXP5 NEXT ";
     static const char EXP6_START_PREFIX[] = "EXP6 START ";
     static const char EXP6_NEXT_PREFIX[] = "EXP6 NEXT ";
+    static const char EXP7_START_PREFIX[] = "EXP7 START ";
+    static const char EXP7_NEXT_PREFIX[] = "EXP7 NEXT ";
+    static const char EXP8_START_PREFIX[] = "EXP8 START ";
+    static const char EXP8_NEXT_PREFIX[] = "EXP8 NEXT ";
     static const char STOP_PREFIX[] = "EXP2 STOP ";
     uint32_t id = 0;
 
@@ -303,6 +339,35 @@ public:
       return true;
     }
 
+    if (strncmp(line, EXP7_START_PREFIX, sizeof(EXP7_START_PREFIX) - 1) == 0) {
+      Settings candidate;
+      const bool valid =
+          parseStart(line + sizeof(EXP7_START_PREFIX) - 1, id, candidate, true) &&
+          validExp7Settings(candidate);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      start(id, candidate, PROGRAM_EXP7, now_ms);
+      return true;
+    }
+
+    if (strncmp(line, EXP8_START_PREFIX, sizeof(EXP8_START_PREFIX) - 1) == 0) {
+      Settings candidate;
+      const bool valid = parseStart(line + sizeof(EXP8_START_PREFIX) - 1, id, candidate, true) &&
+                         validExp8Settings(candidate);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      start(id, candidate, PROGRAM_EXP8, now_ms);
+      return true;
+    }
+
     if (strncmp(line, EXP4_NEXT_PREFIX, sizeof(EXP4_NEXT_PREFIX) - 1) == 0) {
       const bool valid_id = parsePositiveId(line + sizeof(EXP4_NEXT_PREFIX) - 1, id);
       request_id_ = id;
@@ -339,6 +404,30 @@ public:
       return true;
     }
 
+    if (strncmp(line, EXP7_NEXT_PREFIX, sizeof(EXP7_NEXT_PREFIX) - 1) == 0) {
+      const bool valid_id = parsePositiveId(line + sizeof(EXP7_NEXT_PREFIX) - 1, id);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid_id) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      next(id, PROGRAM_EXP7, now_ms);
+      return true;
+    }
+
+    if (strncmp(line, EXP8_NEXT_PREFIX, sizeof(EXP8_NEXT_PREFIX) - 1) == 0) {
+      const bool valid_id = parsePositiveId(line + sizeof(EXP8_NEXT_PREFIX) - 1, id);
+      request_id_ = id;
+      command_ok_ = false;
+      if (!valid_id) {
+        reject("BAD_COMMAND");
+        return true;
+      }
+      next(id, PROGRAM_EXP8, now_ms);
+      return true;
+    }
+
     if (strncmp(line, STOP_PREFIX, sizeof(STOP_PREFIX) - 1) == 0) {
       const bool valid_id = parsePositiveId(line + sizeof(STOP_PREFIX) - 1, id);
       request_id_ = id;
@@ -365,10 +454,15 @@ public:
   uint32_t holdSeconds() const { return hold_s_; }
   uint32_t requestId() const { return request_id_; }
   bool commandOk() const { return command_ok_; }
-  bool tc2Required() const { return stagedProgram(); }
+  bool rearRequired() const { return stagedProgram(); }
   const Settings &settings() const { return settings_; }
   float setpointC() const { return setpoint_c_; }
   float slopeCPerSecond() const { return slope_c_per_s_; }
+  uint8_t phaseFeedbackChannel() const {
+    return program_ == PROGRAM_EXP7 &&
+                   (phase_ == HEAT_100 || phase_ == HOLD_100 || phase_ == RAMP_200)
+               ? settings_.external_channel : settings_.feedback_channel;
+  }
 
   static const char *stateName(State state) {
     switch (state) {
@@ -386,6 +480,8 @@ public:
     if (program == PROGRAM_EXP4) return "exp4";
     if (program == PROGRAM_EXP5) return "exp5";
     if (program == PROGRAM_EXP6) return "exp6";
+    if (program == PROGRAM_EXP7) return "exp7";
+    if (program == PROGRAM_EXP8) return "exp8";
     return "single";
   }
 
@@ -404,7 +500,7 @@ public:
 private:
   struct SlopeSample {
     uint32_t time_ms;
-    float tc1_c;
+    float feedback_c;
   };
 
   // At the firmware's 500 ms period, 16 entries cover the trailing 5 seconds
@@ -504,50 +600,99 @@ private:
     return finite(settings.target_c) && settings.target_c >= -limit &&
            settings.target_c <= limit && finite(settings.hysteresis_c) &&
            settings.hysteresis_c >= 0.0f && settings.hysteresis_c <= limit &&
-           finite(settings.tc1_cutoff_c) && settings.tc1_cutoff_c >= -limit &&
-           settings.tc1_cutoff_c <= limit && finite(settings.tc2_cutoff_c) &&
-           settings.tc2_cutoff_c >= -limit && settings.tc2_cutoff_c <= limit &&
+           finite(settings.feedback_cutoff_c) && settings.feedback_cutoff_c >= -limit &&
+           settings.feedback_cutoff_c <= limit && finite(settings.rear_cutoff_c) &&
+           settings.rear_cutoff_c >= -limit && settings.rear_cutoff_c <= limit &&
            settings.prediction_lead_ms <= MAX_DURATION_MS &&
            settings.min_off_ms <= MAX_DURATION_MS &&
            finite(settings.hold_band_c) && settings.hold_band_c >= 0.0f &&
            settings.hold_band_c <= limit &&
-           settings.hold_duration_ms <= MAX_DURATION_MS;
+           settings.hold_duration_ms <= MAX_DURATION_MS &&
+           settings.feedback_channel >= 1 && settings.feedback_channel <= 3 &&
+           settings.rear_channel >= 1 && settings.rear_channel <= 3 &&
+           settings.feedback_channel != settings.rear_channel;
   }
 
   static bool validExp4Settings(const Settings &settings) {
     return settings.target_c > 200.0f && settings.target_c <= 700.0f &&
-           settings.target_c < settings.tc1_cutoff_c &&
-           settings.tc1_cutoff_c <= 730.0f &&
-           settings.tc2_cutoff_enabled && settings.tc2_cutoff_c == 85.0f &&
-           settings.hold_duration_ms == 0 &&
+           settings.target_c < settings.feedback_cutoff_c &&
+           settings.feedback_cutoff_c <= 730.0f &&
+           settings.rear_cutoff_enabled && settings.rear_cutoff_c > 0.0f &&
+           settings.rear_cutoff_c <= 85.0f && settings.hold_duration_ms == 0 &&
            settings.hysteresis_c <= 5.0f && settings.hold_band_c <= 5.0f;
   }
 
   static bool validExp5Settings(const Settings &settings) {
-    return settings.target_c == 700.0f &&
-           settings.tc1_cutoff_c == 730.0f &&
-           settings.tc2_cutoff_enabled && settings.tc2_cutoff_c == 120.0f &&
-           settings.hold_duration_ms == 60000UL &&
+    return settings.target_c > 200.0f && settings.target_c <= 700.0f &&
+           settings.target_c < settings.feedback_cutoff_c &&
+           settings.feedback_cutoff_c <= 730.0f &&
+           settings.rear_cutoff_enabled && settings.rear_cutoff_c > 0.0f &&
+           settings.rear_cutoff_c <= 120.0f &&
+           settings.hold_duration_ms > 0 &&
+           settings.hold_duration_ms <= MAX_DURATION_MS &&
            settings.hysteresis_c <= 5.0f && settings.hold_band_c <= 5.0f;
   }
 
-  // Parse all eleven START fields into independent outputs. id remains available
+  static bool validExp7Settings(const Settings &settings) {
+    return validExp5Settings(settings) &&
+           settings.external_channel >= 1 && settings.external_channel <= 3 &&
+           settings.external_channel != settings.feedback_channel &&
+           settings.external_channel != settings.rear_channel &&
+           finite(settings.preheat_target_c) && settings.preheat_target_c > 0 &&
+           finite(settings.ramp_target_c) &&
+           settings.preheat_target_c < settings.ramp_target_c &&
+           settings.ramp_target_c < settings.target_c &&
+           settings.ramp_duration_ms <= MAX_DURATION_MS;
+  }
+
+  static bool validExp8Settings(const Settings &settings) {
+    return settings.target_c > 200.0f && settings.target_c <= 700.0f &&
+           settings.feedback_cutoff_c <= 730.0f &&
+           settings.rear_cutoff_enabled && settings.rear_cutoff_c > 0.0f &&
+           settings.rear_cutoff_c <= 120.0f && settings.hold_duration_ms > 0 &&
+           settings.hold_duration_ms <= MAX_DURATION_MS &&
+           settings.hysteresis_c <= 5.0f && settings.hold_band_c <= 5.0f &&
+           settings.feedback_channel == 2 && settings.external_channel == 2 &&
+           settings.rear_channel == 1 && finite(settings.preheat_target_c) &&
+           settings.preheat_target_c > 0 && finite(settings.ramp_target_c) &&
+           settings.preheat_target_c < settings.ramp_target_c &&
+           settings.ramp_target_c < settings.target_c &&
+           settings.ramp_target_c < settings.feedback_cutoff_c &&
+           settings.ramp_duration_ms <= MAX_DURATION_MS;
+  }
+
+  static bool parseChannel(const char *&text, uint8_t &channel, bool last) {
+    uint32_t value = 0;
+    if (!parseUnsigned(text, 3, value, last) || value == 0) return false;
+    channel = (uint8_t)value;
+    return true;
+  }
+
+  // Parse every START field into independent outputs. id remains available
   // for rejection acknowledgement after a valid id but a bad settings field.
-  static bool parseStart(const char *text, uint32_t &id, Settings &settings) {
+  static bool parseStart(const char *text, uint32_t &id, Settings &settings,
+                         bool exp7 = false) {
+    settings = defaultSettings();
     id = 0;
     return parseUnsigned(text, 4294967295UL, id, false) && id > 0 &&
            parseFloat(text, settings.target_c, false) &&
            parseFloat(text, settings.hysteresis_c, false) &&
-           parseFloat(text, settings.tc1_cutoff_c, false) &&
-           parseFloat(text, settings.tc2_cutoff_c, false) &&
-           parseBool(text, settings.tc2_cutoff_enabled, false) &&
+           parseFloat(text, settings.feedback_cutoff_c, false) &&
+           parseFloat(text, settings.rear_cutoff_c, false) &&
+           parseBool(text, settings.rear_cutoff_enabled, false) &&
            parseUnsigned(text, MAX_DURATION_MS, settings.prediction_lead_ms,
                          false) &&
            parseUnsigned(text, MAX_DURATION_MS, settings.min_off_ms, false) &&
            parseFloat(text, settings.hold_band_c, false) &&
            parseUnsigned(text, MAX_DURATION_MS, settings.hold_duration_ms,
                          false) &&
-           parseBool(text, settings.swap_inputs, true) &&
+           parseChannel(text, settings.feedback_channel, false) &&
+           parseChannel(text, settings.rear_channel, !exp7) &&
+           (!exp7 || (parseChannel(text, settings.external_channel, false) &&
+                      parseFloat(text, settings.preheat_target_c, false) &&
+                      parseFloat(text, settings.ramp_target_c, false) &&
+                      parseUnsigned(text, MAX_DURATION_MS,
+                                    settings.ramp_duration_ms, true))) &&
            validSettings(settings);
   }
 
@@ -569,12 +714,14 @@ private:
 
   bool stagedProgram() const {
     return program_ == PROGRAM_EXP4 || program_ == PROGRAM_EXP5 ||
-           program_ == PROGRAM_EXP6;
+           program_ == PROGRAM_EXP6 || program_ == PROGRAM_EXP7 ||
+           program_ == PROGRAM_EXP8;
   }
 
-  // EXP6 is EXP5 with NEXT accepted anywhere in the 100 C stage.
+  // EXP5/EXP6/EXP7 share wall-clock final holds; EXP6/EXP7 use ungated NEXT.
   bool timedFinal() const {
-    return program_ == PROGRAM_EXP5 || program_ == PROGRAM_EXP6;
+    return program_ == PROGRAM_EXP5 || program_ == PROGRAM_EXP6 ||
+           program_ == PROGRAM_EXP7;
   }
 
   bool active() const { return state_ == RUNNING || state_ == HOLD; }
@@ -585,28 +732,54 @@ private:
     if (state_ == IDLE || active()) reason_ = reason;
   }
 
+  void selectCachedChannels() {
+    feedback_c_ = raw_tc_c_[phaseFeedbackChannel() - 1];
+    rear_c_ = raw_tc_c_[settings_.rear_channel - 1];
+  }
+
+  bool validFeedback() const {
+    const float internal_c = raw_tc_c_[settings_.feedback_channel - 1];
+    return finite(feedback_c_) && feedback_c_ > 0.0f &&
+           (program_ != PROGRAM_EXP7 || (finite(internal_c) && internal_c > 0.0f));
+  }
+
+  void reseedPhaseFeedback() {
+    selectCachedChannels();
+    sample_valid_ = raw_sample_seen_ && validFeedback();
+    slope_c_per_s_ = 0.0f;
+    history_count_ = 0;
+    history_next_ = 0;
+    if (sample_valid_) {
+      last_sample_ms_ = last_raw_sample_ms_;
+      recordSlopeSample(last_sample_ms_, feedback_c_);
+    }
+  }
+
   void start(uint32_t id, const Settings &settings, Program program,
              uint32_t now_ms) {
-    if (settings_.swap_inputs != settings.swap_inputs) {
-      // The cached values are logical under the old mapping. Swapping them
-      // recovers the same raw acquisition under the new mapping; never carry
-      // the opposite probe's freshness or slope into heater feedback.
-      const float cached_tc1 = tc1_c_;
-      tc1_c_ = tc2_c_;
-      tc2_c_ = cached_tc1;
-      sample_valid_ = finite(tc1_c_) && tc1_c_ > 0.0f;
-      slope_c_per_s_ = 0.0f;
-      history_count_ = 0;
-      history_next_ = 0;
-      if (sample_valid_) {
-        last_sample_ms_ = last_raw_sample_ms_;
-        recordSlopeSample(last_sample_ms_, tc1_c_);
-      }
-    }
+    const uint8_t previous_source = phaseFeedbackChannel();
     settings_ = settings;
     program_ = program;
     phase_ = stagedProgram() ? HEAT_100 : SINGLE;
-    setpoint_c_ = stagedProgram() ? 100.0f : settings_.target_c;
+    const bool feedback_changed = previous_source != phaseFeedbackChannel();
+    selectCachedChannels();
+
+    // Reuse only the last physical acquisition. A new feedback source starts a
+    // new slope history and inherits that acquisition's original timestamp;
+    // START itself never makes cached data fresh or substitutes another probe.
+    sample_valid_ = raw_sample_seen_ && validFeedback();
+    if (feedback_changed) {
+      slope_c_per_s_ = 0.0f;
+      history_count_ = 0;
+      history_next_ = 0;
+    }
+    if (sample_valid_) {
+      last_sample_ms_ = last_raw_sample_ms_;
+      if (feedback_changed) recordSlopeSample(last_sample_ms_, feedback_c_);
+    }
+    setpoint_c_ = (program_ == PROGRAM_EXP7 || program_ == PROGRAM_EXP8)
+                      ? settings_.preheat_target_c
+                      : stagedProgram() ? 100.0f : settings_.target_c;
     ramp_started_ms_ = now_ms;
     setHeater(false, now_ms);
     in_band_ = false;
@@ -619,9 +792,35 @@ private:
   }
 
   void next(uint32_t id, Program expected_program, uint32_t now_ms) {
-    const bool in_band = tc1_c_ >= 100.0f - settings_.hold_band_c &&
-                         tc1_c_ <= 100.0f + settings_.hold_band_c;
-    const bool ready = program_ == PROGRAM_EXP6
+    if (expected_program == PROGRAM_EXP7 || expected_program == PROGRAM_EXP8) {
+      // Valid EXP7/EXP8 NEXT is always acknowledged. EXP8 has exactly two
+      // transitions: entry/wait to ramp, then boost to the TC513 timed hold.
+      request_id_ = id;
+      command_ok_ = true;
+      if (program_ == expected_program && active() &&
+          (phase_ == HEAT_100 || phase_ == HOLD_100)) {
+        phase_ = RAMP_200;
+        state_ = RUNNING;
+        setpoint_c_ = settings_.preheat_target_c;
+        ramp_started_ms_ = now_ms;
+        hold_s_ = 0;
+        reason_ = "NEXT";
+      } else if (expected_program == PROGRAM_EXP8 && program_ == PROGRAM_EXP8 &&
+                 active() && phase_ == BOOST_FINAL) {
+        phase_ = HOLD_FINAL;
+        state_ = HOLD;
+        setpoint_c_ = settings_.target_c;
+        hold_started_ms_ = now_ms;
+        hold_s_ = 0;
+        reason_ = "TC513_TIMED_HOLD";
+      }
+      return;
+    }
+    const bool in_band = feedback_c_ >= 100.0f - settings_.hold_band_c &&
+                         feedback_c_ <= 100.0f + settings_.hold_band_c;
+    const bool ungated_next =
+        program_ == PROGRAM_EXP6 || program_ == PROGRAM_EXP7;
+    const bool ready = ungated_next
                            ? phase_ == HEAT_100 || phase_ == HOLD_100
                            : phase_ == HOLD_100 && in_band;
     if (program_ != expected_program || !active() || !ready) {
@@ -679,14 +878,14 @@ private:
     const float positive_slope =
         use_slope_prediction && slope_c_per_s_ > 0.0f ? slope_c_per_s_ : 0.0f;
     const float projected =
-        tc1_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
+        feedback_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
     const bool projected_cutoff = projected >= future_target_c;
 
     if (heater_on_) {
       // This forecast includes TC1 >= target even with zero/negative slope. OFF
       // is always immediate; a predictive pulse may be shorter than the dwell.
       if (projected_cutoff) setHeater(false, now_ms);
-    } else if (tc1_c_ <= target_c - settings_.hysteresis_c &&
+    } else if (feedback_c_ <= target_c - settings_.hysteresis_c &&
                !projected_cutoff &&
                elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
       // Never switch ON when the cutoff is already true. The OFF dwell bounds
@@ -695,10 +894,114 @@ private:
     }
   }
 
+  float exp7RampReference(uint32_t age) const {
+    if (settings_.ramp_duration_ms == 0 || age >= settings_.ramp_duration_ms)
+      return settings_.ramp_target_c;
+    return settings_.preheat_target_c +
+           (settings_.ramp_target_c - settings_.preheat_target_c) *
+               ((float)age / (float)settings_.ramp_duration_ms);
+  }
+
+  void updateExp7(uint32_t now_ms) {
+    if (phase_ == HEAT_100) {
+      setpoint_c_ = settings_.preheat_target_c;
+      if (feedback_c_ >= settings_.preheat_target_c) {
+        phase_ = HOLD_100;
+        state_ = HOLD;
+        reason_ = "WAIT_NEXT";
+        setHeater(false, now_ms);
+      } else if (elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
+        setHeater(true, now_ms);
+      }
+      return;
+    }
+    if (phase_ == HOLD_100) {
+      // Reaching external 100 C latches OFF; cooling never reheats this stage.
+      state_ = HOLD;
+      reason_ = "WAIT_NEXT";
+      setHeater(false, now_ms);
+      return;
+    }
+    if (phase_ == RAMP_200) {
+      const uint32_t age = elapsed(now_ms, ramp_started_ms_);
+      setpoint_c_ = exp7RampReference(age);
+      if (feedback_c_ >= settings_.ramp_target_c) {
+        phase_ = BOOST_FINAL;
+        setpoint_c_ = settings_.target_c;
+        reseedPhaseFeedback();  // Internal source; never carry external slope.
+      } else {
+        state_ = RUNNING;
+        reason_ = "RUNNING";
+        if (age >= settings_.ramp_duration_ms) {
+          if (elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms)
+            setHeater(true, now_ms);
+        } else {
+          const uint32_t remaining = settings_.ramp_duration_ms - age;
+          const uint32_t future = settings_.prediction_lead_ms >= remaining
+                                      ? settings_.ramp_duration_ms
+                                      : age + settings_.prediction_lead_ms;
+          regulate(setpoint_c_, exp7RampReference(future), true, now_ms);
+        }
+        return;
+      }
+    }
+    if (phase_ == BOOST_FINAL) {
+      if (program_ == PROGRAM_EXP8) {
+        // TC513 alone regulates the internal 650 C setpoint. D33 is only a
+        // continuous series permission until the operator starts the hold.
+        state_ = RUNNING;
+        reason_ = "WAIT_TC513_CONFIRM";
+        setpoint_c_ = settings_.target_c;
+        hold_s_ = 0;
+        if (elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms)
+          setHeater(true, now_ms);
+        return;
+      }
+      state_ = RUNNING;
+      reason_ = "RUNNING";
+      if (feedback_c_ < settings_.target_c) {
+        if (elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms)
+          setHeater(true, now_ms);
+        return;
+      }
+      phase_ = HOLD_FINAL;
+      hold_started_ms_ = now_ms;
+      hold_s_ = 0;
+    }
+    if (program_ == PROGRAM_EXP8) {
+      setpoint_c_ = settings_.target_c;
+      const uint32_t hold_age = elapsed(now_ms, hold_started_ms_);
+      hold_s_ = hold_age / 1000UL;
+      if (hold_age >= settings_.hold_duration_ms) {
+        setHeater(false, now_ms);
+        state_ = COMPLETE;
+        reason_ = "HOLD_COMPLETE";
+        return;
+      }
+      state_ = HOLD;
+      reason_ = "TC513_TIMED_HOLD";
+      if (elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms)
+        setHeater(true, now_ms);
+      return;
+    }
+    setpoint_c_ = settings_.target_c;
+    const uint32_t hold_age = elapsed(now_ms, hold_started_ms_);
+    hold_s_ = hold_age / 1000UL;
+    if (hold_age >= settings_.hold_duration_ms) {
+      setHeater(false, now_ms);
+      state_ = COMPLETE;
+      reason_ = "HOLD_COMPLETE";
+      return;
+    }
+    state_ = HOLD;
+    reason_ = "HOLD";
+    regulate(settings_.target_c, settings_.target_c, false, now_ms);
+  }
+
   void updateStaged(uint32_t now_ms) {
     if (phase_ == HEAT_100 || phase_ == HOLD_100) {
-      const bool in_band = tc1_c_ >= 100.0f - settings_.hold_band_c &&
-                           tc1_c_ <= 100.0f + settings_.hold_band_c;
+      const bool in_band = feedback_c_ >= 100.0f - settings_.hold_band_c &&
+                           feedback_c_ <= 100.0f + settings_.hold_band_c;
       setpoint_c_ = 100.0f;
       if (!in_band) {
         phase_ = HEAT_100;
@@ -724,7 +1027,7 @@ private:
     if (phase_ == RAMP_200) {
       const uint32_t ramp_age = elapsed(now_ms, ramp_started_ms_);
       setpoint_c_ = rampReference(ramp_age);
-      if (tc1_c_ >= 200.0f) {
+      if (feedback_c_ >= 200.0f) {
         phase_ = BOOST_FINAL;
         state_ = RUNNING;
         setpoint_c_ = settings_.target_c;
@@ -758,9 +1061,9 @@ private:
       setpoint_c_ = settings_.target_c;
       hold_s_ = 0;
       if (timedFinal()) {
-        if (tc1_c_ < settings_.target_c) {
-          // EXP5 boost ignores slope prediction: only the measured heater
-          // temperature may end maximum commanded heat and start the final hold.
+        if (feedback_c_ < settings_.target_c) {
+          // Timed programs ignore slope prediction during boost: only measured
+          // feedback may end maximum heat and start the final hold.
           if (heater_on_ ||
               elapsed(now_ms, output_changed_ms_) >= settings_.min_off_ms) {
             setHeater(true, now_ms);
@@ -774,7 +1077,7 @@ private:
         const float positive_slope =
             slope_c_per_s_ > 0.0f ? slope_c_per_s_ : 0.0f;
         const float projected =
-            tc1_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
+            feedback_c_ + positive_slope * ((float)settings_.prediction_lead_ms / 1000.0f);
         if (projected < settings_.target_c) {
           // Full power is a phase policy, not a fixed duty cycle. Preserve an
           // existing ON request, but never bypass minimum OFF on re-energization.
@@ -790,8 +1093,8 @@ private:
     }
 
     if (timedFinal()) {
-      // The final EXP5 hold is wall-clock time from the first measured target
-      // crossing. Leaving the regulation band neither pauses nor resets it.
+      // Timed final holds run from the first measured target crossing. Leaving
+      // the regulation band neither pauses nor resets the wall-clock timer.
       phase_ = HOLD_FINAL;
       setpoint_c_ = settings_.target_c;
       const uint32_t hold_age = elapsed(now_ms, hold_started_ms_);
@@ -814,8 +1117,8 @@ private:
     phase_ = HOLD_FINAL;
     setpoint_c_ = settings_.target_c;
     const bool in_band =
-        tc1_c_ >= settings_.target_c - settings_.hold_band_c &&
-        tc1_c_ <= settings_.target_c + settings_.hold_band_c;
+        feedback_c_ >= settings_.target_c - settings_.hold_band_c &&
+        feedback_c_ <= settings_.target_c + settings_.hold_band_c;
     if (!in_band) {
       in_band_ = false;
       hold_s_ = 0;
@@ -836,8 +1139,8 @@ private:
   }
 
   void updateHold(uint32_t now_ms) {
-    const bool in_band = tc1_c_ >= settings_.target_c - settings_.hold_band_c &&
-                         tc1_c_ <= settings_.target_c + settings_.hold_band_c;
+    const bool in_band = feedback_c_ >= settings_.target_c - settings_.hold_band_c &&
+                         feedback_c_ <= settings_.target_c + settings_.hold_band_c;
     if (!in_band) {
       in_band_ = false;
       hold_s_ = 0;
@@ -861,23 +1164,23 @@ private:
     }
   }
 
-  void recordSlopeSample(uint32_t now_ms, float tc1_c) {
+  void recordSlopeSample(uint32_t now_ms, float feedback_c) {
     history_[history_next_].time_ms = now_ms;
-    history_[history_next_].tc1_c = tc1_c;
+    history_[history_next_].feedback_c = feedback_c;
     history_next_ = (uint8_t)((history_next_ + 1) % HISTORY_SIZE);
     if (history_count_ < HISTORY_SIZE) ++history_count_;
 
     uint32_t oldest_age = 0;
-    float oldest_tc1 = tc1_c;
+    float oldest_feedback = feedback_c;
     for (uint8_t i = 0; i < history_count_; ++i) {
       const uint32_t age = elapsed(now_ms, history_[i].time_ms);
       if (age > 0 && age <= SLOPE_WINDOW_MS && age >= oldest_age) {
         oldest_age = age;
-        oldest_tc1 = history_[i].tc1_c;
+        oldest_feedback = history_[i].feedback_c;
       }
     }
     const float slope = oldest_age > 0
-                            ? (tc1_c - oldest_tc1) /
+                            ? (feedback_c - oldest_feedback) /
                                   ((float)oldest_age / 1000.0f)
                             : 0.0f;
     slope_c_per_s_ = finite(slope) ? slope : 0.0f;
@@ -899,8 +1202,10 @@ private:
   bool sample_valid_;
   uint32_t last_sample_ms_;
   uint32_t last_raw_sample_ms_;
-  float tc1_c_;
-  float tc2_c_;
+  bool raw_sample_seen_;
+  float raw_tc_c_[3];
+  float feedback_c_;
+  float rear_c_;
   float slope_c_per_s_;
   SlopeSample history_[HISTORY_SIZE];
   uint8_t history_count_;

@@ -7,26 +7,27 @@
 # Operator-reported stack: 1 mica layer, 2 basalt-fabric layers, 1 aluminum layer.
 # Hot-to-cold order, thicknesses and sand condition are not established here.
 # Prior run 017 was described by the operator as the first successful test;
-# its probes were reversed. This profile corrects that control mapping.
+# its reversed-probe historical mapping remains in the archive, not this profile.
 
-# Desired logical heater temperature, degrees C.
+# Control target for the selected feedback channel, degrees C.
 target_C = 300.0
 
 # Heat turns ON at or below target_C - hysteresis_C (currently 297 C).
 # Heat turns OFF at target_C, or earlier if the prediction below reaches it.
 hysteresis_C = 3.0
 
-# Runtime emergency cutoffs, degrees C. These are NOT START requirements.
-# tc1_cutoff_C is the logical heater cutoff; tc2_cutoff_C is the logical rear cutoff.
-# A new explicit START re-arms after a trip; cooling alone does not.
-tc1_cutoff_C = 320.0
-tc2_cutoff_C = 85.0
+# Feedback emergency cutoff, degrees C; a feedback fault or excess trips heat OFF.
+# Runtime limit, NOT a START requirement. Explicit START re-arms after a trip.
+feedback_cutoff_C = 320.0
 
-# TC2 stays optional. If absent, rear-side protection is unavailable.
-# false disables the rear cutoff even when its mapped input has a reading.
-tc2_cutoff_enabled = true
+# Independent rear emergency cutoff, degrees C, using rear_channel below.
+rear_cutoff_C = 85.0
 
-# Predictive OFF: logical heater + max(recent heating rate, 0) * this many seconds.
+# For EXP3, the rear sensor and its protection are optional at START.
+# false disables the rear cutoff even when the rear channel has a reading.
+rear_cutoff_enabled = true
+
+# Predictive OFF: feedback + max(recent heating rate, 0) * this many seconds.
 # Set to 0 for ordinary temperature-only hysteresis.
 prediction_lead_s = 5.0
 
@@ -34,17 +35,19 @@ prediction_lead_s = 5.0
 # Safety/predictive OFF is immediate. Very short values wear the relay.
 min_off_s = 5.0
 
-# Hold timer runs continuously inside target_C +/- hold_band_C.
+# Hold timer runs continuously inside target_C +/- hold_band_C on feedback.
 # Leaving this band resets the hold timer.
 hold_band_C = 5.0
 
-# Shut off after this many continuous seconds in the hold band.
+# Shut off after this many continuous seconds in the feedback hold band.
 # 1800 = 30 minutes. Set 0 to disable timed completion; STOP/cutoffs still work.
 hold_s = 1800.0
 
-# true: raw physical TC1 is rear/barrier and raw physical TC2 is the heater.
-# Firmware swaps inputs for control only; CSV columns always stay raw TC1/TC2.
-swap_inputs = true
+# Distinct raw physical channels, integers 1..3. EXP3 preserves its historical
+# mapping: TC2 is control feedback and TC1 is rear protection. TC3 is retained as
+# the internal cartridge diagnostic. Mapping never changes raw CSV columns.
+feedback_channel = 2
+rear_channel = 1
 
 # Host-only record of the manual variac preset; never used to rescale readings.
 variac_voltage_V = 65.0

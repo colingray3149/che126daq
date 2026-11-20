@@ -4,7 +4,30 @@ Private ChE 126 working collection: Arduino DAQ code, experimental design histor
 
 ## Start here
 
+**Current: [EXP8 TC2 sequencing + Selec TC513 internal control](docs/experiment8.md)**,
+configured in [experiment8.toml](experiment8.toml). Raw **external TC2** controls
+continuous heat to 100°C and the 90-second ramp to 200°C; the **TC513** then
+independently regulates the cartridge's grounded internal K thermocouple at its
+manual 650°C setpoint while D33 permission stays continuously ON. Raw **TC1**
+remains rear protection. The internal probe connects only to TC513 terminals
+6/7, not a MAX31855; former TC3 (34/36/38) is unused/unplugged. Firmware protocol
+**exp2-v6** retains three raw CSV columns for compatibility, while the EXP8 UI
+hides unused TC3. EXP2–7 retain their original source selections and runs.
+
+Use `start exp8`, `next`, and `stop exp8`. START reloads the entire configuration;
+editing alone never changes an active run. The first NEXT enters the ramp early or
+from the latched 100°C wait. After TC2 reaches 200°C, BOOST_FINAL waits for the
+operator to observe **TC513 PV =650°C**; the **second NEXT** starts the 90-elapsed-
+second final hold. Every NEXT is acknowledged; later NEXT commands are no-ops and
+never reset the timer. TC2's 730°C cutoff is external-only, not an internal DAQ
+limit. The requested common-OFF wiring removes both TC513 and heater power at
+final OFF; [the guide](docs/experiment8.md) also documents fixed-controller-power
+wiring, exact variant-dependent terminals, tuning with the available commands,
+and the run064 grounding/fault lessons.
+
 - [Quick wiring diagram](WIRING-QUICK.md) — plain text, also opened in Kate.
+- **[EXP8 hardware, TC513 tuning, and operating guide](docs/experiment8.md)** — conditional manufacturer terminal maps, requested common-OFF and fixed-supply wiring, manual second NEXT, auto-tune procedure, exact 8440T32 ratings, and failed internal-MAX lessons.
+- [EXP8 settings](experiment8.toml) — external TC2/rear TC1 mapping, manual 650°C TC513 metadata, 100 V preset, 730°C external cutoff, and 90-second ramp/hold.
 - [Wiring and safe connection order](docs/wiring.md) — current saved pin map and hardware caveats.
 - [Editable experiment settings](experiment.toml) — target, cutoffs, hysteresis and timing; save, then `start exp2` reloads them without a server restart or another firmware upload.
 - [Experiment 2 operation](docs/exp2.md) — explicit START/re-arm, optional TC2, editable runtime settings, 30V preset and the requested NC relay's fail-ON limitation.
@@ -37,7 +60,8 @@ nix run path:/home/colin/Projects/che126daq
 ```
 
 Open **http://127.0.0.1:8765**. The left terminal accepts `help`, `status`,
-`start`, `start exp2` / `exp3` / `exp4` / `exp5`, `stop exp2` / `exp3` / `exp4` / `exp5`,
+`start`, `start exp2` / `exp3` / `exp4` / `exp5` / `exp6` / `exp7` / `exp8`,
+`stop exp2` / `exp3` / `exp4` / `exp5` / `exp6` / `exp7` / `exp8`,
 `next`, `stop`, `restart`, `save`, `clear`, `list`, `view 001`, `live`,
 `note your comment`, `window 120`, `config`, and `reconnect`;
 ↑/↓ recalls history. The first matching USB connection **starts logging, never heating**.
@@ -66,12 +90,12 @@ reloads it and sends all settings atomically; editing alone leaves an active
 run unchanged. `config` shows edited versus board-applied values. Each run saves
 the exact config source and acknowledged settings for reproducibility.
 EXP3 selects **[experiment3.toml](experiment3.toml)** with `start exp3`;
-`swap_inputs` changes board control roles, while `variac_voltage_V` is recorded
-manual-preset metadata, not a power command or temperature scaling factor.
-Plots have independent heater/rear temperature axes and show raw source channels.
+`feedback_channel` and `rear_channel` select board control roles, while
+`variac_voltage_V` is recorded manual-preset metadata, not a power command or
+temperature scaling factor. Plots show feedback, rear and diagnostic channels.
 Run 017's reported reversal is annotated without modifying its raw CSV.
-EXP4 selects **[experiment4.toml](experiment4.toml)** with the deployed
-v5 host/firmware pair. `next` advances only an in-band 100°C hold; it never
+EXP4 selects **[experiment4.toml](experiment4.toml)** with the current
+v6 host/firmware pair. `next` advances only an in-band 100°C hold; it never
 allocates a new recording. EXP4/run026 completed with an operator-reported
 successful outcome; its measured record and retained rear-cutoff trip are archived.
 The v5 DAQ was launched with `--wait-for-start`; old v4 DAQ/report services
@@ -98,7 +122,7 @@ numbered folder and applies its settings; no heat starts on connection.
 
 | Directory | Contents |
 |---|---|
-| `firmware/thermocouple_logger/` | Two-channel MAX31855 logger + board-local EXP2 controller; 115200 baud CSV/control telemetry; nominal 2 Hz |
+| `firmware/thermocouple_logger/` | Three-channel MAX31855 logger + board-local EXP2–8 controller; 115200 baud CSV/control telemetry; nominal 2 Hz |
 | `firmware/tc_fault/` | Fault/cold-junction diagnostic using the same pin map |
 | `firmware/tc_diag/` | Older shared-clock raw-frame diagnostic; DIFFERENT wiring |
 | `host/hub.py`, `host/web/`, `hub.toml` | Primary command-first durable DAQ hub; local aiohttp/pyserial/Plotly |
@@ -116,7 +140,7 @@ numbered folder and applies its settings; no heat starts on connection.
 
 Arduino Mega ADK detected on `/dev/ttyACM0`. User reports no thermocouples connected. Existing firmware emitted the three-column CSV header and repeated zeros; **not verified temperatures or working amplifier connections**. No firmware uploaded and no heater energized during collection.
 
-Latest saved logger: TC1 CLK/DO/CS = **22/24/26**; TC2 = **28/30/32**. Use the wiring guide before connecting anything. Hardware model information for the amplifiers comes from the old conversation; present jumper positions and amplifier revision were not visually inspected.
+Current logger: TC1 CLK/DO/CS **22/24/26**; TC2 **28/30/32**; TC3 **34/36/38**. The original collection status above is historical. See the wiring guide for module compatibility and connection details.
 
 The design PDF is a mixed working document, not an approved operating procedure. Battery state of charge, high-temperature fixture safety, heater geometry/power/control, sensor placement, and final experiment remain for user confirmation. ChatGPT model assumptions are not apparatus measurements.
 

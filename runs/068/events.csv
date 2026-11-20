@@ -1,0 +1,24 @@
+utc,event
+2026-11-16T20:41:27.761+00:00,Recording /home/colin/Projects/che126daq/runs/068
+2026-11-16T20:41:27.761+00:00,"Experiment 8 normalized requested settings: {""external_channel"": 2, ""feedback_channel"": 2, ""feedback_cutoff_C"": 730.0, ""hold_band_C"": 5.0, ""hold_s"": 90.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""preheat_target_C"": 100.0, ""ramp_s"": 90.0, ""ramp_target_C"": 200.0, ""rear_channel"": 1, ""rear_cutoff_C"": 120.0, ""rear_cutoff_enabled"": true, ""target_C"": 650.0}"
+2026-11-16T20:41:27.761+00:00,"Experiment 8 profile: raw TC1 rear required; missing/nonfinite rear temperature trips OFF; control feedback is raw TC2 external control throughout; target_C=650 is the independent manual TC513 setpoint only; feedback_cutoff_C protects external TC2 only, with no automatic internal 650 C measurement; runtime cutoffs use the requested settings; NC active-HIGH relay; 100 V RMS manual preset assumed, not measured or set by software. Raw CSV channels remain physical inputs 1/2/3."
+2026-11-16T20:41:27.761+00:00,SAFETY: COM-NC FAILS ON when Arduino power/reset deenergizes the relay coil; software control and acknowledgements cannot provide fail-safe power removal.
+2026-11-16T20:41:27.761+00:00,"Pre-START report: IDLE/heater_on=False; reason=IDLE; serial report only, not a start requirement."
+2026-11-16T20:41:27.762+00:00,Sending EXP8 START request_id=2; no output change is assumed.
+2026-11-16T20:41:27.862+00:00,"Controller report IDLE/single/SINGLE/heater_on=False -> RUNNING/exp8/HEAT_100/heater_on=False; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:41:27.862+00:00,"EXP8 START request_id=2 acknowledgement: command_ok=True, state=RUNNING, program=exp8, phase=HEAT_100, heater_on=False; serial report, not physical proof."
+2026-11-16T20:41:27.863+00:00,"Experiment 8 board acknowledged settings: {""external_channel"": 2, ""feedback_channel"": 2, ""feedback_cutoff_C"": 730.0, ""hold_band_C"": 5.0, ""hold_s"": 90.0, ""hysteresis_C"": 3.0, ""min_off_s"": 5.0, ""prediction_lead_s"": 5.0, ""preheat_target_C"": 100.0, ""ramp_s"": 90.0, ""ramp_target_C"": 200.0, ""rear_channel"": 1, ""rear_cutoff_C"": 120.0, ""rear_cutoff_enabled"": true, ""target_C"": 650.0}"
+2026-11-16T20:41:28.166+00:00,"Controller report RUNNING/exp8/HEAT_100/heater_on=False -> RUNNING/exp8/HEAT_100/heater_on=True; reason=START; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:42:04.151+00:00,"Controller report RUNNING/exp8/HEAT_100/heater_on=True -> HOLD/exp8/HOLD_100/heater_on=False; reason=WAIT_NEXT; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:44:18.473+00:00,Sending EXP8 NEXT request_id=3; no output change is assumed.
+2026-11-16T20:44:18.766+00:00,"Controller report HOLD/exp8/HOLD_100/heater_on=False -> RUNNING/exp8/RAMP_200/heater_on=False; reason=NEXT; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:44:18.766+00:00,"EXP8 NEXT request_id=3 acknowledgement: command_ok=True, state=RUNNING, program=exp8, phase=RAMP_200, heater_on=False; serial report, not physical proof."
+2026-11-16T20:44:47.988+00:00,Sending EXP8 NEXT request_id=4; no output change is assumed.
+2026-11-16T20:44:48.248+00:00,"EXP8 NEXT request_id=4 acknowledgement: command_ok=True, state=RUNNING, program=exp8, phase=RAMP_200, heater_on=False; serial report, not physical proof."
+2026-11-16T20:45:13.063+00:00,"Controller report RUNNING/exp8/RAMP_200/heater_on=False -> RUNNING/exp8/RAMP_200/heater_on=True; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:45:36.052+00:00,"Controller report RUNNING/exp8/RAMP_200/heater_on=True -> RUNNING/exp8/RAMP_200/heater_on=False; reason=RUNNING; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:45:44.047+00:00,"Controller report RUNNING/exp8/RAMP_200/heater_on=False -> RUNNING/exp8/BOOST_FINAL/heater_on=True; reason=WAIT_TC513_CONFIRM; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:57:55.711+00:00,Sending EXP2 STOP request_id=5; no output change is assumed.
+2026-11-16T20:57:55.861+00:00,"Controller report RUNNING/exp8/BOOST_FINAL/heater_on=True -> STOPPED/exp8/BOOST_FINAL/heater_on=False; reason=STOP; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:57:55.862+00:00,"EXP2 STOP request_id=5 acknowledgement: command_ok=True, state=STOPPED, program=exp8, phase=BOOST_FINAL, heater_on=False; serial report, not physical proof."
+2026-11-16T20:57:55.862+00:00,Stopped by command

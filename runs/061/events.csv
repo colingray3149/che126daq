@@ -1,0 +1,58 @@
+utc,event
+2026-11-16T18:14:40.522+00:00,Recording /home/colin/Projects/che126daq/runs/061
+2026-11-16T18:18:23.511+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:32.005+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:34.504+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:35.503+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:38.002+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:39.001+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:46.497+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:49.994+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:50.993+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:18:57.990+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:35.450+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:38.948+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:42.946+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:43.945+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:47.443+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:54.940+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:20:59.437+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:02.936+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:05.934+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:06.934+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:10.432+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:13.934+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:14.930+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:22.430+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:28.926+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:32.425+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:34.424+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:35.923+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:36.922+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:37.922+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:40.420+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:43.919+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:48.416+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:55.916+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:58.910+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:21:59.914+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:00.914+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:02.413+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:12.408+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:16.406+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:41.397+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:45.395+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:47.894+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:50.392+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:22:59.887+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:23:00.887+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:23:03.885+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:23:11.881+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:23:39.529+00:00,"Serial disconnected/error: device reports readiness to read but returned no data (device disconnected or multiple access on port?); recording remains open, reconnect explicitly."
+2026-11-16T18:23:39.529+00:00,"Incomplete serial row at disconnect discarded: b'#CTRL {""protocol"":""exp2-v6"",""program"":""single"",""phase"":""SINGLE"",""state"":""IDLE"",""reason"":""IDLE"",""heater_on"":false,""setpoint_C"":300.000,""phase_feedback_channel"":3'"
+2026-11-16T18:23:39.530+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-16T18:24:10.195+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-16T18:24:10.200+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-16T18:24:10.503+00:00,"Malformed serial row ('ascii' codec can't decode byte 0x96 in position 2: ordinal not in range(128)): b'""5\x96h<\x16c\xdb\xdaG\x92q`\xbc\x12\xdaR6\x19Fe\xda\xa1\x92\x16\x00\x13j\xeei\x92\xea""<K\x88\xf0\x1aP\x1aM\xc6\x89&\xbb}\x98=\xc3\x98$\x8fS\xb2\xd5P^4\xdbiS(\x07\x1e\x8f\xc6/\xa9\xa04R\x02\x13\xf9\x89\x07\x1bs&\x931%\x98%\xe2\x994\xd2e\x1b\x8fq)u\x81<5\x1a'"
+2026-11-16T18:24:11.654+00:00,"Malformed serial row ('ascii' codec can't decode byte 0xb4 in position 0: ordinal not in range(128)): b'\xb4J\xbe58\x92zk\x86\x90\x13\x172\x0b1\x0f\xef\xbc=C(\x93@.K\x83_1u""5\x96h<\x16c\xdb\xdaG\x92q`\xbc\x12\xdaR6\x19Fe\xda\xa1\x92\x16\x00\x13j\xeei\x92\xea""<K\x88\xf0\x1aP\x1aM\xc6\x89&\xbb}\x98=\xc3\x98$\x8fS\xb2\xd5P^4\xdbiS(\x07\x1e\x8f\xc6/\xa9\xa04R\x02\x13\xf9time_s,t1_C,t2_C,t3_C\r'"
+2026-11-16T18:24:12.515+00:00,Restarted by command

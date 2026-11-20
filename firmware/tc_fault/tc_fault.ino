@@ -1,6 +1,9 @@
-// Print MAX31855 fault bits and cold-junction temp for both boards.
+// Print MAX31855 fault bits and cold-junction temperatures for all three boards.
 #include <Adafruit_MAX31855.h>
-Adafruit_MAX31855 tc[] = {Adafruit_MAX31855(22, 26, 24), Adafruit_MAX31855(28, 32, 30)};
+// Constructor order CLK, CS, DO (not the CLK/DO/CS wiring-table order).
+Adafruit_MAX31855 tc[] = {Adafruit_MAX31855(22, 26, 24),
+                         Adafruit_MAX31855(28, 32, 30),
+                         Adafruit_MAX31855(34, 38, 36)};
 
 void setup() {
   Serial.begin(115200);
@@ -9,7 +12,7 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i < 2; i++) {
+  for (unsigned int i = 0; i < sizeof(tc) / sizeof(tc[0]); i++) {
     float c = tc[i].readCelsius();
     uint8_t e = tc[i].readError();
     Serial.print("TC"); Serial.print(i + 1);

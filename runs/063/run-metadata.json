@@ -1,0 +1,6 @@
+{
+  "experiment": "exp2",
+  "feedback_channel": 3,
+  "rear_channel": 1,
+  "variac_voltage_V": 30.0
+}

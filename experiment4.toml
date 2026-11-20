@@ -4,38 +4,42 @@
 # The variac is adjusted manually; software never sets or measures its voltage.
 # EXP4 is uncommissioned. These software limits do not certify probe, assembly,
 # heater, wiring, relay, or power-loss safety.
-# 700 C is code-only and NOT approved for the current assembly: saved ratings
-# include basalt 1200 F (~649 C), a possible probe rating of 500 C (identity
-# unverified), heater 760 C maximum exposure, and leads 449 C. Rear 85 C does
-# not bound intermediate basalt/lead temperatures or imply layers reach 700 C.
+# 700 C is the default code target and NOT approved for the current assembly:
+# saved ratings include basalt 1200 F (~649 C), a possible probe rating of 500 C
+# (identity unverified), heater 760 C maximum exposure, and leads 449 C. Rear
+# limits do not bound intermediate basalt/lead temperatures.
+# Fixed stage trajectory: heat feedback to 100 C; HOLD_100 awaits NEXT within
+# hold_band_C; ramp from 100 to 200 C over 90 s; boost to target; hold indefinitely.
 
-# Final logical heater target, degrees C. EXP4 requires 200 < target <= 700.
+# Final feedback target, degrees C; editable within 200 < target_C <= 700.
 target_C = 700.0
 
 # Predictive-hysteresis deadband, degrees C; EXP4 permits 0 through 5.
 hysteresis_C = 3.0
 
-# Logical heater emergency cutoff, degrees C; target < cutoff <= 730.
-tc1_cutoff_C = 730.0
+# Feedback emergency cutoff; editable within target_C < cutoff <= 730.
+feedback_cutoff_C = 730.0
 
-# Logical rear emergency cutoff, fixed at 85 C for EXP4 and always required.
-tc2_cutoff_C = 85.0
-tc2_cutoff_enabled = true
+# Independent rear cutoff; required and editable within 0 < cutoff <= 85.
+rear_cutoff_C = 85.0
+rear_cutoff_enabled = true
 
 # Predictive OFF lead and minimum OFF dwell, seconds. Safety OFF is immediate.
 prediction_lead_s = 5.0
 min_off_s = 5.0
 
-# HOLD_100 entry and NEXT eligibility band, degrees C; EXP4 permits 0 through 5.
+# HOLD_100 entry and NEXT eligibility band on feedback; EXP4 permits 0 through 5.
 hold_band_C = 5.0
 
-# EXP4 holds at 100 C until explicit NEXT and at final target indefinitely.
-# No final hold timer is permitted.
+# EXP4 final hold is indefinite: hold_s must remain 0.
 hold_s = 0.0
 
-# true: raw physical TC1 is rear and raw physical TC2 is the heater.
-# Firmware swaps inputs for control only; CSV columns always stay raw TC1/TC2.
-swap_inputs = true
+# Distinct raw physical channels, integers 1..3. EXP4 preserves its historical
+# mapping: TC2 is control feedback and TC1 is required independent rear protection.
+# TC3 is retained as the internal cartridge diagnostic. All stage tests and
+# cutoffs follow these selections; invalid feedback never substitutes TC3.
+feedback_channel = 2
+rear_channel = 1
 
 # Host-only record of the manual variac preset; never used to rescale readings.
 variac_voltage_V = 100.0

@@ -1,5 +1,13 @@
 # EXP6 — EXP5 with an ungated `next`
 
+For the internal-cartridge thermocouple, current **EXP8** uses a separate Selec
+TC513 and [`experiment8.toml`](../experiment8.toml); see the
+[EXP8 policy/wiring/tuning guide](experiment8.md). The previous EXP7 internal-MAX
+profile remains documented in [EXP7 mixed-source control](exp2.md#exp7-mixed-source-control).
+EXP6 retains external TC2 feedback and TC1 rear protection; both profiles now
+use v6 explicit `feedback_channel`/`rear_channel` settings.
+
+
 EXP6 is EXP5 unchanged except for one rule: `next` is accepted any time
 during the 100°C stage (HEAT_100 or HOLD_100), at any heater temperature. The
 hub no longer requires the heater to be within 100°C ± `hold_band_C` or a

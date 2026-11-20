@@ -1,0 +1,7 @@
+utc,event
+2026-11-16T20:35:21.645+00:00,Recording /home/colin/Projects/che126daq/runs/066
+2026-11-16T20:40:05.382+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-16T20:40:05.395+00:00,Opened /dev/ttyACM0 @ 115200 baud; opening may reset board uptime. Sensor attachment/validity unverified.
+2026-11-16T20:40:06.849+00:00,CSV header received (startup/reset); controller freshness and pending commands cleared; no automatic START.
+2026-11-16T20:40:06.891+00:00,"Controller report unavailable -> IDLE/single/SINGLE/heater_on=False; reason=BOOT; hold_s=0. Serial report, not physical proof."
+2026-11-16T20:40:08.065+00:00,Restarted by command

@@ -1,6 +1,7 @@
-// CHE126 experiments 2/3/4/5/6: two MAX31855s plus an active-HIGH relay on D33.
-// TC1 CLK/DO/CS = D22/D24/D26; TC2 = D28/D30/D32. CSV remains raw physical
-// channels time_s,t1_C,t2_C at 115200 baud, with one #CTRL JSON line per sample.
+// CHE126 experiments 2/3/4/5/6/7/8: MAX31855s plus an active-HIGH relay on D33.
+// TC1 CLK/DO/CS = D22/D24/D26; TC2 = D28/D30/D32; TC3 = D34/D36/D38.
+// CSV contains raw physical channels time_s,t1_C,t2_C,t3_C at 115200 baud,
+// with one #CTRL JSON line per sample.
 //
 // The user-selected COM-NC contact passes heater power when the coil is
 // de-energized. D33 HIGH energizes the module and opens the contact (OFF);
@@ -17,15 +18,18 @@
 
 const uint8_t PIN_CLK1 = 22, PIN_DO1 = 24, PIN_CS1 = 26;
 const uint8_t PIN_CLK2 = 28, PIN_DO2 = 30, PIN_CS2 = 32;
+const uint8_t PIN_CLK3 = 34, PIN_DO3 = 36, PIN_CS3 = 38;
 const uint8_t PIN_RELAY = 33;
 const uint8_t RELAY_OFF = HIGH;
 const uint8_t RELAY_ON = LOW;
 const uint32_t PERIOD_MS = 500;
-const uint8_t COMMAND_CAPACITY = 192;
+// Fits bounded base START plus the EXP7 external-source/trajectory suffix.
+const uint8_t COMMAND_CAPACITY = 224;
 const uint8_t SERIAL_BUDGET_BYTES = 48;
 
 Adafruit_MAX31855 tc1(PIN_CLK1, PIN_CS1, PIN_DO1);
 Adafruit_MAX31855 tc2(PIN_CLK2, PIN_CS2, PIN_DO2);
+Adafruit_MAX31855 tc3(PIN_CLK3, PIN_CS3, PIN_DO3);
 che126_exp2::Controller controller;
 
 char command_line[COMMAND_CAPACITY];
@@ -52,7 +56,7 @@ void printDurationSeconds(uint32_t milliseconds) {
 
 void emitTelemetry() {
   const che126_exp2::Settings &settings = controller.settings();
-  Serial.print(F("#CTRL {\"protocol\":\"exp2-v5\",\"program\":\""));
+  Serial.print(F("#CTRL {\"protocol\":\"exp2-v6\",\"program\":\""));
   Serial.print(controller.programName(controller.program()));
   Serial.print(F("\",\"phase\":\""));
   Serial.print(controller.phaseName(controller.phase()));
@@ -64,10 +68,12 @@ void emitTelemetry() {
   Serial.print(controller.heaterOn() ? F("true") : F("false"));
   Serial.print(F(",\"setpoint_C\":"));
   Serial.print(controller.setpointC(), 3);
+  Serial.print(F(",\"phase_feedback_channel\":"));
+  Serial.print(controller.phaseFeedbackChannel());
   Serial.print(F(",\"slope_C_per_s\":"));
   Serial.print(controller.slopeCPerSecond(), 6);
-  Serial.print(F(",\"tc2_required\":"));
-  Serial.print(controller.tc2Required() ? F("true") : F("false"));
+  Serial.print(F(",\"rear_required\":"));
+  Serial.print(controller.rearRequired() ? F("true") : F("false"));
   Serial.print(F(",\"relay_contact\":\"NC\","));
   Serial.print(F("\"active_high\":true,\"hold_s\":"));
   Serial.print((unsigned long)controller.holdSeconds());
@@ -79,12 +85,12 @@ void emitTelemetry() {
   Serial.print(settings.target_c, 3);
   Serial.print(F(",\"hysteresis_C\":"));
   Serial.print(settings.hysteresis_c, 3);
-  Serial.print(F(",\"tc1_cutoff_C\":"));
-  Serial.print(settings.tc1_cutoff_c, 3);
-  Serial.print(F(",\"tc2_cutoff_C\":"));
-  Serial.print(settings.tc2_cutoff_c, 3);
-  Serial.print(F(",\"tc2_cutoff_enabled\":"));
-  Serial.print(settings.tc2_cutoff_enabled ? F("true") : F("false"));
+  Serial.print(F(",\"feedback_cutoff_C\":"));
+  Serial.print(settings.feedback_cutoff_c, 3);
+  Serial.print(F(",\"rear_cutoff_C\":"));
+  Serial.print(settings.rear_cutoff_c, 3);
+  Serial.print(F(",\"rear_cutoff_enabled\":"));
+  Serial.print(settings.rear_cutoff_enabled ? F("true") : F("false"));
   Serial.print(F(",\"prediction_lead_s\":"));
   printDurationSeconds(settings.prediction_lead_ms);
   Serial.print(F(",\"min_off_s\":"));
@@ -93,8 +99,21 @@ void emitTelemetry() {
   Serial.print(settings.hold_band_c, 3);
   Serial.print(F(",\"hold_s\":"));
   printDurationSeconds(settings.hold_duration_ms);
-  Serial.print(F(",\"swap_inputs\":"));
-  Serial.print(settings.swap_inputs ? F("true") : F("false"));
+  Serial.print(F(",\"feedback_channel\":"));
+  Serial.print(settings.feedback_channel);
+  Serial.print(F(",\"rear_channel\":"));
+  Serial.print(settings.rear_channel);
+  if (controller.program() == che126_exp2::PROGRAM_EXP7 ||
+      controller.program() == che126_exp2::PROGRAM_EXP8) {
+    Serial.print(F(",\"external_channel\":"));
+    Serial.print(settings.external_channel);
+    Serial.print(F(",\"preheat_target_C\":"));
+    Serial.print(settings.preheat_target_c, 3);
+    Serial.print(F(",\"ramp_target_C\":"));
+    Serial.print(settings.ramp_target_c, 3);
+    Serial.print(F(",\"ramp_s\":"));
+    printDurationSeconds(settings.ramp_duration_ms);
+  }
   Serial.println(F("}}"));
 }
 
@@ -161,12 +180,13 @@ void setup() {
   Serial.begin(115200);
   tc1.begin();
   tc2.begin();
+  tc3.begin();
   delay(500);  // MAX31855 power-up only; no delay is used while active.
 
   next_sample_ms = millis();
   controller.reset(next_sample_ms);
   applyHeater();
-  Serial.println("time_s,t1_C,t2_C");
+  Serial.println("time_s,t1_C,t2_C,t3_C");
   emitTelemetry();  // bootstrap: request_id 0, IDLE, output OFF
 #if defined(__AVR__)
   wdt_enable(WDTO_2S);
@@ -188,14 +208,19 @@ void loop() {
 
   const float t1_c = (float)tc1.readCelsius();
   const float t2_c = (float)tc2.readCelsius();
+  // EXP8 uses TC1/TC2 only; preserve the third CSV field without reading TC3.
+  const float t3_c = controller.program() == che126_exp2::PROGRAM_EXP8
+                         ? NAN : (float)tc3.readCelsius();
   now = millis();
-  controller.onSample(now, t1_c, t2_c);
-  applyHeater();  // especially TC2/HOT/SENSOR trips: OFF before serial work
+  controller.onSample(now, t1_c, t2_c, t3_c);
+  applyHeater();  // rear/feedback/sensor trips: OFF before serial work
 
   Serial.print(now / 1000.0, 2);
   Serial.print(',');
   Serial.print(t1_c, 2);
   Serial.print(',');
-  Serial.println(t2_c, 2);
+  Serial.print(t2_c, 2);
+  Serial.print(',');
+  Serial.println(t3_c, 2);
   emitTelemetry();
 }

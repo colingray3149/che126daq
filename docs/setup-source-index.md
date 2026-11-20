@@ -1,4 +1,4 @@
-# Setup source index — 2026-10-30
+# Setup source index
 
 ## Evidence order, not an assumed experiment
 
@@ -23,6 +23,10 @@
 | Design pp. 41–42 | “Final test with cartridge heater”, acceptance criteria, repeats | Still contains `[model]`, `[100]%`, `[100°C]`, other placeholders and incomplete safety text. “Final” heading does not settle those choices. |
 | `references/orders/ChE 126 Materials Ordering.xlsx` | `Materials` sheet; active populated purchase block rows 2–10; totals rows 12–13; additional candidates rows 15, 27–30 | Original retained, plus separate formula/cached-value CSVs and workbook index in `references/orders/extracted/`. Formatting extends to row 1002/column AF; most cells empty. Cached values are not recalculated. |
 | `references/datasheets/` | Mica 85165K26; basalt fabric; heater 4877K305; MAX31855; recovered heater instructions PDF | Product/source evidence, not approval of a particular hot fixture. |
+| `references/datasheets/Selec-TC513-Manual.pdf` and `Selec-TC513-TC203-TC303-Manual.pdf` | Selec OP292-V04/V05: A/AX supply, TC, relay and SSR terminal diagrams; load connections; front keys/menu; auto-tune | Downloaded from the cited Tecnoedu/Enika copies; terminal numbers checked against rendered PDF images. Exact rear variant/nameplate remains decisive. |
+| `references/datasheets/Selec-TC513AX-Instruction-Manual.pdf` and `Selec-TC513AX-Datasheet.pdf` | Current manufacturer-linked TC513AX manual/datasheet and 90–270 V product specifications | Downloaded from Selec's product-page document links; current supply lower bound differs from older manuals. |
+| `references/datasheets/McMaster-8440T32-Internal-Thermocouple-Heater.pdf` | Exact 500 W/120 V internal-sensor cartridge print: grounded K, yellow+/red−, 760°C sheath, 480°F/249°C leads | Archived operator product print dated 2026-11-16; supersedes applying the previous heater's 449°C lead rating to this part. |
+| `docs/experiment8.md` | EXP8 operation, requested common-OFF and fixed-supply wiring, tuning with actual commands, and run064/47 kΩ lessons | Actionable current hardware guide; software verification is distinguished from unperformed physical TC513/relay validation. |
 | `provenance/claude/conversation.md` | 2026-10-26 wiring/debugging, thermocouple uncertainty, heater moisture discussion | Historical assistant claims include wrong intermediate diagnoses and hot-rewiring suggestions. Use current wiring guide instead. |
 | `provenance/chatgpt/conversation.md` | Complete answer from supplied shared page, local links to generated files | Full public answer recovered from embedded page data after text reader omitted it. Structured original text preserved in conversation.json. |
 | `models/thermal-stack/README_thermal_experiment.md` | Model assumptions, provenance, executable commands, proposed repeatability protocol | Generated scenario only. Original outputs are predictions/templates, NOT acquired measurements. |

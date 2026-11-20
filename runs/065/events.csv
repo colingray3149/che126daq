@@ -1,0 +1,12 @@
+utc,event
+2026-11-16T18:50:17.178+00:00,Recording /home/colin/Projects/che126daq/runs/065
+2026-11-16T18:50:28.063+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:50:29.067+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:50:30.565+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:50:31.561+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:50:32.564+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T18:50:35.063+00:00,TC3: nan fault; plotted as gap.
+2026-11-16T20:15:29.557+00:00,"Serial disconnected/error: device reports readiness to read but returned no data (device disconnected or multiple access on port?); recording remains open, reconnect explicitly."
+2026-11-16T20:15:29.563+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-16T20:34:02.944+00:00,Controller telemetry is disconnected/stale; last output report is not current and heater state is unknown.
+2026-11-16T20:34:02.944+00:00,Application shutdown

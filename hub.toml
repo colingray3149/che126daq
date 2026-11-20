@@ -11,5 +11,6 @@ pid = 0x0044
 serial_number = "64935343733351C0B251"
 
 [channels]
-TC1 = "Raw physical channel 1; MAX31855 CLK/DO/CS 22/24/26; role comes from run mapping; probe identity/calibration unverified"
-TC2 = "Raw physical channel 2; MAX31855 CLK/DO/CS 28/30/32; role comes from run mapping; probe identity/calibration unverified"
+TC1 = "Raw physical channel 1; MAX31855 CLK/DO/CS 22/24/26; EXP8 default independent rear protection; probe identity/calibration unverified"
+TC2 = "Raw physical channel 2; MAX31855 CLK/DO/CS 28/30/32; EXP8 default external feedback/cutoff; probe identity/calibration unverified"
+TC3 = "Raw physical channel 3; MAX31855 CLK/DO/CS 34/36/38; retained for CSV compatibility, unused by EXP8 control; probe identity/calibration unverified"

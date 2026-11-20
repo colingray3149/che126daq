@@ -56,15 +56,27 @@ def build_report(run_path, watch=False, figures=None):
     stamp = datetime.now(timezone.utc).isoformat(timespec='seconds')
     digest = hashlib.sha256(source).hexdigest()
     run_name = html.escape(run_path.name)
-    raw_channels = (2, 1) if metadata['swap_inputs'] else (1, 2)
+    raw_channels = (metadata['feedback_channel'], metadata['rear_channel'])
+    exp7_mixed = (metadata['experiment'] == 'exp7' and settings is not None
+                  and all(key in settings for key in
+                          ('external_channel', 'preheat_target_C', 'ramp_target_C', 'ramp_s')))
+    exp8 = metadata['experiment'] == 'exp8'
+    external_raw = metadata.get('external_channel')
+    channels = [('EXTERNAL / CONTROL FEEDBACK' if exp8 else
+                 'INTERNAL / FINAL FEEDBACK' if exp7_mixed else 'CONTROL FEEDBACK',
+                 raw_channels[0], '#176bb6'),
+                ('REAR', raw_channels[1], '#b65000')]
+    if not exp8 and 'tc3_C' in rows[0]:
+        external = external_raw or next(raw for raw in (1, 2, 3) if raw not in raw_channels)
+        channels.append(('EXTERNAL / ENTRY + RAMP FEEDBACK' if exp7_mixed else 'DIAGNOSTIC',
+                         external, '#43812b'))
     custom = [[html.escape(row['utc']), html.escape(row['flags'] or 'none'), row['epoch']]
               for row in rows]
     panels, summaries = [], []
-    for i, (role, raw, color) in enumerate(zip(('HEATER', 'REAR'), raw_channels,
-                                               ('#176bb6', '#b65000'))):
+    for i, (role, raw, color) in enumerate(channels):
         values = [temperature(row[f'tc{raw}_C']) for row in rows]
         finite = [value for value in values if value is not None]
-        label = f'TC{i + 1} · {role} (raw TC{raw})'
+        label = f'{role} (raw TC{raw})'
         fig = go.Figure(go.Scatter(
             x=elapsed, y=values, customdata=custom, name=label,
             mode='lines+markers' if len(finite) == 1 else 'lines',
@@ -89,18 +101,51 @@ def build_report(run_path, watch=False, figures=None):
                 text='No finite temperature samples<br>Missing readings are not zero',
                 x=0.5, y=0.5, xref='paper', yref='paper', showarrow=False)
         detail = 'No saved controller settings for this run.'
-        if settings:
-            detail = (f'Heater target {settings["target_C"]:g}°C · high cutoff {settings["tc1_cutoff_C"]:g}°C'
+        if exp8 and i == 0:
+            if settings:
+                detail = (f'EXP8: EXTERNAL raw TC{settings["feedback_channel"]} continuous heat permission to '
+                          f'{settings["preheat_target_C"]:g}°C → latched OFF/wait NEXT (early advance allowed) → '
+                          f'{settings["ramp_s"]:g}s on/off reference ramp to {settings["ramp_target_C"]:g}°C → '
+                          f'BOOST_FINAL at measured TC{settings["feedback_channel"]} ≥ {settings["ramp_target_C"]:g}°C '
+                          f'with continuous permission. TC513 independently regulates its manual '
+                          f'{settings["target_C"]:g}°C setpoint; that setpoint/PV is NOT measured by this DAQ. '
+                          f'Operator enters NEXT when TC513 front-panel PV reaches {settings["target_C"]:g}°C '
+                          f'to start HOLD_FINAL for {settings["hold_s"]:g}s from that confirmation; another NEXT '
+                          f'is ACK/no-op and never resets the timer. Expiry commands permission OFF. External-only '
+                          f'high cutoff {settings["feedback_cutoff_C"]:g}°C; rear protection remains independent. '
+                          f'Relay events report commanded permission, not actual heater power/state.')
+        elif i == 2:
+            detail = ('External channel controls entry/ramp; internal channel controls boost/final hold. '
+                      'All raw channels remain visible.'
+                      if exp7_mixed else 'Diagnostic only; not a fallback control input.')
+        elif settings:
+            # Archived v5 settings retain their original logical-TC key names.
+            feedback_cutoff = settings.get('feedback_cutoff_C', settings.get('tc1_cutoff_C'))
+            rear_cutoff = settings.get('rear_cutoff_C', settings.get('tc2_cutoff_C'))
+            rear_enabled = settings.get('rear_cutoff_enabled', settings.get('tc2_cutoff_enabled'))
+            detail = (f'Feedback target {settings["target_C"]:g}°C · high cutoff {feedback_cutoff:g}°C'
                       if i == 0 else
-                      (f'Rear cutoff {settings["tc2_cutoff_C"]:g}°C — applies to raw TC{raw}, not the heater'
-                       if settings['tc2_cutoff_enabled'] else 'Rear cutoff disabled'))
-            if i == 0 and metadata['experiment'] in {'exp4', 'exp5', 'exp6'}:
+                      (f'Rear cutoff {rear_cutoff:g}°C — applies to raw TC{raw}, not feedback'
+                       if rear_enabled else 'Rear cutoff disabled'))
+            if i == 0 and metadata['experiment'] in {'exp4', 'exp5', 'exp6', 'exp7'}:
                 program = metadata['experiment'].upper()
-                final = ('; 60s from measured target, then heat OFF'
-                         if program in {'EXP5', 'EXP6'} else '; indefinite final hold')
-                detail = (f'{program}: hold 100°C → explicit NEXT → 90s ramp to 200°C → '
-                          f'boost/hold {settings["target_C"]:g}°C · high cutoff '
-                          f'{settings["tc1_cutoff_C"]:g}°C{final}; phase transitions are in saved events')
+                # Missing phase fields occur only in archived pre-clarification EXP7 settings.
+                preheat = settings.get('preheat_target_C', 100.0)
+                ramp_target = settings.get('ramp_target_C', 200.0)
+                ramp_s = settings.get('ramp_s', 90.0)
+                final = (f'; {settings["hold_s"]:g}s from measured target, then heat OFF'
+                         if program in {'EXP5', 'EXP6', 'EXP7'} else '; indefinite final hold')
+                if exp7_mixed:
+                    detail = (f'EXP7: EXTERNAL raw TC{settings["external_channel"]} continuous heat to '
+                              f'{preheat:g}°C → latched OFF/wait NEXT (early advance allowed) → '
+                              f'{ramp_s:g}s reference ramp to {ramp_target:g}°C → INTERNAL raw TC'
+                              f'{settings["feedback_channel"]} boost/hold {settings["target_C"]:g}°C'
+                              f'{final}; internal high cutoff {feedback_cutoff:g}°C; rear protection '
+                              f'remains independent; phase transitions are in saved events')
+                else:
+                    detail = (f'{program}: hold {preheat:g}°C → explicit NEXT → {ramp_s:g}s ramp to '
+                              f'{ramp_target:g}°C → boost/hold {settings["target_C"]:g}°C · high cutoff '
+                              f'{feedback_cutoff:g}°C{final}; phase transitions are in saved events')
         graph = fig.to_html(full_html=False, include_plotlyjs=(i == 0),
                             div_id=f'tc{i + 1}-graph', config={
                                 'responsive': True, 'displaylogo': False, 'scrollZoom': True,
@@ -129,6 +174,25 @@ def build_report(run_path, watch=False, figures=None):
                        'zoom and scroll are preserved. No DAQ controls.'
                        if watch else 'This offline snapshot does not update or control the DAQ. '
                        'Regenerate after recording ends for final graphs.')
+    if exp8:
+        source_summary = (f'EXP8 external control feedback = raw TC{raw_channels[0]}; '
+                          f'rear = raw TC{raw_channels[1]}. Only these two channels are plotted; '
+                          'raw TC3 remains in the downloaded CSV but its unused EXP8 panel is omitted. '
+                          'D33 reports commanded heat permission, not actual heater power/state. ')
+        if settings:
+            source_summary += (f'TC513 manual setpoint {settings["target_C"]:g}°C and its front-panel PV '
+                               'are external to the DAQ, not temperature measurements in this report. '
+                               f'HOLD_FINAL is {settings["hold_s"]:g}s from operator NEXT confirmation at PV '
+                               f'{settings["target_C"]:g}°C, not from a DAQ target crossing.')
+        else:
+            source_summary += 'TC513 setpoint/PV is external to the DAQ and is not plotted.'
+    elif exp7_mixed:
+        source_summary = (f'EXP7 phase feedback: external raw TC{settings["external_channel"]} during entry/ramp; '
+                          f'internal raw TC{settings["feedback_channel"]} during boost/final hold; '
+                          f'rear = raw TC{raw_channels[1]}. All recorded raw channels are shown.')
+    else:
+        source_summary = (f'Feedback = raw TC{raw_channels[0]}; rear = raw TC{raw_channels[1]}. '
+                          'All recorded raw channels are shown.')
     body = f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Run {run_name} · full temperature report</title>
@@ -151,12 +215,13 @@ summary {{cursor:pointer;font-weight:600;padding:12px 0}} pre {{white-space:pre-
 <div class="status">{status}</div><h1>Run {run_name} · temperature history</h1>
 <p class="meta">{len(rows):,} complete samples · {elapsed[0]:.2f}–{elapsed[-1]:.2f} s · no downsampling or smoothing</p>
 <p class="meta">First sample: {html.escape(rows[0]['utc'])}<br>Last sample: {html.escape(rows[-1]['utc'])}</p>
-<p class="meta">Independent temperature axes. Blue TC1 = heater / raw TC{raw_channels[0]}; orange TC2 = rear / raw TC{raw_channels[1]}.
+<p class="meta">Independent temperature axes. {source_summary}<br>
 Manual preset {metadata['variac_voltage_V']:g} V (metadata, not measured); no voltage-based temperature scaling.</p>
 {f'<p class="meta">Barrier: {html.escape(metadata["barrier"])}</p>' if metadata.get('barrier') else ''}
 <div class="toolbar"><button id="reset">Fit full run</button>
 <label><input type="checkbox" id="link-time" checked> Link time-axis zoom</label>
-<button data-svg="tc1-graph">Heater SVG</button><button data-svg="tc2-graph">Rear SVG</button>
+<button data-svg="tc1-graph">{'External feedback SVG' if exp8 else 'Heater SVG'}</button><button data-svg="tc2-graph">Rear SVG</button>
+{f'<button data-svg="tc3-graph">Diagnostic SVG</button>' if len(channels) == 3 else ''}
 <a class="download" download="run-{run_name}-snapshot.csv" href="data:text/csv;base64,{download}">Download raw CSV snapshot</a></div>
 <p class="meta">Drag to zoom · shift-drag to pan · double-click to reset · camera saves high-resolution PNG.
 {refresh_message}</p>
@@ -171,7 +236,7 @@ Manual preset {metadata['variac_voltage_V']:g} V (metadata, not measured); no vo
 Source: {html.escape(str(run_path / 'data.csv'))}<br>SHA-256 of included CSV: {digest}<br>
 {partial_bytes} trailing incomplete bytes excluded. Sensor identity/calibration and relay power removal are not verified by these graphs.</p>
 </main><script>
-const graphs = ['tc1-graph','tc2-graph'].map(id => document.getElementById(id));
+const graphs = {json.dumps([f'tc{i + 1}-graph' for i in range(len(channels))])}.map(id => document.getElementById(id));
 let synchronizing = false;
 for (const graph of graphs) {{
   graph.on('plotly_relayout', async change => {{
@@ -179,7 +244,7 @@ for (const graph of graphs) {{
     const update = Object.fromEntries(Object.entries(change).filter(([key]) => key.startsWith('xaxis.range') || key === 'xaxis.autorange'));
     if (!Object.keys(update).length) return;
     synchronizing = true;
-    try {{ await Plotly.relayout(graphs.find(other => other !== graph), update); }}
+    try {{ await Promise.all(graphs.filter(other => other !== graph).map(other => Plotly.relayout(other, update))); }}
     finally {{ synchronizing = false; }}
   }});
 }}
@@ -231,7 +296,7 @@ def main():
     parser.add_argument('--watch', action='store_true',
                         help='Regenerate and refresh the report every 15 seconds; never control acquisition')
     parser.add_argument('--png', action='store_true',
-                        help='Also write heater.png and rear.png (1400x700, needs kaleido)')
+                        help='Also write heater.png, rear.png and (when present) diagnostic.png (1400x700, needs kaleido)')
     args = parser.parse_args()
     while True:
         started = time.monotonic()
@@ -246,7 +311,7 @@ def main():
         temporary.replace(destination)
         print(f'{destination}\n{count} complete samples; CSV SHA-256 {digest}', flush=True)
         if args.png:
-            for name, fig in zip(('heater.png', 'rear.png'), figures):
+            for name, fig in zip(('heater.png', 'rear.png', 'diagnostic.png'), figures):
                 fig.update_layout(height=None)
                 fig.write_image(destination.parent / name, width=1400, height=700, scale=1)
         if not args.watch:
