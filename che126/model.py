@@ -190,7 +190,9 @@ class Controller:
         if temp is None or sp is None:
             self.duty = 0.0
             return self._set(now, False, 0.0)
-        if mode == "predictive" and observer_state is not None and tc in NODE_OF_TC:
+        # TC3 only follows the model core when it is declared to be the internal TC.
+        modelled = tc in (1, 2) or (tc == 3 and s.get("tc3_is_core"))
+        if mode == "predictive" and observer_state is not None and modelled:
             node = NODE_OF_TC[tc]
             horizon = 150.0 if node != "rear" else 900.0
             peak, when = coast_peak(observer_state, s, node, horizon, 0.5 if node != "rear" else 5.0)
@@ -201,6 +203,11 @@ class Controller:
                 want = peak < target + band * 0.5
             else:
                 want = peak < target - band * 0.5
+            # On a ramp the coast peak is judged against a later, higher setpoint; never
+            # heat while the reading is already above the setpoint now (ramps lead ~10 C
+            # instead of ~30 C in simulation).
+            if temp > sp + band:
+                want = False
             self.duty = 1.0 if want else 0.0
             return self._set(now, want, min_pulse)
         if mode == "onoff" or observer_state is None:

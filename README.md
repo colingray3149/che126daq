@@ -15,7 +15,7 @@ step programs (heat to, ramp, hold, off), records every run, and shows past runs
 
 **Practice first:** `python daq.py --sim` (VS Code: Run and Debug → *Practice (simulated rig)*)
 runs everything against a simulated rig that heats like the real one. The header says
-*PRACTICE* in yellow.
+*PRACTICE* in yellow, and practice runs are saved in `practice-runs/` (p001, p002…), not `runs/`.
 
 ## Before heating
 
@@ -36,7 +36,8 @@ TC1/TC2 curves, heater on/off, overshoot, cutoff trips. Save, then *Use on Live*
 **Live tab:** pick the program, type the variac voltage and setup, **Start run**.
 **NEXT** jumps to the next step at any time (also the N key). **Stop heat** turns the heater
 off and keeps recording the cool-down. **End run** closes the recording. *Manual* heats or
-holds a temperature without a program. Grey dashes on the charts are the predicted run;
+holds a temperature without a program; it always records, and its cutoffs are the two boxes
+under it. Grey dashes on the charts are the predicted run;
 shaded bands are heater on.
 
 **Runs tab:** every run with its plots, numbers (hover a label for how it is calculated), notes

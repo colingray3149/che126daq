@@ -5,7 +5,9 @@ Firmware protocol, one line each way (115200 baud):
            #ID che126-daq <version> relay=<NC|NO>   #TRIP <LIMIT|FAULT> <amp>
            #LEASE   #OK ...   #ERR ...
   host  -> HEAT 1 <lease_ms> | HEAT 0 | LIM <amp> <C> | FAULT <ms> | RATE <ms>
-           CLEAR | RELAY NC|NO | ID | CFG
+           ARM | CLEAR | RELAY NC|NO | ID | CFG
+After every boot the firmware refuses heat until ARM; the app sends its cutoffs,
+then ARM, whenever the board (re)announces itself.
 t1..t3 are amplifiers 1..3 (pins 22/24/26, 28/30/32, 34/36/38); the app maps them
 to TC1..TC3 using Settings > Thermocouples.
 """
@@ -25,7 +27,12 @@ import serial.tools.list_ports
 from . import model
 
 BAUD = 115200
-FIRMWARE_VERSION = "1"
+FIRMWARE_VERSION = "2"
+# The Mega's bootloader runs for about 1 s after a reset (opening the port resets
+# the board) and stays in the bootloader for as long as bytes keep arriving, with
+# the relay floating. So the app never speaks first: it waits for the firmware's
+# boot announcement, and asks "ID" only after it has seen a sample line (proof
+# that the firmware, not the bootloader, is running).
 ARDUINO_VIDS = (0x2341, 0x2A03, 0x1A86, 0x0403, 0x10C4)
 
 
@@ -73,11 +80,23 @@ class BoardLink:
                 return p["device"]
         return None
 
-    def send(self, line):
+    def send(self, line, force=False):
+        """Send a command, but only while the firmware is visibly running.
+
+        A board that restarts goes silent and sits in its bootloader, which stays there
+        for as long as bytes keep arriving. So when the board has said nothing for a
+        moment, the app says nothing too, and the board boots back into the firmware.
+        """
         with self.lock:
             ser = self.ser
             if not ser:
                 return False
+            if not force:
+                if self.firmware is None:
+                    return False
+                quiet = max(0.35, 1.4 * float(self.app.settings.get().get("sample_ms") or 250) / 1000.0)
+                if time.monotonic() - self.last_line > quiet:
+                    return False
             try:
                 ser.write((line + "\n").encode("ascii"))
                 return True
@@ -131,11 +150,17 @@ class BoardLink:
         return ser
 
     def _configure(self):
+        """Rate, fault time and cutoffs, then ARM. Runs on every (re)boot of the board.
+
+        The relay polarity is not sent: the board's stored value (from #ID) is the truth
+        and only an operator change in Settings writes it.
+        """
         s = self.app.settings.get()
-        self.send("RELAY %s" % ("NO" if s.get("relay") == "NO" else "NC"))
         self.send("RATE %d" % int(s.get("sample_ms") or 250))
         self.send("FAULT %d" % int(max(0.0, float(s.get("fault_trip_s") or 0)) * 1000))
         self.app.send_limits()
+        self.send("ARM")
+        self.last_board_ms = None
 
     def _run(self):
         wait = 1.0
@@ -174,20 +199,28 @@ class BoardLink:
     def _read(self, ser, port):
         opened = time.monotonic()
         self.last_line = opened
+        self.last_board_ms = None
+        self.seen_sample = False
         asked = 0.0
         buf = b""
+        try:
+            ser.reset_input_buffer()
+        except Exception:
+            pass
         while not self.stopped:
             if self.drop_requested:
                 self._close("reconnect")
                 return
             now = time.monotonic()
-            if self.firmware is None and now - asked > 1.0 and now - opened > 0.3:
+            # A board that did not reset on open is already streaming samples: ask it who it is.
+            if self.firmware is None and self.seen_sample and now - asked > 1.5:
                 asked = now
-                self.send("ID")
-            if self.firmware is None and now - opened > 6.0 and self.status not in ("wrong_firmware", "no_response"):
+                self.send("ID", force=True)
+            if self.firmware is None and now - opened > 7.0 and self.status not in ("wrong_firmware", "no_response"):
                 self._set("no_response", "%s does not answer; upload the firmware (Settings)" % port)
-            if self.firmware and now - self.last_line > 3.0:
-                self._close("no data for 3 s")
+            quiet = max(3.0, 6 * float(self.app.settings.get().get("sample_ms") or 250) / 1000.0)
+            if self.firmware and now - self.last_line > quiet:
+                self._close("no data for %g s" % quiet)
                 return
             try:
                 chunk = ser.read(getattr(ser, "in_waiting", 0) or 1)
@@ -212,6 +245,7 @@ class BoardLink:
             return
         if line.startswith("S,"):
             if not self.firmware:
+                self.seen_sample = True
                 return
             parts = line.split(",")
             if len(parts) != 10:
@@ -222,7 +256,18 @@ class BoardLink:
             except ValueError:
                 return
             temps = [t if math.isfinite(t) else None for t in temps]
+            try:
+                board_ms = int(parts[1])
+            except ValueError:
+                board_ms = None
+            if board_ms is not None and self.last_board_ms is not None and board_ms + 1000 < self.last_board_ms:
+                self.app.event("Board restarted (its clock went back); resending cutoffs")
+                self._configure()
+            self.last_board_ms = board_ms
             self.app.on_sample(temps, faults, parts[8] == "1", parts[9] == "1")
+            # Heat renewals ride on samples: the board has just proved it is running,
+            # so the byte cannot land in a rebooting board's bootloader.
+            self.app.renew_heat()
         elif line.startswith("#ID "):
             m = re.match(r"#ID che126-daq (\S+) relay=(NC|NO)", line)
             if not m:
@@ -230,9 +275,15 @@ class BoardLink:
             first = self.firmware is None
             self.firmware, self.relay = m.group(1), m.group(2)
             self._set("connected", port)
+            self.app.on_board_relay(self.relay)
             if first:
-                self.app.event("Board ready on %s (firmware %s, relay %s)" % (port, self.firmware, self.relay))
-                self._configure()
+                self.app.event("Board ready on %s (firmware %s, relay COM-%s)" % (port, self.firmware, self.relay))
+                if self.firmware != FIRMWARE_VERSION:
+                    self.app.event("Board firmware %s differs from this app's %s; upload the firmware in Settings" % (self.firmware, FIRMWARE_VERSION))
+            else:
+                self.app.event("Board announced itself again (restart?); resending cutoffs")
+            self._configure()
+            if first:
                 self.app.on_board_ready()
         elif line.startswith("#TRIP"):
             p = line.split()
@@ -240,7 +291,11 @@ class BoardLink:
         elif line.startswith("#LEASE"):
             self.app.event("Board switched heat off: this computer stopped renewing it")
         elif line.startswith("#ERR"):
-            self.app.event("Board: %s" % line[5:])
+            if "not armed" in line:
+                self.app.event("Board was not armed (it restarted?); resending cutoffs")
+                self._configure()
+            else:
+                self.app.event("Board: %s" % line[5:])
         elif line.startswith("#CTRL") or line.startswith("time_s,"):
             if self.status != "wrong_firmware":
                 self._set("wrong_firmware", "the board runs the old EXP firmware; upload che126-daq in Settings")
@@ -281,6 +336,7 @@ class SimBoard:
         self.heat_req = False
         self.heat_until = 0.0
         self.tripped = False
+        self.armed = False
         room = float(app.settings.get().get("room_C", 24.0))
         self.state = model.ThermalState(room, room, room, room)
         self.mismatch = {k: v * random.uniform(0.85, 1.15) for k, v in model.DEFAULT_MODEL.items()}
@@ -308,6 +364,8 @@ class SimBoard:
                 self.heat_req = False
             elif self.tripped:
                 self.out.put(b"#ERR tripped; send CLEAR first\n")
+            elif not self.armed:
+                self.out.put(b"#ERR not armed; send limits then ARM\n")
             else:
                 self.heat_req = True
                 self.heat_until = now + (int(w[2]) / 1000.0 if len(w) > 2 else 2.0)
@@ -321,6 +379,9 @@ class SimBoard:
         elif c == "RATE":
             self.rate = max(0.1, int(w[1]) / 1000.0)
             self.out.put(b"#OK RATE\n")
+        elif c == "ARM":
+            self.armed = True
+            self.out.put(b"#OK ARM\n")
         elif c == "CLEAR":
             self.tripped = False
             self.over = [0, 0, 0]

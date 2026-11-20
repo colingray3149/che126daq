@@ -159,13 +159,13 @@ def make_handler(app, web_dir):
                 return self._json({"programs": app.list_programs()})
             if path == "/api/runs":
                 return self._json({"runs": app.library.list()})
-            m = re.fullmatch(r"/api/runs/(\d{3,})", path)
+            m = re.fullmatch(r"/api/runs/(p?\d{3,})", path)
             if m:
                 return self._json(app.library.detail(m.group(1)))
-            m = re.fullmatch(r"/api/runs/(\d{3,})/data", path)
+            m = re.fullmatch(r"/api/runs/(p?\d{3,})/data", path)
             if m:
                 return self._json(app.library.load(m.group(1)))
-            m = re.fullmatch(r"/runs/(\d{3,})/([A-Za-z0-9_. -]+)", path)
+            m = re.fullmatch(r"/runs/(p?\d{3,})/([A-Za-z0-9_. -]+)", path)
             if m and ".." not in m.group(2):
                 return self._file(os.path.join(app.library.folder(m.group(1)), m.group(2)), download="dl" in q)
             return self._error("not found", 404)
@@ -196,9 +196,24 @@ def make_handler(app, web_dir):
                         app.clients.remove(q)
                 self.close_connection = True
 
+        def _same_origin(self):
+            """Only this page may send commands: another website open in the same browser
+            could otherwise POST to 127.0.0.1 and switch the heater on."""
+            port = self.server.server_address[1]
+            hosts = {"127.0.0.1:%d" % port, "localhost:%d" % port}
+            if self.headers.get("Host", "") not in hosts:
+                return False
+            origin = self.headers.get("Origin")
+            return not origin or origin in {"http://" + h for h in hosts}
+
         def _post(self):
             path = urlparse(self.path).path
-            m = re.fullmatch(r"/api/runs/(\d{3,})/png/([A-Za-z0-9_-]+)", path)
+            if not self._same_origin():
+                return self._error("commands are only accepted from the DAQ page itself", 403)
+            is_png = re.fullmatch(r"/api/runs/(p?\d{3,})/png/([A-Za-z0-9_-]+)", path) is not None
+            if not is_png and not (self.headers.get("Content-Type") or "").startswith("application/json"):
+                return self._error("send JSON (Content-Type: application/json)", 415)
+            m = re.fullmatch(r"/api/runs/(p?\d{3,})/png/([A-Za-z0-9_-]+)", path)
             if m:
                 folder = app.library.folder(m.group(1))
                 data = self._body()
@@ -228,12 +243,12 @@ def make_handler(app, web_dir):
                 return self._json({"ok": True})
             if path == "/api/preview":
                 return self._json(app.preview(body.get("program"), body.get("next_after_s")))
-            m = re.fullmatch(r"/api/runs/(\d{3,})/notes", path)
+            m = re.fullmatch(r"/api/runs/(p?\d{3,})/notes", path)
             if m:
                 app.library.save_notes(m.group(1), str(body.get("text") or ""))
                 app.refresh_readmes(m.group(1))
                 return self._json({"ok": True})
-            m = re.fullmatch(r"/api/runs/(\d{3,})/meta", path)
+            m = re.fullmatch(r"/api/runs/(p?\d{3,})/meta", path)
             if m:
                 return self._json(app_update_meta(app, m.group(1), body))
             if path == "/api/firmware":
@@ -276,6 +291,8 @@ def make_handler(app, web_dir):
                     raise ValueError("start a run first; notes go into the run's events")
                 if text:
                     app.event("Note: " + text)
+                    m, sec = divmod(int(app.run.elapsed()), 60)
+                    app.library.append_note(app.run.number, "%d:%02d %s" % (m, sec, text))
             else:
                 raise ValueError("unknown command %r" % cmd)
             return self._json({"ok": True})

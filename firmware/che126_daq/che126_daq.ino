@@ -7,6 +7,9 @@
 // Board-side limits (LIM) trip the heater OFF on their own and stay tripped until
 // CLEAR, even if the computer keeps asking for heat.
 //
+// After every boot the board refuses heat until the computer sends ARM (it sends
+// its limits first), so a board that resets mid-run never heats without cutoffs.
+//
 // Pins (Arduino Mega ADK):
 //   amplifier 1 CLK/DO/CS = 22/24/26
 //   amplifier 2 CLK/DO/CS = 28/30/32
@@ -25,11 +28,13 @@
 //   #OK <command>  /  #ERR <reason>                      command replies
 //   #TRIP <reason>                                       a limit or sensor trip latched
 //   #LEASE                                               heat permission expired
+// Commands: HEAT 1 <lease_ms> | HEAT 0 | LIM <1-3> <C> | FAULT <ms> | RATE <ms> | ARM
+//           CLEAR | RELAY NC|NO | ID | CFG
 
 #include <EEPROM.h>
 #include <avr/wdt.h>
 
-#define FIRMWARE_VERSION "1"
+#define FIRMWARE_VERSION "2"
 
 const uint8_t CLK[3] = {22, 28, 34};
 const uint8_t DO_[3] = {24, 30, 36};
@@ -52,6 +57,8 @@ uint32_t lease_until_ms = 0;
 bool tripped = false;
 uint8_t over_count[3] = {0, 0, 0};
 uint32_t fault_since_ms[3] = {0, 0, 0};
+bool faulting[3] = {false, false, false};
+bool armed = false;
 bool relay_on = false;
 
 char line[64];
@@ -138,15 +145,18 @@ void sample(uint32_t now) {
   for (uint8_t ch = 0; ch < 3; ch++) {
     if (limit_c[ch] <= 0) {
       over_count[ch] = 0;
-      fault_since_ms[ch] = 0;
+      faulting[ch] = false;
       continue;
     }
     if (f[ch]) {
       over_count[ch] = 0;
-      if (fault_since_ms[ch] == 0) fault_since_ms[ch] = now | 1;
+      if (!faulting[ch]) {
+        faulting[ch] = true;
+        fault_since_ms[ch] = now;
+      }
       if (fault_trip_ms > 0 && now - fault_since_ms[ch] >= fault_trip_ms) trip("FAULT", ch);
     } else {
-      fault_since_ms[ch] = 0;
+      faulting[ch] = false;
       if (t[ch] >= limit_c[ch]) {
         if (over_count[ch] < 255) over_count[ch]++;
         if (over_count[ch] >= LIMIT_CONFIRM_SAMPLES) trip("LIMIT", ch);
@@ -192,7 +202,9 @@ void printCfg() {
     Serial.print(limit_c[ch], 1);
   }
   Serial.print(F(" tripped="));
-  Serial.println(tripped ? 1 : 0);
+  Serial.print(tripped ? 1 : 0);
+  Serial.print(F(" armed="));
+  Serial.println(armed ? 1 : 0);
 }
 
 void ok(const char *cmd) {
@@ -219,6 +231,7 @@ void handle(char *cmd, uint32_t now) {
       return ok("HEAT 0");
     }
     if (tripped) return err(F("tripped; send CLEAR first"));
+    if (!armed) return err(F("not armed; send limits then ARM"));
     uint32_t lease = b ? (uint32_t)atol(b) : LEASE_DEFAULT_MS;
     if (lease < 100 || lease > LEASE_MAX_MS) return err(F("lease must be 100-10000 ms"));
     heat_requested = true;
@@ -232,7 +245,7 @@ void handle(char *cmd, uint32_t now) {
     if (ch < 1 || ch > 3) return err(F("channel must be 1-3"));
     limit_c[ch - 1] = atof(b);
     over_count[ch - 1] = 0;
-    fault_since_ms[ch - 1] = 0;
+    faulting[ch - 1] = false;
     return ok("LIM");
   }
   if (!strcmp(word, "FAULT")) {
@@ -250,9 +263,13 @@ void handle(char *cmd, uint32_t now) {
     tripped = false;
     for (uint8_t ch = 0; ch < 3; ch++) {
       over_count[ch] = 0;
-      fault_since_ms[ch] = 0;
+      faulting[ch] = false;
     }
     return ok("CLEAR");
+  }
+  if (!strcmp(word, "ARM")) {
+    armed = true;
+    return ok("ARM");
   }
   if (!strcmp(word, "RELAY")) {
     if (!a || (strcmp(a, "NC") && strcmp(a, "NO"))) return err(F("RELAY NC or RELAY NO"));

@@ -34,7 +34,10 @@ class App:
         self.clients_lock = threading.Lock()
         self.board = BoardLink(self)
         self.runner = self._new_runner()
-        self.library = Library(lambda: self.settings.runs_dir(self.root), lambda: self.run.number if self.run else None)
+        self.practice = forced_port == "sim://"
+        self.practice_dir = os.path.join(root, "practice-runs")
+        self.library = Library(lambda: self.settings.runs_dir(self.root), lambda: self.run.number if self.run else None,
+                               lambda: self.practice_dir)
         self.run = None
         self.session_start = time.monotonic()
         self.live = []  # (t_session, tc1, tc2, tc3, heat, sp, sp_tc)
@@ -48,6 +51,7 @@ class App:
         self.tripped = False
         self.trip_text = ""
         self.want_heat = False
+        self._last_off = 0.0
         self.manual = None  # None | {"mode": "on"} | {"mode": "hold", "tc": n, "temp": C}
         self.manual_ctrl = model.Controller()
         self.last_sample = 0.0
@@ -58,7 +62,38 @@ class App:
             self.event(self.settings.problem)
 
     def _new_runner(self):
-        return prog.Runner(on_event=self.event, on_finish=self._program_finished)
+        return prog.Runner(on_event=self._runner_event, on_finish=self._program_finished)
+
+    def _runner_event(self, text):
+        self.event(text)
+        if text.startswith("Step ") and self.run and self.runner.active():
+            self._reforecast()
+
+    def _reforecast(self):
+        """Redraw the predicted run from now: the remaining steps, from the current
+        readings, so the grey line stays honest when NEXT comes later than assumed."""
+        run, runner = self.run, self.runner
+        if not run or not runner.program or not run.meta.get("predicted"):
+            return
+        rest = dict(runner.program, steps=runner.program["steps"][runner.index:])
+        temps, now = list(self.temps), run.elapsed()
+        s = self.settings.get()
+
+        def work():
+            try:
+                pv = prog.preview(rest, s, temps)
+                old = run.meta.get("predicted") or {"t": [], "tc1": [], "tc2": [], "heat": []}
+                keep = [i for i, t in enumerate(old["t"]) if t < now]
+                new = {k: [old[k][i] for i in keep] for k in ("t", "tc1", "tc2", "heat")}
+                for k in ("tc1", "tc2", "heat"):
+                    new[k] += pv[k]
+                new["t"] += [round(t + now, 1) for t in pv["t"]]
+                run.meta["predicted"] = new
+                self.push("predicted", new)
+            except Exception:
+                traceback.print_exc()
+
+        threading.Thread(target=work, daemon=True).start()
 
     # ---------------------------------------------------------------- events
     def event(self, text):
@@ -67,8 +102,14 @@ class App:
             self.events.append(entry)
             del self.events[:-300]
             if self.run:
-                self.run.write_event(text)
-        print("[%s] %s" % (datetime.now().strftime("%H:%M:%S"), text), flush=True)
+                try:
+                    self.run.write_event(text)
+                except Exception as e:  # a full disk must not stop the board link
+                    entry["text"] += " (not saved: %s)" % e
+        try:
+            print("[%s] %s" % (datetime.now().strftime("%H:%M:%S"), text), flush=True)
+        except Exception:
+            pass
         self.push("event", entry)
 
     def push(self, kind, payload):
@@ -100,13 +141,16 @@ class App:
         den = sum((p[0] - mt) ** 2 for p in pts)
         return None if den <= 0 else sum((p[0] - mt) * (p[1] - mv) for p in pts) / den
 
-    def send_limits(self):
-        """Board cutoffs from the running program (or the manual cutoffs), per amplifier."""
-        cut = {}
+    def current_cutoffs(self):
+        if self.manual:
+            return self.manual.get("cutoffs") or {}
         if self.runner.program and (self.runner.active() or self.run):
-            cut = self.runner.program.get("cutoffs") or {}
-        elif self.manual:
-            cut = self.manual.get("cutoffs") or {}
+            return self.runner.program.get("cutoffs") or {}
+        return {}
+
+    def send_limits(self, cut=None):
+        """Board cutoffs (manual control's, else the program's), per amplifier."""
+        cut = self.current_cutoffs() if cut is None else cut
         per_amp = {1: 0.0, 2: 0.0, 3: 0.0}
         for tc in (1, 2, 3):
             v = cut.get(str(tc))
@@ -121,6 +165,12 @@ class App:
         if self.tripped and not (self.runner.state == "tripped"):
             self.board.send("CLEAR")
 
+    def on_board_relay(self, relay):
+        """The board's stored relay polarity is the truth; mirror it in settings."""
+        if self.settings.get().get("relay") != relay:
+            self.settings.update({"relay": relay})
+            self.event("Relay wiring on the board is COM-%s; settings updated to match" % relay)
+
     def on_board_lost(self):
         with self.lock:
             self.board_heat = False
@@ -128,15 +178,23 @@ class App:
 
     def on_trip(self, reason, amp):
         tcs = self.settings.get()["tcs"]
-        names = ["TC%d" % (i + 1) for i, t in enumerate(tcs) if int(t["amp"]) == amp] or ["amplifier %d" % amp]
-        who = "/".join(names)
-        text = ("Cutoff: %s reached its limit" if reason == "LIMIT" else "Cutoff: %s stopped giving readings" if reason == "FAULT" else "Board trip on %s") % who
+        idx = [i for i, t in enumerate(tcs) if int(t["amp"]) == amp]
+        who = "/".join("TC%d" % (i + 1) for i in idx) or "amplifier %d" % amp
+        if reason == "LIMIT":
+            limit = (self.current_cutoffs() or {}).get(str(idx[0] + 1)) if idx else None
+            reading = self.temps[idx[0]] if idx else None
+            text = "Cutoff: %s passed its %s limit%s" % (
+                who, ("%g °C" % limit) if limit else "", (" (read %.1f °C)" % reading) if reading is not None else "")
+        elif reason == "FAULT":
+            text = "Cutoff: %s stopped giving readings" % who
+        else:
+            text = "Board trip on %s" % who
         with self.lock:
             self.tripped = True
             self.trip_text = text
             self.runner.stop(text, state="tripped")
             self.manual = None
-        self.event(text + "; heat off until cleared")
+        self.event(text + ". Program stopped, heat off. Clear the cutoff once the cause is fixed.")
         self.broadcast_state()
 
     def on_sample(self, raw, faults, heat, tripped):
@@ -153,8 +211,7 @@ class App:
                     self.history[i].append((now, v))
                     if len(self.history[i]) > 200:
                         del self.history[i][:-200]
-            obs_temps = [self.temps[0], self.temps[1], self.temps[2] if s.get("tc3_is_core") else None]
-            self.observer.update(min(dt, 2.0), self.board_heat, obs_temps, s)
+            prev_heat = self.board_heat
             self.board_heat = heat
             if tripped and not self.tripped:
                 self.tripped = True
@@ -171,8 +228,17 @@ class App:
             run_t = None
             if self.run:
                 step = str(self.runner.index + 1) if self.runner.active() else ("manual" if self.manual else "")
-                self.run.write_sample(self.temps, heat, sp, sp_tc, step, self.faults)
+                try:
+                    self.run.write_sample(self.temps, heat, sp, sp_tc, step, self.faults)
+                except Exception as e:
+                    self.event("Could not save a sample: %s" % e)
                 run_t = round(self.run.elapsed(), 2)
+            try:
+                obs_temps = [self.temps[0], self.temps[1], self.temps[2] if s.get("tc3_is_core") else None]
+                self.observer.update(min(dt, 2.0), prev_heat, obs_temps, s)
+            except Exception:
+                traceback.print_exc()
+                self.observer.reset()
             core = self.observer.state.core if self.observer.state else None
         self.push("sample", {
             "t": tsess, "rt": run_t, "tc": self.temps, "heat": 1 if heat else 0, "sp": sp, "sp_tc": sp_tc,
@@ -187,10 +253,19 @@ class App:
         return None, None
 
     # ---------------------------------------------------------------- control loop
+    def renew_heat(self):
+        """Called right after each sample line: tell the board what the control loop decided."""
+        lease = int(self.settings.get().get("lease_ms") or 2000)
+        if self.want_heat:
+            self.board.send("HEAT 1 %d" % lease)
+        elif self.board_heat or time.monotonic() - self._last_off > 2.0:
+            self._last_off = time.monotonic()
+            self.board.send("HEAT 0")
+
     def control_loop(self):
         last_tick = time.monotonic()
-        last_send, sent = 0.0, None
         last_state = 0.0
+        self._last_off = 0.0
         while True:
             time.sleep(0.1)
             now = time.monotonic()
@@ -198,7 +273,7 @@ class App:
             try:
                 s = self.settings.get()
                 with self.lock:
-                    stale = now - self.last_sample > 2.0
+                    stale = now - self.last_sample > max(2.0, 4 * float(s.get("sample_ms") or 250) / 1000.0)
                     slopes = [self.slope(i) for i in range(TC_COUNT)]
                     obs = self.observer.state
                     if self.tripped or stale:
@@ -215,17 +290,14 @@ class App:
                         want = self.manual_ctrl.output(now, dt, tc, temp, lambda a: temp, self.temps[tc - 1], slopes[tc - 1], obs, s)
                     else:
                         want = False
+                    turned_off = self.want_heat and not want
                     self.want_heat = want
-                lease = int(s.get("lease_ms") or 2000)
-                if want and (sent is not True or now - last_send > min(0.5, lease / 4000.0)):
-                    if self.board.send("HEAT 1 %d" % lease):
-                        sent, last_send = True, now
-                elif not want and (sent is not False or now - last_send > 2.0):
-                    if self.board.send("HEAT 0"):
-                        sent, last_send = False, now
+                if turned_off:
+                    self.board.send("HEAT 0")  # don't wait for the next sample to stop heating
                 if now - last_state > 1.0:
                     last_state = now
                     self.broadcast_state()
+                    self._windows_awake()
             except Exception:
                 traceback.print_exc()
 
@@ -235,32 +307,40 @@ class App:
 
     # ---------------------------------------------------------------- commands
     def start_run(self, program, title, setup, volts):
+        if volts not in (None, ""):
+            try:
+                volts = float(volts)
+            except (TypeError, ValueError):
+                raise ValueError("variac voltage must be a number")
+            self.apply_settings({"variac_V": volts}, quiet=True)
+        p = prog.normalize(program) if program else None
+        if p and not p["steps"]:
+            raise ValueError("the program has no steps")
+        predicted = None
+        if p:
+            try:  # outside the lock: a long preview must not pause control
+                pv = prog.preview(p, self.settings.get(), list(self.temps))
+                predicted = {k: pv[k] for k in ("t", "tc1", "tc2", "heat")}
+            except Exception:
+                traceback.print_exc()
         with self.lock:
-            if volts not in (None, ""):
-                self.apply_settings({"variac_V": float(volts)}, quiet=True)
-            p = prog.normalize(program) if program else None
             if self.run:
                 self._finish_run("a new run was started")
-            runs_dir = self.settings.runs_dir(self.root)
+            # Practice runs (simulated rig) never take real run numbers.
+            runs_dir = self.practice_dir if self.practice else self.settings.runs_dir(self.root)
+            prefix = "p" if self.practice else ""
             os.makedirs(runs_dir, exist_ok=True)
             ids = run_ids(runs_dir)
             n = int(ids[-1]) + 1 if ids else 1
             while True:
-                rid = "%03d" % n
-                folder = os.path.join(runs_dir, rid)
+                rid = prefix + "%03d" % n
+                folder = os.path.join(runs_dir, rid[len(prefix):])
                 try:
                     os.makedirs(folder)
                     break
                 except FileExistsError:
                     n += 1
             s = self.settings.get()
-            predicted = None
-            if p:
-                try:
-                    pv = prog.preview(p, s, self.temps)
-                    predicted = {k: pv[k] for k in ("t", "tc1", "tc2", "heat")}
-                except Exception:
-                    traceback.print_exc()
             meta = {
                 "run": rid,
                 "title": (title or (p["name"] if p else "Recording"))[:120],
@@ -349,7 +429,7 @@ class App:
         self.run = None
         self._keep_awake(False)
         self.event("Run %s ended (%s), %d samples saved in runs/%s/" % (run.number, why, run.samples, run.number))
-        self.refresh_readmes(run.number)
+        threading.Thread(target=self.refresh_readmes, args=(run.number,), daemon=True).start()
 
     def refresh_readmes(self, rid):
         """Rewrite runs/<rid>/README.md and runs/README.md (what GitHub shows)."""
@@ -362,6 +442,20 @@ class App:
             traceback.print_exc()
 
     def manual_heat(self, mode, tc=None, temp=None, cutoffs=None):
+        if mode != "off" and self.tripped:
+            raise ValueError("a cutoff has tripped; press Clear cutoff in the red banner first")
+        if mode != "off" and not self.run:
+            self.start_run(None, "Manual", "", None)  # manual heating is always recorded
+        if mode == "hold":
+            try:
+                tc, temp = int(tc or 1), float(temp)
+            except (TypeError, ValueError):
+                raise ValueError("type a hold temperature")
+            if not 1 <= tc <= 3:
+                raise ValueError("TC must be 1, 2 or 3")
+        if mode != "off":
+            src = cutoffs if cutoffs is not None else self.settings.get().get("manual_cutoffs") or {}
+            cut = prog.normalize({"steps": [], "cutoffs": src})["cutoffs"]
         with self.lock:
             if self.runner.active():
                 self.runner.stop("Switched to manual control")
@@ -370,18 +464,19 @@ class App:
                 self.manual = None
                 self.event("Manual: heat off")
             else:
+                self.send_limits(cut)  # cutoffs reach the board before any heat
                 if self.tripped:
                     self.board.send("CLEAR")
+                cut_txt = ", ".join("TC%s %g °C" % (k, v) for k, v in cut.items() if v) or "none"
                 if mode == "on":
-                    self.manual = {"mode": "on", "cutoffs": cutoffs or {}}
-                    self.event("Manual: full power")
+                    self.manual = {"mode": "on", "cutoffs": cut}
+                    self.event("Manual: full power (cutoffs %s)" % cut_txt)
                 else:
-                    tc = int(tc or 1)
-                    temp = float(temp)
                     self.manual_ctrl.reset()
-                    self.manual = {"mode": "hold", "tc": tc, "temp": temp, "cutoffs": cutoffs or {}}
-                    self.event("Manual: hold TC%d at %g °C" % (tc, temp))
-        self.send_limits()
+                    self.manual = {"mode": "hold", "tc": tc, "temp": temp, "cutoffs": cut}
+                    self.event("Manual: hold TC%d at %g °C (cutoffs %s)" % (tc, temp, cut_txt))
+        if mode == "off":
+            self.send_limits()
         self.broadcast_state()
 
     def clear_trip(self):
@@ -403,9 +498,9 @@ class App:
     def apply_settings(self, changes, quiet=False):
         old = self.settings.get()
         new = self.settings.update(changes)
-        if new["relay"] != old["relay"]:
+        if new["relay"] != old["relay"] and new["relay"] != self.board.relay:
             self.board.send("RELAY %s" % new["relay"])
-            self.event("Relay wiring set to COM-%s" % new["relay"])
+            self.event("Relay wiring set to COM-%s (stored on the board)" % new["relay"])
         if new["sample_ms"] != old["sample_ms"]:
             self.board.send("RATE %d" % int(new["sample_ms"]))
         if new["fault_trip_s"] != old["fault_trip_s"]:
@@ -414,6 +509,11 @@ class App:
             with self.lock:
                 self.history = [[] for _ in range(TC_COUNT)]
                 self.observer.reset()
+                if self.run:
+                    self.run.meta["tc_names"] = [t["name"] for t in new["tcs"]]
+                    self.run.meta["tc_amps"] = [int(t["amp"]) for t in new["tcs"]]
+            if [t["amp"] for t in new["tcs"]] != [t["amp"] for t in old["tcs"]]:
+                self.event("Thermocouple wiring changed: " + ", ".join("TC%d = amplifier %d" % (i + 1, int(t["amp"])) for i, t in enumerate(new["tcs"])))
             self.send_limits()
         if new["port"] != old["port"] and not self.forced_port:
             self.board.reconnect()
@@ -434,14 +534,22 @@ class App:
         finally:
             self.board.resume()
 
-    def _keep_awake(self, on):
-        """Stop the laptop sleeping while a run records."""
+    def _windows_awake(self):
+        """Windows keeps the 'stay awake' request per thread, so the long-lived control
+        thread renews it every second while a run records."""
+        if sys.platform != "win32":
+            return
         try:
-            if sys.platform == "win32":
-                import ctypes
+            import ctypes
 
-                ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | (0x00000001 if on else 0))
-            elif sys.platform == "darwin":
+            ctypes.windll.kernel32.SetThreadExecutionState(0x80000000 | (0x00000001 if self.run else 0))
+        except Exception:
+            pass
+
+    def _keep_awake(self, on):
+        """Stop the laptop sleeping while a run records (macOS; Windows: _windows_awake)."""
+        try:
+            if sys.platform == "darwin":
                 if on and not self.caffeinate:
                     self.caffeinate = subprocess.Popen(["caffeinate", "-i", "-w", str(os.getpid())])
                 elif not on and self.caffeinate:
@@ -464,6 +572,10 @@ class App:
 
     def save_program(self, p):
         p = prog.normalize(p)
+        if p["name"] in ("", "Untitled"):
+            raise ValueError("give the program a name")
+        if not p["steps"]:
+            raise ValueError("add at least one step")
         name = safe_name(p["name"])
         atomic_write(os.path.join(self.programs_dir, name + ".json"), json.dumps(p, indent=2) + "\n")
         return name
@@ -518,7 +630,14 @@ class App:
                 },
                 "run": {"id": self.run.number, "title": self.run.meta["title"], "elapsed": round(self.run.elapsed(), 1), "samples": self.run.samples} if self.run else None,
                 "settings": s,
-                "full_power_W": round(model.heater_power(s)),
-                "max_surface_C": round(model.steady_surface(s["model"], model.heater_power(s), float(s["room_C"]))),
+                "full_power_W": _safe(lambda: round(model.heater_power(s))),
+                "max_surface_C": _safe(lambda: round(model.steady_surface(s["model"], model.heater_power(s), float(s["room_C"])))),
                 "session_t": round(now - self.session_start, 1),
             }
+
+
+def _safe(fn):
+    try:
+        return fn()
+    except Exception:
+        return None

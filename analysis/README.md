@@ -48,8 +48,8 @@ steady. Lower is a better barrier.
    (026: tripped at 85 °C, peaked 110.5 °C four minutes later).
 2. **One barrier comparison exists, and it does not separate the barriers.** 036 (2× fiberglass)
    and 040 (3× ceramic) ran the same program. 040's rear rose 82 °C vs 55.5 °C, but 040 also
-   needed 4:54 of heating instead of 2:56 to reach 700 °C, so it put in about 1.7× the energy
-   (fig 4). Normalised by the fitted model, both barriers transmit the same fraction (rear gain
+   reached 700 °C later (5:47 vs 4:08) and had the relay on for 4:54 instead of 2:56, so it put
+   in about 1.7× the energy (figure below). Normalised by the fitted model, both barriers transmit the same fraction (rear gain
    0.20). With one run each and a cartridge that was failing during 040, **the data cannot rank
    fiberglass vs ceramic**. 026, 028, 036 and 040 all fit 0.20–0.21: in this rig the rear
    response is dominated by the sand and the geometry, not by which insulation is in the stack.
@@ -79,6 +79,8 @@ steady. Lower is a better barrier.
 8. **The MAX31855 cannot read the new cartridge's internal TC.** It is a grounded junction; the
    readings fault as soon as the heater circuit is powered (run 064). A 47 kΩ resistor to
    ground did not help. Use the TC513 (or an isolated amplifier) for the internal TC.
+
+![Rear rise vs energy](fig4_rise_vs_energy.png)
 
 ![Run 068](fig2_run068_tc513.png)
 
@@ -114,6 +116,10 @@ steady. Lower is a better barrier.
 * Run the same program at least twice per barrier before comparing barriers.
 
 ![Predicted 700 °C at different voltages](fig5_voltage_preview.png)
+
+*The preset "700 C, 60 s hold" as the Predicted run sees it with the 500 W cartridge: the
+Hold step's predictive control reaches 700 °C without overshoot at any voltage; lower voltage
+only takes longer. The estimated cartridge interior stays far above its 760 °C rating.*
 
 ## Suggested next experiments
 

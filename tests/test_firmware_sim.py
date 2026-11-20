@@ -21,6 +21,7 @@ sys.path.insert(0, ROOT)
 
 SIM = os.environ.get("BOARD_SIM", "")
 ELF = os.environ.get("FIRMWARE_ELF", "")
+BOOTLOADER = os.path.join(ROOT, "tests", "board_sim", "stk500boot_v2_mega2560.hex")
 
 
 def wait_for(cond, seconds, step=0.1):
@@ -41,7 +42,8 @@ class FirmwareSim(unittest.TestCase):
         self.tty = os.path.join(self.tmp, "tty")
         self.ctl = os.path.join(self.tmp, "ctl")
         os.mkfifo(self.ctl)
-        self.sim = subprocess.Popen([SIM, ELF, self.tty, self.ctl], stderr=subprocess.PIPE, text=True)
+        # Like a real Mega: every boot starts in the bootloader, which waits about a second.
+        self.sim = subprocess.Popen([SIM, ELF, self.tty, self.ctl, BOOTLOADER], stderr=subprocess.PIPE, text=True)
         self.ctl_f = open(self.ctl, "w")
         wait_for(lambda: os.path.exists(self.tty), 5)
         from che126.app import App
@@ -98,7 +100,7 @@ class FirmwareSim(unittest.TestCase):
         self.assertTrue(wait_for(lambda: self.app.board_heat, 3))
         self.plant("SET 2 150")
         self.assertTrue(wait_for(lambda: self.app.tripped, 3), "board did not trip")
-        self.assertTrue(any("TC1 reached its limit" in e for e in self.events))
+        self.assertTrue(any("TC1 passed its" in e for e in self.events), self.events[-4:])
         self.assertTrue(wait_for(lambda: not self.app.board_heat, 2))
         self.app.board.send("HEAT 1 5000")
         time.sleep(1)
@@ -109,6 +111,7 @@ class FirmwareSim(unittest.TestCase):
         self.assertTrue(wait_for(lambda: not self.app.tripped, 3))
 
     def test_lease_expires_when_computer_goes_quiet(self):
+        self.app.renew_heat = lambda: None  # the computer stops talking after one HEAT 1
         self.app.board.send("HEAT 1 600")
         self.assertTrue(wait_for(lambda: self.app.board_heat, 2))
         self.assertTrue(wait_for(lambda: not self.app.board_heat, 2), "heat stayed on after the lease")
@@ -128,6 +131,19 @@ class FirmwareSim(unittest.TestCase):
         self.assertTrue(wait_for(lambda: self.app.tripped, 4))
         self.assertTrue(any("stopped giving readings" in e for e in self.events))
         self.plant("FAULT 1 0")
+
+    def test_reset_mid_run_recovers_with_cutoffs(self):
+        """A board that restarts mid-run (brown-out, EMI) must come back armed with its
+        cutoffs; the app must not keep it stuck in the bootloader by talking to it."""
+        self.control()
+        self.app.start_run({"name": "r", "steps": [{"type": "full", "tc": 1}], "cutoffs": {"1": 200}}, "reset", "", None)
+        self.assertTrue(wait_for(lambda: self.app.board_heat, 6))
+        self.plant("RESET")
+        self.assertTrue(wait_for(lambda: not self.app.board_heat, 5))
+        self.assertTrue(wait_for(lambda: self.app.board_heat, 25), "did not come back and resume heating: %s" % self.events[-6:])
+        self.plant("SET 2 260")
+        self.assertTrue(wait_for(lambda: self.app.tripped, 5), "cutoff not active after the restart")
+        self.app.end_run()
 
     def test_relay_polarity_persists(self):
         self.app.board.send("RELAY NO")

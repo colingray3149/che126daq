@@ -253,3 +253,8 @@ code { background: var(--bg); padding: 1px 5px; border-radius: 4px; font-size: 1
 }
 .doc-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-top: 10px; flex: 1; min-height: 0; width: 100%; }
 .doc-wrap .doc { width: 100%; flex: 1; }
+.nc-hint { color: #a34400; background: #fff4e6; border-radius: 6px; padding: 5px 8px; line-height: 1.35; }
+.manual-cut .unit-input { width: 82px; }
+.manual-cut { flex-wrap: wrap; }
+.chip.practice { background: #fff3bf; color: #7a5a00; }
+#start-warn:empty { display: none; }

@@ -49,6 +49,7 @@
         <span title="Model estimate of the inside of the cartridge (not measured). See Settings › Thermal model.">Cartridge core (model)</span>
         <span id="core"></span>
       </div>
+      <div id="nc-hint" class="small nc-hint hidden">COM–NC relay: the heater is on whenever the board is unplugged or restarting. Variac off before unplugging USB.</div>
     </div>
 
     <div id="start-card" class="card">
@@ -59,6 +60,7 @@
         <label class="grow">Title <input id="start-title" type="text" placeholder="optional"></label>
       </div>
       <label>Setup <textarea id="start-setup" rows="2" placeholder="Barrier stack, sand, anything to remember"></textarea></label>
+      <ul id="start-warn" class="warnings small"></ul>
       <button id="btn-start" class="primary wide">Start run</button>
     </div>
 
@@ -87,6 +89,11 @@
         <select id="hold-tc"></select>
         <span class="unit-input"><input id="hold-temp" type="number" step="1" placeholder="°C"><i>°C</i></span>
         <button id="btn-hold">Hold</button>
+      </div>
+      <div class="row gap small muted manual-cut" title="The board cuts the heat if a TC passes its cutoff while Manual heats. Blank = none.">
+        <span>Cutoffs</span>
+        <span>TC1</span><span class="unit-input"><input id="mcut-1" type="number" step="1"><i>°C</i></span>
+        <span>TC2</span><span class="unit-input"><input id="mcut-2" type="number" step="1"><i>°C</i></span>
       </div>
     </div>
 
@@ -130,7 +137,7 @@
       </div>
       <div id="prog-msg" class="small"></div>
       <table class="steps-table">
-        <colgroup><col style="width:28px"><col style="width:116px"><col style="width:68px"><col style="width:96px"><col style="width:96px"><col style="width:58px"><col style="width:132px"></colgroup>
+        <colgroup><col style="width:26px"><col style="width:108px"><col style="width:66px"><col style="width:90px"><col style="width:90px"><col style="width:52px"><col style="width:118px"></colgroup>
         <thead><tr><th>#</th><th>Action</th><th>TC</th><th>Temp</th><th>Time</th><th title="When the step is done, keep its last action until you press NEXT">Wait for NEXT</th><th></th></tr></thead>
         <tbody id="step-rows"></tbody>
       </table>
@@ -152,7 +159,9 @@
         <b>Ramp</b>: setpoint moves from the TC's reading to the temperature over the time.
         <b>Hold</b>: regulate at the temperature for the time (blank: until NEXT).
         <b>Off</b>: heater off until the TC cools to the temperature (or for the time).
-        <b>Wait for NEXT</b>: after the step finishes, keep doing it until you press NEXT.
+        <b>Wait for NEXT</b>: when the step is done, stay there (hold its temperature, or stay off/on) until you press NEXT.
+        <b>Cutoffs</b> are emergency limits: the board cuts the heat and the program stops.
+        <b>Finish early when</b> ends the program normally (heat off, still recording).
         NEXT always jumps to the next step, at any time.
       </div>
     </div>

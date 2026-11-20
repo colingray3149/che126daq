@@ -55,6 +55,8 @@ def normalize(p):
     if not isinstance(p, dict):
         raise ValueError("program must be an object")
     steps = []
+    if len(p.get("steps") or []) > 100:
+        raise ValueError("a program can have at most 100 steps")
     for i, s in enumerate(p.get("steps") or []):
         n = i + 1
         kind = s.get("type")
@@ -67,6 +69,8 @@ def normalize(p):
         if not 1 <= tc <= TC_COUNT:
             raise ValueError("step %d: TC must be 1, 2 or 3" % n)
         temp = _num(s.get("temp"), "step %d temperature" % n, allow_none=kind in ("off", "full"))
+        if temp is not None and not -50 <= temp <= 1500:
+            raise ValueError("step %d: temperature must be between -50 and 1500 °C" % n)
         secs = _num(s.get("time"), "step %d time" % n, allow_none=kind != "ramp")
         if secs is not None and secs < 0:
             raise ValueError("step %d: time cannot be negative" % n)
@@ -79,10 +83,14 @@ def normalize(p):
         tc = int(e.get("tc") or 2)
         if not 1 <= tc <= TC_COUNT:
             raise ValueError("finish-early TC must be 1, 2 or 3")
+        if not -50 <= t <= 1500:
+            raise ValueError("finish-early temperature must be between -50 and 1500 °C")
         ends.append({"tc": tc, "op": e.get("op") if e.get("op") in (">=", "<=") else ">=", "temp": t})
     cut = {}
     for k in ("1", "2", "3"):
         v = _num((p.get("cutoffs") or {}).get(k), "TC%s cutoff" % k)
+        if v is not None and v > 1500:
+            raise ValueError("TC%s cutoff must be at most 1500 °C" % k)
         cut[k] = v if v and v > 0 else None
     name = str(p.get("name") or "").strip() or "Untitled"
     return {"name": name[:80], "steps": steps, "end_when": ends, "cutoffs": cut, "end_run": bool(p.get("end_run"))}
@@ -239,7 +247,8 @@ class Runner:
         elif kind == "hold":
             if self.hold_started is None and temp is not None and abs(temp - target) <= HOLD_BAND_C:
                 self.hold_started = now
-                self.on_event("Step %d: TC%d at %g °C, hold timer started" % (self.index + 1, tc, target))
+                if secs is not None:
+                    self.on_event("Step %d: TC%d reached %g °C; %s hold starts now" % (self.index + 1, tc, target, _mmss(secs)))
             if secs is not None and self.hold_started is not None and now - self.hold_started >= secs:
                 done = True
             heat = regulate(target, lambda ahead: target)

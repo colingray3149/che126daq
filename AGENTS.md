@@ -41,7 +41,14 @@ keep the page self-explanatory and the text short.
 ## Rules
 
 * NEXT, Stop and manual control must always work: no state checks that block the operator.
-  Safety lives in the cutoffs the operator sets (enforced on the board) and the lease.
+  Safety lives in the cutoffs the operator sets (enforced on the board) and the lease. The one
+  refusal: heating while a cutoff is tripped (the board refuses it anyway; Clear cutoff first).
+* Never speak first to the board. Opening the port resets it into the bootloader, which stays
+  there as long as bytes arrive (relay floating = heat with COM–NC). `BoardLink.send` drops
+  commands until the firmware has announced itself and while it is silent; heat renewals are
+  sent only right after a sample line. After every (re)boot the app sends cutoffs, then `ARM`.
+* Manual heating always records (it starts a "Manual" run) and uses the manual cutoffs.
+* Practice mode (`--sim`) records into `practice-runs/` as p001, p002…, never into `runs/`.
 * Never change a run's `data.csv`/`events.csv` after it is recorded.
 * Python 3.8+, standard library plus vendored pyserial only. Must run on Windows and macOS.
 * Test: `python -m unittest discover tests` (and `tests/test_firmware_sim.py` with the simulator

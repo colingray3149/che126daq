@@ -14,6 +14,7 @@
 //   FAULT <ch> <bits>    MAX31855 fault bits on a channel (0 clears)
 //   MISSING <ch> <0|1>   amplifier absent: DO floats high
 //   GLITCH <ch>          next reading on <ch> is 2048 C
+//   RESET                reset the chip (starts in the bootloader if one is loaded)
 //   QUIT
 // Relay changes are printed to stderr as "relay on|off t=<s>".
 
@@ -164,6 +165,7 @@ static void control_line(char *line) {
   } else if (sscanf(line, "FAULT %d %lf", &ch, &v) == 2 && ch >= 1 && ch <= 3) fault_bits[ch - 1] = (int)v;
   else if (sscanf(line, "MISSING %d %lf", &ch, &v) == 2 && ch >= 1 && ch <= 3) missing[ch - 1] = (int)v;
   else if (sscanf(line, "GLITCH %d", &ch) == 1 && ch >= 1 && ch <= 3) glitch[ch - 1] = 1;
+  else if (!strncmp(line, "RESET", 5)) { avr_reset(avr); fprintf(stderr, "reset t=%.3f\n", now_s()); }
   else if (!strncmp(line, "QUIT", 4)) exit(0);
 }
 

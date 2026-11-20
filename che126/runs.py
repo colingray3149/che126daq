@@ -86,6 +86,9 @@ class Run:
                 pass
 
 
+RUN_ID = r"p?\d{3,}"  # practice runs (simulated rig) are p001, p002, ... in practice-runs/
+
+
 def run_ids(runs_dir):
     if not os.path.isdir(runs_dir):
         return []
@@ -109,8 +112,9 @@ def _float(x):
 
 
 class Library:
-    def __init__(self, runs_dir_fn, active_run_fn):
+    def __init__(self, runs_dir_fn, active_run_fn, practice_dir_fn=None):
         self.runs_dir = runs_dir_fn
+        self.practice_dir = practice_dir_fn or (lambda: None)
         self.active = active_run_fn
         self.cache = {}
         self.lock = threading.Lock()
@@ -123,9 +127,15 @@ class Library:
             return {}
 
     def folder(self, rid):
-        if not re.fullmatch(r"\d{3,}", rid or ""):
+        if not re.fullmatch(RUN_ID, rid or ""):
             raise KeyError(rid)
-        path = os.path.join(self.runs_dir(), rid)
+        if rid.startswith("p"):
+            base = self.practice_dir()
+            if not base:
+                raise KeyError(rid)
+            path = os.path.join(base, rid[1:])
+        else:
+            path = os.path.join(self.runs_dir(), rid)
         if not os.path.isdir(path):
             raise KeyError(rid)
         return path
@@ -299,22 +309,29 @@ class Library:
         cat = cat if cat is not None else self.catalog().get(rid, {})
         meta = self.meta(rid)
         active = self.active()
+        if rid.startswith("p"):
+            category = "practice"
+        else:
+            category = cat.get("category") or ("test" if meta.get("program") else ("recording" if meta else "other"))
         return {
             "id": rid,
             "title": meta.get("title") or cat.get("title") or "",
-            "category": cat.get("category") or ("test" if meta.get("program") else ("recording" if meta else "other")),
+            "category": category,
             "started": self.started(rid, meta),
             "setup": meta.get("setup") or cat.get("setup") or "",
             "voltage": meta.get("variac_V") or cat.get("voltage"),
             "new": bool(meta),
             "recording": active == rid,
-            "path": "runs/%s/" % rid,
+            "path": ("practice-runs/%s/" % rid[1:]) if rid.startswith("p") else ("runs/%s/" % rid),
         }
 
     def list(self):
         cat = self.catalog()
+        ids = run_ids(self.runs_dir())
+        if self.practice_dir():
+            ids += ["p" + i for i in run_ids(self.practice_dir())]
         out = []
-        for rid in run_ids(self.runs_dir()):
+        for rid in ids:
             try:
                 out.append(self.summary(rid, cat.get(rid, {})))
             except (KeyError, OSError):
@@ -327,6 +344,12 @@ class Library:
                 return notes_split(f.read())[1]
         except OSError:
             return ""
+
+    def append_note(self, rid, line):
+        """A note typed during the run also lands in notes.md, under ## Comments."""
+        path = os.path.join(self.folder(rid), "notes.md")
+        text = self.notes(rid)
+        self.save_notes(rid, (text + "\n" if text else "") + "- " + line)
 
     def save_notes(self, rid, text):
         path = os.path.join(self.folder(rid), "notes.md")
@@ -489,7 +512,7 @@ def write_run_readme(lib, rid):
     sm, a = d["summary"], d["analysis"]
     names = d["tc_names"]
     lines = ["# Run %s%s" % (rid, " — " + sm["title"] if sm["title"] else ""), ""]
-    meta = [sm["started"][:16].replace("T", " ") + " UTC" if sm["started"] else None,
+    meta = [_local_time(sm["started"]),
             "%g V" % float(sm["voltage"]) if sm["voltage"] else None,
             "%s long" % _mmss(a.get("duration_s")) if a else None, sm["category"]]
     lines.append(" · ".join(x for x in meta if x))
@@ -528,9 +551,19 @@ def write_run_readme(lib, rid):
     atomic_write(os.path.join(folder, "README.md"), "\n".join(lines) + "\n")
 
 
+def _local_time(stamp):
+    """ISO UTC stamp -> 'YYYY-MM-DD HH:MM' in this computer's time zone."""
+    if not stamp:
+        return None
+    try:
+        return datetime.fromisoformat(stamp).astimezone().strftime("%Y-%m-%d %H:%M %Z").strip()
+    except ValueError:
+        return stamp[:16]
+
+
 def write_index(lib):
     """runs/README.md: the key runs first, then every run."""
-    runs = lib.list()
+    runs = [r for r in lib.list() if not r["id"].startswith("p")]
     key = [r for r in runs if r["category"] in ("test", "partial") or r["new"]]
     out = ["# Runs", "",
            "Open the DAQ page (`python daq.py`) and use the Runs tab to plot, compare and annotate these.",

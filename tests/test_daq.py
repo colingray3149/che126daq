@@ -306,7 +306,8 @@ class ApiTests(unittest.TestCase):
                                          "program": {"name": "p", "steps": [{"type": "full", "tc": 1, "temp": 40}, {"type": "hold", "tc": 1, "temp": 45}]}})
         self.assertEqual(code, 200, r)
         rid = r["run"]
-        self.assertGreater(int(rid), 36)
+        self.assertTrue(rid.startswith("p"), "practice runs must not take real run numbers")
+        self.assertTrue(os.path.isdir(os.path.join(self.tmp, "practice-runs", rid[1:])))
         time.sleep(1.5)
         self.assertEqual(self.post("/api/cmd", {"cmd": "next"})[0], 200)
         self.assertEqual(self.post("/api/cmd", {"cmd": "note", "text": "hello"})[0], 200)
@@ -319,12 +320,13 @@ class ApiTests(unittest.TestCase):
         d = self.get("/api/runs/" + rid)
         self.assertEqual(d["meta"]["setup"], "mica / Al")
         self.assertTrue(any("hello" in e["text"] for e in d["events"]))
+        self.assertIn("hello", d["notes"], "a note typed during the run belongs in notes.md")
         self.assertTrue(any("NEXT" in e["text"] for e in d["events"]))
         data = self.get("/api/runs/%s/data" % rid)
         self.assertGreater(len(data["t"]), 3)
         self.assertEqual(self.post("/api/runs/%s/notes" % rid, {"text": "my comment"})[0], 200)
         self.assertEqual(self.get("/api/runs/" + rid)["notes"], "my comment")
-        with open(os.path.join(self.tmp, "runs", rid, "notes.md"), encoding="utf-8") as f:
+        with open(os.path.join(self.tmp, "practice-runs", rid[1:], "notes.md"), encoding="utf-8") as f:
             text = f.read()
         self.assertIn("Setup: mica / Al", text)
         self.assertIn("## Comments\n\nmy comment", text)
@@ -337,10 +339,17 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(self.post("/api/settings", {"relay": "maybe"})[0], 400)
         self.assertEqual(self.post("/api/cmd", {"cmd": "hold", "tc": 1})[0], 400)
         self.assertEqual(self.post("/api/cmd", {"cmd": "explode"})[0], 400)
-        req = urllib.request.Request(self.url + "/api/cmd", data=b"not json")
+        req = urllib.request.Request(self.url + "/api/cmd", data=b"not json", headers={"Content-Type": "application/json"})
         with self.assertRaises(urllib.error.HTTPError) as cm:
             urllib.request.urlopen(req, timeout=5)
         self.assertEqual(cm.exception.code, 400)
+        # Another website posting a form or a cross-origin request must not reach the heater.
+        for headers in ({"Content-Type": "text/plain"}, {"Content-Type": "application/json", "Origin": "http://evil.example"}):
+            req = urllib.request.Request(self.url + "/api/cmd", data=b'{"cmd":"heat_on"}', headers=headers)
+            with self.assertRaises(urllib.error.HTTPError) as cm:
+                urllib.request.urlopen(req, timeout=5)
+            self.assertIn(cm.exception.code, (403, 415))
+        self.assertIsNone(self.get("/api/state")["manual"])
         with self.assertRaises(urllib.error.HTTPError):
             urllib.request.urlopen(self.url + "/runs/036/../../daq.py", timeout=5)
 

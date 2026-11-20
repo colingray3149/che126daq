@@ -24,6 +24,7 @@ DEFAULTS = {
         {"name": "Cartridge internal", "amp": 3, "show": False},
     ],
     "tc3_is_core": False,           # TC3 is the cartridge's internal thermocouple
+    "manual_cutoffs": {"1": 730, "2": 120, "3": None},  # board cutoffs while Manual heats
     "control": {
         "mode": "predictive",       # predictive | onoff (see model.Controller)
         "hysteresis_C": 1.0,        # switching band
@@ -99,7 +100,12 @@ def validate(c):
     pos("variac_V", 0, 300)
     pos("heater_W", 0, 10000)
     pos("heater_rated_V", 0, 300)
-    pos("sample_ms", 99, 5000)
+    pos("sample_ms", 99, 1000)
+    pos("room_C", -40, 60)
+    pos("heater_max_C", 0, 2000)
+    for k, v in (c.get("manual_cutoffs") or {}).items():
+        if v not in (None, ""):
+            pos(k, 0, 3000, c["manual_cutoffs"])
     pos("lease_ms", 299, 10000)
     if "fault_trip_s" in c:
         pos("fault_trip_s", -1e-9, 60)

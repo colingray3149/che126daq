@@ -166,16 +166,25 @@ save(fig, "fig4_rise_vs_energy.png")
 from che126 import program as prog  # noqa: E402
 
 p = prog.normalize(json.load(open(os.path.join(ROOT, "programs", "700 C, 60 s hold (EXP5-6 style).json"))))
+
+
+def _hold_done(pv):
+    for t, txt in pv["events"]:
+        if txt.startswith("Step 4"):
+            return "%d:%02d" % divmod(int(t), 60)
+    return "?"
 fig, ax = plt.subplots(figsize=(9, 4.4))
 for v in (70, 85, 100, 115):
     sv = json.loads(json.dumps(DEFAULTS))
     sv["variac_V"] = v
     pv = prog.preview(p, sv, None, next_after_s=30)
-    ax.plot([t / 60 for t in pv["t"]], pv["tc1"], label="%d V: TC1 peak %d °C, core %d °C%s" % (v, pv["peak_tc1"], pv["peak_core"], ", trips 730" if any("cutoff" in w for w in pv["warnings"]) else ""))
+    ax.plot([t / 60 for t in pv["t"]], pv["tc1"], label="%d V: TC1 peak %d °C, 700 °C hold done at %s, core %d °C%s" % (
+        v, pv["peak_tc1"], _hold_done(pv), pv["peak_core"],
+        ", trips 730" if any("cutoff" in w for w in pv["warnings"]) else ""))
 ax.axhline(730, color="k", lw=0.7, ls="--")
 ax.set_xlabel("minutes")
 ax.set_ylabel("predicted TC1, °C")
-ax.set_title("Predicted 700 °C / 60 s program with the 500 W cartridge")
+ax.set_title("Predicted '700 C, 60 s hold' program, 500 W cartridge (NEXT pressed 30 s into the 100 °C wait)")
 ax.legend(fontsize=8)
 save(fig, "fig5_voltage_preview.png")
 

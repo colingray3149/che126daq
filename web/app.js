@@ -4,7 +4,7 @@
 const $ = (s, root) => (root || document).querySelector(s);
 const $$ = (s, root) => Array.from((root || document).querySelectorAll(s));
 const COLORS = ["#e8590c", "#1c7ed6", "#2f9e44"];
-const COMPARE_COLORS = ["#e8590c", "#1c7ed6", "#2f9e44", "#ae3ec9", "#f59f00", "#0c8599", "#c2255c", "#495057"];
+const COMPARE_COLORS = ["#7048e8", "#0c8599", "#d6336c", "#f59f00", "#495057", "#2f9e44", "#ae3ec9", "#1098ad"];
 
 function el(tag, attrs, ...kids) {
   const e = document.createElement(tag);
@@ -57,7 +57,12 @@ let programs = [];
 let editing = null;
 
 // ------------------------------------------------------------------ tabs
+let settingsDirty = false, programDirty = false;
+window.addEventListener("beforeunload", e => { if (settingsDirty || programDirty) { e.preventDefault(); e.returnValue = ""; } });
 function showTab(name) {
+  const leaving = $(".tab.on") ? $(".tab.on").id.replace("tab-", "") : null;
+  if (leaving === "settings" && name !== "settings" && settingsDirty && !confirm("Settings have unsaved changes. Leave without saving?")) return;
+  if (leaving === "settings" && name !== "settings") settingsDirty = false;
   $$("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab === name));
   $$(".tab").forEach(t => t.classList.toggle("on", t.id === "tab-" + name));
   localStorage.setItem("tab", name);
@@ -344,7 +349,7 @@ function renderState() {
   if (b.tripped) {
     banner.className = "banner";
     banner.innerHTML = "";
-    banner.append(el("span", { text: (b.trip || "Cutoff tripped") + " — heat is off." }),
+    banner.append(el("span", { text: (b.trip || "Cutoff tripped") + ". Heat is off and the program has stopped." }),
       el("button", { onclick: () => act(() => api("/api/cmd", { cmd: "clear" })) }, "Clear cutoff"));
   } else if (banner.querySelector("button")) banner.classList.add("hidden");
 
@@ -384,10 +389,17 @@ function renderState() {
     else if (p.state === "tripped") st = (p.message || "Cutoff") + " · heat off · still recording";
     $("#step-status").textContent = st;
     $("#btn-next").classList.toggle("pulse", p.state === "waiting");
+    $("#btn-next").classList.toggle("hidden", p.state === "tripped" || p.state === "done" || p.state === "stopped" || !steps.length);
   }
   const ps = $("#start-program");
   if (document.activeElement !== $("#start-volts") && !$("#start-volts").value) $("#start-volts").value = S.settings.variac_V;
   if (!ps.options.length) fillProgramSelect();
+  $("#nc-hint").classList.toggle("hidden", !(b.relay === "NC" && !b.sim));
+  const mc = S.settings.manual_cutoffs || {};
+  for (const k of ["1", "2"]) {
+    const inp = $("#mcut-" + k);
+    if (document.activeElement !== inp && !inp.dataset.touched) inp.value = mc[k] === null || mc[k] === undefined ? "" : mc[k];
+  }
   const hs = $("#hold-tc");
   if (hs.dataset.sig !== JSON.stringify(S.settings.tcs)) {
     hs.dataset.sig = JSON.stringify(S.settings.tcs);
@@ -419,8 +431,10 @@ function renderEvents(events) {
 }
 function addEventRow(e) {
   const ul = $("#events");
-  const time = e.utc ? new Date(e.utc).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "";
-  ul.prepend(el("li", {}, el("time", {}, time), el("span", {}, e.text)));
+  const clock = e.utc ? new Date(e.utc).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "";
+  // During a run show time since the run started (as on the charts); the clock is in the tooltip.
+  const runT = S && S.run && live.origin !== undefined && e.t >= live.origin ? fmtMin((e.t - live.origin) / 60) : null;
+  ul.prepend(el("li", {}, el("time", { title: clock }, runT !== null ? runT : clock), el("span", {}, e.text)));
   while (ul.childElementCount > 150) ul.lastChild.remove();
 }
 
@@ -433,7 +447,7 @@ $("#btn-start").addEventListener("click", () => act(async () => {
     setup: $("#start-setup").value.trim(), variac_V: $("#start-volts").value,
   });
   $("#start-title").value = "";
-  toast("Run " + r.run + " started");
+  toast(S.board.status !== "connected" ? "Run " + r.run + " started, but no board is connected: nothing is recorded until it connects." : "Run " + r.run + " started");
 }));
 $("#btn-next").addEventListener("click", () => act(() => api("/api/cmd", { cmd: "next" })));
 $("#btn-stop").addEventListener("click", () => act(() => api("/api/cmd", { cmd: "stop" })));
@@ -442,12 +456,21 @@ $("#btn-end").addEventListener("click", () => act(async () => {
   await api("/api/cmd", { cmd: "end" });
   if (rid) setTimeout(() => renderRunPng(rid), 800);
 }));
-$("#btn-on").addEventListener("click", () => act(() => api("/api/cmd", { cmd: "heat_on" })));
+function manualCutoffs() {
+  const v = id => ($(id).value === "" ? null : Number($(id).value));
+  return { "1": v("#mcut-1"), "2": v("#mcut-2"), "3": null };
+}
+function saveManualCutoffs() {
+  return act(() => api("/api/settings", { manual_cutoffs: manualCutoffs() }));
+}
+$("#mcut-1").addEventListener("change", saveManualCutoffs);
+$("#mcut-2").addEventListener("change", saveManualCutoffs);
+$("#btn-on").addEventListener("click", () => act(() => api("/api/cmd", { cmd: "heat_on", cutoffs: manualCutoffs() })));
 $("#btn-off").addEventListener("click", () => act(() => api("/api/cmd", { cmd: "heat_off" })));
 $("#btn-hold").addEventListener("click", () => act(() => {
   const t = $("#hold-temp").value;
   if (t === "") throw new Error("Type a hold temperature");
-  return api("/api/cmd", { cmd: "hold", tc: Number($("#hold-tc").value), temp: Number(t) });
+  return api("/api/cmd", { cmd: "hold", tc: Number($("#hold-tc").value), temp: Number(t), cutoffs: manualCutoffs() });
 }));
 function addNote() {
   return act(async () => {
@@ -486,6 +509,7 @@ function connect() {
   });
   es.addEventListener("sample", ev => { lastMsg = Date.now(); addSample(JSON.parse(ev.data)); });
   es.addEventListener("event", ev => { lastMsg = Date.now(); addEventRow(JSON.parse(ev.data)); });
+  es.addEventListener("predicted", ev => { live.predicted = JSON.parse(ev.data); drawLive(true); });
   es.addEventListener("error", () => { $("#offline").classList.remove("hidden"); });
 }
 setInterval(() => {
@@ -510,8 +534,28 @@ function fillProgramSelect() {
   const last = localStorage.getItem("startProgram");
   const want = keep !== "" ? keep : (last !== null ? last : (programs.length ? "0" : ""));
   if ([...ps.options].some(o => o.value === want)) ps.value = want;
+  startPreview();
 }
-$("#start-program").addEventListener("change", e => localStorage.setItem("startProgram", e.target.value));
+$("#start-program").addEventListener("change", e => { localStorage.setItem("startProgram", e.target.value); startPreview(); });
+$("#start-volts").addEventListener("change", () => act(async () => {
+  const v = Number($("#start-volts").value);
+  S.settings = await api("/api/settings", { variac_V: v });
+  startPreview();
+}));
+// Problems the Predicted run finds for the selected program, shown before Start.
+let spSeq = 0;
+async function startPreview() {
+  const ul = $("#start-warn");
+  const sel = $("#start-program").value;
+  ul.innerHTML = "";
+  if (sel === "" || !programs[Number(sel)]) return;
+  const seq = ++spSeq;
+  try {
+    const pv = await api("/api/preview", { program: programs[Number(sel)].program, next_after_s: 30 });
+    if (seq !== spSeq) return;
+    pv.warnings.slice(0, 3).forEach(w => ul.append(el("li", {}, w)));
+  } catch (e) { if (seq === spSeq) ul.append(el("li", { class: "bad" }, e.message)); }
+}
 
 function renderProgramList() {
   const ul = $("#program-list");
@@ -521,10 +565,20 @@ function renderProgramList() {
   else if (!editing) newProgram();
 }
 function blankProgram() {
-  return { name: "New program", steps: [{ type: "full", tc: 1, temp: 100, time: null, wait: true }], end_when: [], cutoffs: { "1": 730, "2": 120, "3": null }, end_run: false };
+  return { name: "New program", steps: [{ type: "hold", tc: 1, temp: 100, time: null, wait: false }], end_when: [], cutoffs: { "1": 730, "2": 120, "3": null }, end_run: false };
 }
-function newProgram() { editing = { file: null, program: blankProgram() }; renderEditor(); renderProgramListMarks(); }
-function editProgram(i) { editing = { file: programs[i].file, program: JSON.parse(JSON.stringify(programs[i].program)) }; renderEditor(); renderProgramListMarks(); }
+function newProgram() {
+  if (programDirty && !confirm("This program has unsaved changes. Discard them?")) return;
+  editing = { file: null, program: blankProgram() };
+  programDirty = true;
+  renderEditor(); renderProgramListMarks();
+}
+function editProgram(i) {
+  if (programDirty && !confirm("This program has unsaved changes. Discard them?")) return;
+  editing = { file: programs[i].file, program: JSON.parse(JSON.stringify(programs[i].program)) };
+  programDirty = false;
+  renderEditor(); renderProgramListMarks();
+}
 function renderProgramListMarks() { $$("#program-list li").forEach((li, i) => li.classList.toggle("on", !!editing && programs[i] && programs[i].file === editing.file)); }
 $("#btn-new-program").addEventListener("click", newProgram);
 
@@ -579,7 +633,9 @@ function renderEditor() {
   if (!p.end_when.length) ends.append(el("div", { class: "small muted" }, "None"));
   $("#prog-end-run").checked = !!p.end_run;
   $("#prog-msg").textContent = "";
-  schedulePreview();
+  const wasDirty = programDirty;
+  schedulePreview(false);
+  programDirty = wasDirty;
 }
 $("#prog-name").addEventListener("input", e => { editing.program.name = e.target.value; });
 $("#btn-use-program").addEventListener("click", () => act(async () => {
@@ -589,9 +645,9 @@ $("#btn-use-program").addEventListener("click", () => act(async () => {
   localStorage.setItem("startProgram", String(idx));
   showTab("live");
 }));
-$("#pv-next").addEventListener("input", () => schedulePreview());
+$("#pv-next").addEventListener("input", () => schedulePreview(false));
 let pvChart = null, pvTimer = null, pvSeq = 0;
-function schedulePreview() { clearTimeout(pvTimer); pvTimer = setTimeout(runPreview, 350); }
+function schedulePreview(fromEdit) { if (fromEdit !== false) programDirty = true; clearTimeout(pvTimer); pvTimer = setTimeout(runPreview, 350); }
 async function runPreview() {
   if (!editing) return;
   const seq = ++pvSeq;
@@ -649,6 +705,7 @@ async function saveEditing() {
   const before = editing.file;
   const r = await api("/api/programs", editing.program);
   editing.file = r.file;
+  programDirty = false;
   await loadPrograms();
   renderProgramListMarks();
   const msg = $("#prog-msg");
@@ -687,7 +744,7 @@ function renderRunList() {
   for (const r of runs) {
     const hay = (r.id + " " + r.title + " " + r.setup + " " + r.category).toLowerCase();
     if (q && !hay.includes(q)) continue;
-    if (filter === "key" && !(r.category === "test" || r.category === "partial" || r.new)) continue;
+    if (filter === "key" && !(r.category === "test" || r.category === "partial" || (r.new && r.category !== "practice") || (r.category === "practice" && S && S.board.sim))) continue;
     const date = r.started ? new Date(r.started).toLocaleDateString([], { month: "short", day: "numeric" }) : "";
     const cb = el("input", { type: "checkbox", checked: compareSet.has(r.id), onclick: e => { e.stopPropagation(); e.target.checked ? compareSet.add(r.id) : compareSet.delete(r.id); } });
     ul.append(el("li", { class: currentRun === r.id ? "on" : "", "data-id": r.id, onclick: () => openRun(r.id) },
@@ -726,12 +783,13 @@ async function openRun(id) {
 
   const H = d.metric_help || {};
   const stats = el("div", { class: "stats" });
+  const shownTc = d.meta && d.meta.tc_shown;
   for (const k of ["tc1", "tc2", "tc3"]) {
-    if (!a[k]) continue;
     const i = Number(k[2]) - 1;
-    stats.append(statBox("TC" + (i + 1) + " peak, at " + fmtDur(a[k].peak_t), fmtT(a[k].peak) + " °C", H.peak));
+    if (!a[k] || (shownTc && !shownTc[i])) continue;
+    stats.append(statBox("TC" + (i + 1) + " peak, " + fmtDur(a[k].peak_t) + " into the run", fmtT(a[k].peak) + " °C", H.peak));
   }
-  if (a.tc1_reach) for (const [lvl, t] of Object.entries(a.tc1_reach)) stats.append(statBox("TC1 to " + lvl + " °C", fmtDur(t), H.reach));
+  if (a.tc1_reach) for (const [lvl, t] of Object.entries(a.tc1_reach)) stats.append(statBox("TC1 to " + lvl + " °C, from heater on", fmtDur(t), H.reach));
   if (a.tc1_max_rate) stats.append(statBox("TC1 fastest rise", a.tc1_max_rate.toFixed(2) + " °C/s", H.max_rate));
   if (a.tc1_dwell700_s) stats.append(statBox("TC1 at ≥ 700 °C", fmtDur(a.tc1_dwell700_s), H.dwell700));
   if (a.tc2_rise !== undefined) stats.append(statBox("TC2 rise", fmtT(a.tc2_rise) + " °C", H.tc2_rise));
@@ -854,7 +912,7 @@ $("#btn-compare").addEventListener("click", () => act(async () => {
   const datas = await Promise.all(ids.map(id => api("/api/runs/" + id + "/data")));
   const details = await Promise.all(ids.map(id => api("/api/runs/" + id)));
   const table = el("table", { class: "ev-table" });
-  table.append(el("tr", {}, ["Run", "Setup", "TC1 peak", "TC2 peak", "TC2 rise", "TC1 → 700 °C", "Heater on"].map(h => el("td", { style: "font-weight:600;color:#1d2228" }, h))));
+  table.append(el("tr", {}, ["Run", "Setup", "TC1 peak", "TC2 peak", "TC2 rise", "Energy in", "Rear gain", "TC1 → 700 °C", "Relay on"].map(h => el("td", { style: "font-weight:600;color:#1d2228" }, h))));
   details.forEach((d, k) => {
     const a = d.analysis || {};
     table.append(el("tr", {},
@@ -863,10 +921,13 @@ $("#btn-compare").addEventListener("click", () => act(async () => {
       el("td", {}, a.tc1 ? fmtT(a.tc1.peak) + " °C" : "—"),
       el("td", {}, a.tc2 ? fmtT(a.tc2.peak) + " °C" : "—"),
       el("td", {}, a.tc2_rise !== undefined ? fmtT(a.tc2_rise) + " °C" : "—"),
+      el("td", {}, a.energy_kJ ? a.energy_kJ + " kJ" : "—"),
+      el("td", {}, a.barrier ? a.barrier.rear_gain.toFixed(2) : "—"),
       el("td", {}, a.tc1_reach && a.tc1_reach["700"] !== undefined ? fmtDur(a.tc1_reach["700"]) : "—"),
       el("td", {}, a.heat_on_s ? fmtDur(a.heat_on_s) : "—")));
   });
   view.append(table);
+  view.append(el("div", { class: "small muted" }, "TC2 rise grows with the heat put in, so compare the rear gain (fitted, heat-input independent; lower = better barrier) and the energy, not only the peaks."));
   const host = el("div", { class: "charts", id: "cmp-charts" });
   view.append(host);
   function draw() {
@@ -958,6 +1019,9 @@ function renderSettings() {
   const s = JSON.parse(JSON.stringify(S.settings));
   const f = $("#settings-form");
   f.innerHTML = "";
+  settingsDirty = false;
+  f.addEventListener("input", () => { settingsDirty = true; });
+  f.addEventListener("change", () => { settingsDirty = true; });
   const num = (obj, key, label, unit, hint, step) => el("label", {}, label,
     el("span", { class: "unit-input" }, el("input", { type: "number", step: step || "any", value: obj[key], oninput: e => { obj[key] = e.target.value === "" ? null : Number(e.target.value); refreshPower(); } }), unit ? el("i", {}, unit) : null),
     hint ? el("span", { class: "hint" }, hint) : null);
@@ -1031,7 +1095,7 @@ function renderSettings() {
       num(s, "fault_trip_s", "Cut heat if a cutoff TC fails for", "s", "0 = never"),
       num(s, "lease_ms", "Heat lease", "ms", "Board turns heat off if this computer goes quiet this long")),
     el("div", { class: "row gap" }, el("button", { onclick: () => act(async () => {
-      if (!confirm("Upload the che126-daq firmware to the board on " + (s.port || (S.board.port || "the selected port")) + "?")) return;
+      if (!confirm("Turn the variac OFF first.\n\nWith COM–NC wiring the heater is powered while the board restarts for the upload.\n\nUpload the che126-daq firmware to the board on " + (s.port || (S.board.port || "the selected port")) + "?")) return;
       fwMsg.textContent = "Uploading… keep the USB cable in.";
       await api("/api/firmware", { port: s.port || S.board.port });
       fwMsg.textContent = "Firmware uploaded.";
@@ -1047,9 +1111,13 @@ function renderSettings() {
   f.append(el("div", { class: "actions" },
     el("button", { class: "primary", onclick: () => act(async () => {
       S.settings = await api("/api/settings", s);
-      msg.className = "small msg-ok"; msg.textContent = "Saved and applied.";
+      settingsDirty = false;
       liveCharts = []; renderState();
       $("#start-volts").value = S.settings.variac_V;
+      S = await api("/api/state");
+      renderSettings();
+      const m2 = $("#settings-form .actions .small");
+      if (m2) { m2.className = "small msg-ok"; m2.textContent = "Saved and applied."; }
     }) }, "Save settings"),
     el("button", { class: "ghost", onclick: renderSettings }, "Undo changes"),
     msg));
